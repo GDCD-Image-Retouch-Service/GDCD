@@ -29,18 +29,18 @@
 - [BootstrapVue 3](https://cdmoro.github.io/bootstrap-vue-3/)
 
 ### Convention Detail
-> 디렉토리 구조
+- 디렉토리 구조
   - Atomic Design Pattern을 따른다
   - Router 주소에 걸리는 화면만 src/view 에서 관리
   - 해당 화면의 컴포넌트는 src/components/주소명 폴더 안에 생성하여 만든다.
   - 모든 화면에 복합적으로 쓰이는 네비게이션바 같은 경우 src/components/common/ 폴더 안에 생성하여 만든다.
 
-> Branch 명
+- Branch 명
   - front의 하위 Branch 를 생성할 경우 하이픈 이후, 지라나 Gantt 차트의 Epic 넘버( 또는, Story Task Fix 넘버 ) 를 적고 이유를 파스칼 네이밍으로 명시할 것
   - 예시) 지라 이슈 8번 UX/UX 에픽에 라우터 세팅에 관하여 충돌을 우려하여 브랜치를 생성하였다면 밑과 같은 이름으로 짓는다.
   - `front-8-RouterSettingFix`
 
-> Commit
+- Commit
   - `[이슈번호] 행동. 유저스토리: 설명`
-  - ex) `[S07P12B102-0] Feat. 회원가입: 회원가입 from 생성`
+  - ex) `[S07P22B301-0] Feat. 회원가입: 회원가입 from 생성`
   - 행동의 앞 글자는 대문자로 한다.
