@@ -1,5 +1,9 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="Community-view d-flex flex-column align-items-center main">
+    <router-view />
   </div>
-</template>;
+</template>
+
+<script></script>
+
+<style scoped></style>

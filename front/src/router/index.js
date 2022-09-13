@@ -1,6 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import MainView from '../views/MainView.vue';
-import CommunityView from '../views/CommunityView.vue';
+
+// Main
+import MainView from '@/views/MainView.vue';
+
+// Community
+import CommunityView from '@/views/CommunityView.vue';
+import CommunityList from '@/components/templates/community/CommunityList';
 
 const routes = [
   {
@@ -12,6 +17,13 @@ const routes = [
     path: '/community',
     name: 'community',
     component: CommunityView,
+    children: [
+      {
+        path: '',
+        name: 'CommunityList', // default page
+        component: CommunityList,
+      },
+    ],
   },
 ];
 
