@@ -2,7 +2,7 @@
   <div class="masonry-layout d-flex flex-column align-items-center main">
     <div
       class="masonry-container"
-      style="width: 100vw; display: grid; column-gap: 0px; grid-auto-rows: 1px"
+      style="width: 100vw; display: grid; column-gap: 1px; grid-auto-rows: 1px"
     >
       <div
         v-for="(widgetNum, index) in widgetList"
@@ -10,8 +10,11 @@
         :key="index"
         class="masonry-brick"
       >
-        <div class="masonry-item" :style="{ height: `${widgetNum}px` }">
-          <post-card />
+        <div
+          class="masonry-item"
+          :style="{ height: `${widgetNum}px`, background: 'blue' }"
+        >
+          내용물
         </div>
       </div>
     </div>
@@ -19,18 +22,13 @@
 </template>
 
 <script>
-import PostCard from '@/components/molecules/PostCard.vue';
 import { ref, nextTick, onMounted } from 'vue';
 
 export default {
-  components: {
-    PostCard,
-  },
   setup() {
     const widgetList = ref([
-      80, 100, 400, 300, 500, 200, 80, 100, 400, 300, 500, 200, 100, 400, 300,
-      500, 200, 100, 400, 300, 500, 200, 100, 400, 300, 500, 200, 100, 400, 300,
-      500, 200,
+      50, 100, 400, 300, 500, 200, 50, 100, 400, 300, 500, 200, 100, 400, 300,
+      500, 200, 100, 400, 300, 500, 200,
     ]);
 
     const componentList = [];
@@ -92,4 +90,44 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.drag-container {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  transition-duration: 0.2s;
+}
+
+.blank {
+  border: 1px dashed #000;
+  border-radius: 16px;
+}
+
+/* .widget {
+  z-index: 1;
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  transition-duration: 0.2s;
+}
+
+.widget-component {
+  width: 100%;
+  padding: 16px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.widget-component * {
+  display: block;
+  color: #000000;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+} */
+</style>

@@ -7,6 +7,10 @@ import MainView from '@/views/MainView.vue';
 import CommunityView from '@/views/CommunityView.vue';
 import CommunityList from '@/components/templates/community/CommunityList';
 
+// Profile
+import ProfileView from '@/views/ProfileView.vue';
+import ProfileList from '@/components/templates/profile/ProfileList';
+
 const routes = [
   {
     path: '/',
@@ -22,6 +26,18 @@ const routes = [
         path: '',
         name: 'CommunityList', // default page
         component: CommunityList,
+      },
+    ],
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView,
+    children: [
+      {
+        path: '',
+        name: 'ProfileList', // default page
+        component: ProfileList,
       },
     ],
   },

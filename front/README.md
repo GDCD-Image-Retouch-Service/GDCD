@@ -24,7 +24,9 @@
 
 - [prettier](https://prettier.io/)
 
-- [BootstrapVue](https://cdmoro.github.io/bootstrap-vue-3/)
+- [Bootstrap](https://getbootstrap.com/)
+
+- [Bootstrap-icon](https://www.npmjs.com/package/bootstrap-icons)
 
 - [BootstrapVue 3](https://cdmoro.github.io/bootstrap-vue-3/)
 
