@@ -1,48 +1,76 @@
 package com.gdcd.back.controller.post;
 
+import com.gdcd.back.controller.Controller;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/post")
-public class PostController {
+public class PostController extends Controller {
 
 //    private final PostRepository postRepository;
 
     @GetMapping("/list")
-    public void postList() {}
+    public ResponseEntity<Map<String, Object>> postList() {
+        return getResponseEntity("hi");
+    }
 
     @GetMapping("")
-    public void postDetails() {}
+    public ResponseEntity<Map<String, Object>> postDetails() {
+        return getResponseEntity("hi");
+    }
 
     @PostMapping("")
-    public void postAdd() {}
+    public ResponseEntity<Map<String, Object>> postAdd() {
+        return getResponseEntity("hi");
+    }
 
     @PutMapping("")
-    public void postModify() {}
+    public ResponseEntity<Map<String, Object>> postModify() {
+        return getResponseEntity("hi");
+    }
 
     @DeleteMapping("")
-    public void postDelete() {}
+    public ResponseEntity<Map<String, Object>> postDelete() {
+        return getResponseEntity("hi");
+    }
 
     @GetMapping("/like")
-    public void postLikeSave() {}
+    public ResponseEntity<Map<String, Object>> postLikeSave() {
+        return getResponseEntity("hi");
+    }
 
     @GetMapping("/scrap")
-    public void postScrapSave() {}
+    public ResponseEntity<Map<String, Object>> postScrapSave() {
+        return getResponseEntity("hi");
+    }
 
     @PostMapping("/report")
-    public void postReportSave() {}
+    public ResponseEntity<Map<String, Object>> postReportSave() {
+        return getResponseEntity("hi");
+    }
 
     @GetMapping("/comment")
-    public void commentList() {}
+    public ResponseEntity<Map<String, Object>> commentList() {
+        return getResponseEntity("hi");
+    }
 
     @PostMapping("/comment")
-    public void commentAdd() {}
+    public ResponseEntity<Map<String, Object>> commentAdd() {
+        return getResponseEntity("hi");
+    }
 
     @PutMapping("/comment")
-    public void commentModify() {}
+    public ResponseEntity<Map<String, Object>> commentModify() {
+        return getResponseEntity("hi");
+    }
 
     @DeleteMapping("/comment")
-    public void commentDelete() {}
+    public ResponseEntity<Map<String, Object>> commentDelete() {
+        return getResponseEntity("hi");
+    }
 }
