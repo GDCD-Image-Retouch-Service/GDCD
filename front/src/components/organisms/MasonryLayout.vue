@@ -14,7 +14,7 @@
         v-for="(widgetNum, index) in widgetList"
         :id="`dragItem-${index}-widget-${widgetNum}`"
         :key="index"
-        class="masonry-brick"
+        class="masonry-content"
       >
         <div class="masonry-item">
           <post-card :url="widgetNum" />
@@ -82,8 +82,10 @@ export default {
         masonryContainer.style.gridTemplateColumns = `repeat(4, calc((${containerWidth}px - 20px) / 4))`;
       } else if (containerWidth > 560) {
         masonryContainer.style.gridTemplateColumns = `repeat(3, calc((${containerWidth}px - 20px) / 3))`;
-      } else {
+      } else if (containerWidth > 380) {
         masonryContainer.style.gridTemplateColumns = `repeat(2, calc((${containerWidth}px - 20px) / 2))`;
+      } else {
+        masonryContainer.style.gridTemplateColumns = `calc(${containerWidth}px - 20px)`;
       }
 
       const columnGap = parseInt(
@@ -93,7 +95,7 @@ export default {
         masonryContainerStyle.getPropertyValue('grid-auto-rows')
       );
 
-      document.querySelectorAll('.masonry-brick').forEach((el) => {
+      document.querySelectorAll('.masonry-content').forEach((el) => {
         el.style.gridRowEnd = `span ${Math.ceil(
           el.querySelector('.masonry-item').scrollHeight / autoRows +
             columnGap / autoRows

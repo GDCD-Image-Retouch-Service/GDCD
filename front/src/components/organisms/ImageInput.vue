@@ -2,21 +2,15 @@
   <div id="image-input">
     <div id="image-input-dash">
       <div>
-      <v-icon
-        x-large
-      >
-        mdi-plus
-      </v-icon>
+        <i class="bi bi-plus" style="font-size: 100pt"></i>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style  scoped>
+<style scoped>
 #image-input {
   width: calc(100% - var(--grid));
   padding-top: 8%;

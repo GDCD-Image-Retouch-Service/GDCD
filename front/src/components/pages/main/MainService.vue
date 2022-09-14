@@ -1,5 +1,6 @@
 <template>
   <div class="main-service">
+    <input type="file" accept="image/*;capture=camera" />
     디자인 공사중 입니다
     <ToggleButton class="width:100%" />
     공사중 이ㅣㅂ니다
