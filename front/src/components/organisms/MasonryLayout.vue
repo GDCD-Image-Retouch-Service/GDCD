@@ -33,26 +33,35 @@ export default {
     PostCard,
   },
   setup() {
-    const widgetList = ref([
-      'https://picsum.photos/200/200',
-      'https://picsum.photos/200/220',
-      'https://picsum.photos/200/240',
-      'https://picsum.photos/200/260',
-      'https://picsum.photos/200/280',
+    const widgetList = ref();
+
+    const restList = ref([
       'https://picsum.photos/200/300',
+      'https://picsum.photos/200/200',
+      'https://picsum.photos/200/400',
+      'https://picsum.photos/200/310',
+      'https://picsum.photos/200/210',
+      'https://picsum.photos/200/410',
       'https://picsum.photos/200/320',
-      'https://picsum.photos/200/340',
-      'https://picsum.photos/200/360',
-      'https://picsum.photos/200/380',
+      'https://picsum.photos/200/220',
+      'https://picsum.photos/200/420',
+      'https://picsum.photos/200/330',
+      'https://picsum.photos/200/230',
+      'https://picsum.photos/200/430',
     ]);
 
     const componentList = [];
 
     async function init() {
+      rest_test();
       nextTick(() => {
         masonryLayoutSetting();
         window.addEventListener('resize', masonryLayoutSetting);
       });
+    }
+
+    function rest_test() {
+      widgetList.value = restList.value;
     }
 
     function masonryLayoutSetting() {
