@@ -10,28 +10,35 @@
       <!-- 유저의 게시물, 좋아요, 북마크, 친구 -->
       <div class="profile-header-subinfo">
         <!-- 게시물 -->
-        <div class="profile-header-subinfo-item" :class="{ active: userStore.isItemActive === 0 }" @click="clickProfileHeaderItem(0)">
+        <div class="profile-header-subinfo-item"
+         :class="{ active: userStore.isItemActive === 0 }" 
+         @click="clickProfileHeaderItem(0)">
           게시물
           <div>
             {{ userStore.currentUser.posts.length }}
           </div>
         </div>
         <!-- 좋아요 -->
-        <div class="profile-header-subinfo-item" :class="{ active: userStore.isItemActive === 1 }" @click="clickProfileHeaderItem(1)">
+        <div class="profile-header-subinfo-item" 
+        :class="{ active: userStore.isItemActive === 1 }" 
+        @click="clickProfileHeaderItem(1)">
           좋아요
           <div>
             {{ userStore.currentUser.likes.length }}
           </div>
         </div>
         <!-- 북마크 -->
-        <div class="profile-header-subinfo-item" :class="{ active: userStore.isItemActive === 2 }" @click="clickProfileHeaderItem(2)">
+        <div class="profile-header-subinfo-item" 
+        :class="{ active: userStore.isItemActive === 2 }" 
+        @click="clickProfileHeaderItem(2)">
           북마크
           <div>
             {{ userStore.currentUser.bookmarks.length }}
           </div>
         </div>
         <!-- 친구 -->
-        <div class="profile-header-subinfo-item" >
+        <div class="profile-header-subinfo-item" 
+        @click="clickProfileHeaderItem(3)">
           친구
           <div>
             
@@ -50,6 +57,9 @@
 import { useUserStore } from '@/stores/user.js'
 
 const userStore = useUserStore();
+
+// 변수 초기화
+userStore.isItemActive = 0
 
 // 프로필 헤더에서 게시물, 좋아요, 북마크를 눌렀을 때 값 변경
 const clickProfileHeaderItem = (num) => {
