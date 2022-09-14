@@ -19,9 +19,9 @@ export default {
 <style>
 :root {
   /* 비율 */
-  --size-h-header: 48px;
-  --size-h-footer: 48px;
-  --size-w-footer: 48px;
+  --size-h-header: 40px;
+  --size-h-footer: 40px;
+  --size-w-footer: 400px;
 
   /* 색상 */
   --theme-color: #ffe49c;

@@ -1,34 +1,52 @@
 <template>
   <div class="post-card outer">
-    <div>게시글 디자인</div>
-    <div>포토카드 같이</div>
+    <img
+      class="fit-picture"
+      :src="`${url}`"
+      style="width: 100%"
+      alt="사진뻑남"
+    />
+    <div class="d-flex flex-column align-items-center" style="height: 80px">
+      <div>게시글</div>
+      <div>공사중</div>
+
+      <!-- spacer -->
+      <div style="width: 90%; height: 2px; background: lightgray"></div>
+
+      <div class="d-flex" style="width: 90%">
+        <i class="bi bi-heart">0</i>
+        <i class="bi bi-bookmark"></i>
+
+        <div class="flex-grow-1"></div>
+
+        <b-avatar
+          variant="info"
+          size="1.5rem"
+          src="https://placekitten.com/300/300"
+        ></b-avatar>
+      </div>
+    </div>
+    <!-- https://picsum.photos/200/300 랜덤으로 사진 보내줌-->
   </div>
 </template>
 
-<script>
-export default {};
+<script setup>
+import { defineProps, toRefs } from 'vue';
+
+const props = defineProps({
+  url: String,
+});
+
+const { url } = toRefs(props);
 </script>
 
 <style scoped>
 .post-card {
   z-index: 1;
-  display: block;
-  position: relative;
-  top: 10px;
-  left: 10px;
+  margin-top: 10px;
+  margin-left: 10px;
   width: calc(100% - 20px);
   height: calc(100% - 20px);
-  /* background: var(--theme-color); */
   border-radius: 20px;
-
-  transition-duration: 0.1s;
-}
-
-.post-card:hover {
-  z-index: 20;
-  transform: scale(1.05); /*  default */
-  -webkit-transform: scale(1.05); /*  크롬 */
-  -moz-transform: scale(1.05); /* FireFox */
-  -o-transform: scale(1.05); /* Opera */
 }
 </style>

@@ -2,7 +2,13 @@
   <div class="masonry-layout d-flex flex-column align-items-center main">
     <div
       class="masonry-container"
-      style="width: 100vw; display: grid; column-gap: 0px; grid-auto-rows: 1px"
+      style="
+        width: 100vw;
+        padding: 10px;
+        display: grid;
+        column-gap: 0px;
+        grid-auto-rows: 1px;
+      "
     >
       <div
         v-for="(widgetNum, index) in widgetList"
@@ -10,8 +16,8 @@
         :key="index"
         class="masonry-brick"
       >
-        <div class="masonry-item" :style="{ height: `${widgetNum}px` }">
-          <post-card />
+        <div class="masonry-item">
+          <post-card :url="widgetNum" />
         </div>
       </div>
     </div>
@@ -20,7 +26,7 @@
 
 <script>
 import PostCard from '@/components/molecules/PostCard.vue';
-import { ref, nextTick, onMounted } from 'vue';
+import { ref, nextTick, onMounted, onUpdated } from 'vue';
 
 export default {
   components: {
@@ -28,9 +34,16 @@ export default {
   },
   setup() {
     const widgetList = ref([
-      80, 100, 400, 300, 500, 200, 80, 100, 400, 300, 500, 200, 100, 400, 300,
-      500, 200, 100, 400, 300, 500, 200, 100, 400, 300, 500, 200, 100, 400, 300,
-      500, 200,
+      'https://picsum.photos/200/200',
+      'https://picsum.photos/200/220',
+      'https://picsum.photos/200/240',
+      'https://picsum.photos/200/260',
+      'https://picsum.photos/200/280',
+      'https://picsum.photos/200/300',
+      'https://picsum.photos/200/320',
+      'https://picsum.photos/200/340',
+      'https://picsum.photos/200/360',
+      'https://picsum.photos/200/380',
     ]);
 
     const componentList = [];
@@ -55,13 +68,13 @@ export default {
       );
 
       if (containerWidth > 1440) {
-        masonryContainer.style.gridTemplateColumns = `repeat(5, calc(${containerWidth}px / 5))`;
+        masonryContainer.style.gridTemplateColumns = `repeat(5, calc((${containerWidth}px - 20px) / 5))`;
       } else if (containerWidth > 960) {
-        masonryContainer.style.gridTemplateColumns = `repeat(4, calc(${containerWidth}px / 4))`;
+        masonryContainer.style.gridTemplateColumns = `repeat(4, calc((${containerWidth}px - 20px) / 4))`;
       } else if (containerWidth > 560) {
-        masonryContainer.style.gridTemplateColumns = `repeat(3, calc(${containerWidth}px / 3))`;
+        masonryContainer.style.gridTemplateColumns = `repeat(3, calc((${containerWidth}px - 20px) / 3))`;
       } else {
-        masonryContainer.style.gridTemplateColumns = `repeat(2, calc(${containerWidth}px / 2))`;
+        masonryContainer.style.gridTemplateColumns = `repeat(2, calc((${containerWidth}px - 20px) / 2))`;
       }
 
       const columnGap = parseInt(
@@ -83,6 +96,10 @@ export default {
       init();
     });
 
+    onUpdated(() => {
+      masonryLayoutSetting();
+    });
+
     return {
       componentList,
       widgetList,
@@ -92,4 +109,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.masonry-item {
+  padding-bottom: 10px;
+}
+</style>

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div style="height: 20px"></div>
     <div class="d-flex align-items-center justify-content-center">
       <b-avatar
         variant="info"
@@ -14,18 +15,14 @@
       |
       <div>팔로워</div>
     </div>
+    <div style="height: 20px"></div>
+    <div style="width: 100%; height: 2px; background: lightgray"></div>
     <masonry-layout />
   </div>
 </template>
 
-<script>
+<script setup>
 import MasonryLayout from '@/components/organisms/MasonryLayout.vue';
-
-export default {
-  components: {
-    MasonryLayout,
-  },
-};
 </script>
 
 <style></style>

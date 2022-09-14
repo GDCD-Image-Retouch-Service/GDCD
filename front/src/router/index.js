@@ -2,20 +2,28 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 // Main
 import MainView from '@/views/MainView.vue';
+import MainService from '@/components/pages/main/MainService';
 
 // Community
 import CommunityView from '@/views/CommunityView.vue';
-import CommunityList from '@/components/templates/community/CommunityList';
+import CommunityList from '@/components/pages/community/CommunityList';
 
 // Profile
 import ProfileView from '@/views/ProfileView.vue';
-import ProfileList from '@/components/templates/profile/ProfileList';
+import ProfileList from '@/components/pages/profile/ProfileList';
 
 const routes = [
   {
     path: '/',
     name: 'main',
     component: MainView,
+    children: [
+      {
+        path: '',
+        name: 'MainService', // default page
+        component: MainService,
+      },
+    ],
   },
   {
     path: '/community',

@@ -1,5 +1,5 @@
 <template>
-  <div class="Community-view d-flex flex-column align-items-center main">
+  <div class="profile-view d-flex flex-column align-items-center main">
     <router-view />
   </div>
 </template>
