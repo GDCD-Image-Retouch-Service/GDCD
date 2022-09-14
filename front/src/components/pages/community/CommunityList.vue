@@ -4,14 +4,9 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import MasonryLayout from '@/components/organisms/MasonryLayout.vue';
 
-export default {
-  components: {
-    MasonryLayout,
-  },
-};
 </script>
 
 <style></style>

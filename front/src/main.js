@@ -8,5 +8,7 @@ import { BootstrapVue3, BToastPlugin } from 'bootstrap-vue-3';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+// pinia
+import { createPinia } from 'pinia'
 
-createApp(App).use(router).use(BootstrapVue3).use(BToastPlugin).mount('#app');
+createApp(App).use(createPinia()).use(router).use(BootstrapVue3).use(BToastPlugin).mount('#app');
