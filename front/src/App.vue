@@ -76,4 +76,9 @@ export default {
 .spacer {
   height: 24px;
 }
+
+a {
+  color: #404040;
+  text-decoration: none;
+}
 </style>

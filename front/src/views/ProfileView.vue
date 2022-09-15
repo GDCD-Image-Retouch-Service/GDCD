@@ -1,5 +1,6 @@
 <template>
   <div class="profile-view d-flex flex-column align-items-center main">
+    <profile-header />
     <router-view />
 
     <!-- ~~~/profile/ -->
