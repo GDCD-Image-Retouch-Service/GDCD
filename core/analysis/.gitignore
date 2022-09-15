@@ -1,0 +1,5 @@
+# .pt files
+app/models/*
+
+# __pycache__
+__pycache__
