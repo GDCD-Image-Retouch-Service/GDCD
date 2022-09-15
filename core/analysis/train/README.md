@@ -7,3 +7,13 @@ This is PyTorch implementation of the paper [NIMA: Neural IMage Assessment](http
 - [AVA: A Large-Scale Database for Aesthetic Visual Analysis](https://projet.liris.cnrs.fr/imagine/pub/proceedings/CVPR2012/data/papers/304_P2C-42.pdf) Dataset was used to train this model for scoring aesthetic ratings and you can download the dataset [here](https://academictorrents.com/details/71631f83b11d3d79d8f84efe0a7e12f0ac001460).
 - [TID2013](https://paperswithcode.com/dataset/tid2013) and you can download the dataset [here](https://www.ponomarenko.info/tid2013.html).
 - Once you download datasets, move folders under the folder named dataset.
+
+# Label and Config files
+
+Train process requires Label and Config files which are JSON file.
+
+Config file contains information such as batch size, number of epochs, etc...
+
+- Label Files for AVA-dataset are unnormalized and frequency distributions were given for each image file name
+
+- Label Files for TID2013 are normalized frequency distributions by maximum entrophy distribution that satisfies the mean score
