@@ -13,6 +13,9 @@ import ProfileView from '@/views/ProfileView.vue';
 import ProfileList from '@/components/pages/profile/ProfileList';
 import ProfileFriends from '@/components/pages/profile/ProfileFriends';
 
+// photo
+import PhotoBook from "@/views/PhotoBookView.vue";
+
 const routes = [
   {
     path: '/',
@@ -52,6 +55,18 @@ const routes = [
         path: 'friends',
         name: 'ProfileFriends', // default page
         component: ProfileFriends,
+      },
+    ],
+  },
+  {
+    path: '/photo',
+    name: 'photo',
+    component: CommunityView,
+    children: [
+      {
+        path: '',
+        name: 'PhotoBook', // default page
+        component: PhotoBook,
       },
     ],
   },

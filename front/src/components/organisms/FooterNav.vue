@@ -33,7 +33,7 @@
       </router-link> 
 
       <!-- 사진첩 -->
-      <router-link to="/community" @click="basicStore.isActiveFooter = 3">
+      <router-link to="/photo" @click="basicStore.isActiveFooter = 3">
         <i class="bi bi-file-image"></i>
       </router-link>
     </div>  
