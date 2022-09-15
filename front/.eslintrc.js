@@ -13,6 +13,7 @@ module.exports = {
   rules: {
     'no-undef': 'off',
     'no-unused-vars': 'off',
+    'no-multiple-template-root': 'off',
     'vue/html-self-closing': 'off',
   },
 };
