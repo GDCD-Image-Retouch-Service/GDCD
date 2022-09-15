@@ -1,11 +1,21 @@
 <template>
- <div class="community-detail outer">
+  <div class="community-detail outer">
     <community-detailHeader />
- </div>
+  </div>
 </template>
 
 <script setup>
 import CommunityDetailHeader from "@/components/organisms/CommunityDetailHeader.vue";
+
+// ES6 Modules or TypeScript
+import Swal from 'sweetalert2'
+
+Swal.fire({
+  title: 'Error!',
+  text: 'Do you want to continue',
+  icon: 'error',
+  confirmButtonText: 'Cool'
+})
 </script>
 
 <style scoped>

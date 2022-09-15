@@ -8,6 +8,8 @@ import MainService from '@/components/pages/main/MainService';
 import CommunityView from '@/views/CommunityView.vue';
 import CommunityList from '@/components/pages/community/CommunityList';
 import CommunityDetail from '@/components/pages/community/CommunityDetail';
+import CommunityDetailChatting from '@/components/pages/community/CommunityDetailChatting';
+
 
 // Profile
 import ProfileView from '@/views/ProfileView.vue';
@@ -44,6 +46,11 @@ const routes = [
         path: ':postId',
         name: 'CommunityDetail', // default page
         component: CommunityDetail,
+      },
+      {
+        path: ':postId/chat',
+        name: 'CommunityDetailChatting', // default page
+        component: CommunityDetailChatting,
       },
     ],
   },
