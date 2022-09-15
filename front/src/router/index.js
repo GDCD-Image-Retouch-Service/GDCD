@@ -7,6 +7,7 @@ import MainService from '@/components/pages/main/MainService';
 // Community
 import CommunityView from '@/views/CommunityView.vue';
 import CommunityList from '@/components/pages/community/CommunityList';
+import CommunityDetail from '@/components/pages/community/CommunityDetail';
 
 // Profile
 import ProfileView from '@/views/ProfileView.vue';
@@ -38,6 +39,11 @@ const routes = [
         path: '',
         name: 'CommunityList', // default page
         component: CommunityList,
+      },
+      {
+        path: ':postId',
+        name: 'CommunityDetail', // default page
+        component: CommunityDetail,
       },
     ],
   },

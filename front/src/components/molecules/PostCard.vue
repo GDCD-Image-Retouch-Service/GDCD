@@ -1,5 +1,5 @@
 <template>
-  <div class="post-card outer">
+  <div class="post-card outer" @click="$router.push({ name:'CommunityDetail', params: { postId: 1 } })">
     <!-- post card header -->
     <div
       class="d-flex align-items-center justify-content-start"

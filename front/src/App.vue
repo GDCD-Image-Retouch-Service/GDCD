@@ -33,6 +33,8 @@ export default {
   --light-main-color: #ffffff;
   --light-sub-color: #f4f4f4;
   --light-reverse-color: #404040;
+
+  --black: #3c3c3a;
 }
 
 * {

@@ -15,10 +15,11 @@
     <!-- 유저의 게시물, 좋아요, 북마크, 친구 -->
     <div class="profile-header-subinfo">
       <!-- 게시물 -->
-      <router-link to="/profile"
-      class="profile-header-subinfo-item"
-      :class="{ active: userStore.isItemActive === 0 }"
-      @click="clickProfileHeaderItem(0)"
+      <router-link 
+        to="/profile"
+        class="profile-header-subinfo-item"
+        :class="{ active: userStore.isItemActive === 0 }"
+        @click="clickProfileHeaderItem(0)"
       >
         게시물
         <div>
@@ -47,9 +48,10 @@
           {{ userStore.currentUser.bookmarks.length }}
         </div>
       </div>
-      <router-link to="/profile/friends" 
-      class="profile-header-subinfo-item"
-      @click="clickProfileHeaderItem(3)"
+      <router-link 
+        to="/profile/friends" 
+        class="profile-header-subinfo-item"
+        @click="clickProfileHeaderItem(3)"
       >
         친구
       </router-link>
@@ -81,7 +83,9 @@ const clickProfileHeaderItem = (num) => {
   border-bottom: 1px solid black;
 
   display: flex;
-  justify-content: center
+  justify-content: center;
+
+  margin-top: 30px;
 }
 .profile-header-subinfo {
   width: 70%;

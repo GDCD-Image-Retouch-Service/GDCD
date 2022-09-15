@@ -1,6 +1,6 @@
 <template>
-  <ProfileFriendsHeader/>
-  <ProfileFriendsSection/>
+  <profile-friendsHeader />
+  <profile-friendsSection />
 </template>
 
 <script setup>
