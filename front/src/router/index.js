@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 // Main
 import MainView from '@/views/MainView.vue';
+import MainService from '@/components/pages/main/MainService';
 
 // Community
 import CommunityView from '@/views/CommunityView.vue';
@@ -17,6 +18,13 @@ const routes = [
     path: '/',
     name: 'main',
     component: MainView,
+    children: [
+      {
+        path: '',
+        name: 'MainService', // default page
+        component: MainService,
+      },
+    ],
   },
   {
     path: '/community',

@@ -1,7 +1,9 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
+  <div class="main-view d-flex flex-column align-items-center main">
+    <router-view />
   </div>
 </template>
 
 <script></script>
+
+<style scoped></style>

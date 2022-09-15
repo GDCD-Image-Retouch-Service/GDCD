@@ -3,7 +3,6 @@
   <div class="header-nav outer d-flex align-items-center">
     <img
       src="@/assets/logo.png"
-      class="align-bottom"
       style="margin-left: 8px; height: calc(var(--size-h-header) / 1.5)"
       alt="logo"
     />
