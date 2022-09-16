@@ -40,16 +40,6 @@ def get_transform(name: str):
         crop = 224
         mean = [0.485, 0.456, 0.406]
         std = [0.229, 0.224, 0.225]
-    elif name == "ResNet50":
-        size = 232
-        crop = 224
-        mean = [0.485, 0.456, 0.406]
-        std = [0.229, 0.224, 0.225]
-    elif name == "EfficientNetV2":
-        size = 384
-        crop = 384
-        mean = [0.485, 0.456, 0.406]
-        std = [0.229, 0.224, 0.225]
 
     train_transform = transforms.Compose([
         transforms.Resize(size),

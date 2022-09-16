@@ -1,4 +1,10 @@
-CUDA_VISIBLE_DEVICES=5,6,7,8,9 python train.py --config configs/config_aesthetic.json --base_model_name EfficientNetV2
+CUDA_VISIBLE_DEVICES=8,9 python train.py --config configs/config_aesthetic.json --base_model_name ResNet152
 CUDA_VISIBLE_DEVICES=9 python train.py --config configs/config_technical.json --base_model_name VGG16_bn
 CUDA_VISIBLE_DEVICES=8 python train.py --config configs/config_technical.json --base_model_name MobileNetV3
 CUDA_VISIBLE_DEVICES=5,6,7,8,9 python train.py --config configs/config_technical.json --base_model_name EfficientNetV2
+
+CUDA_VISIBLE_DEVICES=9 python validation.py --model ./result/aesthetic_InceptionV3_0725.pt --labels ./labels/ava_labels_test.json --images ./dataset/AVA-dataset/images --save result_test_0725 &&
+CUDA_VISIBLE_DEVICES=9 python validation.py --model ./result/aesthetic_InceptionV3_0725.pt --labels ./labels/ava_labels_train.json --images ./dataset/AVA-dataset/images --save result_train_0725
+
+CUDA_VISIBLE_DEVICES=9 python validation.py --model ./result/technical_InceptionV3_0968.pt --labels ./labels/tid_labels_test.json --images ./dataset/TID2013/distorted_images --save technical_result_test_ResNet152 &&
+CUDA_VISIBLE_DEVICES=9 python validation.py --model ./result/technical_InceptionV3_0968.pt --labels ./labels/tid_labels_train.json --images ./dataset/TID2013/distorted_images --save technical_result_train_ResNet152
