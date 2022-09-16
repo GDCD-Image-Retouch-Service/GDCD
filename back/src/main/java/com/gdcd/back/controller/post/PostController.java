@@ -1,9 +1,8 @@
 package com.gdcd.back.controller.post;
 
 import com.gdcd.back.controller.Controller;
-import com.gdcd.back.dto.post.request.PostCreateRequestDto;
-import com.gdcd.back.dto.post.request.PostReportRequestDto;
-import com.gdcd.back.dto.post.request.PostUpdateRequestDto;
+import com.gdcd.back.dto.post.request.*;
+import com.gdcd.back.service.post.CommentService;
 import com.gdcd.back.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +14,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/post")
 public class PostController extends Controller {
-
-//    private final PostRepository postRepository;
     private final PostService postService;
+    private final CommentService commentService;
     @GetMapping("/list")
     public ResponseEntity<Map<String, Object>> postList() {
         return getResponseEntity(postService.findPosts());
@@ -59,22 +57,22 @@ public class PostController extends Controller {
     }
 
     @GetMapping("/comment")
-    public ResponseEntity<Map<String, Object>> commentList() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> commentList(@RequestParam Long postId) {
+        return getResponseEntity(commentService.findComments(postId));
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<Map<String, Object>> commentAdd() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> commentAdd(@RequestBody CommentCreateRequestDto requestDto) {
+        return getResponseEntity(commentService.addComment(requestDto));
     }
 
     @PutMapping("/comment")
-    public ResponseEntity<Map<String, Object>> commentModify() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> commentModify(@RequestBody CommentUpdateRequestDto requestDto) {
+        return getResponseEntity(commentService.modifyComment(requestDto));
     }
 
     @DeleteMapping("/comment")
-    public ResponseEntity<Map<String, Object>> commentDelete() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> commentDelete(@RequestParam Long commentId) {
+        return getResponseEntity(commentService.deleteComment(commentId));
     }
 }
