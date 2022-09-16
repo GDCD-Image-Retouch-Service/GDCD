@@ -1,26 +1,26 @@
 <template>
   <!-- <div class="footer-spacer" /> -->
-  <nav class="footer-nav">
-    <div class="footer-nav-wrap outer">
+  <nav class="footer-nav outer">
+    <div class="footer-nav-wrap">
       <!--  홈 -->
       <router-link to="/" @click="basicStore.isActiveFooter = 0">
         <i
-          v-if="basicStore.isActiveFooter == 0"
           class="bi bi-house-door-fill"
+          v-if="basicStore.isActiveFooter == 0"
         ></i>
-        <i v-else class="bi bi-house-door"></i>
+        <i class="bi bi-house-door" v-else></i>
       </router-link>
 
       <!-- 커뮤니티 -->
       <router-link to="/community" @click="basicStore.isActiveFooter = 1">
-        <i v-if="basicStore.isActiveFooter == 1" class="bi bi-people-fill"></i>
-        <i v-else class="bi bi-people"></i>
+        <i class="bi bi-people-fill" v-if="basicStore.isActiveFooter == 1"></i>
+        <i class="bi bi-people" v-else></i>
       </router-link>
 
       <!-- 프로필 -->
       <router-link to="/profile" @click="basicStore.isActiveFooter = 2">
-        <i v-if="basicStore.isActiveFooter == 2" class="bi bi-person-fill"></i>
-        <i v-else class="bi bi-person"></i>
+        <i class="bi bi-person-fill" v-if="basicStore.isActiveFooter == 2"></i>
+        <i class="bi bi-person" v-else></i>
       </router-link>
 
       <!-- 사진첩 -->
@@ -42,7 +42,18 @@ const basicStore = useBasicStore();
   width: 100vw;
   height: var(--size-h-footer);
 }
+.footer-nav-wrap {
+  width: 80%;
+  height: var(--size-h-footer);
 
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-around;
+}
+.footer-nav-wrap a {
+  color: var(--dark-main-color);
+  font-size: 24px;
+}
 .footer-nav {
   z-index: 100;
   position: fixed;

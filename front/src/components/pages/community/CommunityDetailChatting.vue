@@ -5,6 +5,7 @@
         <!-- 유저 정보 -->
         <div class="user-info">
           <img :src="ch.profileImage" class="profile-image" />
+
           <div>
             {{ ch.username }}
           </div>

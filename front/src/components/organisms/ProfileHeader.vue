@@ -15,6 +15,7 @@
     <!-- 유저의 게시물, 좋아요, 북마크, 친구 -->
     <div class="profile-header-subinfo">
       <!-- 게시물 -->
+
       <router-link
         to="/profile"
         class="profile-header-subinfo-item"
@@ -49,7 +50,13 @@
         </div>
       </div>
 
-      <div>친구</div>
+      <router-link
+        to="/profile/friends"
+        class="profile-header-subinfo-item"
+        @click="clickProfileHeaderItem(3)"
+      >
+        친구
+      </router-link>
     </div>
   </div>
 </template>

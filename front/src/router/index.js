@@ -7,6 +7,7 @@ import MainUpload from '@/components/pages/main/MainUpload';
 // Community
 import CommunityView from '@/views/CommunityView.vue';
 import CommunityList from '@/components/pages/community/CommunityList';
+
 import CommunityWrite from '@/components/pages/community/CommunityWrite';
 import CommunityDetail from '@/components/pages/community/CommunityDetail';
 import CommunityDetailChatting from '@/components/pages/community/CommunityDetailChatting';
@@ -50,6 +51,7 @@ const routes = [
       {
         path: ':postId',
         name: 'CommunityDetail',
+
         component: CommunityDetail,
       },
       {

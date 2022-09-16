@@ -5,5 +5,6 @@ export const useBasicStore = defineStore('basicStore', {
     // 푸터 네브 바
     isActiveFooter: 0,
   }),
+
   actions: {},
 });
