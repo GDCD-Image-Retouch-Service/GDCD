@@ -1,11 +1,20 @@
 <template>
-  <div id="toggle-button-outline" @click="toglleImageCamera">
+  <div
+    id="toggle-button-outline"
+    @click="toglleImageCamera"
+  >
     <!-- 이미지 -->
-    <div id="image-camera" :style="{ color: red }">
+    <div
+      id="image-camera"
+      :style="{ color: red }"
+    >
       <v-icon> mdi-image </v-icon>
     </div>
     <!-- 카메라 -->
-    <div id="image-camera" :style="{ color: red }">
+    <div
+      id="image-camera"
+      :style="{ color: red }"
+    >
       <v-icon> mdi-camera </v-icon>
     </div>
 

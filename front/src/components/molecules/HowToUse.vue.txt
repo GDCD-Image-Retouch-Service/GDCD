@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div id="how-to-use-header" @click="clickHowToUse">
+    <div
+      id="how-to-use-header"
+      @click="clickHowToUse"
+    >
       <div>개떡찰떡 사용법</div>
       <div>
         <v-icon> mdi-chevron-down </v-icon>

@@ -1,7 +1,9 @@
 <template>
-  <header-nav />
-  <router-view />
-  <footer-nav />
+  <div>
+    <header-nav />
+    <router-view />
+    <footer-nav />
+  </div>
 </template>
 
 <script>
@@ -33,6 +35,8 @@ export default {
   --light-main-color: #ffffff;
   --light-sub-color: #f4f4f4;
   --light-reverse-color: #404040;
+
+  --black: #3c3c3a;
 }
 
 * {
@@ -75,5 +79,10 @@ export default {
 
 .spacer {
   height: 24px;
+}
+
+a {
+  color: #404040;
+  text-decoration: none;
 }
 </style>

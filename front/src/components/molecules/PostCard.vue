@@ -1,5 +1,8 @@
 <template>
-  <div class="post-card outer">
+  <div
+    class="post-card outer"
+    @click="$router.push({ name: 'CommunityDetail', params: { postId: 1 } })"
+  >
     <!-- post card header -->
     <div
       class="d-flex align-items-center justify-content-start"
@@ -56,7 +59,10 @@
 import { defineProps, toRefs } from 'vue';
 
 const props = defineProps({
-  url: String,
+  url: {
+    type: String,
+    default: `require(@/assets/logo.png)`,
+  },
 });
 
 const { url } = toRefs(props);

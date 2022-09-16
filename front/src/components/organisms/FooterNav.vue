@@ -1,12 +1,41 @@
 <template>
   <!-- <div class="footer-spacer" /> -->
-  <nav class="footer-nav outer">
-    <router-link to="/"> 홈 </router-link> |
-    <router-link to="/community"> 커뮤니티 </router-link> |
-    <router-link to="/profile"> 마이페이지 </router-link> |
-    <router-link to="/community"> 사진첩 </router-link>
+  <nav class="footer-nav">
+    <div class="footer-nav-wrap outer">
+      <!--  홈 -->
+      <router-link to="/" @click="basicStore.isActiveFooter = 0">
+        <i
+          v-if="basicStore.isActiveFooter == 0"
+          class="bi bi-house-door-fill"
+        ></i>
+        <i v-else class="bi bi-house-door"></i>
+      </router-link>
+
+      <!-- 커뮤니티 -->
+      <router-link to="/community" @click="basicStore.isActiveFooter = 1">
+        <i v-if="basicStore.isActiveFooter == 1" class="bi bi-people-fill"></i>
+        <i v-else class="bi bi-people"></i>
+      </router-link>
+
+      <!-- 프로필 -->
+      <router-link to="/profile" @click="basicStore.isActiveFooter = 2">
+        <i v-if="basicStore.isActiveFooter == 2" class="bi bi-person-fill"></i>
+        <i v-else class="bi bi-person"></i>
+      </router-link>
+
+      <!-- 사진첩 -->
+      <router-link to="/photo" @click="basicStore.isActiveFooter = 3">
+        <i class="bi bi-file-image"></i>
+      </router-link>
+    </div>
   </nav>
 </template>
+
+<script setup>
+import { useBasicStore } from '@/stores/basic.js';
+
+const basicStore = useBasicStore();
+</script>
 
 <style scoped>
 .footer-spacer {
@@ -17,12 +46,36 @@
 .footer-nav {
   z-index: 100;
   position: fixed;
-  bottom: -4px;
+  bottom: 0px;
 
   width: 100vw;
-  height: var(--size-h-header);
-  background: white;
+  height: var(--size-h-footer);
+}
 
-  /* line-height: 20px; */
+.footer-nav-wrap {
+  width: 100%;
+  max-width: 380px;
+  height: var(--size-h-footer);
+  background: white;
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-around;
+  border-top-left-radius: calc(var(--size-h-footer) / 2);
+  border-top-right-radius: calc(var(--size-h-footer) / 2);
+  border: solid 1px #f4f4f4;
+}
+.footer-nav-wrap a {
+  color: var(--dark-main-color);
+  font-size: 24px;
+}
+.footer-nav {
+  z-index: 100;
+  position: fixed;
+
+  bottom: 0px;
+
+  width: 100%;
+  height: var(--size-h-footer);
+  background: white;
 }
 </style>
