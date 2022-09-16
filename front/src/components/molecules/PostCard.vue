@@ -1,34 +1,74 @@
 <template>
   <div class="post-card outer">
-    <div>게시글 디자인</div>
-    <div>포토카드 같이</div>
+    <!-- post card header -->
+    <div
+      class="d-flex align-items-center justify-content-start"
+      style="width: 100%; height: 40px"
+    >
+      <b-avatar
+        variant="info"
+        size="2em"
+        src="https://placekitten.com/300/300"
+        style="margin-left: 8px"
+      ></b-avatar>
+      <div style="margin-left: 8px">성덕</div>
+      <div class="flex-grow-1"></div>
+      <i class="bi bi-three-dots" style="margin-right: 8px"></i>
+    </div>
+
+    <!-- post card image -->
+    <b-img :src="`${url}`" fluid-grow alt="Responsive image"></b-img>
+
+    <div
+      class="d-flex align-items-center justify-content-end"
+      style="margin-left: 8px; margin-right: 8px; font-size: 14pt; height: 32px"
+    >
+      <i class="bi bi-heart"></i>
+      <div style="margin-left: 8px">0</div>
+      <div class="flex-grow-1"></div>
+      <i class="bi bi-bookmark"></i>
+    </div>
+
+    <div>
+      <div>게시글 제목</div>
+    </div>
+
+    <div
+      class="d-flex align-items-center justify-content-end"
+      style="height: 28px; background: #f4f4f4"
+    >
+      <img
+        src="@/assets/grade/1.png"
+        style="margin-right: 4px; height: 20px"
+        alt="logo"
+      />
+      <img
+        src="@/assets/grade/6.png"
+        style="margin-right: 4px; height: 20px"
+        alt="logo"
+      />
+    </div>
+    <!-- https://picsum.photos/200/300 랜덤으로 사진 보내줌-->
   </div>
 </template>
 
-<script>
-export default {};
+<script setup>
+import { defineProps, toRefs } from 'vue';
+
+const props = defineProps({
+  url: String,
+});
+
+const { url } = toRefs(props);
 </script>
 
 <style scoped>
 .post-card {
   z-index: 1;
-  display: block;
-  position: relative;
-  top: 10px;
-  left: 10px;
+  margin-top: 10px;
+  margin-left: 10px;
   width: calc(100% - 20px);
   height: calc(100% - 20px);
-  /* background: var(--theme-color); */
   border-radius: 20px;
-
-  transition-duration: 0.1s;
-}
-
-.post-card:hover {
-  z-index: 20;
-  transform: scale(1.05); /*  default */
-  -webkit-transform: scale(1.05); /*  크롬 */
-  -moz-transform: scale(1.05); /* FireFox */
-  -o-transform: scale(1.05); /* Opera */
 }
 </style>

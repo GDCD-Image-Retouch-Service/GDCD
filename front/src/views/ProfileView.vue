@@ -1,9 +1,14 @@
 <template>
-  <div class="Community-view d-flex flex-column align-items-center main">
+  <div class="profile-view d-flex flex-column align-items-center main">
+    <profile-header />
     <router-view />
+
+    <!-- ~~~/profile/ -->
   </div>
 </template>
 
-<script></script>
+<script setup>
+import ProfileHeader from '@/components/organisms/ProfileHeader.vue';
+</script>
 
 <style scoped></style>
