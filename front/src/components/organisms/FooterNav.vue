@@ -1,7 +1,7 @@
 <template>
   <!-- <div class="footer-spacer" /> -->
-  <nav class="footer-nav outer">
-    <div class="footer-nav-wrap">
+  <nav class="footer-nav">
+    <div class="footer-nav-wrap outer">
       <!--  홈 -->
       <router-link to="/" @click="basicStore.isActiveFooter = 0">
         <i
@@ -87,6 +87,5 @@ const basicStore = useBasicStore();
 
   width: 100%;
   height: var(--size-h-footer);
-  background: white;
 }
 </style>
