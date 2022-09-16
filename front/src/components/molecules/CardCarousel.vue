@@ -1,29 +1,34 @@
 <template>
-  <div class="card-carousel" @click="moveCrousel()" :style="{ transform: carouselValue }">
-    <img :src="orginImage" alt="" class="card-image">
-    <img :src="editImage" alt="" class="card-image">
+  <div
+    class="card-carousel"
+    @click="moveCrousel()"
+    :style="{ transform: carouselValue }"
+  >
+    <img :src="orginImage" alt="" class="card-image" />
+    <img :src="editImage" alt="" class="card-image" />
   </div>
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, toRefs } from 'vue';
 
 const props = defineProps({
   orginImage: Text,
-  editImage: Text
+  editImage: Text,
 });
+
+// 이 줄 추가해야 안정적임
+const { orginImage, editImage } = toRefs(props);
 
 let carouselValue = ref('translateX(0)');
 
 const moveCrousel = () => {
-  if (carouselValue.value ===  'translateX(0)') {
+  if (carouselValue.value === 'translateX(0)') {
     carouselValue.value = 'translateX(calc(-30% - 5px))';
+  } else {
+    carouselValue.value = 'translateX(0)';
   }
-  else {
-    carouselValue.value = 'translateX(0)'
-  }
-
-}
+};
 </script>
 
 <style scoped>
