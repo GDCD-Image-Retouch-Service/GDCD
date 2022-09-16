@@ -28,21 +28,20 @@ class Nima(nn.Module):
                 nn.Dropout(p=self.dropout_rate),
                 nn.Softmax(dim=-1)
             )
-        elif self.base_model_name == "EfficientNetV2":
-            self.base_module = models.efficientnet_v2_l(
-                weights=models.EfficientNet_V2_L_Weights)
-            self.base_module.classifier = nn.Sequential(
-                nn.Dropout(p=self.dropout_rate, inplace=True),
-                nn.Linear(4 * models.efficientnet.MBConvConfig(6,
-                          3, 1, 384, 640, 7).out_channels, 10),
+        elif self.base_model_name == "ResNet50":
+            self.base_module = models.resnet50(
+                weights=models.ResNet50_Weights)
+            self.base_module.fc = nn.Sequential(
+                nn.Linear(512 * models.resnet.Bottleneck.expansion, 10),
+                nn.Dropout(p=self.dropout_rate),
                 nn.Softmax(dim=-1)
             )
-        elif self.base_model_name == "VisionTransformer":
-            self.base_module = models.vit_h_14(
-                weights=models.ViT_H_14_Weights.DEFAULT)
-            self.base_module.heads = nn.Sequential(
-                nn.Linear(self.base_module.hidden_dim, 10),
-                nn.Dropout(p=self.dropout_rate),
+        elif self.base_model_name == "EfficientNetV2":
+            self.base_module = models.efficientnet_v2_s(
+                weights=models.EfficientNet_V2_S_Weights)
+            self.base_module.classifier = nn.Sequential(
+                nn.Dropout(p=self.dropout_rate, inplace=True),
+                nn.Linear(1280, 10),
                 nn.Softmax(dim=-1)
             )
 
