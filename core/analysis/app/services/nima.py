@@ -7,7 +7,6 @@ from typing import List, Dict
 
 from utils.utils import calc_mean_score
 
-
 class Nima():
     def __init__(self, aes_path: str, tec_path: str) -> None:
         super(Nima, self).__init__()
@@ -18,11 +17,11 @@ class Nima():
             tec_path, map_location=self.device).eval().to(self.device)
 
         self.transform = transforms.Compose([
-            transforms.Resize(360),
-            transforms.RandomCrop(299),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                 std=[0.229, 0.224, 0.225])])
+        transforms.Resize(342),
+        transforms.CenterCrop(299),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225])])
 
     @torch.no_grad()
     @torch.inference_mode()
@@ -31,8 +30,9 @@ class Nima():
         inputs = torch.stack(
             [torch_img for torch_img in torch_list], dim=0).to(self.device)
 
-        aes_outputs = self.aes_module(inputs).logits.detach().numpy()
-        tec_outputs = self.tec_module(inputs).logits.detach().numpy()
+        with torch.no_grad():
+            aes_outputs = self.aes_module(inputs).logits.detach().numpy()
+            tec_outputs = self.tec_module(inputs).detach().numpy()
 
         return [{"aesthetic": round(calc_mean_score(aes_out), 4),
                  "quality": round(calc_mean_score(tec_out), 4)}

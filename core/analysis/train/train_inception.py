@@ -3,7 +3,7 @@ import torchvision.transforms as transforms
 import torch.optim as optim
 import torch
 
-from nima.data_generator import AVADataset
+from nima.data_generator import AVADataset, get_transform
 from nima.model import Nima
 from nima.loss import emd_loss
 import nima.utils as utils
@@ -18,22 +18,23 @@ import warnings
 warnings.filterwarnings(action='ignore')
 
 
+base_model_name = "InceptionV3"
 def work(args):
-    config = Namespace(**json.load(open(args.config)))
+    config_file = "configs/config_aesthetic.json" if args.type == "aesthetic" else "configs/config_technical.json"
+    config = Namespace(**json.load(open(config_file)))
 
     train_labels = utils.load_json(config.train_labels)
     test_labels = utils.load_json(config.test_labels)
 
-    dt_now = datetime.now().strftime("%Y%m%d_%H_%M_%S")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    ckpt_path = f"./models/{config.type}_{args.base_model_name}_{dt_now}/"
+    ckpt_path = f"./models/{config.type}_{base_model_name}/"
     summary_path = f"{ckpt_path}/tensorboard"
     if not os.path.exists(ckpt_path):
         os.makedirs(ckpt_path)
 
     # transform
     train_transform = transforms.Compose([
-        transforms.Resize(360),
+        transforms.Resize(342),
         transforms.RandomCrop(299),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
@@ -41,12 +42,11 @@ def work(args):
                              std=[0.229, 0.224, 0.225])])
 
     val_transform = transforms.Compose([
-        transforms.Resize(360),
-        transforms.RandomCrop(299),
+        transforms.Resize(342),
+        transforms.CenterCrop(299),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406],
                              std=[0.229, 0.224, 0.225])])
-
     # data loader
     trainset = AVADataset(
         labels=train_labels, image_dir=config.image_path, image_type=config.image_type, transform=train_transform)
@@ -59,8 +59,8 @@ def work(args):
                                              shuffle=False, num_workers=config.num_workers)
 
     # load model
-    nima = Nima(base_model_name=args.base_model_name,
-                dropout_rate=config.dropout_rate)
+    nima = torch.nn.DataParallel(Nima(base_model_name=base_model_name,
+                                      dropout_rate=config.dropout_rate))
     nima.to(device)
 
     # Tensorboard
@@ -72,10 +72,10 @@ def work(args):
 
     # Train fc Layer start ------------------------------------------------------
     # Freeze Parameters except fc layer
-    nima.freeze_only_base_module()
+    nima.module.freeze_only_base_module()
 
     # Optimizer fc
-    optimizer_fc = optim.SGD(params=nima.base_module.parameters(),
+    optimizer_fc = optim.SGD(params=nima.module.base_module.parameters(),
                              lr=config.learning_rate_fc,
                              momentum=0.9
                              )
@@ -141,8 +141,9 @@ def work(args):
         if avg_val_loss < init_val_loss:
             init_val_loss = avg_val_loss
             print('Saving model...')
-            torch.save(nima.base_module, os.path.join(
-                ckpt_path, 'epoch-%d-%.4f.pt' % (epoch, avg_val_loss)))
+            with torch.jit.script(nima.module.base_module) as script:
+                torch.jit.save(script, os.path.join(
+                    ckpt_path, 'epoch-%d-%.4f.pt' % (epoch, avg_val_loss)))
             print('Done.\n')
     # Train fc Layer end ---------------------------------------------------------
 
@@ -150,10 +151,10 @@ def work(args):
 
     # Train all Layer start ------------------------------------------------------
     # Unfreeze every Parameters
-    nima.unfreeze_all()
+    nima.module.unfreeze_all()
 
     # Optimizer all
-    optimizer_all = optim.SGD(params=nima.base_module.parameters(),
+    optimizer_all = optim.SGD(params=nima.module.base_module.parameters(),
                               lr=config.learning_rate_all,
                               momentum=0.9
                               )
@@ -219,8 +220,9 @@ def work(args):
             print('Saving model...')
             if not os.path.exists(ckpt_path):
                 os.makedirs(ckpt_path)
-            torch.save(nima.base_module, os.path.join(
-                ckpt_path, 'epoch-%d-%.4f.pt' % (epoch, avg_val_loss)))
+            with torch.jit.script(nima.module.base_module) as script:
+                torch.jit.save(script, os.path.join(
+                    ckpt_path, 'epoch-%d-%.4f.pt' % (epoch, avg_val_loss)))
             print('Done.\n')
     # Train all Layer end ------------------------------------------------------
 
@@ -229,9 +231,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     # model configurations
-    parser.add_argument("--config", type=str,
-                        default="configs/config_aesthetic.json")
-    parser.add_argument("--base_model_name", type=str, default="InceptionV3")
+    parser.add_argument("--type", type=str,
+                        default="aesthetic")
     args = parser.parse_args()
 
     work(args)

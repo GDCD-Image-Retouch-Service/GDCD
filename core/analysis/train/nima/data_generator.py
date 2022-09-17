@@ -2,7 +2,6 @@ import os
 from PIL import Image
 import nima.utils as utils
 from torch.utils import data
-import torchvision.transforms as transforms
 import torch
 
 
@@ -27,18 +26,3 @@ class AVADataset(data.Dataset):
             sample['image'] = self.transform(sample['image'])
 
         return sample
-
-
-if __name__ == '__main__':
-    image_path = './Dataset/AVA_dataset/images'
-    labels = utils.load_json("Image_Scoring/data/ava_labels.json")
-    train_transform = transforms.Compose([
-        transforms.Resize(256),
-        transforms.RandomCrop(224),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
-    dset = AVADataset(labels=labels, image_dir=image_path,
-                      transform=train_transform)
-    train_loader = data.DataLoader(
-        dset, batch_size=4, shuffle=True, num_workers=4)
