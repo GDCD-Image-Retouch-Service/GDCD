@@ -18,7 +18,8 @@ import ProfileList from '@/components/pages/profile/ProfileList';
 import ProfileFriends from '@/components/pages/profile/ProfileFriends';
 
 // photo
-import PhotoBook from '@/views/PhotoBookView.vue';
+import PhotoView from '@/views/PhotoView.vue';
+import PhotoList from '@/components/pages/photo/PhotoList.vue';
 
 const routes = [
   {
@@ -81,12 +82,12 @@ const routes = [
   {
     path: '/photo',
     name: 'photo',
-    component: CommunityView,
+    component: PhotoView,
     children: [
       {
         path: '', // default page
-        name: 'PhotoBook',
-        component: PhotoBook,
+        name: 'PhotoList',
+        component: PhotoList,
       },
     ],
   },

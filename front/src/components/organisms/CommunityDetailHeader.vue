@@ -3,7 +3,6 @@
     <!-- 프로필 -->
     <div class="user-profile">
       <img :src="card.profileImage" alt="" class="profile-image" />
-
       {{ card.username }}
     </div>
 
@@ -16,7 +15,7 @@
 
     <!-- 이미지 -->
     <card-carousel
-      :orginImage="card.cardImage.origin"
+      :originImage="card.cardImage.origin"
       :editImage="card.cardImage.edit"
     />
 
@@ -24,11 +23,21 @@
       {{ card.content }}
     </div>
 
-    <!-- 좋아요 북마크 -->
-    <div class="like-bookmark">
-      <i class="bi bi-heart"></i>
-      <div>0</div>
-      <i class="bi bi-bookmark" style="margin-right: 20px"></i>
+    <!-- 채팅 좋아요 북마크 -->
+    <div class="like-bookmark-chat">
+      <div class="like-bookmark">
+        <div></div>
+        <div class="herat-wrap">
+          <i class="bi bi-heart"></i>
+          <div>0</div>
+        </div>
+        <i class="bi bi-bookmark"></i>
+      </div>
+      <router-link
+        :to="{ name: 'CommunityDetailChatting', parmas: { postId: 1 } }"
+      >
+        <i class="bi bi-chat" style="font-size: 14px; color: var(--black)"> </i>
+      </router-link>
     </div>
   </div>
 </template>
@@ -46,7 +55,7 @@ const card = {
     edit: 'https://picsum.photos/200/301',
   },
   content:
-    '일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
 };
 </script>
 
@@ -59,12 +68,17 @@ const card = {
   margin-top: 30px;
   margin-bottom: 30px;
 }
+.user-profile {
+  display: flex;
+  margin-left: 10px;
+  gap: 5px;
+  align-items: center;
+}
 .profile-image {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   object-fit: cover;
-  border-radius: 50px;
-  margin-left: 20px;
+  border-radius: 30px;
 }
 
 /* 태그 */
@@ -72,16 +86,15 @@ const card = {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 0 20px;
+  padding: 0 10px;
 }
 .tag {
-  padding: 0 20px;
-  padding-top: 3px;
-  height: 30px;
-  border: 1px solid black;
+  padding: 0 14px;
+  line-height: 27px;
+  height: 27px;
 
-  background-color: var(--black);
-  color: var(--light-main-color);
+  background-color: #e7d7e9;
+  /* color: var(--light-main-color); */
   border-radius: 30px;
 }
 .card-image {
@@ -89,12 +102,23 @@ const card = {
   object-fit: cover;
 }
 .card-content {
-  padding: 0 20px;
+  padding: 0 10px;
+  text-align: start;
+  word-break: break-all;
+}
+.like-bookmark-chat {
+  display: flex;
+  width: calc(100% - 20px);
+  justify-content: space-between;
+  margin-left: 10px;
 }
 .like-bookmark {
-  width: 100%;
   display: flex;
-  justify-content: flex-end;
-  gap: 5px;
+  font-size: 14px;
+}
+.herat-wrap {
+  display: flex;
+  gap: 3px;
+  margin-right: 5px;
 }
 </style>

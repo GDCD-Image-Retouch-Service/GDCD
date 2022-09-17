@@ -1,5 +1,5 @@
 <template>
-  <div class="community-detail outer">
+  <div class="community-detail">
     <community-detailHeader />
   </div>
 </template>
@@ -7,16 +7,15 @@
 <script setup>
 import CommunityDetailHeader from '@/components/organisms/CommunityDetailHeader.vue';
 
-// ES6 Modules or TypeScript
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 
-Swal.fire({
-  title: 'Error!',
-  text: 'Do you want to continue',
-  icon: 'error',
+// Swal.fire({
+//   title: 'Error!',
+//   text: 'Do you want to continue',
+//   icon: 'error',
 
-  confirmButtonText: 'Cool',
-});
+//   confirmButtonText: 'Cool',
+// });
 </script>
 
 <style scoped>
@@ -26,5 +25,7 @@ Swal.fire({
   /* border: 1px solid #9A9A9A; */
   margin-top: 30px;
   margin-bottom: 80px;
+  box-shadow: 0 4px 4px -4px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.12);
 }
 </style>

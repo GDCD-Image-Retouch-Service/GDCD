@@ -4,7 +4,7 @@
     @click="moveCrousel()"
     :style="{ transform: carouselValue }"
   >
-    <img :src="orginImage" alt="" class="card-image" />
+    <img :src="originImage" alt="" class="card-image" />
     <img :src="editImage" alt="" class="card-image" />
   </div>
 </template>
@@ -13,12 +13,12 @@
 import { defineProps, ref, toRefs } from 'vue';
 
 const props = defineProps({
-  orginImage: Text,
+  originImage: Text,
   editImage: Text,
 });
 
 // 이 줄 추가해야 안정적임
-const { orginImage, editImage } = toRefs(props);
+const { originImage, editImage } = toRefs(props);
 
 let carouselValue = ref('translateX(0)');
 
