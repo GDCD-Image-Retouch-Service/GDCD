@@ -73,7 +73,7 @@ export default {
       const masonryContainerStyle = getComputedStyle(masonryContainer);
 
       const containerWidth = parseInt(
-        masonryContainerStyle.getPropertyValue('width')
+        masonryContainerStyle.getPropertyValue('width'),
       );
 
       if (containerWidth > 1440) {
@@ -89,16 +89,16 @@ export default {
       }
 
       const columnGap = parseInt(
-        masonryContainerStyle.getPropertyValue('column-gap')
+        masonryContainerStyle.getPropertyValue('column-gap'),
       );
       const autoRows = parseInt(
-        masonryContainerStyle.getPropertyValue('grid-auto-rows')
+        masonryContainerStyle.getPropertyValue('grid-auto-rows'),
       );
 
       document.querySelectorAll('.masonry-content').forEach((el) => {
         el.style.gridRowEnd = `span ${Math.ceil(
           el.querySelector('.masonry-item').scrollHeight / autoRows +
-            columnGap / autoRows
+            columnGap / autoRows,
         )}`;
       });
     }

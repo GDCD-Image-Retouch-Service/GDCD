@@ -1,66 +1,63 @@
 <template>
   <div class="profile-header">
-    <div class="profile-header-section">
-      <!-- 유저 정보 -->
-      <div class="profile-header-userinfo">
-        <img
-          :src="userStore.currentUser.profileImage"
-          alt=""
-          class="profile-image"
-        />
-      </div>
-
-      <!-- 유저의 게시물, 좋아요, 북마크, 친구 -->
-      <div class="profile-header-subinfo">
-        <!-- 게시물 -->
-        <div
-          class="profile-header-subinfo-item"
-          :class="{ active: userStore.isItemActive === 0 }"
-          @click="clickProfileHeaderItem(0)"
-        >
-          게시물
-          <div>
-            {{ userStore.currentUser.posts.length }}
-          </div>
-        </div>
-        <!-- 좋아요 -->
-        <div
-          class="profile-header-subinfo-item"
-          :class="{ active: userStore.isItemActive === 1 }"
-          @click="clickProfileHeaderItem(1)"
-        >
-          좋아요
-          <div>
-            {{ userStore.currentUser.likes.length }}
-          </div>
-        </div>
-        <!-- 북마크 -->
-        <div
-          class="profile-header-subinfo-item"
-          :class="{ active: userStore.isItemActive === 2 }"
-          @click="clickProfileHeaderItem(2)"
-        >
-          북마크
-          <div>
-            {{ userStore.currentUser.bookmarks.length }}
-          </div>
-        </div>
-        <!-- 친구 -->
-        <!-- <div class="profile-header-subinfo-item" 
-        @click="clickProfileHeaderItem(3)">
-          친구
-          <div>
-            
-          </div>
-        </div> -->
-        <router-link to="/profile/friends" class="profile-header-subinfo-item">
-          친구
-          <div></div>
-        </router-link>
+    <!-- 유저 정보 -->
+    <div class="profile-header-userinfo">
+      <img
+        :src="userStore.currentUser.profileImage"
+        alt=""
+        class="profile-image"
+      />
+      <div class="profile-header-username">
+        {{ userStore.currentUser.username }}
       </div>
     </div>
-    <div class="profile-header-username">
-      {{ userStore.currentUser.username }}
+
+    <!-- 유저의 게시물, 좋아요, 북마크, 친구 -->
+    <div class="profile-header-subinfo">
+      <!-- 게시물 -->
+
+      <router-link
+        to="/profile"
+        class="profile-header-subinfo-item"
+        :class="{ active: userStore.isItemActive === 0 }"
+        @click="clickProfileHeaderItem(0)"
+      >
+        게시물
+        <div class="profile-header-subinfo-item-count">
+          {{ userStore.currentUser.posts.length }}
+        </div>
+      </router-link>
+      <!-- 좋아요 -->
+      <div
+        class="profile-header-subinfo-item"
+        :class="{ active: userStore.isItemActive === 1 }"
+        @click="clickProfileHeaderItem(1)"
+      >
+        좋아요
+        <div class="profile-header-subinfo-item-count">
+          {{ userStore.currentUser.likes.length }}
+        </div>
+      </div>
+      <!-- 북마크 -->
+      <div
+        class="profile-header-subinfo-item"
+        :class="{ active: userStore.isItemActive === 2 }"
+        @click="clickProfileHeaderItem(2)"
+      >
+        북마크
+        <div class="profile-header-subinfo-item-count">
+          {{ userStore.currentUser.bookmarks.length }}
+        </div>
+      </div>
+
+      <router-link
+        to="/profile/friends"
+        class="profile-header-subinfo-item"
+        :class="{ active: userStore.isItemActive === 3 }"
+        @click="clickProfileHeaderItem(3)"
+      >
+        친구
+      </router-link>
     </div>
   </div>
 </template>
@@ -84,39 +81,50 @@ const clickProfileHeaderItem = (num) => {
   font-weight: 700;
 }
 .profile-header {
-  width: 100%;
+  width: calc(100% - 40px);
   padding-bottom: 30px;
-  border-bottom: 1px solid black;
-}
-.profile-header-section {
-  width: 100%;
+  border-bottom: 1px solid var(--instagram-grey);
+  text-align: center;
+
   display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  gap: 20px;
 }
 .profile-header-userinfo {
-  position: relative;
-  width: 30%;
-  padding-bottom: 30%;
+  width: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 .profile-header-subinfo {
-  width: 70%;
+  width: calc(100% - 100px);
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 .profile-image {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 80px;
+  height: 80px;
   border-radius: 70%;
   object-fit: cover;
-  top: 0;
-  left: 0;
 }
 .profile-header-username {
-  width: 30%;
-  margin-right: 70%;
+  width: 90px;
+  text-align: center;
+  font-size: 16px;
+  color: var(--instagram-dark-grey);
+  font-weight: 700;
+}
+.profile-header-subinfo-item {
+  color: var(--instagram-dark-grey);
+  text-decoration: none;
+  font-size: 14px;
 }
 .profile-header-subinfo-item:hover {
   cursor: pointer;
+}
+.profile-header-subinfo-item-count {
+  color: var(--black);
 }
 </style>

@@ -1,36 +1,32 @@
 <template>
-  <div class="post-card outer">
-    <!-- post card header -->
-    <div
-      class="d-flex align-items-center justify-content-start"
-      style="width: 100%; height: 40px"
-    >
-      <b-avatar
-        variant="info"
-        size="2em"
-        src="https://placekitten.com/300/300"
-        style="margin-left: 8px"
-      ></b-avatar>
-      <div style="margin-left: 8px">성덕</div>
-      <div class="flex-grow-1"></div>
-      <i class="bi bi-three-dots" style="margin-right: 8px"></i>
-    </div>
+  <div
+    class="post-card"
+    @click="$router.push({ name: 'CommunityDetail', params: { postId: 1 } })"
+  >
+    <i class="bi bi-three-dots dot-icon" style="margin-right: 8px"></i>
 
     <!-- post card image -->
     <b-img :src="`${url}`" fluid-grow alt="Responsive image"></b-img>
 
-    <div
-      class="d-flex align-items-center justify-content-end"
-      style="margin-left: 8px; margin-right: 8px; font-size: 14pt; height: 32px"
-    >
-      <i class="bi bi-heart"></i>
-      <div style="margin-left: 8px">0</div>
-      <div class="flex-grow-1"></div>
-      <i class="bi bi-bookmark"></i>
+    <!-- post card -title -->
+    <div class="post-card-title">
+      게시글 제목게시글 제목게시글 제목게시글 제목게시글 제목게시글 제목게시글
+      제목게시글 제목게시글 제목게시글 제목
     </div>
 
-    <div>
-      <div>게시글 제목</div>
+    <!-- post card userprofile -->
+    <div class="post-car-userinfo">
+      <img src="@/assets/sdprofile.png" class="profile-image" alt="" />
+      <div style="margin-left: 8px">성덕</div>
+    </div>
+
+    <!-- post card like and bookmark -->
+    <div class="like-bookmark">
+      <div class="herat-wrap">
+        <i class="bi bi-heart"></i>
+        <div>0</div>
+      </div>
+      <i class="bi bi-bookmark"></i>
     </div>
 
     <div
@@ -56,7 +52,10 @@
 import { defineProps, toRefs } from 'vue';
 
 const props = defineProps({
-  url: String,
+  url: {
+    type: String,
+    default: `require(@/assets/logo.png)`,
+  },
 });
 
 const { url } = toRefs(props);
@@ -64,11 +63,59 @@ const { url } = toRefs(props);
 
 <style scoped>
 .post-card {
+  position: relative;
   z-index: 1;
   margin-top: 10px;
   margin-left: 10px;
   width: calc(100% - 20px);
   height: calc(100% - 20px);
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--instagram-dark-grey);
+  padding-bottom: 10px;
+  box-shadow: 0 4px 4px -4px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+.post-card-title {
+  text-align: start;
+  width: calc(100% - 10px);
+  margin-left: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 12px;
+}
+.post-car-userinfo {
+  display: flex;
+  width: calc(100% - 10px);
+  margin-right: 10px;
+  justify-content: flex-end;
+  font-size: 12px;
+  margin-top: 20px;
+}
+.profile-image {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
   border-radius: 20px;
+}
+.dot-icon {
+  position: absolute;
+  right: 0;
+}
+.like-bookmark {
+  display: flex;
+  width: calc(100% - 10px);
+  margin-left: 5px;
+  font-size: 14px;
+  gap: 5px;
+}
+.herat-wrap {
+  display: flex;
+  gap: 3px;
 }
 </style>

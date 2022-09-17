@@ -4,9 +4,7 @@
   </div>
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>
 
 <style scoped>
 #score-receive-button {
@@ -15,7 +13,7 @@
   margin: 0 auto;
   border-radius: 5px;
   background-color: var(--main-color);
-  box-shadow : var(--default-shadow);
+  box-shadow: var(--default-shadow);
 }
 #score-receive-button div {
   margin: 13px 0;
