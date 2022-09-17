@@ -7,7 +7,10 @@ import com.gdcd.back.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -22,14 +25,27 @@ public class PostController extends Controller {
     }
 
     @GetMapping("")
-    public ResponseEntity<Map<String, Object>> postDetails(@RequestParam Long postId) {
+    public ResponseEntity<Map<String, Object>> postDetails(@RequestParam String postId) {
         return getResponseEntity(postService.findPostById(postId));
     }
 
+//    @PostMapping("")
+//    public ResponseEntity<Map<String, Object>> postAdd(@RequestPart("requestDto") PostCreateRequestDto requestDto) {
+//        return getResponseEntity(postService.addPost(requestDto));
+////        return getResponseEntity(images);
+//    }
+
     @PostMapping("")
-    public ResponseEntity<Map<String, Object>> postAdd(@RequestBody PostCreateRequestDto requestDto) {
-        return getResponseEntity(postService.addPost(requestDto));
+    public ResponseEntity<Map<String, Object>> postAdd(@RequestPart("images") List<MultipartFile> images, @RequestPart("requestDto") PostCreateRequestDto requestDto) throws IOException {
+        return getResponseEntity(postService.addPost(images, requestDto));
+//        return getResponseEntity(images);
     }
+
+//    @PostMapping("")
+//    public String postAdd(@RequestPart MultipartFile images, @RequestBody PostCreateRequestDto requestDto) {
+////        return getResponseEntity(postService.addPost(requestDto));
+//        return images.getOriginalFilename();
+//    }
 
     @PutMapping("")
     public ResponseEntity<Map<String, Object>> postModify(@RequestBody PostUpdateRequestDto requestDto) {
@@ -37,12 +53,12 @@ public class PostController extends Controller {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Map<String, Object>> postDelete(@RequestParam Long postId) {
+    public ResponseEntity<Map<String, Object>> postDelete(@RequestParam String postId) {
         return getResponseEntity(postService.removePost(postId));
     }
 
     @GetMapping("/like")
-    public ResponseEntity<Map<String, Object>> postLikeSave(@RequestParam Long postId) {
+    public ResponseEntity<Map<String, Object>> postLikeSave(@RequestParam String postId) {
         return getResponseEntity(postService.likePost(postId));
     }
 
