@@ -7,16 +7,15 @@
 <script setup>
 import CommunityDetailHeader from '@/components/organisms/CommunityDetailHeader.vue';
 
-// ES6 Modules or TypeScript
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 
-Swal.fire({
-  title: 'Error!',
-  text: 'Do you want to continue',
-  icon: 'error',
+// Swal.fire({
+//   title: 'Error!',
+//   text: 'Do you want to continue',
+//   icon: 'error',
 
-  confirmButtonText: 'Cool',
-});
+//   confirmButtonText: 'Cool',
+// });
 </script>
 
 <style scoped>

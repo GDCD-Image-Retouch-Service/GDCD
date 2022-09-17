@@ -3,7 +3,6 @@
     <!-- 프로필 -->
     <div class="user-profile">
       <img :src="card.profileImage" alt="" class="profile-image" />
-
       {{ card.username }}
     </div>
 
@@ -24,11 +23,19 @@
       {{ card.content }}
     </div>
 
-    <!-- 좋아요 북마크 -->
+    <!-- 채팅 좋아요 북마크 -->
     <div class="like-bookmark">
       <i class="bi bi-heart"></i>
       <div>0</div>
-      <i class="bi bi-bookmark" style="margin-right: 20px"></i>
+      <i class="bi bi-bookmark"></i>
+      <router-link
+        :to="{ name: 'CommunityDetailChatting', parmas: { postId: 1 } }"
+      >
+        <i
+          class="bi bi-chat"
+          style="margin-right: 20px; color: var(--black)"
+        ></i>
+      </router-link>
     </div>
   </div>
 </template>
