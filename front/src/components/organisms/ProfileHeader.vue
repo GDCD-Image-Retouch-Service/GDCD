@@ -23,7 +23,7 @@
         @click="clickProfileHeaderItem(0)"
       >
         게시물
-        <div>
+        <div class="profile-header-subinfo-item-count">
           {{ userStore.currentUser.posts.length }}
         </div>
       </router-link>
@@ -34,7 +34,7 @@
         @click="clickProfileHeaderItem(1)"
       >
         좋아요
-        <div>
+        <div class="profile-header-subinfo-item-count">
           {{ userStore.currentUser.likes.length }}
         </div>
       </div>
@@ -45,7 +45,7 @@
         @click="clickProfileHeaderItem(2)"
       >
         북마크
-        <div>
+        <div class="profile-header-subinfo-item-count">
           {{ userStore.currentUser.bookmarks.length }}
         </div>
       </div>
@@ -53,6 +53,7 @@
       <router-link
         to="/profile/friends"
         class="profile-header-subinfo-item"
+        :class="{ active: userStore.isItemActive === 3 }"
         @click="clickProfileHeaderItem(3)"
       >
         친구
@@ -80,19 +81,26 @@ const clickProfileHeaderItem = (num) => {
   font-weight: 700;
 }
 .profile-header {
-  width: 100%;
+  width: calc(100% - 40px);
   padding-bottom: 30px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--instagram-grey);
+  text-align: center;
 
   display: flex;
-  justify-content: center;
-
+  justify-content: space-between;
   margin-top: 30px;
+  gap: 20px;
+}
+.profile-header-userinfo {
+  width: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 .profile-header-subinfo {
-  width: 70%;
+  width: calc(100% - 100px);
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 .profile-image {
@@ -102,15 +110,21 @@ const clickProfileHeaderItem = (num) => {
   object-fit: cover;
 }
 .profile-header-username {
-  width: 80px;
+  width: 90px;
   text-align: center;
-  font-size: 12px;
+  font-size: 16px;
+  color: var(--instagram-dark-grey);
+  font-weight: 700;
 }
 .profile-header-subinfo-item {
-  color: var(--dark-main-color);
+  color: var(--instagram-dark-grey);
   text-decoration: none;
+  font-size: 14px;
 }
 .profile-header-subinfo-item:hover {
   cursor: pointer;
+}
+.profile-header-subinfo-item-count {
+  color: var(--black);
 }
 </style>

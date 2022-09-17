@@ -49,6 +49,7 @@ const basicStore = useBasicStore();
   display: flex;
   margin: 0 auto;
   justify-content: space-around;
+  align-items: center;
 }
 .footer-nav-wrap a {
   color: var(--dark-main-color);

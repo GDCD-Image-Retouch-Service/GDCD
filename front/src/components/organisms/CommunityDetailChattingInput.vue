@@ -32,22 +32,28 @@ const { chat } = toRefs(props);
   display: flex;
   gap: 10px;
   align-items: center;
+  background-color: var(--light-sub-color);
 }
 .profile-image {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   object-fit: cover;
   border-radius: 50px;
   margin-left: 20px;
 }
 .chatting-input {
-  width: calc(100% - 150px);
-  height: 40px;
+  width: calc(100% - 120px);
+  height: 35px;
   border: none;
-  padding: 0 5px;
+  padding: 0 7px;
   border-radius: 10px;
+  font-size: 12px;
+
+  line-height: 35px;
 }
 .chatting-button {
-  width: 40px;
+  width: 30px;
+  color: var(--instagram-dark-grey);
+  font-size: 12px;
 }
 </style>

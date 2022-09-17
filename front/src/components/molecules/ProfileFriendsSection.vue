@@ -52,7 +52,7 @@ const userStore = useUserStore();
 
 <style scoped>
 .profile-friends-section {
-  width: 80%;
+  width: calc(100% - 40px);
 }
 .profile-friends-item {
   display: flex;
@@ -62,17 +62,17 @@ const userStore = useUserStore();
   align-items: center;
 }
 .profile-image {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   object-fit: cover;
   border-radius: 50px;
-  margin-right: 10px;
+  margin-right: 5px;
 }
 .following-unfollow-button,
 .follower-delete-button {
   border: none;
   width: 70px;
-  height: 35px;
+  height: 30px;
   border-radius: 7px;
 }
 .following {

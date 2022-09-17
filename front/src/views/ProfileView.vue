@@ -1,5 +1,8 @@
 <template>
-  <div class="profile-view d-flex flex-column align-items-center main">
+  <div
+    class="profile-view d-flex flex-column align-items-center main"
+    style="padding-bottom: calc(var(--size-h-footer))"
+  >
     <profile-header />
     <router-view />
   </div>
