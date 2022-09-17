@@ -15,15 +15,31 @@ warnings.filterwarnings(action='ignore')
 
 
 def work(args):
+    if args.type == "aesthetic":
+        label_path = "./labels/ava_labels_test.json" if args.test else "./labels/ava_labels_train.json"
+        images = "./dataset/AVA-dataset/images"
+        image_type = "jpg"
+    else:
+        label_path = "./labels/tid_labels_test.json" if args.test else "./labels/tid_labels_train.json"
+        images = "./dataset/TID2013/distorted_images"
+        image_type = "bmp"
+    
+    if args.base == "InceptionV3":
+        size = 342
+        crop = 299
+    else:
+        size = 232
+        crop = 224
+
     # load Dataset
-    labels = json.load(open(args.labels, "r"))
+    labels = json.load(open(label_path, "r"))
     transform = transforms.Compose([
-        transforms.Resize(342),
-        transforms.RandomCrop(299),
+        transforms.Resize(size),
+        transforms.CenterCrop(crop),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406],
                              std=[0.229, 0.224, 0.225])])
-    dataset = AVADataset(labels, args.images, "jpg", transform)
+    dataset = AVADataset(labels, images, image_type, transform)
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=64,
                                              shuffle=True, num_workers=8)
 
@@ -35,6 +51,7 @@ def work(args):
     scores = []
     ids = []
     losses = []
+    grounds = []
     for batch in tqdm(dataloader):
         inputs = batch['image'].to(device)
         labels = batch['label']
@@ -44,8 +61,10 @@ def work(args):
         ids.extend([id for id in batch['image_id']])
         losses.extend([single_emd_loss(torch.tensor(out), label).item()
                       for out, label in zip(outputs, labels)])
-    result = {"ids": ids, "scores": scores, "losses": losses}
-    with open(f"{args.save}.json", "w") as f:
+        grounds.extend([calc_mean_score(label.numpy()) for label in labels])
+    result = {"ids": ids, "scores": scores, "losses": losses, "grounds": grounds}
+    save = "test" if args.test else "train"
+    with open(f"{args.type}_{args.base}_{save}.json", "w") as f:
         json.dump(result, f)
 
 
@@ -54,9 +73,9 @@ if __name__ == "__main__":
 
     # model configurations
     parser.add_argument("--model", type=str)
-    parser.add_argument("--labels", type=str)
-    parser.add_argument("--images", type=str)
-    parser.add_argument("--save", type=str)
+    parser.add_argument("--base", type=str)
+    parser.add_argument("--type", type=str)
+    parser.add_argument("--test", type=bool)
     args = parser.parse_args()
 
     work(args)

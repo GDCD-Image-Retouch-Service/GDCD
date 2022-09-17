@@ -23,8 +23,8 @@ class Nima(nn.Module):
             self.base_module = models.resnet152(
                 weights=models.ResNet152_Weights)
             self.base_module.fc = nn.Sequential(
-                nn.Linear(512 * models.resnet.Bottleneck.expansion, 10),
                 nn.Dropout(p=self.dropout_rate),
+                nn.Linear(512 * models.resnet.Bottleneck.expansion, 10),
                 nn.Softmax(dim=-1)
             )
 
