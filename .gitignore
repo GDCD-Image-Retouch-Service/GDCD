@@ -8,6 +8,7 @@ Servers
 # Local env files
 .env.local
 .env.*.local
+*.local
 
 # Log files
 npm-debug.log*
