@@ -2,8 +2,10 @@
 node_modules
 /dist
 
+# Local back-end run
+Servers
 
-# local env files
+# Local env files
 .env.local
 .env.*.local
 
@@ -24,3 +26,4 @@ pnpm-debug.log*
 
 # local test files
 *.local
+/.metadata/
