@@ -10,8 +10,10 @@ export default {};
 
 <style scoped>
 .icon-camera {
+  z-index: 4;
   height: var(--size-h-header);
+  line-height: var(--size-h-header);
+  font-size: 20pt;
   width: 50%;
-  background: red;
 }
 </style>

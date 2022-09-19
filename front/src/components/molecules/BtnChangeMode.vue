@@ -3,12 +3,14 @@
     class="btn-change-mode inner d-flex align-items-center justify-content-center"
     @click="changeMode()"
   >
+    <btn-slider />
     <icon-camera />
     <icon-picture />
   </div>
 </template>
 
 <script setup>
+import BtnSlider from '@/components/atoms/BtnSlider.vue';
 import IconCamera from '@/components/atoms/IconCamera.vue';
 import IconPicture from '@/components/atoms/IconPicture.vue';
 
@@ -22,10 +24,12 @@ const changeMode = () => {
 
 <style scoped>
 .btn-change-mode {
+  position: relative;
+  overflow: hidden;
   height: var(--size-h-header);
   width: 90%;
   max-width: 380px;
-  /* background: var(--theme-color); */
+  background: var(--theme-color);
   font-size: 12pt;
   border-radius: calc(var(--size-h-header) / 2);
 }
