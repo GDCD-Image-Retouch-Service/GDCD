@@ -21,9 +21,11 @@ export default {
 <style>
 :root {
   /* 비율 */
+  --size-h-spacer: 20px;
   --size-h-header: 40px;
   --size-h-footer: 40px;
   --size-w-footer: 400px;
+  --size-radius: 20px;
 
   /* 색상 */
   --theme-color: #ffe49c;
@@ -78,7 +80,7 @@ export default {
 }
 
 .spacer {
-  height: 24px;
+  height: var(--size-h-spacer);
 }
 
 a {

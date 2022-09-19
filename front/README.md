@@ -30,7 +30,7 @@
 
 - [Bootstrap](https://getbootstrap.com/)
 
-- [Bootstrap-icon](https://www.npmjs.com/package/bootstrap-icons)
+- [Bootstrap-icon](https://icons.getbootstrap.com/)
 
 - [BootstrapVue 3](https://cdmoro.github.io/bootstrap-vue-3/)
 

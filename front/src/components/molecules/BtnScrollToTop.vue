@@ -14,7 +14,7 @@ const scrollToTop = () => {
 };
 </script>
 
-<style>
+<style scoped>
 .btn-scroll-to-top {
   position: fixed;
   right: 10px;
@@ -22,7 +22,7 @@ const scrollToTop = () => {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: #e62739;
+  background: var(--theme-color);
   color: white;
   font-size: 12pt;
 }

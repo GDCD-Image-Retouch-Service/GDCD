@@ -1,14 +1,25 @@
 <template>
-  <div>
+  <div
+    class="main-upload d-flex flex-column align-items-center justify-content-center"
+  >
+    <div class="spacer" />
+    <btn-change-mode />
+
     <input type="file" accept="image/*;capture=camera" />
     <button @click="takePicture">사진 찍는 버튼</button>
     <video @canplay="initCanvas" ref="video">Stream unavailable</video>
+    <div class="spacer" />
+    <btn-score-receive />
+    <div class="spacer" />
+
     <canvas ref="canvas" style="display: none"></canvas>
     <img :src="imageSrc" />
   </div>
 </template>
 
 <script setup>
+import BtnChangeMode from '@/components/molecules/BtnChangeMode.vue';
+import BtnScoreReceive from '@/components/molecules/BtnScoreReceive.vue';
 import { onMounted, ref } from 'vue';
 
 const video = ref(null);
