@@ -9,7 +9,7 @@
       <input type="file" accept="image/*;capture=camera" />
       <button @click="takePicture">사진 찍는 버튼</button>
     </div>
-    <video @canplay="initCanvas" ref="video">Stream unavailable</video>
+    <!-- <video @canplay="initCanvas" ref="video">Stream unavailable</video> -->
     <div class="spacer" />
     <btn-score-receive />
     <div class="spacer" />
@@ -52,10 +52,10 @@ const takePicture = () => {
   imageSrc.value = canvas.value.toDataURL('image/png');
 };
 
-const initCanvas = () => {
-  canvas.value.setAttribute('width', video.value.videoWidth);
-  canvas.value.setAttribute('height', video.value.videoHeight);
-};
+// const initCanvas = () => {
+//   canvas.value.setAttribute('width', video.value.videoWidth);
+//   canvas.value.setAttribute('height', video.value.videoHeight);
+// };
 
 onMounted(() => {
   startCapture();
