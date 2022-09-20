@@ -1,7 +1,6 @@
 package com.gdcd.back.domain.user;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,6 +8,9 @@ import java.util.Date;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "users")
 public class User {
     @Id
