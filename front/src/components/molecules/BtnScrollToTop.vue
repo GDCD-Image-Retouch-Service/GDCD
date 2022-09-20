@@ -8,10 +8,10 @@
 </template>
 
 <script setup>
-const scrollToTop = () => {
-  window.scrollTo({ top: 100000, left: 0, behavior: 'smooth' });
-  console.log('눌림');
-};
+// const scrollToTop = () => {
+//   window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+//   console.log('눌림');
+// };
 </script>
 
 <style scoped>

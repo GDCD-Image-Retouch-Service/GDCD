@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import HeaderNav from '@/components/organisms/HeaderNav.vue';
-import FooterNav from '@/components/organisms/FooterNav.vue';
+import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
+import FooterNav from '@/components/organisms/common/FooterNav.vue';
 
 export default {
   components: {

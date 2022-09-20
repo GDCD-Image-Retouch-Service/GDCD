@@ -1,4 +1,32 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import store from '../stores/user';
+import swal from 'sweetalert2';
+
+// true : 로그인을 해야 이동 가능
+// false : 로그인을 하면 이동 불가능
+const beforeAuth = (needAuth) => async (from, to, next) => {
+  // 로그인 기능 구현시 이 코드를 변경할 것
+  const isLogined = false;
+  if (needAuth && !isLogined) {
+    if (from.path.includes('studyroom')) {
+      // save last room info for using after login
+      store.commit('SET_NEXT_ROOM', from.path);
+    }
+
+    // 로그인 필요한 서비스
+    await swal.fire({
+      icon: 'warning',
+      title: '로그인이 필요한 서비스 입니다',
+      timer: 3000,
+    });
+    next('/account/login');
+    // 로그인 필요하지 않은 서비스
+  } else if (!needAuth && isLogined) {
+    next('/main');
+  } else {
+    next();
+  }
+};
 
 // Main
 import MainView from '@/views/MainView.vue';
@@ -25,6 +53,7 @@ const routes = [
   {
     path: '/', // Landing page
     name: 'main',
+    beforeEnter: beforeAuth(false),
     component: MainView,
     children: [
       {

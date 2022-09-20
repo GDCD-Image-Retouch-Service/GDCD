@@ -5,8 +5,10 @@
     <div class="spacer" />
     <btn-change-mode />
 
-    <input type="file" accept="image/*;capture=camera" />
-    <button @click="takePicture">사진 찍는 버튼</button>
+    <div class="d-flex align-items-center">
+      <input type="file" accept="image/*;capture=camera" />
+      <button @click="takePicture">사진 찍는 버튼</button>
+    </div>
     <video @canplay="initCanvas" ref="video">Stream unavailable</video>
     <div class="spacer" />
     <btn-score-receive />

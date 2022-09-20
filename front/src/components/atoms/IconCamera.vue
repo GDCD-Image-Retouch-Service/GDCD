@@ -1,5 +1,5 @@
 <template>
-  <div class="icon-camera">
+  <div class="icon-camera d-flex align-items-center justify-content-center">
     <i class="bi bi-camera-fill"></i>
   </div>
 </template>
