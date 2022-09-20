@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import HeaderNav from '@/components/organisms/HeaderNav.vue';
-import FooterNav from '@/components/organisms/FooterNav.vue';
+import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
+import FooterNav from '@/components/organisms/common/FooterNav.vue';
 
 export default {
   components: {
@@ -23,9 +23,11 @@ export default {
 
 :root {
   /* 비율 */
+  --size-h-spacer: 20px;
   --size-h-header: 40px;
   --size-h-footer: 50px;
   --size-w-footer: 400px;
+  --size-radius: 20px;
 
   /* 색상 */
   --theme-color: #ffe49c;
@@ -83,7 +85,7 @@ export default {
 }
 
 .spacer {
-  height: 24px;
+  height: var(--size-h-spacer);
 }
 
 a {

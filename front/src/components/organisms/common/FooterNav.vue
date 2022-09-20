@@ -1,5 +1,5 @@
 <template>
-  <!-- <div class="footer-spacer" /> -->
+  <div class="footer-spacer" />
   <nav class="footer-nav">
     <div class="footer-nav-wrap outer">
       <!--  홈 -->
