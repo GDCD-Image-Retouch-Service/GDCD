@@ -2,6 +2,7 @@ package com.gdcd.back.domain.user;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -13,6 +14,9 @@ import java.util.Date;
 @NoArgsConstructor
 @Document(collection = "users")
 public class User {
+    @Transient
+    public static final String USER_SEQUENCE_NAME = "user_sequences";
+
     @Id
     private Long _id;
     private String email;
