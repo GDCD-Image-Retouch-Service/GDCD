@@ -1,5 +1,6 @@
 package com.gdcd.back.config;
 
+import com.gdcd.back.domain.user.UserRepository;
 import com.gdcd.back.service.user.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -24,16 +25,17 @@ public class JwtTokenProvider {
 
     private long tokenValidTime = 300 * 60 * 1000L;
 
-    @Lazy
-    private final UserService userService;
+//    @Lazy
+//    private final UserService userService;
+    private final UserRepository userRepository;
 
     @PostConstruct
     protected void init() {
         SALT = Base64.getEncoder().encodeToString(SALT.getBytes());
     }
 
-    public String createToken(String userId) {
-        Claims claims = Jwts.claims().setSubject(userId);
+    public String createToken(String email) {
+        Claims claims = Jwts.claims().setSubject(email);
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims)
@@ -44,7 +46,8 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) { //response token
-        UserDetails userDetails = userService.findUserForToken(this.getUserPk(token));
+        UserDetails userDetails = (UserDetails) userRepository.findByEmail(this.getUserPk(token))
+                .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
