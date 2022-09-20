@@ -5,6 +5,8 @@ import com.gdcd.back.domain.user.UserRepository;
 import com.gdcd.back.dto.user.request.UserDetailUpdateRequestDto;
 import com.gdcd.back.dto.user.response.UserDetailResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,6 +14,11 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
+    @Override
+    public UserDetails findUserForToken(String email) throws UsernameNotFoundException {
+        return (UserDetails) userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+    }
 
     public Boolean checkNickname(String nickname) {
         return userRepository.findByNickname(nickname).isPresent();

@@ -1,7 +1,9 @@
 <template>
-  <header-nav />
-  <router-view />
-  <footer-nav />
+  <div>
+    <header-nav />
+    <router-view />
+    <footer-nav />
+  </div>
 </template>
 
 <script>
@@ -17,10 +19,12 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap');
+
 :root {
   /* 비율 */
   --size-h-header: 40px;
-  --size-h-footer: 40px;
+  --size-h-footer: 50px;
   --size-w-footer: 400px;
 
   /* 색상 */
@@ -33,6 +37,10 @@ export default {
   --light-main-color: #ffffff;
   --light-sub-color: #f4f4f4;
   --light-reverse-color: #404040;
+
+  --black: #3c3c3a;
+  --instagram-grey: #dbdbdb;
+  --instagram-dark-grey: #828282;
 }
 
 * {
@@ -58,14 +66,15 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  color: #3c3c3a;
+
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 /* 대각선 방향 그림자인데 괜찮아보여서 일단 써봄 */
 .outer {
-  box-shadow: 4px 4px 10px -1px rgba(0, 0, 0, 0.25),
-    -4px -4px 10px -1px rgba(255, 255, 255, 0.25);
+  box-shadow: 4px 4px 10px -1px rgba(0, 0, 0, 0.12),
+    -4px -4px 4px -1px rgba(255, 255, 255, 0.25);
 }
 
 .inner {
@@ -75,5 +84,10 @@ export default {
 
 .spacer {
   height: 24px;
+}
+
+a {
+  color: #404040;
+  text-decoration: none;
 }
 </style>

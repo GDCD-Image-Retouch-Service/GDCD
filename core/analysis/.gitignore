@@ -1,5 +1,5 @@
 # .pt files
-app/models/*
+app/models/*.pt
 
 # __pycache__
 __pycache__

@@ -2,14 +2,14 @@
   <div class="profile-friends-header">
     <div class="profile-friends-header-item">
       <div
-      :class="{ active : userStore.isFriendActive }"
-      @click="userStore.isFriendActive = true"
+        :class="{ active: userStore.isFriendActive }"
+        @click="userStore.isFriendActive = true"
       >
         팔로워
       </div>
       <div
-      :class="{ active : !userStore.isFriendActive }"
-      @click="userStore.isFriendActive = false"
+        :class="{ active: !userStore.isFriendActive }"
+        @click="userStore.isFriendActive = false"
       >
         팔로잉
       </div>
@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { useUserStore } from '@/stores/user.js'
+import { useUserStore } from '@/stores/user.js';
 
 const userStore = useUserStore();
 </script>

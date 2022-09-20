@@ -22,28 +22,6 @@ def save_json(data, target_file):
         json.dump(data, f, indent=2, sort_keys=True)
 
 
-# image preprocessing
-def random_crop(img, crop_dims):
-    h, w = img.shape[0], img.shape[1]
-    ch, cw = crop_dims[0], crop_dims[1]
-    assert h >= ch, 'image height is less than crop height'
-    assert w >= cw, 'image width is less than crop width'
-    x = np.random.randint(0, w - cw + 1)
-    y = np.random.randint(0, h - ch + 1)
-    return img[y:(y+ch), x:(x+cw), :]
-
-
-def random_horizontal_flip(img):
-    assert len(
-        img.shape) == 3, 'input tensor must have 3 dimensions (height, width, channels)'
-    assert img.shape[2] == 3, 'image not in channels last format'
-    if np.random.random() < 0.5:
-        img = img.swapaxes(1, 0)
-        img = img[::-1, ...]
-        img = img.swapaxes(0, 1)
-    return img
-
-
 def normalize_labels(labels):
     labels_np = np.array(labels)
     return labels_np / labels_np.sum()
