@@ -53,11 +53,12 @@ const routes = [
   {
     path: '/', // Landing page
     name: 'main',
+    redirect: '/main',
     beforeEnter: beforeAuth(false),
     component: MainView,
     children: [
       {
-        path: '', // default page
+        path: 'main', // default page
         name: 'MainUpload',
         component: MainUpload,
       },

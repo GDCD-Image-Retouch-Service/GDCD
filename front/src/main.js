@@ -1,4 +1,4 @@
-import { createApp, prototype } from 'vue';
+import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 
@@ -11,20 +11,9 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 // pinia
 import { createPinia } from 'pinia';
 
-// Vue.prototype.$scrollToTop = () => {
-//   window.scrollTo(0, 0);
-// };
-
 createApp(App)
   .use(createPinia())
   .use(router)
   .use(BootstrapVue3)
   .use(BToastPlugin)
   .mount('#app');
-
-prototype.$scrollToTop = () => {
-  window.scrollTo(0, 0);
-};
-// app.provide('$scrollToTop', () => {
-//   console.log('클릭');
-// });

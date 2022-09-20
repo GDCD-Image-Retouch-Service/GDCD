@@ -6,7 +6,11 @@
 
 <script setup>
 import CommunityDetailHeader from '@/components/organisms/CommunityDetailHeader.vue';
+import { onMounted } from 'vue';
 
+onMounted(() => {
+  window.scrollTo(0, 0);
+});
 // import Swal from 'sweetalert2';
 
 // Swal.fire({
