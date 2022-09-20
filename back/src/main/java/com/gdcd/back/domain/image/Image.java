@@ -20,7 +20,7 @@ public class Image {
 
     @Id
     private Long _id;
-    private String userId;
+    private Long userId;
     private String imgUrl;
     private int rank;
     private LocalDateTime registDate;

@@ -48,7 +48,7 @@ public class PostServiceImpl implements PostService{
         }
         return list;
     }
-    public PostDetailResponseDto findPostById(String postId){
+    public PostDetailResponseDto findPostById(Long postId){
         Post post = findPost(postId);
         if (validPost(post)){
             return new PostDetailResponseDto(post,list(post)); // list(post)
@@ -112,7 +112,7 @@ public class PostServiceImpl implements PostService{
         }
     }
 
-    public String removePost(String postId){
+    public String removePost(Long postId){
         Post post = findPost(postId);
         if (validPost(post)){
             post.setValidation(false);
@@ -127,7 +127,7 @@ public class PostServiceImpl implements PostService{
         return requestDto;
     }
 
-    public String likePost(String postId){
+    public Long likePost(Long postId){
         Post post = findPost(postId);
         // likes Document 만들어야 함 (user 구현 후)
         if (validPost(post)){
@@ -140,7 +140,7 @@ public class PostServiceImpl implements PostService{
             //postRepository.save(post);
             return postId;
         }else {
-            return (postId + "번은(는) 존재하지 않는 게시글입니다.");
+            return null;
         }
     }
 
@@ -152,12 +152,12 @@ public class PostServiceImpl implements PostService{
         return userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException(userId + "은(는) 존재하지 않는 유저입니다."));
     }
-    private Post findPost(String postId) {
+    private Post findPost(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException(postId + "번은(는) 존재하지 않는 게시글입니다."));
     }
 
-    private Image findImage(String imageId) {
+    private Image findImage(Long imageId) {
         return imageRepository.findById(imageId)
                 .orElseThrow(() -> new IllegalArgumentException(imageId + "번은(는) 존재하지 않는 게시글입니다."));
     }
