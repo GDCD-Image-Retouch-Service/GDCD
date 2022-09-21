@@ -37,9 +37,15 @@ public class ImageController extends Controller {
 
     @GetMapping(value="/list")
 //    @ResponseBody
-    public ResponseEntity<Map<String, Object>> imageList(@RequestParam Long userId) throws IOException {
-        return getResponseEntity(imageService.findImageList(userId));
+    public ResponseEntity<Map<String, Object>> imageList(@RequestHeader String token) throws Exception {
+        return getResponseEntity(imageService.findImageList(token));
     }
+//    @GetMapping(value="/list")
+//    //    @ResponseBody
+//    public ResponseEntity<Map<String, Object>> imageList(@RequestParam Long userId) throws Exception {
+//        return getResponseEntity(imageService.findImageList(userId));
+//    }
+
 //    @GetMapping(value="/list", produces = List<MediaType.IMAGE_JPEG_VALUE>)
 //    public ResponseEntity<List<String>> imageList(@RequestParam Long userId) throws IOException {
 //        return new ResponseEntity<List<String>>(imageService.findImageList(userId), HttpStatus.OK);

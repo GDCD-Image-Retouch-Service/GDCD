@@ -27,10 +27,12 @@ public class ImageServiceImpl implements ImageService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-    //    String ROOT = "./data/images/";
-    //    String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
-    String ROOT = "C:\\test\\images\\";
-    String ADDRESS = "http://localhost:8081/api/image?imageId=";
+        String ROOT = "./data/images/";
+        String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
+
+    //    Local에서 진행할 폴더
+    //    String ROOT = "C:\\test\\images\\";
+    //    String ADDRESS = "http://localhost:8081/api/image?imageId=";
     public Long addImage(String token, MultipartFile image) throws Exception {
         ImageCreateRequestDto requestDto = new ImageCreateRequestDto();
         User user = findUserByEmail(decodeToken(token));
@@ -72,18 +74,29 @@ public class ImageServiceImpl implements ImageService {
     }
 
 
-    public List<ImageDetailResponseDto> findImageList(Long userId) throws IOException{
+    public List<ImageDetailResponseDto> findImageList(String token) throws Exception{
         List<Image> imageList;
-        imageList = imageRepository.findAllByUserId(userId);
+        User user = findUserByEmail(decodeToken(token));
+        imageList = imageRepository.findAllByUserId(user.getId());
 
         List<ImageDetailResponseDto> images = new ArrayList<>();
         for (Image image : imageList){
-            String url = ADDRESS + image.get_id().toString();
-            images.add(new ImageDetailResponseDto(url, image.get_id()));
+            String url = ADDRESS + image.getId().toString();
+            images.add(new ImageDetailResponseDto(url, image.getId()));
         }
         return images;
     }
-
+//    public List<ImageDetailResponseDto> findImageList(Long userId) throws Exception{
+//        List<Image> imageList;
+//        imageList = imageRepository.findAllByUserId(userId);
+//
+//        List<ImageDetailResponseDto> images = new ArrayList<>();
+//        for (Image image : imageList){
+//            String url = ADDRESS + image.getId().toString();
+//            images.add(new ImageDetailResponseDto(url, image.getId()));
+//        }
+//        return images;
+//    }
 
     private Image findImage(Long imageId) {
         return imageRepository.findById(imageId)
