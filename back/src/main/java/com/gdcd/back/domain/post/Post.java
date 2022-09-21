@@ -25,18 +25,28 @@ public class Post {
     public static final String POST_SEQUENCE_NAME = "post_sequences";
 
     @Id
-    private Long _id;
+    @Field(name = "_id")
+    private Long id;
+    @Field(name = "writer_no")
     private Long writerNo;
     private String title;
     private String content;
+    @Field(name = "privacy_bound")
     private Long privacyBound;
+    @Field(name = "regist_time")
     private LocalDateTime registTime;
+    @Field(name = "update_time")
     private LocalDateTime updateTime;
+    @Field(name = "delete_time")
     private LocalDateTime deleteTime;
     private Boolean validation;
+    @Field(name = "report_count")
     private Integer reportCount;
+    @Field(name = "writer_nickname")
     private String writerNickname;
+    @Field(name = "writer_profile")
     private String writerProfile;
+    @Field(name = "like_count")
     private Integer likeCount;
     private String representative;
     private List<String> tag;
