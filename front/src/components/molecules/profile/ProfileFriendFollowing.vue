@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import DeleteButton from '@/components/molecules/common/btn/BtnDeleteButton.vue';
+import DeleteButton from '@/components/molecules/common/btn/BtnDelete.vue';
 import { useUserStore } from '@/stores/user.js';
 
 const userStore = useUserStore();

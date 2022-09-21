@@ -94,11 +94,11 @@ body::-webkit-scrollbar {
   /* background-color: #e654d2; */
 }
 
-@media (min-width: 820px) {
+/* @media (min-width: 820px) {
   :root {
     --grid-side: 484px;
   }
-}
+} */
 
 /* 대각선 방향 그림자인데 괜찮아보여서 일단 써봄 */
 .outer {

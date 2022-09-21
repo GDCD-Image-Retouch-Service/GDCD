@@ -17,6 +17,7 @@
         class="masonry-content"
       >
         <div class="masonry-item">
+          <div style="margin-left: 20px"></div>
           <post-card :url="widgetNum" />
         </div>
       </div>
@@ -82,10 +83,12 @@ export default {
         masonryContainer.style.gridTemplateColumns = `repeat(4, calc((${containerWidth}px - 20px) / 4))`;
       } else if (containerWidth > 560) {
         masonryContainer.style.gridTemplateColumns = `repeat(3, calc((${containerWidth}px - 20px) / 3))`;
-      } else if (containerWidth > 380) {
+      } else {
         masonryContainer.style.gridTemplateColumns = `repeat(2, calc((${containerWidth}px - 20px) / 2))`;
       }
-      // else {
+      // } else if (containerWidth > 380) {
+      //   masonryContainer.style.gridTemplateColumns = `repeat(2, calc((${containerWidth}px - 20px) / 2))`;
+      // } else {
       //   masonryContainer.style.gridTemplateColumns = `calc(${containerWidth}px - 20px)`;
       // }
 
@@ -121,8 +124,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.masonry-item {
-  padding-bottom: 10px;
-}
-</style>
+<style scoped></style>
