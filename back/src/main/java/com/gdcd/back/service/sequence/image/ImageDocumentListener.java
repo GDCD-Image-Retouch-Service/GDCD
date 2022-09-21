@@ -14,7 +14,8 @@ public class ImageDocumentListener extends AbstractMongoEventListener<Image> {
 
     @Override
     public void onBeforeConvert(BeforeConvertEvent<Image> event){
-        event.getSource().set_id(imageSequenceGeneratorService.generateSequence(Image.IMAGE_SEQUENCE_NAME));
+        if (event.getSource().getId() != null) return;
+        event.getSource().setId(imageSequenceGeneratorService.generateSequence(Image.IMAGE_SEQUENCE_NAME));
     }
 
 }

@@ -13,7 +13,8 @@ public class PostDocumentListener extends AbstractMongoEventListener<Post> {
 
     @Override
     public void onBeforeConvert(BeforeConvertEvent<Post> event){
-        event.getSource().set_id(postSequenceGeneratorService.generateSequence(Post.POST_SEQUENCE_NAME));
+        if (event.getSource().getId() != null) return;
+        event.getSource().setId(postSequenceGeneratorService.generateSequence(Post.POST_SEQUENCE_NAME));
     }
 
 }
