@@ -1,5 +1,4 @@
 <template>
-  <div class="footer-spacer" />
   <nav class="footer-nav">
     <div class="footer-nav-wrap outer">
       <!--  홈 -->
@@ -38,14 +37,19 @@ const basicStore = useBasicStore();
 </script>
 
 <style scoped>
-.footer-spacer {
+.footer-nav {
+  z-index: 100;
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100vw;
   height: var(--size-h-footer);
+  background-color: #ffffff;
+  border-top: 1px solid var(--instagram-grey);
 }
 .footer-nav-wrap {
-  width: 80%;
   height: var(--size-h-footer);
-
+  padding: 0 var(--grid-side);
   display: flex;
   margin: 0 auto;
   justify-content: space-around;
@@ -54,39 +58,5 @@ const basicStore = useBasicStore();
 .footer-nav-wrap a {
   color: var(--dark-main-color);
   font-size: 24px;
-}
-.footer-nav {
-  z-index: 100;
-  position: fixed;
-  bottom: 0px;
-
-  width: 100vw;
-  height: var(--size-h-footer);
-}
-
-.footer-nav-wrap {
-  width: 100%;
-  max-width: 380px;
-  height: var(--size-h-footer);
-  background: white;
-  display: flex;
-  margin: 0 auto;
-  justify-content: space-around;
-  border-top-left-radius: calc(var(--size-h-footer) / 2);
-  border-top-right-radius: calc(var(--size-h-footer) / 2);
-  border: solid 1px #f4f4f4;
-}
-.footer-nav-wrap a {
-  color: var(--dark-main-color);
-  font-size: 24px;
-}
-.footer-nav {
-  z-index: 100;
-  position: fixed;
-
-  bottom: 0px;
-
-  width: 100%;
-  height: var(--size-h-footer);
 }
 </style>

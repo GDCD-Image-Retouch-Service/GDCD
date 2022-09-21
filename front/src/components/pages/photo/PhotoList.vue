@@ -12,8 +12,6 @@ import PhotoSection from '@/components/organisms/PhotoSection.vue';
 
 <style scoped>
 .photo-list {
-  width: calc(100% - 40px);
-  margin-left: 20px;
-  margin-top: 30px;
+  width: 100%;
 }
 </style>

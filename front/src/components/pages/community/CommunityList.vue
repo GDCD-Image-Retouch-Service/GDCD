@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <masonry-layout />
-    <btn-scroll-to-top />
-  </div>
+  <masonry-layout />
+  <btn-scroll-to-top />
 </template>
 
 <script setup>

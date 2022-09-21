@@ -3,7 +3,7 @@
     class="post-card"
     @click="$router.push({ name: 'CommunityDetail', params: { postId: 1 } })"
   >
-    <i class="bi bi-three-dots dot-icon" style="margin-right: 8px"></i>
+    <i class="bi bi-three-dots dot-icon"></i>
 
     <!-- post card image -->
     <b-img :src="`${url}`" fluid-grow alt="Responsive image"></b-img>
@@ -78,6 +78,7 @@ const { url } = toRefs(props);
   padding-bottom: 10px;
   box-shadow: 0 4px 4px -4px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(0, 0, 0, 0.12);
+  background-color: var(--light-main-color);
 }
 .post-card-title {
   text-align: start;
@@ -106,6 +107,7 @@ const { url } = toRefs(props);
 .dot-icon {
   position: absolute;
   right: 0;
+  margin: 5px 5px 0 0;
 }
 .like-bookmark {
   display: flex;
