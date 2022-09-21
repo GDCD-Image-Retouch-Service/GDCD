@@ -30,7 +30,7 @@ public class PostDetailResponseDto {
 
     public PostDetailResponseDto(Post post) {
 //        this.images = list;
-        this.postId = post.get_id();
+        this.postId = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.tag = post.getTag();

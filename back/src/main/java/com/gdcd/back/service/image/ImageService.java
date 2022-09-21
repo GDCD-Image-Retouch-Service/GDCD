@@ -12,8 +12,8 @@ public interface ImageService {
 
 //    public List<byte[]> findImageList(Long userId) throws IOException;
 //    public List<String> findImageList(Long userId) throws IOException;
-    public List<ImageDetailResponseDto> findImageList(Long userId) throws IOException;
-
+    public List<ImageDetailResponseDto> findImageList(String token) throws Exception;
+//    public List<ImageDetailResponseDto> findImageList(Long userId) throws Exception;
 
 }
 

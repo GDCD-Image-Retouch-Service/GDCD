@@ -83,7 +83,7 @@ public class PostServiceImpl implements PostService{
                     requestDto.getPrivacyBound(),
                     requestDto.getTag()
             );
-            post.set_id(requestDto.getPostId());
+            post.setId(requestDto.getPostId());
             postRepository.save(post);
             return new PostDetailResponseDto(post);
         }else {
