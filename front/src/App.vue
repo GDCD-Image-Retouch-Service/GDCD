@@ -86,6 +86,8 @@ body::-webkit-scrollbar {
   font-size: 16px;
   font-family: 'Noto Sans KR', sans-serif;
 
+  scroll-behavior: smooth;
+
   /* 그리드 */
   margin: calc(var(--size-h-header) + var(--grid-header)) var(--grid-side)
     calc(var(--size-h-footer) + var(--grid-header)) var(--grid-side);

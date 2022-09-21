@@ -1,6 +1,7 @@
-import { createApp, prototype } from 'vue';
+import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
+import vue3GoogleLogin from 'vue3-google-login';
 
 // for bootstrap
 import { BootstrapVue3, BToastPlugin } from 'bootstrap-vue-3';
@@ -11,20 +12,12 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 // pinia
 import { createPinia } from 'pinia';
 
-// Vue.prototype.$scrollToTop = () => {
-//   window.scrollTo(0, 0);
-// };
-
 createApp(App)
   .use(createPinia())
   .use(router)
   .use(BootstrapVue3)
   .use(BToastPlugin)
+  .use(vue3GoogleLogin, {
+    clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
+  })
   .mount('#app');
-
-prototype.$scrollToTop = () => {
-  window.scrollTo(0, 0);
-};
-// app.provide('$scrollToTop', () => {
-//   console.log('클릭');
-// });
