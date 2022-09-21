@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ImageService {
-    public Integer addImage(MultipartFile image) throws IOException;
+    public Long addImage(String token, MultipartFile image) throws Exception;
     public byte[] findImageById(Long imageId) throws IOException;
 
 //    public List<byte[]> findImageList(Long userId) throws IOException;
