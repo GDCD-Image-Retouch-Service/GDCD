@@ -18,8 +18,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/image")
 public class ImageController extends Controller {
-
-//    private final ImageRepository imageRepository;
     private final ImageService imageService;
     @PostMapping("")
     public ResponseEntity<Map<String, Object>> imageSave(@RequestPart MultipartFile image) throws IOException {

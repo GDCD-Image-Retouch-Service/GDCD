@@ -1,11 +1,15 @@
 package com.gdcd.back.domain.user;
 
+import com.gdcd.back.dto.user.request.UserDetailUpdateRequestDto;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,23 +22,31 @@ public class User {
     public static final String USER_SEQUENCE_NAME = "user_sequences";
 
     @Id
-    private Long _id;
+    @Field(name = "_id")
+    private Long id;
+    @Indexed(unique = true)
     private String email;
     private String nickname;
     private String profile;
-    private Date registDate;
+    @Field(name = "regist_date")
+    private LocalDateTime registDate;
     private Boolean validation;
-    private Long postCount;
-    private Long scrapCount;
-    private Long followerCount;
-    private Long followingCount;
-    private Long dailyReports;
+    @Field(name = "post_count")
+    private int postCount;
+    @Field(name = "scrap_count")
+    private int scrapCount;
+    @Field(name = "follower_count")
+    private int followerCount;
+    @Field(name = "following_count")
+    private int followingCount;
+    @Field(name = "daily_reports")
+    private int dailyReports;
 
-    public void update(String profile, String nickname) {
-        if (profile != null)
-            this.profile = profile;
-        if (nickname != null)
-            this.nickname = nickname;
+    public void update(UserDetailUpdateRequestDto requestDto) {
+        if (requestDto.getProfile() != null)
+            this.profile = requestDto.getProfile();
+        if (requestDto.getNickname() != null)
+            this.nickname = requestDto.getNickname();
     }
 
     public void delete(Boolean validation){
