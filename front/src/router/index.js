@@ -31,6 +31,7 @@ const beforeAuth = (needAuth) => async (from, to, next) => {
 // Main
 import MainView from '@/views/MainView.vue';
 import MainUpload from '@/components/pages/main/MainUpload';
+import MainLogin from '@/components/pages/main/MainLogin';
 
 // Community
 import CommunityView from '@/views/CommunityView.vue';
@@ -61,6 +62,11 @@ const routes = [
         path: 'main', // default page
         name: 'MainUpload',
         component: MainUpload,
+      },
+      {
+        path: 'login',
+        name: 'MainLogin',
+        component: MainLogin,
       },
     ],
   },

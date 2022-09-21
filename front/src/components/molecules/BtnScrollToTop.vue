@@ -8,21 +8,22 @@
 </template>
 
 <script setup>
-// const scrollToTop = () => {
-//   window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-//   console.log('눌림');
-// };
+const scrollToTop = () => {
+  document.getElementById('app').scrollTop = 0;
+  console.log('눌림');
+};
 </script>
 
 <style scoped>
 .btn-scroll-to-top {
+  z-index: 1;
   position: fixed;
-  right: 10px;
-  bottom: 48px;
-  width: 50px;
-  height: 50px;
+  left: calc(50vw - 16px);
+  bottom: calc(var(--size-h-footer) + 4px);
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: var(--theme-color);
+  background: gray;
   color: white;
   font-size: 12pt;
 }

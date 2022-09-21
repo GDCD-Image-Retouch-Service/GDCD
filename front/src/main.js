@@ -18,6 +18,6 @@ createApp(App)
   .use(BootstrapVue3)
   .use(BToastPlugin)
   .use(vue3GoogleLogin, {
-    clientId: 'YOUR_GOOGLE_CLIENT_ID',
+    clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
   })
   .mount('#app');

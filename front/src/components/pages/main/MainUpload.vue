@@ -2,25 +2,63 @@
   <div
     class="main-upload d-flex flex-column align-items-center justify-content-center"
   >
-    시간과 정신과 구글로그인의 방
-    <a id="custom-login-btn" href="javascript:loginWithKakao()">
-      <img
-        src="//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-        width="222"
-        alt="카카오 로그인 버튼"
-      />
-    </a>
+    <div class="spacer" />
+    <btn-change-mode />
+
+    <div class="d-flex align-items-center">
+      <input type="file" accept="image/*;capture=camera" />
+      <button @click="takePicture">사진 찍는 버튼</button>
+    </div>
+    <video @canplay="initCanvas" ref="video">Stream unavailable</video>
+    <div class="spacer" />
+    <btn-score-receive />
+    <div class="spacer" />
+
+    <canvas ref="canvas" style="display: none"></canvas>
+    <img :src="imageSrc" />
   </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
-import { loadScript } from '@/api/loadScript';
+import BtnChangeMode from '@/components/molecules/BtnChangeMode.vue';
+import BtnScoreReceive from '@/components/molecules/BtnScoreReceive.vue';
+import { onMounted, ref } from 'vue';
+
+const video = ref(null);
+const canvas = ref(null);
+const imageSrc = ref(null);
+
+const startCapture = () => {
+  navigator.mediaDevices
+    .getUserMedia({ video: true })
+    .then((stream) => {
+      video.value.srcObject = stream;
+      video.value.play();
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+const takePicture = () => {
+  let context = canvas.value.getContext('2d');
+  context.drawImage(
+    video.value,
+    0,
+    0,
+    video.value.videoWidth,
+    video.value.videoHeight,
+  );
+  imageSrc.value = canvas.value.toDataURL('image/png');
+};
+
+const initCanvas = () => {
+  canvas.value.setAttribute('width', video.value.videoWidth);
+  canvas.value.setAttribute('height', video.value.videoHeight);
+};
 
 onMounted(() => {
-  loadScript('recaptcha', 'https://www.google.com/recaptcha/api.js').then(
-    (value) => console.log(value),
-  );
+  startCapture();
 });
 </script>
 

@@ -71,6 +71,8 @@ export default {
   color: #3c3c3a;
 
   font-family: 'Noto Sans KR', sans-serif;
+
+  scroll-behavior: smooth;
 }
 
 /* 대각선 방향 그림자인데 괜찮아보여서 일단 써봄 */
