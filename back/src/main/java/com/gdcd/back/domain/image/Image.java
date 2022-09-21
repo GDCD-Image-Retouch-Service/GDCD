@@ -1,5 +1,6 @@
 package com.gdcd.back.domain.image;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,8 @@ import java.util.List;
 @Setter
 @Builder
 @Document(collection = "images")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+
 public class Image {
     @Transient
     public static final String IMAGE_SEQUENCE_NAME = "image_sequences";

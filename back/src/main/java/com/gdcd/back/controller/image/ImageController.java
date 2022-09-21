@@ -9,9 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -20,7 +19,7 @@ import java.util.Map;
 public class ImageController extends Controller {
     private final ImageService imageService;
     @PostMapping("")
-    public ResponseEntity<Map<String, Object>> imageSave(@RequestPart MultipartFile image) throws IOException {
+    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader @RequestPart MultipartFile image) throws IOException {
         return getResponseEntity(imageService.addImage(image));
     }
 
@@ -28,7 +27,23 @@ public class ImageController extends Controller {
     public ResponseEntity<byte[]> imageDetails(@RequestParam Long imageId) throws IOException {
         return new ResponseEntity<byte[]>(imageService.findImageById(imageId), HttpStatus.OK);
     }
+//    @GetMapping(path = "")
+//    public String setImageFileById(@RequestParam Long imageId, HttpServletResponse response)
+//            throws IOException {
+//
+//        return "file:///C:/test/images/Test/1.jpg";
+//
+//    }
 
+    @GetMapping(value="/list")
+//    @ResponseBody
+    public ResponseEntity<Map<String, Object>> imageList(@RequestParam Long userId) throws IOException {
+        return getResponseEntity(imageService.findImageList(userId));
+    }
+//    @GetMapping(value="/list", produces = List<MediaType.IMAGE_JPEG_VALUE>)
+//    public ResponseEntity<List<String>> imageList(@RequestParam Long userId) throws IOException {
+//        return new ResponseEntity<List<String>>(imageService.findImageList(userId), HttpStatus.OK);
+//    }
 
     @PostMapping("/initial")
     public ResponseEntity<Map<String, Object>> imageInitialScore() {
