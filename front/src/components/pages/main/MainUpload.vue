@@ -2,6 +2,7 @@
   <div
     class="main-upload d-flex flex-column align-items-center justify-content-center"
   >
+    <router-link to="/login">로그인화면</router-link>
     <div class="spacer" />
     <btn-change-mode />
 

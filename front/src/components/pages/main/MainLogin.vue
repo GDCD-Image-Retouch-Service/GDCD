@@ -2,28 +2,22 @@
   <div
     class="main-upload d-flex flex-column align-items-center justify-content-center"
   >
-    시간과 정신과 구글로그인의 방
-    <a id="custom-login-btn" href="javascript:loginWithKakao()">
-      <img
-        src="//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-        width="222"
-        alt="카카오 로그인 버튼"
-      />
-    </a>
+    <div>시간과 정신과 구글로그인의 방</div>
+    <h1>{{ msg }}</h1>
+
+    <GoogleLogin :callback="callback" />
   </div>
 </template>
 
 <script setup>
-// import { onMounted } from 'vue';
-import { loadScript } from '@/api/loadScript';
-
-loadScript('KakaoJDK', 'https://developers.kakao.com/sdk/js/kakao.js')
-  .then((value) => {
-    console.log(value);
-  })
-  .catch((value) => {
-    console.log(value);
-  });
+const callback = (response) => {
+  // This callback will be triggered when the user selects or login to
+  // his Google account from the popup
+  console.log('Handle the response', response);
+};
+const msg = '씨ㅡ발';
+console.log(process.env.VUE_APP_GOOGLE_CLIENT_ID);
+console.log(process.env.VUE_APP_GOOGLE_CLIENT_SSIBAL);
 </script>
 
 <style>
