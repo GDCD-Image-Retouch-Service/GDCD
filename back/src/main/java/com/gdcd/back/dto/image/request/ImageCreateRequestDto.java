@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ImageCreateRequestDto {
-    private Long userId;
+    private Long userId ;
     private String imgUrl;
     private int rank;
     private LocalDateTime registDate;

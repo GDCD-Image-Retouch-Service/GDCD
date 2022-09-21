@@ -51,36 +51,14 @@ public class PostServiceImpl implements PostService{
     public PostDetailResponseDto findPostById(Long postId){
         Post post = findPost(postId);
         if (validPost(post)){
-            return new PostDetailResponseDto(post,list(post)); // list(post)
+            return new PostDetailResponseDto(post); // list(post)
         }else {
             return null;
         }
     }
-    public PostCreateRequestDto addPost(List<MultipartFile> images, PostCreateRequestDto requestDto) throws IOException {
-        List<String> list = new ArrayList<>();
-        for (MultipartFile image : images){
-            String urlName = number.toString() + JPG;
-            String path ="Test\\";
-            String FilePath = path+urlName;
-            File Folder = new File(ROOT + path);
-            try {
-                if (!Folder.exists()) {
-                    try {
-                        Folder.mkdir();
-                        System.out.println("폴더가 생성되었습니다.");
-                    }
-                    catch (Exception e) {
-                        e.getStackTrace();
-                    }
-                }
-                image.transferTo(new File(ROOT + FilePath));
-                list.add(FilePath);
-                number += 1;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        requestDto.setImages(list);
+    public PostCreateRequestDto addPost(PostCreateRequestDto requestDto) throws IOException {
+//        List<String> list = new ArrayList<>();
+//        requestDto.setImages(list);
         requestDto.setRegistTime(LocalDateTime.now());
         requestDto.setUpdateTime(LocalDateTime.now());
         postRepository.save(requestDto.toDocument());
@@ -105,8 +83,9 @@ public class PostServiceImpl implements PostService{
                     requestDto.getPrivacyBound(),
                     requestDto.getTag()
             );
+            post.set_id(requestDto.getPostId());
             postRepository.save(post);
-            return new PostDetailResponseDto(post,list(post));
+            return new PostDetailResponseDto(post);
         }else {
             return null;
         }
