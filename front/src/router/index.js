@@ -43,8 +43,10 @@ import CommunityDetailChatting from '@/components/pages/community/CommunityDetai
 
 // Profile
 import ProfileView from '@/views/ProfileView.vue';
-import ProfileList from '@/components/pages/profile/ProfileList';
-import ProfileFriends from '@/components/pages/profile/ProfileFriends';
+import ProfilePost from '@/components/pages/profile/ProfilePost';
+import ProfileScrap from '@/components/pages/profile/ProfileScrap';
+import ProfileLike from '@/components/pages/profile/ProfileLike';
+import ProfileFriend from '@/components/pages/profile/ProfileFriend';
 
 // photo
 import PhotoView from '@/views/PhotoView.vue';
@@ -105,13 +107,23 @@ const routes = [
     children: [
       {
         path: '', // default page
-        name: 'ProfileList',
-        component: ProfileList,
+        name: 'ProfilePost',
+        component: ProfilePost,
       },
       {
-        path: 'friends',
-        name: 'ProfileFriends',
-        component: ProfileFriends,
+        path: 'scrap',
+        name: 'ProfileScrap',
+        component: ProfileScrap,
+      },
+      {
+        path: 'like',
+        name: 'ProfileLike',
+        component: ProfileLike,
+      },
+      {
+        path: 'friend',
+        name: 'ProfileFriend',
+        component: ProfileFriend,
       },
     ],
   },
