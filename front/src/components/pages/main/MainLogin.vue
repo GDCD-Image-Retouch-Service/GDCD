@@ -4,17 +4,31 @@
   >
     <div>시간과 정신과 구글로그인의 방</div>
     <h1>{{ msg }}</h1>
-
-    <GoogleLogin :callback="callback" />
+    <GoogleLogin :callback="callback" prompt auto-login />
   </div>
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
+import { googleOneTap, decodeCredential } from 'vue3-google-login';
+
 const callback = (response) => {
-  // This callback will be triggered when the user selects or login to
-  // his Google account from the popup
-  console.log('Handle the response', response);
+  // decodeCredential will retrive the JWT payload from the credential
+  const userData = decodeCredential(response.credential);
+  console.log('Handle the userData', userData);
 };
+
+onMounted(async () => {
+  await googleOneTap({ autoLogin: true })
+    .then((response) => {
+      // This promise is resolved when user selects an account from the the One Tap prompt
+      console.log('Handle the response', response);
+      // callback(response);
+    })
+    .catch((error) => {
+      console.log('Handle the error', error);
+    });
+});
 const msg = '씨ㅡ발';
 console.log(process.env.VUE_APP_GOOGLE_CLIENT_ID);
 console.log(process.env.VUE_APP_GOOGLE_CLIENT_SSIBAL);
