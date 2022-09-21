@@ -1,10 +1,8 @@
 <template>
-  <div class="community-detail-card">
+  <div class="community-detail-card common-image">
     <!-- 제목 -->
     <div class="card-title">
-      {{
-        communityStore.post.item.title
-      }}ddddddddxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxddddddddddd
+      {{ communityStore.post.item.title }}
     </div>
 
     <!-- 프로필 -->
@@ -75,6 +73,7 @@ const card = {
   border-radius: 10px;
   padding: var(--grid-vertical) var(--grid-side);
   width: 100%;
+  background-color: var(--light-main-color);
 }
 /* 제목 */
 .card-title {

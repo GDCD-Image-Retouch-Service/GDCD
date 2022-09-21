@@ -1,7 +1,9 @@
 <template>
-  <masonry-layout />
-  <btn-scroll-to-top />
-  <btn-go-to-write />
+  <div>
+    <masonry-layout />
+    <btn-scroll-to-top />
+    <btn-go-to-write />
+  </div>
 </template>
 
 <script setup>

@@ -11,14 +11,12 @@
       "
     >
       <div
-        v-for="(widgetNum, index) in widgetList"
-        :id="`dragItem-${index}-widget-${widgetNum}`"
+        v-for="(post, index) in communityStore.postsAll.item"
         :key="index"
         class="masonry-content"
       >
         <div class="masonry-item">
-          <div style="margin-left: 20px"></div>
-          <post-card :url="widgetNum" />
+          <post-card :post="post" />
         </div>
       </div>
     </div>
@@ -28,6 +26,7 @@
 <script>
 import PostCard from '@/components/molecules/PostCard.vue';
 import { ref, nextTick, onMounted, onUpdated } from 'vue';
+import { useCommunityStore } from '@/stores/community';
 
 export default {
   components: {
@@ -119,6 +118,11 @@ export default {
       componentList,
       widgetList,
       masonryLayoutSetting,
+    };
+  },
+  data() {
+    return {
+      communityStore: useCommunityStore(),
     };
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin: var(--grid-vertical) var(--grid-side)">
     <div v-for="ch in chat" :key="ch.id" class="chatting-wrap">
       <div class="chattting-header">
         <!-- 유저 정보 -->
