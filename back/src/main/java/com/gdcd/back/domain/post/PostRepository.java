@@ -1,4 +1,6 @@
 package com.gdcd.back.domain.post;
 
-public interface PostRepository {
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface PostRepository extends MongoRepository<Post, Long> {
 }
