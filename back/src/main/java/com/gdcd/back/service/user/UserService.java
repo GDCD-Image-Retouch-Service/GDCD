@@ -14,7 +14,7 @@ public interface UserService {
     public Map<String, Object> findUser(String token, Long userId);
     public Map<String, Object> modifyUser(String token, UserDetailUpdateRequestDto requestDto);
     public Map<String, Object> removeUser(String token);
-    public Map<String, String> blockUser(String token, Long userId);
+    public Map<String, Object> blockUser(String token, Long userId);
     public Map<String, Object> findScraps(String token);
     public Map<String, Object> findLikes(String token);
     public Map<String, String> followUser(String token, Long userId);

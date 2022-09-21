@@ -3,6 +3,7 @@ package com.gdcd.back.service.user;
 import com.gdcd.back.config.JwtTokenProvider;
 import com.gdcd.back.domain.user.User;
 import com.gdcd.back.domain.user.UserRepository;
+import com.gdcd.back.domain.user.block.Block;
 import com.gdcd.back.domain.user.block.BlockRepository;
 import com.gdcd.back.dto.user.request.UserCreateRequestDto;
 import com.gdcd.back.dto.user.request.UserDetailUpdateRequestDto;
@@ -21,11 +22,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final BlockRepository blockRepository;
-    private final Map<String, String> RESULT_STRING = new HashMap<>();
-    private final Map<String, Object> RESULT_OBJECT = new HashMap<>();
+    private Map<String, String> RESULT_STRING;
+    private Map<String, Object> RESULT_OBJECT;
 
     @Override
     public Map<String, String> loginUser(UserCreateRequestDto requestDto) {
+        RESULT_STRING = new HashMap<>();
         String email = requestDto.getEmail();
         try {
             if (!validUser(findUserByEmail(email))) {
@@ -40,11 +42,13 @@ public class UserServiceImpl implements UserService {
     }
 
     public Map<String, Object> checkNickname(String nickname) {
+        RESULT_OBJECT = new HashMap<>();
         RESULT_OBJECT.put("usable", !userRepository.findByNickname(nickname).isPresent());
         return RESULT_OBJECT;
     }
 
     public Map<String, Object> findUser(String token, Long userId) {
+        RESULT_OBJECT = new HashMap<>();
         try {
             User user;
             if (userId == null)
@@ -62,49 +66,70 @@ public class UserServiceImpl implements UserService {
     }
 
     public Map<String, Object> modifyUser(String token, UserDetailUpdateRequestDto requestDto) {
+        RESULT_OBJECT = new HashMap<>();
         try {
             User user = findUserByEmail(decodeToken(token));
             user.update(requestDto);
             RESULT_OBJECT.put("userId", userRepository.save(user).getId());
             // 유저 정보를 바꾸면 post가 가지고 있는 writer 정보 또한 바뀌어야함.
-        } catch(Exception e) {
+        } catch (Exception e) {
             RESULT_OBJECT.put("error", "USER NOT UPDATED");
         }
         return RESULT_OBJECT;
     }
 
     public Map<String, Object> removeUser(String token) {
+        RESULT_OBJECT = new HashMap<>();
         try {
             User user = findUserByEmail(decodeToken(token));
             user.setValidation(false);
             RESULT_OBJECT.put("userId", userRepository.save(user).getId());
-        } catch(Exception e) {
+        } catch (Exception e) {
             RESULT_OBJECT.put("error", "USER NOT DELETED");
         }
         return RESULT_OBJECT;
     }
 
-    public Map<String, String> blockUser(String token, Long userId) {
-        return RESULT_STRING;
+    public Map<String, Object> blockUser(String token, Long userId) {
+        RESULT_OBJECT = new HashMap<>();
+        try {
+            User blocking = findUserById(userId);
+            Block block = Block.builder()
+                    .blocker(findUserByEmail(decodeToken(token)).getId())
+                    .blocking(userId)
+                    .blockingNickname(blocking.getNickname())
+                    .blockingProfile(blocking.getProfile())
+                    .build();
+            RESULT_OBJECT.put("block", blockRepository.save(block).getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            RESULT_OBJECT.put("error", "USER NOT BLOCKED");
+        }
+        return RESULT_OBJECT;
     }
 
     public Map<String, Object> findScraps(String token) {
+        RESULT_OBJECT = new HashMap<>();
         return RESULT_OBJECT;
     }
 
     public Map<String, Object> findLikes(String token) {
+        RESULT_OBJECT = new HashMap<>();
         return RESULT_OBJECT;
     }
 
     public Map<String, String> followUser(String token, Long userId) {
+        RESULT_STRING = new HashMap<>();
         return RESULT_STRING;
     }
 
     public Map<String, Object> findFollowers(String token) {
+        RESULT_OBJECT = new HashMap<>();
         return RESULT_OBJECT;
     }
 
     public Map<String, Object> findFollowings(String token) {
+        RESULT_OBJECT = new HashMap<>();
         return RESULT_OBJECT;
     }
 
