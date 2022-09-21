@@ -1,10 +1,23 @@
 <template>
-  <div class="toggle-switch">
-    <div class="toggle-button"></div>
+  <div style="width: 100%; display: flex; flex-direction: row-reverse">
+    <div
+      class="toggle-switch"
+      @click="isToggleButton = !isToggleButton"
+      :class="{ 'toggled-switch': isToggleButton }"
+    >
+      <div
+        class="toggle-button"
+        :class="{ 'toggled-button': isToggleButton }"
+      ></div>
+    </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
+let isToggleButton = ref(false);
+
 // import { ref } from 'vue';
 </script>
 
@@ -17,6 +30,7 @@
   border-radius: 2rem;
   border: 1px solid #cacafc;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 .toggle-button {
   width: 1rem;
@@ -28,7 +42,24 @@
   border-radius: 50%;
   background: #cacafc;
 }
-.toggle {
-  background-color: brown;
+.toggled-switch {
+  width: 3rem;
+  height: 1.5rem;
+  display: block;
+  position: relative;
+  border-radius: 2rem;
+  border: 1px solid #cacafc;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+  background: #cacafc;
+}
+.toggled-button {
+  left: calc(100% - 1.1rem);
+  background: #ffffff;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
 }
 </style>

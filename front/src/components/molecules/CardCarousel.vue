@@ -3,16 +3,7 @@
     <btn-toggle @click="moveCrousel()" />
 
     <div class="card-carousel">
-      <div
-        style="
-          width: 100%;
-          display: flex;
-          overflow: hidden;
-          gap: 20px;
-          transition-duration: 0.3s;
-        "
-        :style="{ transform: carouselValue }"
-      >
+      <div class="image-wrap" :style="{ transform: carouselValue }">
         <img :src="firstImage" alt="" class="card-image" />
         <img :src="secondImage" alt="" class="card-image" />
       </div>
@@ -51,6 +42,13 @@ const moveCrousel = () => {
   display: flex;
   gap: 30px;
   overflow: hidden;
+}
+.image-wrap {
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  gap: 20px;
+  transition-duration: 0.3s;
 }
 .card-image {
   width: 100%;
