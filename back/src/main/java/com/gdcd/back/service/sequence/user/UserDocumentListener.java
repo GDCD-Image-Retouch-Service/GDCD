@@ -14,7 +14,7 @@ public class UserDocumentListener extends AbstractMongoEventListener<User> {
 
     @Override
     public void onBeforeConvert(BeforeConvertEvent<User> event){
-        event.getSource().set_id(userSequenceGeneratorService.generateSequence(User.USER_SEQUENCE_NAME));
+        event.getSource().setId(userSequenceGeneratorService.generateSequence(User.USER_SEQUENCE_NAME));
     }
 
 }

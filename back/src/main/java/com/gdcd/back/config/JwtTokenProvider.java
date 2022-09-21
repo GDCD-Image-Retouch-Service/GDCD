@@ -1,13 +1,11 @@
 package com.gdcd.back.config;
 
 import com.gdcd.back.domain.user.UserRepository;
-import com.gdcd.back.service.user.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,9 +22,6 @@ public class JwtTokenProvider {
     private String SALT = "projectSSAFY";
 
     private long tokenValidTime = 300 * 60 * 1000L;
-
-//    @Lazy
-//    private final UserService userService;
     private final UserRepository userRepository;
 
     @PostConstruct
@@ -68,7 +63,7 @@ public class JwtTokenProvider {
         }
     }
 
-    public String decodeToken(String jwtToken) throws Exception {
+    public String decodeToken(String jwtToken) {
         Jws<Claims> claims = Jwts.parser().setSigningKey(SALT).parseClaimsJws(jwtToken);
         return claims.getBody().get("sub").toString();
     }

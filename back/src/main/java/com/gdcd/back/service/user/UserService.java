@@ -6,13 +6,18 @@ import com.gdcd.back.dto.user.response.UserDetailResponseDto;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Map;
+
 public interface UserService {
-    public String loginUser(UserCreateRequestDto requestDto);
-    public String addUser(UserCreateRequestDto requestDto);
-    public UserDetails findUserForToken(String email) throws UsernameNotFoundException;
-    public Boolean checkNickname(String nickname);
-//    public Object checkuserId(Object userId);
-    UserDetailResponseDto findUserById(Long userId);
-    public UserDetailResponseDto modifyUser(Long userId, UserDetailUpdateRequestDto requestDto);
-    public String removeUser(Long userId);
+    public Map<String, String> loginUser(UserCreateRequestDto requestDto);
+    public Map<String, Object> checkNickname(String nickname);
+    public Map<String, Object> findUser(String token, Long userId);
+    public Map<String, Object> modifyUser(String token, UserDetailUpdateRequestDto requestDto);
+    public Map<String, Object> removeUser(String token);
+    public Map<String, String> blockUser(String token, Long userId);
+    public Map<String, Object> findScraps(String token);
+    public Map<String, Object> findLikes(String token);
+    public Map<String, String> followUser(String token, Long userId);
+    public Map<String, Object> findFollowers(String token);
+    public Map<String, Object> findFollowings(String token);
 }

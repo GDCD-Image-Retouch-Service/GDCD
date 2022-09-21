@@ -28,66 +28,51 @@ public class UserController extends Controller {
 
     @GetMapping("/nickname")
     public ResponseEntity<Map<String, Object>> nicknameCheck(@RequestParam String nickname) {
-//        //Nickname 중복 체크
-        HashMap<String, Object> result = new HashMap<>();
-        if (userService.checkNickname(nickname)) {
-            result.put("msg", FAIL);
-        } else {
-            result.put("msg", SUCCESS);
-        }
-        return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+        return getResponseEntity(userService.checkNickname(nickname));
     }
 
-//    @GetMapping("/id")
-//    public ResponseEntity<Map<String, Object>> checkuserId(@RequestParam Object userId) {
-//        return getResponseEntity(userRepository.)
-//        return getResponseEntity(userRepository.findByNickname(nickname));
-//        return getResponseEntity(userService.checkuserId(userId));
-//        return getResponseEntity(userRepository.findBy_id(userId));
-//    }
-
     @GetMapping("")
-    public ResponseEntity<Map<String, Object>> userDetails(@RequestParam Long userId) {
-        return getResponseEntity(userService.findUserById(userId));
+    public ResponseEntity<Map<String, Object>> userDetails(@RequestHeader(required = false) String token, @RequestParam(required = false) Long userId) throws Exception {
+        return getResponseEntity(userService.findUser(token, userId));
     }
 
     @PutMapping("")
-    public ResponseEntity<Map<String, Object>> userModify(@RequestParam Long userId, @RequestBody UserDetailUpdateRequestDto requestDto) {
-        return getResponseEntity(userService.modifyUser(userId, requestDto));
+    public ResponseEntity<Map<String, Object>> userModify(@RequestHeader String token, @RequestBody UserDetailUpdateRequestDto requestDto) throws Exception{
+        return getResponseEntity(userService.modifyUser(token, requestDto));
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Map<String, Object>> userRemove(@RequestParam Long userId) {
-        return getResponseEntity(userService.removeUser(userId));
+    public ResponseEntity<Map<String, Object>> userRemove(@RequestHeader String token) throws Exception{
+        return getResponseEntity(userService.removeUser(token));
     }
 
     @GetMapping("/block")
-    public ResponseEntity<Map<String, Object>> userBlockSave() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> userBlockSave(@RequestHeader String token, @RequestParam Long userId) {
+        return getResponseEntity(userService.blockUser(token, userId));
     }
 
     @GetMapping("/scrap-list")
-    public ResponseEntity<Map<String, Object>> userScrapList() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> userScrapList(@RequestHeader String token) {
+        return getResponseEntity(userService.findScraps(token));
     }
 
     @GetMapping("/like-list")
-    public ResponseEntity<Map<String, Object>> userLikeList() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> userLikeList(@RequestHeader String token) {
+        return getResponseEntity(userService.findLikes(token));
     }
 
     @GetMapping("/follow")
-    public ResponseEntity<Map<String, Object>> userFollowSave() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> userFollowSave(@RequestHeader String token, @RequestParam Long userId) {
+        return getResponseEntity(userService.followUser(token, userId));
     }
 
     @GetMapping("/follower")
-    public ResponseEntity<Map<String, Object>> userFollowerList() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> userFollowerList(@RequestHeader String token) {
+        return getResponseEntity(userService.findFollowers(token));
     }
 
     @GetMapping("/following")
-    public ResponseEntity<Map<String, Object>> userFollowingList() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> userFollowingList(@RequestHeader String token) {
+        return getResponseEntity(userService.findFollowings(token));
     }
 }
