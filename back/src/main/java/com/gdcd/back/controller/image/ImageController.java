@@ -19,8 +19,8 @@ import java.util.Map;
 public class ImageController extends Controller {
     private final ImageService imageService;
     @PostMapping("")
-    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader @RequestPart MultipartFile image) throws IOException {
-        return getResponseEntity(imageService.addImage(image));
+    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestBody MultipartFile image) throws Exception {
+        return getResponseEntity(imageService.addImage(token, image));
     }
 
     @GetMapping(value="", produces = MediaType.IMAGE_JPEG_VALUE)

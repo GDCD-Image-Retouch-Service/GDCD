@@ -1,7 +1,10 @@
 package com.gdcd.back.service.image;
 
+import com.gdcd.back.config.JwtTokenProvider;
 import com.gdcd.back.domain.image.Image;
 import com.gdcd.back.domain.image.ImageRepository;
+import com.gdcd.back.domain.user.User;
+import com.gdcd.back.domain.user.UserRepository;
 import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
 import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -21,41 +24,43 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
-    String ROOT = "./data/images/";
+    private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    Integer number = 1;
-    String JPG = ".jpg";
-//    String ADDRESS = "http://localhost:8081/api/image?imageId=";
-    String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
-    public Integer addImage(MultipartFile image) throws IOException {
+    //    String ROOT = "./data/images/";
+    //    String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
+    String ROOT = "C:\\test\\images\\";
+    String ADDRESS = "http://localhost:8081/api/image?imageId=";
+    public Long addImage(String token, MultipartFile image) throws Exception {
         ImageCreateRequestDto requestDto = new ImageCreateRequestDto();
+        User user = findUserByEmail(decodeToken(token));
+        Long urlCount = imageRepository.findAllByUserId(user.getId()).stream().count()+1;
         String imageType = image.getContentType();
-        String endPoint = imageType.substring(imageType.lastIndexOf("/")+1);
-        String urlName = number.toString() + "."+endPoint;
-        System.out.println(urlName);
-        String path = "Test\\";
+        String endPoint = "."+imageType.substring(imageType.lastIndexOf("/")+1);
+        String path = user.getId().toString();
+        String urlName = "//"+urlCount.toString()+endPoint;
         String FilePath = path + urlName;
+        System.out.println(FilePath);
         File Folder = new File(ROOT + path);
-        return 1;
-//        try {
-//            if (!Folder.exists()) {
-//                try {
-//                    Folder.mkdir();
-//                    System.out.println("폴더가 생성되었습니다.");
-//                } catch (Exception e) {
-//                    e.getStackTrace();
-//                }
-//            }
-//            image.transferTo(new File(ROOT + FilePath));
-//            number += 1;
-//            requestDto.setImgUrl(FilePath);
-//            requestDto.setRegistDate(LocalDateTime.now());
-//            imageRepository.save(requestDto.toDocument());
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return number-1;
+        try {
+            if (!Folder.exists()) {
+                try {
+                    Folder.mkdir();
+                    System.out.println("폴더가 생성되었습니다.");
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
+            }
+            image.transferTo(new File(ROOT + FilePath));
+            requestDto.setImgUrl(FilePath);
+            requestDto.setRegistDate(LocalDateTime.now());
+            requestDto.setUserId(user.getId());
+            imageRepository.save(requestDto.toDocument());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return urlCount;
     }
 
     public byte[] findImageById(Long imageId) throws IOException{
@@ -83,5 +88,16 @@ public class ImageServiceImpl implements ImageService {
     private Image findImage(Long imageId) {
         return imageRepository.findById(imageId)
                 .orElseThrow(() -> new IllegalArgumentException(imageId + "번은(는) 존재하지 않는 게시글입니다."));
+    }
+
+    private User findUserByEmail(String email) throws Exception {
+        if (userRepository.findByEmail(email).isPresent())
+            return userRepository.findByEmail(email).get();
+        else
+            throw new Exception("User Not Found");
+    }
+
+    public String decodeToken(String token) {
+        return jwtTokenProvider.decodeToken(token);
     }
 }
