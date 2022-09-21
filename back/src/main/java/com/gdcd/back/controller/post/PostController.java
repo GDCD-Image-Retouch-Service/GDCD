@@ -36,8 +36,8 @@ public class PostController extends Controller {
 //    }
 
     @PostMapping("")
-    public ResponseEntity<Map<String, Object>> postAdd(@RequestPart("images") List<MultipartFile> images, @RequestPart("requestDto") PostCreateRequestDto requestDto) throws IOException {
-        return getResponseEntity(postService.addPost(images, requestDto));
+    public ResponseEntity<Map<String, Object>> postAdd(@RequestPart("requestDto") PostCreateRequestDto requestDto) throws IOException {
+        return getResponseEntity(postService.addPost(requestDto));
 //        return getResponseEntity(images);
     }
 

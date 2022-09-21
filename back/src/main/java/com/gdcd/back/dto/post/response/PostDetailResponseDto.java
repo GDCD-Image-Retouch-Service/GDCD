@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class PostDetailResponseDto {
+    private Long postId;
     private String writerNickname;
     private String writerProfile;
 //    private List<String> images;
@@ -24,11 +25,12 @@ public class PostDetailResponseDto {
     private LocalDateTime updateTime;
     private Integer likeCount;
     private Long privacyBound;
-    private List<ImageSimpleResponseDto> images;
+//    private List<ImageSimpleResponseDto> images;
 
 
-    public PostDetailResponseDto(Post post, List<ImageSimpleResponseDto> list) {
-        this.images = list;
+    public PostDetailResponseDto(Post post) {
+//        this.images = list;
+        this.postId = post.get_id();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.tag = post.getTag();
