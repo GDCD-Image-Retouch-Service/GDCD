@@ -1,9 +1,13 @@
 <template>
-  <community-detail-card />
+  <div>
+    <community-detail-card />
+    <community-comment />
+  </div>
 </template>
 
 <script setup>
-import CommunityDetailCard from '@/components/organisms/CommunityDetailCard.vue';
+import CommunityDetailCard from '@/components/organisms/community/CommunityDetailCard.vue';
+import CommunityComment from '@/components/organisms/community/CommunityComment.vue';
 
 // import Swal from 'sweetalert2';
 

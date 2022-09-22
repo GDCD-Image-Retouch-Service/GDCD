@@ -8,8 +8,18 @@ export const useCommunityStore = defineStore('communityStore', {
       item: [
         {
           userId: 1,
-          writerNickname: '애리',
-          writerProfile: 'user1.jpg',
+          writerNickname: '성덕',
+          writerProfile: require('@/assets/sdprofile.png'),
+          likeCount: 0,
+          title: '아이씐나!',
+          representative: '1',
+          rank: '1',
+          updateTime: '2022-09-18T03:12:33.844',
+        },
+        {
+          userId: 2,
+          writerNickname: '성덕',
+          writerProfile: require('@/assets/sdprofile.png'),
           likeCount: 0,
           title: '아이씐나!',
           representative: '1',
@@ -44,7 +54,47 @@ export const useCommunityStore = defineStore('communityStore', {
         ],
       },
     },
+
+    // 전체 댓글 조회
+    commentAll: {
+      item: {
+        comments: [
+          {
+            commentId: 0,
+            content: 'String',
+            writerNickname: 'String',
+            writerProfile: require('@/assets/sdprofile.png'),
+            updateDate: '2022-09-16T15:40:05.03495',
+            kids: [
+              {
+                content: 'String',
+                writerNickname: 'String',
+                writerProfile: 'string',
+                updateDate: '2022-09-16T15:40:05.03495',
+              },
+            ],
+          },
+          {
+            commentId: 1,
+            content: 'String',
+            writerNickname: 'String',
+            writerProfile: 'string',
+            updateDate: '2022-09-16T15:40:05.03495',
+            kids: [
+              {
+                content: 'String',
+                writerNickname: 'String',
+                writerProfile: 'string',
+                updateDate: '2022-09-16T15:40:05.03495',
+              },
+            ],
+          },
+        ],
+      },
+      msg: 'string',
+    },
     isToggleButton: true,
+    isOpenComment: false,
   }),
   actions: {},
 });

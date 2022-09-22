@@ -39,7 +39,6 @@ import CommunityList from '@/components/pages/community/CommunityList';
 
 import CommunityWrite from '@/components/pages/community/CommunityWrite';
 import CommunityDetail from '@/components/pages/community/CommunityDetail';
-import CommunityDetailChatting from '@/components/pages/community/CommunityDetailChatting';
 
 // Profile
 import ProfileView from '@/views/ProfileView.vue';
@@ -92,11 +91,6 @@ const routes = [
         name: 'CommunityDetail',
 
         component: CommunityDetail,
-      },
-      {
-        path: ':postId/chat',
-        name: 'CommunityDetailChatting',
-        component: CommunityDetailChatting,
       },
     ],
   },

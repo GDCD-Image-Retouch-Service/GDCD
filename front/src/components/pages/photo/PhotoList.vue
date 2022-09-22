@@ -1,5 +1,6 @@
 <template>
   <div class="photo-list">
+    <date-format :updateInfo="'2022-09-18T03:12:33.844'" />
     <photo-header />
     <photo-section />
   </div>
@@ -8,6 +9,7 @@
 <script setup>
 import PhotoHeader from '@/components/organisms/PhotoHeader.vue';
 import PhotoSection from '@/components/organisms/PhotoSection.vue';
+import DateFormat from '@/components/molecules/common/DateFormat.vue';
 </script>
 
 <style scoped>
