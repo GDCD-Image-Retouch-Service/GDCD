@@ -13,6 +13,7 @@ import java.util.List;
 public class ImageCreateRequestDto {
     private Long userId ;
     private String imgUrl;
+    private String filePath;
     private int rank;
     private LocalDateTime registDate;
     private List<String> objects;
@@ -23,6 +24,7 @@ public class ImageCreateRequestDto {
         return Image.builder()
                 .userId(userId)
                 .imgUrl(imgUrl)
+                .filePath(filePath)
                 .rank(rank)
                 .registDate(registDate)
                 .objects(objects)

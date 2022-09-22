@@ -22,6 +22,7 @@ public class Controller {
             result.put("item", e.getMessage());
             result.put("msg", FAIL);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
+            e.printStackTrace();
         }
         return new ResponseEntity<>(result, status);
     }
