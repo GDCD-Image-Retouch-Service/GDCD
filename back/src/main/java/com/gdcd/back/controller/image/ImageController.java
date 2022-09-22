@@ -1,6 +1,7 @@
 package com.gdcd.back.controller.image;
 
 import com.gdcd.back.controller.Controller;
+import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
 import com.gdcd.back.service.image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,21 +10,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/image")
 public class ImageController extends Controller {
-
-//    private final ImageRepository imageRepository;
     private final ImageService imageService;
     @PostMapping("")
-    public ResponseEntity<Map<String, Object>> imageSave(@RequestPart MultipartFile image) throws IOException {
-        return getResponseEntity(imageService.addImage(image));
+    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestPart MultipartFile image, @RequestPart ImageCreateRequestDto requestDto) throws Exception {
+        return getResponseEntity(imageService.addImage(token, image, requestDto));
     }
 
     @GetMapping(value="", produces = MediaType.IMAGE_JPEG_VALUE)
@@ -31,6 +29,33 @@ public class ImageController extends Controller {
         return new ResponseEntity<byte[]>(imageService.findImageById(imageId), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/info")
+    public ResponseEntity<Map<String,Object>> imageDetailInfo(@RequestParam Long imageId){
+        return getResponseEntity(imageService.findImageInfoById(imageId));
+    }
+//    @GetMapping(path = "")
+//    public String setImageFileById(@RequestParam Long imageId, HttpServletResponse response)
+//            throws IOException {
+//
+//        return "file:///C:/test/images/Test/1.jpg";
+//
+//    }
+
+    @GetMapping(value="/list")
+//    @ResponseBody
+    public ResponseEntity<Map<String, Object>> imageList(@RequestHeader String token) throws Exception {
+        return getResponseEntity(imageService.findImageList(token));
+    }
+//    @GetMapping(value="/list")
+//    //    @ResponseBody
+//    public ResponseEntity<Map<String, Object>> imageList(@RequestParam Long userId) throws Exception {
+//        return getResponseEntity(imageService.findImageList(userId));
+//    }
+
+//    @GetMapping(value="/list", produces = List<MediaType.IMAGE_JPEG_VALUE>)
+//    public ResponseEntity<List<String>> imageList(@RequestParam Long userId) throws IOException {
+//        return new ResponseEntity<List<String>>(imageService.findImageList(userId), HttpStatus.OK);
+//    }
 
     @PostMapping("/initial")
     public ResponseEntity<Map<String, Object>> imageInitialScore() {

@@ -15,30 +15,26 @@ import java.util.List;
 public class PostCreateRequestDto {
     private String title;
     private String content;
-    private Long privacyBound;
-    private List<String> tag;
-    private List<String> images;
-    private LocalDateTime registTime = LocalDateTime.now();
-    private LocalDateTime updateTime;
-    private Boolean validation = true;
-    private Integer reportCount = 0;
     private String writerNickname;
     private String writerProfile;
-    private Integer likeCount = 0;
-    private String  representative;
+    private Long privacyBound;
+    private List<String> images;
+    private int representative;
+    private Long writeNo;
 
     public Post toDocument(){
         return Post.builder()
+                .writerNo(writeNo)
                 .title(title)
                 .content(content)
                 .privacyBound(privacyBound)
-                .tag(tag)
-                .updateTime(updateTime)
+                .registTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
                 .images(images)
-                .likeCount(likeCount)
-                .reportCount(reportCount)
+                .likeCount(0)
+                .reportCount(0)
                 .representative(representative)
-                .validation(validation)
+                .validation(true)
                 .build();
     }
 

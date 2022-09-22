@@ -14,7 +14,7 @@ import java.util.List;
 public interface PostService {
     public List<PostListResponseDto> findPosts();
     public PostDetailResponseDto findPostById(Long postId);
-    public PostCreateRequestDto addPost(List<MultipartFile> images, PostCreateRequestDto requestDto) throws IOException;
+    public PostCreateRequestDto addPost(PostCreateRequestDto requestDto) throws IOException;
     public PostDetailResponseDto modifyPost(PostUpdateRequestDto requestDto);
     public String removePost(Long postId);
 
