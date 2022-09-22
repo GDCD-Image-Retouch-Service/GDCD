@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class Controller {
     private String SUCCESS = "SUCCESS";
     private String FAIL = "FAIL";

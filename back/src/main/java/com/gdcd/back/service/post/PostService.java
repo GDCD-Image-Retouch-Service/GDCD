@@ -13,13 +13,13 @@ import java.util.List;
 
 public interface PostService {
     public List<PostListResponseDto> findPosts();
-    public PostDetailResponseDto findPostById(String postId);
+    public PostDetailResponseDto findPostById(Long postId);
     public PostCreateRequestDto addPost(List<MultipartFile> images, PostCreateRequestDto requestDto) throws IOException;
     public PostDetailResponseDto modifyPost(PostUpdateRequestDto requestDto);
-    public String removePost(String postId);
+    public String removePost(Long postId);
 
     public PostReportRequestDto reportPost(PostReportRequestDto requestDto);
 
-    public String likePost(String postId);
+    public Long likePost(Long postId);
     public Long scrapPost(Long postId);
 }
