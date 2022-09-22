@@ -3,7 +3,6 @@ package com.gdcd.back.service.image;
 import com.gdcd.back.config.JwtTokenProvider;
 import com.gdcd.back.domain.image.Image;
 import com.gdcd.back.domain.image.ImageRepository;
-import com.gdcd.back.domain.sequence.UserSequence;
 import com.gdcd.back.domain.user.User;
 import com.gdcd.back.domain.user.UserRepository;
 import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
@@ -28,7 +27,6 @@ public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    public UserSequence userSequence;
 
         String ROOT = "./data/images/";
         String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
@@ -40,12 +38,13 @@ public class ImageServiceImpl implements ImageService {
 //        ImageCreateRequestDto requestDto = new ImageCreateRequestDto();
         User user = findUserByEmail(decodeToken(token));
         Long urlCount = imageRepository.findAllByUserId(user.getId()).stream().count()+1;
+//        System.out.println(urlCount);
         String imageType = image.getContentType();
         String endPoint = "."+imageType.substring(imageType.lastIndexOf("/")+1);
         String path = user.getId().toString();
         String urlName = "//"+urlCount.toString()+endPoint;
         String FilePath = path + urlName;
-        System.out.println(FilePath);
+//        System.out.println(FilePath);
         File Folder = new File(ROOT + path);
         try {
             if (!Folder.exists()) {
@@ -58,17 +57,19 @@ public class ImageServiceImpl implements ImageService {
             }
             image.transferTo(new File(ROOT + FilePath));
             requestDto.setFilePath(FilePath);
-            Long imageId = userSequence.getSeq();
-            requestDto.setImgUrl(ADDRESS + imageId.toString());
+            Long count = imageRepository.findAll().stream().count()+1;
+            requestDto.setImgUrl(ADDRESS+count.toString());
+            requestDto.setUserId(user.getId());
 //            requestDto.setRegistDate(LocalDateTime.now());
 //            requestDto.setUserId(user.getId());
 //            requestDto.setRank(3);
 //            List<String> objects = new ArrayList<>();
-//            objects.add("자연`");
-//            objects.add("하늘");
 //            objects.add("나무");
+//            objects.add("하늘");
+//            objects.add("자연");
 //            objects.add("사람");
 //            requestDto.setObjects(objects);
+//            System.out.println(count);
             imageRepository.save(requestDto.toDocument());
 
         } catch (IOException e) {
@@ -79,7 +80,7 @@ public class ImageServiceImpl implements ImageService {
 
     public byte[] findImageById(Long imageId) throws IOException{
         Image img = findImage(imageId);
-        InputStream imageStream = new FileInputStream(ROOT + img.getImgUrl());
+        InputStream imageStream = new FileInputStream(ROOT + img.getFilePath());
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
         imageStream.close();
         return imageByteArray;
