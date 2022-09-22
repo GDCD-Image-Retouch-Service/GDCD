@@ -40,11 +40,8 @@
         </div>
         <i class="bi bi-bookmark"></i>
       </div>
-      <router-link
-        :to="{ name: 'CommunityDetailChatting', parmas: { postId: 1 } }"
-      >
-        <i class="bi bi-chat" style="color: var(--black)"> </i>
-      </router-link>
+      <i class="bi bi-chat" style="color: var(--black)" @click="clickComment()">
+      </i>
     </div>
   </div>
 </template>
@@ -52,6 +49,7 @@
 <script setup>
 import CardCarousel from '@/components/molecules/CardCarousel.vue';
 import { useCommunityStore } from '@/stores/community.js';
+import { watch } from '@vue/runtime-core';
 
 const communityStore = useCommunityStore();
 
@@ -60,6 +58,19 @@ const card = {
     origin: 'https://picsum.photos/200/300',
     edit: 'https://picsum.photos/200/301',
   },
+};
+
+const clickComment = () => {
+  communityStore.isOpenComment = !communityStore.isOpenComment;
+  // document.getElementById('app').scrollTop =
+  //   document.getElementById('app').scrollHeight;
+  // document.getElementById('app').scrollTop = 1200;
+  watch(communityStore.isOpenComment, (newValues) => {
+    window.scrollTo(0, document.body.scrollHeight);
+    console.log(newValues, '아아아아아아아왜안돼애애애애');
+  });
+
+  console.log('눌림');
 };
 </script>
 

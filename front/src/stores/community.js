@@ -55,15 +55,15 @@ export const useCommunityStore = defineStore('communityStore', {
       },
     },
 
-    // 전체 리뷰 조회
-    reviewAll: {
+    // 전체 댓글 조회
+    commentAll: {
       item: {
         comments: [
           {
             commentId: 0,
             content: 'String',
             writerNickname: 'String',
-            writerProfile: 'string',
+            writerProfile: require('@/assets/sdprofile.png'),
             updateDate: '2022-09-16T15:40:05.03495',
             kids: [
               {
@@ -94,6 +94,7 @@ export const useCommunityStore = defineStore('communityStore', {
       msg: 'string',
     },
     isToggleButton: true,
+    isOpenComment: false,
   }),
   actions: {},
 });

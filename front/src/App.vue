@@ -63,6 +63,10 @@ export default {
   scrollbar-width: none;
 }
 
+body {
+  background-color: blue;
+}
+
 *::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none;
@@ -93,7 +97,7 @@ body::-webkit-scrollbar {
     calc(var(--size-h-footer) + var(--grid-header)) var(--grid-side);
 
   /* 배경 */
-  /* background-color: #e654d2; */
+  background-color: #e654d2;
 }
 
 @media (min-width: 820px) {
