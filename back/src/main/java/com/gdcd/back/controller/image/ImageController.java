@@ -20,7 +20,7 @@ import java.util.Map;
 public class ImageController extends Controller {
     private final ImageService imageService;
     @PostMapping("")
-    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestParam(name = "image") MultipartFile image, @RequestPart ImageCreateRequestDto requestDto) throws Exception {
+    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestPart MultipartFile image, @RequestPart ImageCreateRequestDto requestDto) throws Exception {
         return getResponseEntity(imageService.addImage(token, image, requestDto));
     }
 

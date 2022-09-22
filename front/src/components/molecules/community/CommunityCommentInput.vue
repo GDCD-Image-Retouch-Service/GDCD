@@ -1,13 +1,13 @@
 <template>
-  <div class="chatting-input-wrap">
+  <div class="comment-input-wrap">
     <!-- 유저 프로필 -->
     <img :src="chat.profileImage" alt="" class="profile-image" />
 
     <!-- 인풋 -->
-    <input type="text" class="chatting-input" placeholder="댓글 달기..." />
+    <input type="text" class="comment-input" placeholder="댓글 달기..." />
 
     <!-- 버튼 -->
-    <div class="chatting-button">게시</div>
+    <div class="comment-button">게시</div>
   </div>
 </template>
 
@@ -22,7 +22,7 @@ const { chat } = toRefs(props);
 </script>
 
 <style scoped>
-.chatting-input-wrap {
+.comment-input-wrap {
   position: fixed;
   bottom: var(--size-h-footer);
   width: 100%;
@@ -41,7 +41,7 @@ const { chat } = toRefs(props);
   border-radius: 50px;
   margin-left: 20px;
 }
-.chatting-input {
+.comment-input {
   width: calc(100% - 120px);
   height: 35px;
   border: none;
@@ -51,7 +51,7 @@ const { chat } = toRefs(props);
 
   line-height: 35px;
 }
-.chatting-button {
+.comment-button {
   width: 30px;
   color: var(--instagram-dark-grey);
   font-size: 12px;

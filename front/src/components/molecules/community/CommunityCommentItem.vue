@@ -1,12 +1,16 @@
 <template>
   <div>
-    <div v-for="ch in chat" :key="ch.id" class="chatting-wrap">
-      <div class="chattting-header">
+    <div
+      v-for="comment in comments"
+      :key="comment.commentId"
+      class="comment-wrap"
+    >
+      <div class="comment-header">
         <!-- 유저 정보 -->
         <div class="user-info">
-          <img :src="ch.profileImage" class="profile-image" />
-          <div>
-            {{ ch.username }}
+          <img :src="comment.writerProfile" class="profile-image" />
+          <div class="profile-nickname">
+            {{ comment.writerNickname }}
           </div>
         </div>
 
@@ -18,8 +22,8 @@
       </div>
 
       <!-- 메시지 -->
-      <div class="chatting-message">
-        {{ ch.message }}
+      <div class="comment-message">
+        {{ comment.content }}
       </div>
     </div>
   </div>
@@ -29,38 +33,39 @@
 import { defineProps, toRefs } from 'vue';
 
 const props = defineProps({
-  chat: Object,
+  comments: Object,
 });
 
-const { chat } = toRefs(props);
+const { comments } = toRefs(props);
 </script>
 
 <style scoped>
-.chatting-wrap {
+.comment-wrap {
   align-items: center;
   display: flex;
   /* justify-content: space-between; */
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: var(--grid-vertical);
   flex-direction: column;
   width: 100%;
   align-items: start;
+  line-height: 30px;
 }
-.chattting-header {
+.comment-header {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 .edit-delete-wrap {
   display: flex;
-  gap: 5px;
+  gap: 10px;
   font-size: 12px;
   line-height: 30px;
 }
 .user-info {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   font-weight: 700;
 }
 .profile-image {
@@ -69,7 +74,7 @@ const { chat } = toRefs(props);
   object-fit: cover;
   border-radius: 50px;
 }
-.chatting-message {
+.comment-message {
   word-break: break-all;
   text-align: start;
 }
