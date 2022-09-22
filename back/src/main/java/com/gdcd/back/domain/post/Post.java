@@ -48,20 +48,21 @@ public class Post {
     private String writerProfile;
     @Field(name = "like_count")
     private Integer likeCount;
-    private String representative;
+    private int representative;
     private List<String> tag;
     private List<String> images;
 
 
 
     @Builder
-    public Post( Long writerNo,String title,String content,Long privacyBound,LocalDateTime updateTime,Boolean validation, Integer reportCount,String writerNickname,String writerProfile,Integer likeCount,String representative,List<String> tag,List<String> images){
+    public Post( Long writerNo,String title,String content,Long privacyBound,LocalDateTime updateTime,LocalDateTime registTime, Boolean validation, Integer reportCount,String writerNickname,String writerProfile,Integer likeCount,int representative,List<String> tag,List<String> images){
         this.writerNo=writerNo;
         this.title = title;
         this.content = content;
         this.privacyBound = privacyBound;
         this.reportCount = reportCount;
         this.validation = validation;
+        this.registTime = registTime;
         this.updateTime = updateTime;
         this.writerNickname = writerNickname;
         this.writerProfile = writerProfile;

@@ -3,10 +3,12 @@ package com.gdcd.back.service.image;
 import com.gdcd.back.config.JwtTokenProvider;
 import com.gdcd.back.domain.image.Image;
 import com.gdcd.back.domain.image.ImageRepository;
+import com.gdcd.back.domain.sequence.UserSequence;
 import com.gdcd.back.domain.user.User;
 import com.gdcd.back.domain.user.UserRepository;
 import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
 import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
+import com.gdcd.back.dto.image.response.ImageListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
@@ -26,15 +28,16 @@ public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    public UserSequence userSequence;
 
         String ROOT = "./data/images/";
         String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
 
     //    Local에서 진행할 폴더
-    //    String ROOT = "C:\\test\\images\\";
-    //    String ADDRESS = "http://localhost:8081/api/image?imageId=";
-    public Long addImage(String token, MultipartFile image) throws Exception {
-        ImageCreateRequestDto requestDto = new ImageCreateRequestDto();
+//        String ROOT = "C:\\test\\images\\";
+//        String ADDRESS = "http://localhost:8081/api/image?imageId=";
+    public Long addImage(String token, MultipartFile image, ImageCreateRequestDto requestDto) throws Exception {
+//        ImageCreateRequestDto requestDto = new ImageCreateRequestDto();
         User user = findUserByEmail(decodeToken(token));
         Long urlCount = imageRepository.findAllByUserId(user.getId()).stream().count()+1;
         String imageType = image.getContentType();
@@ -54,9 +57,18 @@ public class ImageServiceImpl implements ImageService {
                 }
             }
             image.transferTo(new File(ROOT + FilePath));
-            requestDto.setImgUrl(FilePath);
-            requestDto.setRegistDate(LocalDateTime.now());
-            requestDto.setUserId(user.getId());
+            requestDto.setFilePath(FilePath);
+            Long imageId = userSequence.getSeq();
+            requestDto.setImgUrl(ADDRESS + imageId.toString());
+//            requestDto.setRegistDate(LocalDateTime.now());
+//            requestDto.setUserId(user.getId());
+//            requestDto.setRank(3);
+//            List<String> objects = new ArrayList<>();
+//            objects.add("자연`");
+//            objects.add("하늘");
+//            objects.add("나무");
+//            objects.add("사람");
+//            requestDto.setObjects(objects);
             imageRepository.save(requestDto.toDocument());
 
         } catch (IOException e) {
@@ -73,16 +85,19 @@ public class ImageServiceImpl implements ImageService {
         return imageByteArray;
     }
 
+    public ImageDetailResponseDto findImageInfoById(Long imageId){
+        Image img = findImage(imageId);
+        return new ImageDetailResponseDto(img);
+    }
 
-    public List<ImageDetailResponseDto> findImageList(String token) throws Exception{
+    public List<ImageListResponseDto> findImageList(String token) throws Exception{
         List<Image> imageList;
         User user = findUserByEmail(decodeToken(token));
         imageList = imageRepository.findAllByUserId(user.getId());
 
-        List<ImageDetailResponseDto> images = new ArrayList<>();
+        List<ImageListResponseDto> images = new ArrayList<>();
         for (Image image : imageList){
-            String url = ADDRESS + image.getId().toString();
-            images.add(new ImageDetailResponseDto(url, image.getId()));
+            images.add(new ImageListResponseDto(image));
         }
         return images;
     }

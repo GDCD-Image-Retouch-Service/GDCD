@@ -33,16 +33,13 @@ public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
-    String ROOT = "C:\\test\\images\\";
-    Integer number = 1;
-    String JPG = ".jpg";
 
 
     public List<PostListResponseDto> findPosts(){
         List<Post> documentList = postRepository.findAll();
         List<PostListResponseDto> list = new ArrayList<>();
         for (Post post : documentList) {
-            if (post.getValidation().equals(true)){
+            if (validPost(post)){
                 list.add(new PostListResponseDto(post));
             }
         }
@@ -59,8 +56,6 @@ public class PostServiceImpl implements PostService{
     public PostCreateRequestDto addPost(PostCreateRequestDto requestDto) throws IOException {
 //        List<String> list = new ArrayList<>();
 //        requestDto.setImages(list);
-        requestDto.setRegistTime(LocalDateTime.now());
-        requestDto.setUpdateTime(LocalDateTime.now());
         postRepository.save(requestDto.toDocument());
         return requestDto;
 

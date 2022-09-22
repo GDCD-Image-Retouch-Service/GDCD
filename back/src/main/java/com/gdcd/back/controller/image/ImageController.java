@@ -1,6 +1,7 @@
 package com.gdcd.back.controller.image;
 
 import com.gdcd.back.controller.Controller;
+import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
 import com.gdcd.back.service.image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,13 +20,18 @@ import java.util.Map;
 public class ImageController extends Controller {
     private final ImageService imageService;
     @PostMapping("")
-    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestBody MultipartFile image) throws Exception {
-        return getResponseEntity(imageService.addImage(token, image));
+    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestParam(name = "image") MultipartFile image, @RequestPart ImageCreateRequestDto requestDto) throws Exception {
+        return getResponseEntity(imageService.addImage(token, image, requestDto));
     }
 
     @GetMapping(value="", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> imageDetails(@RequestParam Long imageId) throws IOException {
         return new ResponseEntity<byte[]>(imageService.findImageById(imageId), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/info")
+    public ResponseEntity<Map<String,Object>> imageDetailInfo(@RequestParam Long imageId){
+        return getResponseEntity(imageService.findImageInfoById(imageId));
     }
 //    @GetMapping(path = "")
 //    public String setImageFileById(@RequestParam Long imageId, HttpServletResponse response)

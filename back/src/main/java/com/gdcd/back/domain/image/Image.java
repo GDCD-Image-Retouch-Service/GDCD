@@ -29,6 +29,8 @@ public class Image {
     private Long userId;
     @Field(name = "img_url")
     private String imgUrl;
+    @Field(name="file_path")
+    private String filePath;
     private int rank;
     @Field(name = "regist_date")
     private LocalDateTime registDate;
