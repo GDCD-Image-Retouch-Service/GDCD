@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class PostUpdateRequestDto {
-    private String postId;
+    private Long postId;
     private String title;
     private String content;
     private Long privacyBound;
