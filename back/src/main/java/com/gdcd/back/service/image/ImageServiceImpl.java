@@ -28,11 +28,11 @@ public class ImageServiceImpl implements ImageService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-        String ROOT = "./data/images/";
+        String ROOT = "/api/data/images/";
         String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
 
     //    Local에서 진행할 폴더
-//        String ROOT = "C:\\test\\images\\";
+//        String ROOT = "C:/test/images/";
 //        String ADDRESS = "http://localhost:8081/api/image?imageId=";
     public Long addImage(String token, MultipartFile image, ImageCreateRequestDto requestDto) throws Exception {
 //        ImageCreateRequestDto requestDto = new ImageCreateRequestDto();
