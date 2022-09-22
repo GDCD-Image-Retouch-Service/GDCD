@@ -93,9 +93,10 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> blockUser(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
+            String blockerEmail = decodeToken(token);
             User blocking = findUserById(userId);
             Block block = Block.builder()
-                    .blocker(findUserByEmail(decodeToken(token)).getId())
+                    .blocker(findUserByEmail(blockerEmail).getId())
                     .blocking(userId)
                     .blockingNickname(blocking.getNickname())
                     .blockingProfile(blocking.getProfile())
@@ -104,6 +105,18 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
             RESULT_OBJECT.put("error", "USER NOT BLOCKED");
+        }
+        return RESULT_OBJECT;
+    }
+
+    public Map<String, Object> cancleBlock(Long blockId) {
+        RESULT_OBJECT = new HashMap<>();
+        try {
+            blockRepository.delete(findBlockById(blockId));
+            RESULT_OBJECT.put("unblock", blockId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            RESULT_OBJECT.put("error", "USER NOT UNBLOCKED");
         }
         return RESULT_OBJECT;
     }
@@ -145,6 +158,13 @@ public class UserServiceImpl implements UserService {
             return userRepository.findByEmail(email).get();
         else
             throw new Exception("User Not Found");
+    }
+
+    private Block findBlockById(Long blockId) throws Exception {
+        if (blockRepository.findById(blockId).isPresent())
+            return blockRepository.findById(blockId).get();
+        else
+            throw new Exception("User Not Blocked");
     }
 
     private boolean validUser(User user) {
