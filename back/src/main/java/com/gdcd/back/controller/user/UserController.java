@@ -51,6 +51,11 @@ public class UserController extends Controller {
         return getResponseEntity(userService.blockUser(token, userId));
     }
 
+//    @DeleteMapping("/block")
+//    public ResponseEntity<Map<String, Object>> userBlockRemove(@RequestParam Long blockId) {
+//        return getResponseEntity(userService.cancleBlock(blockId));
+//    }
+
     @GetMapping("/scrap-list")
     public ResponseEntity<Map<String, Object>> userScrapList(@RequestHeader String token) {
         return getResponseEntity(userService.findScraps(token));
@@ -67,12 +72,12 @@ public class UserController extends Controller {
     }
 
     @GetMapping("/follower")
-    public ResponseEntity<Map<String, Object>> userFollowerList(@RequestHeader String token) {
-        return getResponseEntity(userService.findFollowers(token));
+    public ResponseEntity<Map<String, Object>> userFollowerList(@RequestHeader String token, @RequestParam(required = false) Long userId) {
+        return getResponseEntity(userService.findFollowers(token, userId));
     }
 
     @GetMapping("/following")
-    public ResponseEntity<Map<String, Object>> userFollowingList(@RequestHeader String token) {
-        return getResponseEntity(userService.findFollowings(token));
+    public ResponseEntity<Map<String, Object>> userFollowingList(@RequestHeader String token, @RequestParam(required = false) Long userId) {
+        return getResponseEntity(userService.findFollowings(token, userId));
     }
 }

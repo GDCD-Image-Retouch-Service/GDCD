@@ -1,4 +1,4 @@
-package com.gdcd.back.domain.user.block;
+package com.gdcd.back.domain.user.follow;
 
 import com.gdcd.back.domain.user.User;
 import lombok.*;
@@ -12,13 +12,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "blocks")
-public class Block {
+@Document(collection = "follows")
+public class Follow {
     @Transient
-    public static final String BLOCK_SEQUENCE_NAME = "block_sequences";
+    public static final String FOLLOW_SEQUENCE_NAME = "follow_sequences";
     @Id
     @Field(name = "_id")
     private Long id;
-    private String blocker;
-    private User blocking;
+    private User follower;
+    private User following;
 }
