@@ -15,10 +15,10 @@ public interface UserService {
     public Map<String, Object> modifyUser(String token, UserDetailUpdateRequestDto requestDto);
     public Map<String, Object> removeUser(String token);
     public Map<String, Object> blockUser(String token, Long userId);
-    public Map<String, Object> cancleBlock(Long blockId);
+//    public Map<String, Object> cancleBlock(Long blockId);
     public Map<String, Object> findScraps(String token);
     public Map<String, Object> findLikes(String token);
-    public Map<String, String> followUser(String token, Long userId);
-    public Map<String, Object> findFollowers(String token);
-    public Map<String, Object> findFollowings(String token);
+    public Map<String, Object> followUser(String token, Long userId);
+    public Map<String, Object> findFollowers(String token, Long userId);
+    public Map<String, Object> findFollowings(String token, Long userId);
 }
