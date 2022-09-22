@@ -8,10 +8,9 @@ from typing import List, Dict
 
 from services.nima import Nima
 
-app = FastAPI()
+app = FastAPI(root_path="/core")
 nima = Nima(aes_path="models/aesthetic_InceptionV3_0725.pt",
             tec_path="models/technical_ResNet152_0883.pt")
-
 
 @app.post("/score-image", response_model=List[Dict[str, float]])
 def get_score(images: List[UploadFile] = File(...)):
