@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,10 +72,24 @@ public class UserServiceImpl implements UserService {
         return RESULT_OBJECT;
     }
 
-    public Map<String, Object> modifyUser(String token, UserDetailUpdateRequestDto requestDto) {
+//    public Map<String, Object> modifyUser(String token, UserDetailUpdateRequestDto requestDto) {
+//        RESULT_OBJECT = new HashMap<>();
+//        try {
+//            User user = findUserByEmail(decodeToken(token));
+//            user.update(requestDto);
+//            RESULT_OBJECT.put("userId", userRepository.save(user).getId());
+//            // fix) 유저 정보를 바꾸면 post가 가지고 있는 writer 정보 또한 바뀌어야함.
+//        } catch (Exception e) {
+//            RESULT_OBJECT.put("error", "USER NOT UPDATED");
+//        }
+//        return RESULT_OBJECT;
+//    }
+
+    public Map<String, Object> modifyUser(String token, MultipartFile profile, String nickname) {
         RESULT_OBJECT = new HashMap<>();
         try {
             User user = findUserByEmail(decodeToken(token));
+            UserDetailUpdateRequestDto requestDto = UserDetailUpdateRequestDto.builder().build(); // profile, nickname
             user.update(requestDto);
             RESULT_OBJECT.put("userId", userRepository.save(user).getId());
             // fix) 유저 정보를 바꾸면 post가 가지고 있는 writer 정보 또한 바뀌어야함.
