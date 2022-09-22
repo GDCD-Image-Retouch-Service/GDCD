@@ -1,7 +1,7 @@
 package com.gdcd.back.controller.user;
 
 import com.gdcd.back.controller.Controller;
-import com.gdcd.back.dto.user.request.UserCreateRequestDto;
+import com.gdcd.back.domain.user.UserRepository;
 import com.gdcd.back.dto.user.request.UserDetailUpdateRequestDto;
 import com.gdcd.back.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +19,13 @@ public class UserController extends Controller {
 
     private static final String SUCCESS = "SUCCESS";
     private static final String FAIL = "FAIL";
+
+    private final UserRepository userRepository;
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> userLogin(@RequestBody UserCreateRequestDto requestDto) {
-        return getResponseEntity(userService.loginUser(requestDto));
+    public ResponseEntity<Map<String, Object>> userLogin() {
+        return getResponseEntity("hi");
     }
 
     @GetMapping("/nickname")
@@ -36,6 +38,7 @@ public class UserController extends Controller {
             result.put("msg", SUCCESS);
         }
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+//        return getResponseEntity(!userService.checkNickname(nickname));
     }
 
 //    @GetMapping("/id")

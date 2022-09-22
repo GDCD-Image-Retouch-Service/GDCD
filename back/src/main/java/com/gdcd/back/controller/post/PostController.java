@@ -25,7 +25,7 @@ public class PostController extends Controller {
     }
 
     @GetMapping("")
-    public ResponseEntity<Map<String, Object>> postDetails(@RequestParam Long postId) {
+    public ResponseEntity<Map<String, Object>> postDetails(@RequestParam String postId) {
         return getResponseEntity(postService.findPostById(postId));
     }
 
@@ -53,12 +53,12 @@ public class PostController extends Controller {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Map<String, Object>> postDelete(@RequestParam Long postId) {
+    public ResponseEntity<Map<String, Object>> postDelete(@RequestParam String postId) {
         return getResponseEntity(postService.removePost(postId));
     }
 
     @GetMapping("/like")
-    public ResponseEntity<Map<String, Object>> postLikeSave(@RequestParam Long postId) {
+    public ResponseEntity<Map<String, Object>> postLikeSave(@RequestParam String postId) {
         return getResponseEntity(postService.likePost(postId));
     }
 
