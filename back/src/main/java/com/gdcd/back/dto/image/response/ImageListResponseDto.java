@@ -15,8 +15,8 @@ public class ImageListResponseDto {
     private int imageRank;
 
 
-    public ImageListResponseDto(Image img) {
-        this.imageUrl = img.getImgUrl();
+    public ImageListResponseDto(String imageUrl, Image img) {
+        this.imageUrl = imageUrl;
         this.imageId = img.getId();
         this.imageTag = img.getObjects();
         this.imageRank = img.getRank();
