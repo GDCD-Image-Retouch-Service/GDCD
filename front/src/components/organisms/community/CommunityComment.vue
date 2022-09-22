@@ -1,13 +1,29 @@
 <template>
-  <div class="community-detail-chatting">
-    <community-detail-chatting-item :chat="chat" />
-    <community-detail-chatting-input :chat="chat[0]" />
+  <div
+    class="community-review common-image"
+    v-if="communityStore.isOpenComment"
+  >
+    <div class="review-wrap">
+      <div class="review-item">
+        <community-comment-item
+          :comments="communityStore.commentAll.item.comments"
+        />
+        <community-comment-input :chat="chat[0]" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import CommunityDetailChattingItem from '@/components/organisms/CommunityDetailCahttingItem.vue';
-import CommunityDetailChattingInput from '@/components/organisms/CommunityDetailChattingInput.vue';
+import CommunityCommentItem from '@/components/molecules/community/CommunityCommentItem';
+import CommunityCommentInput from '@/components/molecules/community/CommunityCommentInput.vue';
+
+import { useCommunityStore } from '@/stores/community.js';
+
+const communityStore = useCommunityStore();
+
+// 데이터 초기화
+communityStore.isOpenComment = false;
 
 const chat = [
   {
@@ -30,9 +46,33 @@ const chat = [
 </script>
 
 <style scoped>
-.community-detail-chatting {
-  width: calc(100% - 40px);
-  margin-top: 30px;
-  padding-bottom: calc(var(--size-h-footer) + 80px);
+.community-review {
+  position: relative;
+  border: 1px solid var(--instagram-grey);
+  margin-top: var(--grid-vertical);
+  margin-bottom: calc(50px);
+  border-radius: 10px;
+  max-height: calc(
+    100vh - var(--size-h-header) - var(--size-h-footer) - 50px -
+      var(--grid-vertical) - var(--grid-vertical)
+  );
+  overflow: hidden;
+}
+.review-wrap {
+  width: calc(100% - 2 * var(--grid-side));
+  margin-top: var(--grid-vertical);
+  margin-bottom: calc(50px);
+  margin-left: var(--grid-side);
+  max-height: calc(
+    100vh - var(--size-h-header) - var(--size-h-footer) - 50px -
+      var(--grid-vertical) - var(--grid-vertical) - var(--grid-vertical) -
+      var(--grid-vertical)
+  );
+}
+.review-item {
+  width: 100%;
+  word-break: break-all;
+  text-align: start;
+  max-height: 100%;
 }
 </style>
