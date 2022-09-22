@@ -33,16 +33,13 @@ public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
-    String ROOT = "C:\\test\\images\\";
-    Integer number = 1;
-    String JPG = ".jpg";
 
 
     public List<PostListResponseDto> findPosts(){
         List<Post> documentList = postRepository.findAll();
         List<PostListResponseDto> list = new ArrayList<>();
         for (Post post : documentList) {
-            if (post.getValidation().equals(true)){
+            if (validPost(post)){
                 list.add(new PostListResponseDto(post));
             }
         }
@@ -51,38 +48,14 @@ public class PostServiceImpl implements PostService{
     public PostDetailResponseDto findPostById(Long postId){
         Post post = findPost(postId);
         if (validPost(post)){
-            return new PostDetailResponseDto(post,list(post)); // list(post)
+            return new PostDetailResponseDto(post); // list(post)
         }else {
             return null;
         }
     }
-    public PostCreateRequestDto addPost(List<MultipartFile> images, PostCreateRequestDto requestDto) throws IOException {
-        List<String> list = new ArrayList<>();
-        for (MultipartFile image : images){
-            String urlName = number.toString() + JPG;
-            String path ="Test\\";
-            String FilePath = path+urlName;
-            File Folder = new File(ROOT + path);
-            try {
-                if (!Folder.exists()) {
-                    try {
-                        Folder.mkdir();
-                        System.out.println("폴더가 생성되었습니다.");
-                    }
-                    catch (Exception e) {
-                        e.getStackTrace();
-                    }
-                }
-                image.transferTo(new File(ROOT + FilePath));
-                list.add(FilePath);
-                number += 1;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        requestDto.setImages(list);
-        requestDto.setRegistTime(LocalDateTime.now());
-        requestDto.setUpdateTime(LocalDateTime.now());
+    public PostCreateRequestDto addPost(PostCreateRequestDto requestDto) throws IOException {
+//        List<String> list = new ArrayList<>();
+//        requestDto.setImages(list);
         postRepository.save(requestDto.toDocument());
         return requestDto;
 
@@ -105,8 +78,9 @@ public class PostServiceImpl implements PostService{
                     requestDto.getPrivacyBound(),
                     requestDto.getTag()
             );
+            post.setId(requestDto.getPostId());
             postRepository.save(post);
-            return new PostDetailResponseDto(post,list(post));
+            return new PostDetailResponseDto(post);
         }else {
             return null;
         }

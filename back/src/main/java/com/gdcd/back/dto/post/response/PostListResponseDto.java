@@ -14,7 +14,7 @@ public class PostListResponseDto {
     private Integer likeCount;
 
     private String title;
-    private String representative;
+    private int representative;
     private List<Integer> rank;
     private LocalDateTime updateTime;
 
