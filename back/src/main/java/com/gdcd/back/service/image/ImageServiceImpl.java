@@ -28,7 +28,7 @@ public class ImageServiceImpl implements ImageService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-        String ROOT = "/api/data/images/";
+        String ROOT = "/app/data/images/";
         String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
 
     //    Local에서 진행할 폴더
