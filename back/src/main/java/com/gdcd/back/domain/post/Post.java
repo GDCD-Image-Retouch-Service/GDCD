@@ -72,4 +72,12 @@ public class Post {
 //        if(images != null)
 //            this.images = images;
     }
+
+    public void addLikeCount(){
+        this.likeCount++;
+    }
+
+    public void subLikeCount(){
+        this.likeCount--;
+    }
 }
