@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,8 @@ public class UserServiceImpl implements UserService {
     private final FollowRepository followRepository;
     private Map<String, String> RESULT_STRING;
     private Map<String, Object> RESULT_OBJECT;
+    private final String ROOT = "/api/data/profiles/";
+//    private final String ROOT = "C:/SSAFY/AI/profiles/";
 
     @Override
     public Map<String, String> loginUser(UserCreateRequestDto requestDto) {
@@ -47,13 +50,14 @@ public class UserServiceImpl implements UserService {
         RESULT_STRING.put("token", jwtTokenProvider.createToken(email));
         return RESULT_STRING;
     }
-
+    @Override
     public Map<String, Object> checkNickname(String nickname) {
         RESULT_OBJECT = new HashMap<>();
         RESULT_OBJECT.put("usable", !userRepository.findByNickname(nickname).isPresent());
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> findUser(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
@@ -85,11 +89,31 @@ public class UserServiceImpl implements UserService {
 //        return RESULT_OBJECT;
 //    }
 
+    @Override
     public Map<String, Object> modifyUser(String token, MultipartFile profile, String nickname) {
         RESULT_OBJECT = new HashMap<>();
         try {
             User user = findUserByEmail(decodeToken(token));
-            UserDetailUpdateRequestDto requestDto = UserDetailUpdateRequestDto.builder().build(); // profile, nickname
+            String filePath = user.getProfile();
+            if (profile != null) {
+                String type = profile.getContentType();
+                String endpoint = "." + type.substring(type.lastIndexOf("/") + 1);
+                filePath = ROOT + user.getId().toString() + endpoint;
+                File folder = new File(filePath);
+                if (!folder.exists()) {
+                    try {
+                        folder.mkdir();
+                    } catch (Exception ignored) {
+                    }
+                }
+                profile.transferTo(new File(filePath));
+            }
+            if (nickname == null)
+                nickname = user.getNickname();
+            UserDetailUpdateRequestDto requestDto = UserDetailUpdateRequestDto.builder()
+                    .nickname(nickname)
+                    .profile(filePath)
+                    .build(); // profile, nickname
             user.update(requestDto);
             RESULT_OBJECT.put("userId", userRepository.save(user).getId());
             // fix) 유저 정보를 바꾸면 post가 가지고 있는 writer 정보 또한 바뀌어야함.
@@ -99,6 +123,7 @@ public class UserServiceImpl implements UserService {
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> removeUser(String token) {
         RESULT_OBJECT = new HashMap<>();
         try {
@@ -111,6 +136,7 @@ public class UserServiceImpl implements UserService {
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> blockUser(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
@@ -146,16 +172,19 @@ public class UserServiceImpl implements UserService {
 //        return RESULT_OBJECT;
 //    }
 
+    @Override
     public Map<String, Object> findScraps(String token) {
         RESULT_OBJECT = new HashMap<>();
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> findLikes(String token) {
         RESULT_OBJECT = new HashMap<>();
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> followUser(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
@@ -181,6 +210,7 @@ public class UserServiceImpl implements UserService {
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> findFollowers(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
@@ -203,6 +233,7 @@ public class UserServiceImpl implements UserService {
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> findFollowings(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
