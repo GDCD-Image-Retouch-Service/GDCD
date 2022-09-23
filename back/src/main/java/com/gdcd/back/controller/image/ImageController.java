@@ -58,8 +58,8 @@ public class ImageController extends Controller {
 //    }
 
     @PostMapping("/initial")
-    public ResponseEntity<Map<String, Object>> imageInitialScore() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> imageInitialScore(@RequestPart MultipartFile image) {
+        return getResponseEntity(imageService.requestInitialScore(image));
     }
 
     @PostMapping("/object")
