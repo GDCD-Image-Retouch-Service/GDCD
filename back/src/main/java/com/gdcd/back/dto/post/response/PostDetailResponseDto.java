@@ -2,38 +2,43 @@ package com.gdcd.back.dto.post.response;
 
 import com.gdcd.back.domain.image.Image;
 import com.gdcd.back.domain.post.Post;
-import com.gdcd.back.dto.image.response.ImageSimpleResponseDto;
+import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 public class PostDetailResponseDto {
     private Long postId;
+    private Long userId;
     private String writerNickname;
     private String writerProfile;
-//    private List<String> images;
-
-    private Integer rank;
     private String title;
     private String content;
-    private List<String> tag;
+    private List<ImageDetailResponseDto> images;
+    private int representative;
     private LocalDateTime updateTime;
     private Integer likeCount;
     private Long privacyBound;
-//    private List<ImageSimpleResponseDto> images;
+    private List<Long> scrapUsers;
+    private List<Long> likeUsers;
 
 
     public PostDetailResponseDto(Post post) {
-//        this.images = list;
         this.postId = post.getId();
+        this.userId = post.getWriterNo();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.tag = post.getTag();
+        this.writerNickname = post.getWriterNickname();
+        this.writerProfile = post.getWriterProfile();
+        this.images = post.getImages();
+        this.representative = post.getRepresentative();
+        this.likeCount = post.getLikeCount();
+        this.likeUsers = post.getLikeUsers();
+        this.scrapUsers = post.getScrapUsers();
         this.updateTime = post.getUpdateTime();
     }
 }
