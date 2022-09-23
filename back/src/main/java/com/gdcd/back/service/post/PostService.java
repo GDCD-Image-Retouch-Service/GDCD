@@ -14,8 +14,8 @@ import java.util.List;
 public interface PostService {
     public List<PostListResponseDto> findPosts();
     public PostDetailResponseDto findPostById(Long postId);
-    public PostCreateRequestDto addPost(String token, PostCreateRequestDto requestDto) throws Exception;
-    public PostDetailResponseDto modifyPost(String token, PostUpdateRequestDto requestDto);
+    public Long addPost(String token, PostCreateRequestDto requestDto) throws Exception;
+    public Long modifyPost(String token, PostUpdateRequestDto requestDto);
     public String removePost(Long postId);
 
     public PostReportRequestDto reportPost(PostReportRequestDto requestDto);
