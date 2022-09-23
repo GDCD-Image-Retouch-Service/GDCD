@@ -38,26 +38,32 @@ public class PostServiceImpl implements PostService{
     private final JwtTokenProvider jwtTokenProvider;
 
 
-    public List<PostListResponseDto> findPosts(){
+    public List<PostListResponseDto> findPosts(String token) throws Exception{
+        User user = findUserByEmail(decodeToken(token));
         List<Post> documentList = postRepository.findAll();
         List<PostListResponseDto> list = new ArrayList<>();
         for (Post post : documentList) {
             if (validPost(post)){
+                Boolean scrap = scrapPost(post, user);
+                Boolean like = likePost(post, user);
                 ImageDetailResponseDto res = post.getImages().get(post.getRepresentative());
-                list.add(new PostListResponseDto(post, res));
+                list.add(new PostListResponseDto(post, res, scrap, like));
             }
         }
         return list;
     }
-    public PostDetailResponseDto findPostById(Long postId){
+    public PostDetailResponseDto findPostById(String token, Long postId) throws Exception{
+        User user = findUserByEmail(decodeToken(token));
         Post post = findPost(postId);
         if (validPost(post)){
-            return new PostDetailResponseDto(post); // list(post)
+            Boolean scrap = scrapPost(post, user);
+            Boolean like = likePost(post, user);
+            return new PostDetailResponseDto(post, scrap, like); // list(post)
         }else {
             return null;
         }
     }
-    public PostCreateRequestDto addPost(String token, PostCreateRequestDto requestDto) throws Exception {
+    public Long addPost(String token, PostCreateRequestDto requestDto) throws Exception {
         User user = findUserByEmail(decodeToken(token));
         requestDto.setWriteNo(user.getId());
         requestDto.setWriterNickname(user.getNickname());
@@ -67,36 +73,26 @@ public class PostServiceImpl implements PostService{
             images.add(new ImageDetailResponseDto(findImage(id)));
         }
         requestDto.setImageList(images);
-        postRepository.save(requestDto.toDocument());
-        return requestDto;
+//        user.addPostCount();
+//        userRepository.save(user);
+        return postRepository.save(requestDto.toDocument()).getId();
 
     };
-//    public PostCreateRequestDto addPost(PostCreateRequestDto requestDto){
-////        String image = images.getOriginalFilename();
-////        List<String> list = new ArrayList<>();
-////        list.add(image);
-////        requestDto.setImages(list);
-//        return requestDto;
-//
-//    };
-    public PostDetailResponseDto modifyPost(String token, PostUpdateRequestDto requestDto){
-//        Post post = findPost(requestDto.getPostId());
-//        if (validPost(post)){
-//            post.setUpdateTime(LocalDateTime.now());
-//            post.update(
-//                    requestDto.getTitle(),
-//                    requestDto.getContent(),
-//                    requestDto.getPrivacyBound(),
-//                    requestDto.getTag()
-//            );
-//            post.setId(requestDto.getPostId());
-//            postRepository.save(post);
-//
-//            return new PostDetailResponseDto(post);
-//        }else {
-//            return null;
-//        }
-        return null;
+
+    public Long modifyPost(String token, PostUpdateRequestDto requestDto){
+        Post post = findPost(requestDto.getPostId());
+        if (validPost(post)){
+            post.setUpdateTime(LocalDateTime.now());
+            post.update(
+                    requestDto.getTitle(),
+                    requestDto.getContent(),
+                    requestDto.getPrivacyBound(),
+                    requestDto.getRepresentative()
+            );
+            return postRepository.save(post).getId();
+        }else {
+            return null;
+        }
     }
 
     public String removePost(Long postId){
@@ -114,34 +110,70 @@ public class PostServiceImpl implements PostService{
         return requestDto;
     }
 
-    public Long likePost(Long postId){
+    public Long likePost(String token, Long postId) throws Exception {
         Post post = findPost(postId);
+        User user = findUserByEmail(decodeToken(token));
         // likes Document 만들어야 함 (user 구현 후)
         if (validPost(post)){
-            //if (likes Document에 없다면)
-            //post.setLikeCount(post.getLikeCount()+1);
-            // like Document에 저장하기 (userId, postId)
-            //else (like Document에 있다면)
-            //post.setLikeCount(post.getLikeCount()-1);
-            //like Document에서 삭제하기
-            //postRepository.save(post);
+            if (!post.getLikeUsers().contains(user.getId())){
+                List<Long> likeuser = post.getLikeUsers();
+                likeuser.add(user.getId());
+                post.setLikeUsers(likeuser);
+                post.addLikeCount();
+                user.addLikeCount();
+                postRepository.save(post);
+                userRepository.save(user);
+
+                System.out.println("없어서 추가함");
+            }else{
+                List<Long> likeuser = post.getLikeUsers();
+                likeuser.remove(user.getId());
+                post.setLikeUsers(likeuser);
+                post.subLikeCount();
+                user.subLikeCount();
+                userRepository.save(user);
+                postRepository.save(post);
+                System.out.println("있어서 삭제함");
+            }
             return postId;
         }else {
             return null;
         }
     }
 
-    public Long scrapPost(Long postId){
-        return postId;
+    public Long scrapPost(String token, Long postId) throws Exception{
+        Post post = findPost(postId);
+        User user = findUserByEmail(decodeToken(token));
+        if (validPost(post)){
+            if (!post.getScrapUsers().contains(user.getId())){
+                List<Long> scrapuser = post.getScrapUsers();
+                scrapuser.add(user.getId());
+                post.setScrapUsers(scrapuser);
+                user.addScrapCount();
+                postRepository.save(post);
+                userRepository.save(user);
+
+                System.out.println("없어서 추가함");
+            }else{
+                List<Long> scrapUsers = post.getScrapUsers();
+                scrapUsers.remove(user.getId());
+                post.setScrapUsers(scrapUsers);
+                user.subScrapCount();
+                userRepository.save(user);
+                postRepository.save(post);
+                System.out.println("있어서 삭제함");
+            }
+            return postId;
+        }else {
+            return null;
+        }
     }
 
     private User findUser(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException(userId + "은(는) 존재하지 않는 유저입니다."));
+        return userRepository.findById(userId).get();
     }
     private Post findPost(Long postId) {
-        return postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException(postId + "번은(는) 존재하지 않는 게시글입니다."));
+        return postRepository.findById(postId).get();
     }
 
     private Image findImage(Long imageId) {
@@ -189,6 +221,22 @@ public class PostServiceImpl implements PostService{
 
     private boolean validPost(Post post) {
         return post.getValidation();
+    }
+
+    private boolean scrapPost(Post post, User user){
+        if (post.getScrapUsers().contains(user.getId())){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    private boolean likePost(Post post, User user){
+        if (post.getLikeUsers().contains(user.getId())){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     public String decodeToken(String token) {
