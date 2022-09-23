@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     private final FollowRepository followRepository;
     private Map<String, String> RESULT_STRING;
     private Map<String, Object> RESULT_OBJECT;
-    private final String ROOT = "/api/data/profiles/";
+    private final String ROOT = "/app/data/profiles/";
 //    private final String ROOT = "C:/SSAFY/AI/profiles/";
 
     @Override

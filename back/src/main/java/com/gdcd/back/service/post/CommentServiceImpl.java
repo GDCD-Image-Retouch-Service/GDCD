@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
-    private final CommentRepository commentRepository;
+//    private final CommentRepository commentRepository;
     @Override
     public List<CommentUpperResponseDto> findComments(Long postId) {
         List<CommentUpperResponseDto> list = new ArrayList<>();
