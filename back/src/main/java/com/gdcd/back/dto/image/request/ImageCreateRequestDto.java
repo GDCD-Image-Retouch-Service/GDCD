@@ -26,7 +26,7 @@ public class ImageCreateRequestDto {
                 .imgUrl(imgUrl)
                 .filePath(filePath)
                 .rank(rank)
-                .registDate(registDate)
+                .registDate(LocalDateTime.now())
                 .objects(objects)
                 .build();
     }

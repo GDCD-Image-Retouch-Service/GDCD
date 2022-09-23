@@ -5,6 +5,7 @@ import com.gdcd.back.dto.user.request.UserDetailUpdateRequestDto;
 import com.gdcd.back.dto.user.response.UserDetailResponseDto;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -12,7 +13,8 @@ public interface UserService {
     public Map<String, String> loginUser(UserCreateRequestDto requestDto);
     public Map<String, Object> checkNickname(String nickname);
     public Map<String, Object> findUser(String token, Long userId);
-    public Map<String, Object> modifyUser(String token, UserDetailUpdateRequestDto requestDto);
+//    public Map<String, Object> modifyUser(String token, UserDetailUpdateRequestDto requestDto);
+    public Map<String, Object> modifyUser(String token, MultipartFile profile, String nickname);
     public Map<String, Object> removeUser(String token);
     public Map<String, Object> blockUser(String token, Long userId);
 //    public Map<String, Object> cancleBlock(Long blockId);

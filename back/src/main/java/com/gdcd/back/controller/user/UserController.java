@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,9 +37,16 @@ public class UserController extends Controller {
         return getResponseEntity(userService.findUser(token, userId));
     }
 
+//    @PutMapping("")
+//    public ResponseEntity<Map<String, Object>> userModify(@RequestHeader String token, @RequestBody UserDetailUpdateRequestDto requestDto) throws Exception{
+//        return getResponseEntity(userService.modifyUser(token, requestDto));
+//        // fix ) profile에 image file을 받을 수 있어야함.
+//    }
+
     @PutMapping("")
-    public ResponseEntity<Map<String, Object>> userModify(@RequestHeader String token, @RequestBody UserDetailUpdateRequestDto requestDto) throws Exception{
-        return getResponseEntity(userService.modifyUser(token, requestDto));
+    public ResponseEntity<Map<String, Object>> userModify(@RequestHeader String token, @RequestPart(required = false) MultipartFile profile, @RequestPart(required = false) String nickname) throws Exception{
+        return getResponseEntity(userService.modifyUser(token, profile, nickname));
+        // fix ) profile에 image file을 받을 수 있어야함.
     }
 
     @DeleteMapping("")

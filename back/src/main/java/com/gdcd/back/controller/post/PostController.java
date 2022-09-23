@@ -36,8 +36,8 @@ public class PostController extends Controller {
 //    }
 
     @PostMapping("")
-    public ResponseEntity<Map<String, Object>> postAdd(@RequestPart("requestDto") PostCreateRequestDto requestDto) throws IOException {
-        return getResponseEntity(postService.addPost(requestDto));
+    public ResponseEntity<Map<String, Object>> postAdd(@RequestHeader String token, @RequestBody PostCreateRequestDto requestDto) throws Exception {
+        return getResponseEntity(postService.addPost(token, requestDto));
 //        return getResponseEntity(images);
     }
 
@@ -48,8 +48,8 @@ public class PostController extends Controller {
 //    }
 
     @PutMapping("")
-    public ResponseEntity<Map<String, Object>> postModify(@RequestBody PostUpdateRequestDto requestDto) {
-        return getResponseEntity(postService.modifyPost(requestDto));
+    public ResponseEntity<Map<String, Object>> postModify(@RequestHeader String token, @RequestBody PostUpdateRequestDto requestDto) {
+        return getResponseEntity(postService.modifyPost(token, requestDto));
     }
 
     @DeleteMapping("")
