@@ -32,6 +32,7 @@ public class PostDetailResponseDto {
         this.userId = post.getWriterNo();
         this.title = post.getTitle();
         this.content = post.getContent();
+        this.privacyBound = post.getPrivacyBound();
         this.writerNickname = post.getWriterNickname();
         this.writerProfile = post.getWriterProfile();
         this.images = post.getImages();
