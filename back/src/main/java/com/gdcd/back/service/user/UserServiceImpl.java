@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,8 @@ public class UserServiceImpl implements UserService {
     private final FollowRepository followRepository;
     private Map<String, String> RESULT_STRING;
     private Map<String, Object> RESULT_OBJECT;
+//    private final String ROOT = "/api/data/profiles/";
+    private final String ROOT = "C:/SSAFY/AI/profiles/";
 
     @Override
     public Map<String, String> loginUser(UserCreateRequestDto requestDto) {
@@ -89,7 +92,25 @@ public class UserServiceImpl implements UserService {
         RESULT_OBJECT = new HashMap<>();
         try {
             User user = findUserByEmail(decodeToken(token));
-            UserDetailUpdateRequestDto requestDto = UserDetailUpdateRequestDto.builder().build(); // profile, nickname
+            String filePath = user.getProfile();
+            if (profile != null) {
+                String type = profile.getContentType();
+                String endpoint = "." + type.substring(type.lastIndexOf("/") + 1);
+                filePath = ROOT + user.getId().toString() + endpoint;
+                File folder = new File(filePath);
+                if (!folder.exists()) {
+                    try {
+                        folder.mkdir();
+                    } catch (Exception ignored) {}
+                }
+                profile.transferTo(new File(filePath));
+            }
+            if (nickname == null)
+                nickname = user.getNickname();
+            UserDetailUpdateRequestDto requestDto = UserDetailUpdateRequestDto.builder()
+                    .nickname(nickname)
+                    .profile(filePath)
+                    .build(); // profile, nickname
             user.update(requestDto);
             RESULT_OBJECT.put("userId", userRepository.save(user).getId());
             // fix) 유저 정보를 바꾸면 post가 가지고 있는 writer 정보 또한 바뀌어야함.
