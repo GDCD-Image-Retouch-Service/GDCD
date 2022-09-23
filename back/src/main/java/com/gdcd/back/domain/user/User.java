@@ -34,6 +34,8 @@ public class User {
     private int postCount;
     @Field(name = "scrap_count")
     private int scrapCount;
+    @Field(name = "like_count")
+    private int likeCount;
     @Field(name = "follower_count")
     private int followerCount;
     @Field(name = "following_count")
@@ -51,4 +53,36 @@ public class User {
     public void delete(Boolean validation){
         this.validation = validation;
     }
+
+    public void addLikeCount(){
+        this.likeCount++;
+    }
+    public void subLikeCount(){
+        this.likeCount--;
+    }
+    public void addScrapCount(){
+        this.scrapCount++;
+    }
+    public void subScrapCount(){
+        this.scrapCount--;
+    }
+    public void addPostCount(){
+        this.postCount++;
+    }
+    public void subPostCount(){
+        this.postCount--;
+    }
+    public void addFollowerCount(){
+        this.followerCount++;
+    }
+    public void subFollowerCount(){
+        this.followerCount--;
+    }
+    public void addFollowingCount(){
+        this.likeCount++;
+    }
+    public void subFollowingCount(){
+        this.likeCount--;
+    }
+
 }
