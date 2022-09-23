@@ -17,7 +17,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/image")
-@CrossOrigin("https://j7b301.p.ssafy.io/**")
 public class ImageController extends Controller {
     private final ImageService imageService;
     @PostMapping("")

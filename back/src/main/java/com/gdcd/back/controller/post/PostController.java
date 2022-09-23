@@ -16,7 +16,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/post")
-@CrossOrigin("https://j7b301.p.ssafy.io/**")
 public class PostController extends Controller {
     private final PostService postService;
     private final CommentService commentService;

@@ -2,12 +2,10 @@ package com.gdcd.back.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin("https://j7b301.p.ssafy.io/**")
 public class Controller {
     private String SUCCESS = "SUCCESS";
     private String FAIL = "FAIL";
