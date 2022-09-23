@@ -1,10 +1,9 @@
 package com.gdcd.back.domain.post;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.gdcd.back.domain.image.Image;
+import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,6 +16,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "posts")
 public class Post {
@@ -50,27 +51,14 @@ public class Post {
     private Integer likeCount;
     private int representative;
     private List<String> tag;
-    private List<String> images;
+    private List<ImageDetailResponseDto> images;
 
+    @Field(name = "scrap_users")
+    private List<Long> scrapUsers;
 
+    @Field(name = "like_users")
+    private List<Long> likeUsers;
 
-    @Builder
-    public Post( Long writerNo,String title,String content,Long privacyBound,LocalDateTime updateTime,LocalDateTime registTime, Boolean validation, Integer reportCount,String writerNickname,String writerProfile,Integer likeCount,int representative,List<String> tag,List<String> images){
-        this.writerNo=writerNo;
-        this.title = title;
-        this.content = content;
-        this.privacyBound = privacyBound;
-        this.reportCount = reportCount;
-        this.validation = validation;
-        this.registTime = registTime;
-        this.updateTime = updateTime;
-        this.writerNickname = writerNickname;
-        this.writerProfile = writerProfile;
-        this.likeCount = likeCount;
-        this.representative = representative;
-        this.tag = tag;
-        this.images = images;
-    }
 
     public void update(String title, String content, Long privacyBound, List<String> tag) {
         if(title != null)

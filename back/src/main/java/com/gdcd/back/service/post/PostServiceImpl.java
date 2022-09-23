@@ -1,11 +1,13 @@
 package com.gdcd.back.service.post;
 
+import com.gdcd.back.config.JwtTokenProvider;
 import com.gdcd.back.domain.image.Image;
 import com.gdcd.back.domain.image.ImageRepository;
 import com.gdcd.back.domain.post.Post;
 import com.gdcd.back.domain.post.PostRepository;
 import com.gdcd.back.domain.user.User;
 import com.gdcd.back.domain.user.UserRepository;
+import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import com.gdcd.back.dto.image.response.ImageSimpleResponseDto;
 import com.gdcd.back.dto.post.request.PostCreateRequestDto;
 import com.gdcd.back.dto.post.request.PostReportRequestDto;
@@ -33,6 +35,7 @@ public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
 
     public List<PostListResponseDto> findPosts(){
@@ -40,7 +43,8 @@ public class PostServiceImpl implements PostService{
         List<PostListResponseDto> list = new ArrayList<>();
         for (Post post : documentList) {
             if (validPost(post)){
-                list.add(new PostListResponseDto(post));
+                ImageDetailResponseDto res = post.getImages().get(post.getRepresentative());
+                list.add(new PostListResponseDto(post, res));
             }
         }
         return list;
@@ -53,9 +57,16 @@ public class PostServiceImpl implements PostService{
             return null;
         }
     }
-    public PostCreateRequestDto addPost(PostCreateRequestDto requestDto) throws IOException {
-//        List<String> list = new ArrayList<>();
-//        requestDto.setImages(list);
+    public PostCreateRequestDto addPost(String token, PostCreateRequestDto requestDto) throws Exception {
+        User user = findUserByEmail(decodeToken(token));
+        requestDto.setWriteNo(user.getId());
+        requestDto.setWriterNickname(user.getNickname());
+        requestDto.setWriterProfile(user.getProfile());
+        List<ImageDetailResponseDto> images = new ArrayList<>();
+        for (Long id : requestDto.getImages()){
+            images.add(new ImageDetailResponseDto(findImage(id)));
+        }
+        requestDto.setImageList(images);
         postRepository.save(requestDto.toDocument());
         return requestDto;
 
@@ -68,22 +79,24 @@ public class PostServiceImpl implements PostService{
 //        return requestDto;
 //
 //    };
-    public PostDetailResponseDto modifyPost(PostUpdateRequestDto requestDto){
-        Post post = findPost(requestDto.getPostId());
-        if (validPost(post)){
-            post.setUpdateTime(LocalDateTime.now());
-            post.update(
-                    requestDto.getTitle(),
-                    requestDto.getContent(),
-                    requestDto.getPrivacyBound(),
-                    requestDto.getTag()
-            );
-            post.setId(requestDto.getPostId());
-            postRepository.save(post);
-            return new PostDetailResponseDto(post);
-        }else {
-            return null;
-        }
+    public PostDetailResponseDto modifyPost(String token, PostUpdateRequestDto requestDto){
+//        Post post = findPost(requestDto.getPostId());
+//        if (validPost(post)){
+//            post.setUpdateTime(LocalDateTime.now());
+//            post.update(
+//                    requestDto.getTitle(),
+//                    requestDto.getContent(),
+//                    requestDto.getPrivacyBound(),
+//                    requestDto.getTag()
+//            );
+//            post.setId(requestDto.getPostId());
+//            postRepository.save(post);
+//
+//            return new PostDetailResponseDto(post);
+//        }else {
+//            return null;
+//        }
+        return null;
     }
 
     public String removePost(Long postId){
@@ -135,25 +148,25 @@ public class PostServiceImpl implements PostService{
         return imageRepository.findById(imageId)
                 .orElseThrow(() -> new IllegalArgumentException(imageId + "번은(는) 존재하지 않는 게시글입니다."));
     }
-    private Boolean validPost(Post post){
-        if (post.getValidation().equals(true)){
-            return true;
-        }else {
-            return false;
-        }
-    }
+//    private Boolean validPost(Post post){
+//        if (post.getValidation().equals(true)){
+//            return true;
+//        }else {
+//            return false;
+//        }
+//    }
 
-    private List<ImageSimpleResponseDto> list(Post post){
-        List<ImageSimpleResponseDto> result = new ArrayList<>();
-        List<String> list = post.getImages();
-        for(String url : list){
-            result.add(ImageSimpleResponseDto.builder()
-                    .imageUrl(url)
-                    .rank(1)
-                    .build());
-        }
-        return result;
-    }
+//    private List<ImageSimpleResponseDto> list(Post post){
+//        List<ImageSimpleResponseDto> result = new ArrayList<>();
+//        List<String> list = post.getImages();
+//        for(String url : list){
+//            result.add(ImageSimpleResponseDto.builder()
+//                    .imageUrl(url)
+//                    .rank(1)
+//                    .build());
+//        }
+//        return result;
+//    }
     // 찐
 //    private List<ImageSimpleResponseDto> list(Post post){
 //        List<ImageSimpleResponseDto> result = new ArrayList<>();
@@ -167,5 +180,19 @@ public class PostServiceImpl implements PostService{
 //        }
 //        return result;
 //    }
+    private User findUserByEmail(String email) throws Exception {
+        if (userRepository.findByEmail(email).isPresent())
+            return userRepository.findByEmail(email).get();
+        else
+            throw new Exception("User Not Found");
+    }
+
+    private boolean validPost(Post post) {
+        return post.getValidation();
+    }
+
+    public String decodeToken(String token) {
+        return jwtTokenProvider.decodeToken(token);
+    }
 
 }
