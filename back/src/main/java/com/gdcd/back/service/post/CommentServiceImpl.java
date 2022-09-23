@@ -1,5 +1,6 @@
 package com.gdcd.back.service.post;
 
+import com.gdcd.back.domain.comment.CommentRepository;
 import com.gdcd.back.dto.post.request.CommentCreateRequestDto;
 import com.gdcd.back.dto.post.request.CommentUpdateRequestDto;
 import com.gdcd.back.dto.post.response.CommentKidResponseDto;
@@ -14,6 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
+    private final CommentRepository commentRepository;
     @Override
     public List<CommentUpperResponseDto> findComments(Long postId) {
         List<CommentUpperResponseDto> list = new ArrayList<>();

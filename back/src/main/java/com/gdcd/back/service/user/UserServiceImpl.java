@@ -32,8 +32,8 @@ public class UserServiceImpl implements UserService {
     private final FollowRepository followRepository;
     private Map<String, String> RESULT_STRING;
     private Map<String, Object> RESULT_OBJECT;
-//    private final String ROOT = "/api/data/profiles/";
-    private final String ROOT = "C:/SSAFY/AI/profiles/";
+    private final String ROOT = "/api/data/profiles/";
+//    private final String ROOT = "C:/SSAFY/AI/profiles/";
 
     @Override
     public Map<String, String> loginUser(UserCreateRequestDto requestDto) {
@@ -50,13 +50,14 @@ public class UserServiceImpl implements UserService {
         RESULT_STRING.put("token", jwtTokenProvider.createToken(email));
         return RESULT_STRING;
     }
-
+    @Override
     public Map<String, Object> checkNickname(String nickname) {
         RESULT_OBJECT = new HashMap<>();
         RESULT_OBJECT.put("usable", !userRepository.findByNickname(nickname).isPresent());
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> findUser(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
@@ -88,6 +89,7 @@ public class UserServiceImpl implements UserService {
 //        return RESULT_OBJECT;
 //    }
 
+    @Override
     public Map<String, Object> modifyUser(String token, MultipartFile profile, String nickname) {
         RESULT_OBJECT = new HashMap<>();
         try {
@@ -101,7 +103,8 @@ public class UserServiceImpl implements UserService {
                 if (!folder.exists()) {
                     try {
                         folder.mkdir();
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                 }
                 profile.transferTo(new File(filePath));
             }
@@ -120,6 +123,7 @@ public class UserServiceImpl implements UserService {
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> removeUser(String token) {
         RESULT_OBJECT = new HashMap<>();
         try {
@@ -132,6 +136,7 @@ public class UserServiceImpl implements UserService {
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> blockUser(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
@@ -167,16 +172,19 @@ public class UserServiceImpl implements UserService {
 //        return RESULT_OBJECT;
 //    }
 
+    @Override
     public Map<String, Object> findScraps(String token) {
         RESULT_OBJECT = new HashMap<>();
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> findLikes(String token) {
         RESULT_OBJECT = new HashMap<>();
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> followUser(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
@@ -202,6 +210,7 @@ public class UserServiceImpl implements UserService {
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> findFollowers(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
@@ -224,6 +233,7 @@ public class UserServiceImpl implements UserService {
         return RESULT_OBJECT;
     }
 
+    @Override
     public Map<String, Object> findFollowings(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
