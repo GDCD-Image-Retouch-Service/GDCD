@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = "https://j7b301.p.ssafy.io")
+@CrossOrigin("https://j7b301.p.ssafy.io/**")
 public class Controller {
     private String SUCCESS = "SUCCESS";
     private String FAIL = "FAIL";
