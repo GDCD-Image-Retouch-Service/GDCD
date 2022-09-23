@@ -57,7 +57,7 @@ public class PostServiceImpl implements PostService{
             return null;
         }
     }
-    public PostCreateRequestDto addPost(String token, PostCreateRequestDto requestDto) throws Exception {
+    public Long addPost(String token, PostCreateRequestDto requestDto) throws Exception {
         User user = findUserByEmail(decodeToken(token));
         requestDto.setWriteNo(user.getId());
         requestDto.setWriterNickname(user.getNickname());
@@ -67,36 +67,24 @@ public class PostServiceImpl implements PostService{
             images.add(new ImageDetailResponseDto(findImage(id)));
         }
         requestDto.setImageList(images);
-        postRepository.save(requestDto.toDocument());
-        return requestDto;
+        return postRepository.save(requestDto.toDocument()).getId();
 
     };
-//    public PostCreateRequestDto addPost(PostCreateRequestDto requestDto){
-////        String image = images.getOriginalFilename();
-////        List<String> list = new ArrayList<>();
-////        list.add(image);
-////        requestDto.setImages(list);
-//        return requestDto;
-//
-//    };
-    public PostDetailResponseDto modifyPost(String token, PostUpdateRequestDto requestDto){
-//        Post post = findPost(requestDto.getPostId());
-//        if (validPost(post)){
-//            post.setUpdateTime(LocalDateTime.now());
-//            post.update(
-//                    requestDto.getTitle(),
-//                    requestDto.getContent(),
-//                    requestDto.getPrivacyBound(),
-//                    requestDto.getTag()
-//            );
-//            post.setId(requestDto.getPostId());
-//            postRepository.save(post);
-//
-//            return new PostDetailResponseDto(post);
-//        }else {
-//            return null;
-//        }
-        return null;
+
+    public Long modifyPost(String token, PostUpdateRequestDto requestDto){
+        Post post = findPost(requestDto.getPostId());
+        if (validPost(post)){
+            post.setUpdateTime(LocalDateTime.now());
+            post.update(
+                    requestDto.getTitle(),
+                    requestDto.getContent(),
+                    requestDto.getPrivacyBound(),
+                    requestDto.getRepresentative()
+            );
+            return postRepository.save(post).getId();
+        }else {
+            return null;
+        }
     }
 
     public String removePost(Long postId){
