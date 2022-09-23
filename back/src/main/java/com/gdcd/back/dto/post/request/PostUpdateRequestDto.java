@@ -13,6 +13,5 @@ public class PostUpdateRequestDto {
     private String title;
     private String content;
     private Long privacyBound;
-//    private List<String> images;
-    private List<String> tag;
+    private int representative;
 }
