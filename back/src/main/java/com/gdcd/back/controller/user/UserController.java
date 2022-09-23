@@ -16,7 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
-@CrossOrigin("https://j7b301.p.ssafy.io/**")
+@CrossOrigin("https://j7b301.p.ssafy.io/**, http://localhost:8080/**")
 public class UserController extends Controller {
 
     private static final String SUCCESS = "SUCCESS";
