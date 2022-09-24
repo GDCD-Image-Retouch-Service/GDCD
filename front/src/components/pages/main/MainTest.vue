@@ -3,68 +3,24 @@
   <div
     class="main-upload d-flex flex-column align-items-center justify-content-center"
   >
-    <img src="https://picsum.photos/200/330" id="myImage" />
-    <canvas id="myCanvas" style="display: none" />
-    <button @click="sendImage">사진 전송 버튼</button>
+    <img :src="imageUrl" alt="이미지" />
+
+    <button @click="testConnection">사진 전송 버튼</button>
   </div>
 </template>
 
 <script setup>
-// import { inject } from 'vue';
-// import axios from 'axios';
+import { ref } from 'vue';
+import { image } from '@/api/rest';
 
-const sendImage = () => {
-  const canvas = document.getElementById('myCanvas');
-  var canvasCtx = canvas.getContext('2d');
-  var imgTag = document.getElementById('myImage');
-  canvasCtx.drawImage(imgTag, 10, 10);
+const imageUrl = ref(null);
 
-  // var imgString = document.getElementById('myImage').src;
-  var imgString = canvas.toDataURL('image/png');
-  // imgString = 's';
-  console.log(imgString);
+const testConnection = async () => {
+  const data = await image.testConnection(3);
 
-  // fetch(imgString)
-  //   .then((res) => res.blob())
-  //   .then((blob) => {
-  //     const file = new File([blob], 'dot.png', blob);
-  //     console.log(file);
-  //   });
-
-  // var imgString = canvas.toDataURL();
-
-  // const url = 'C:/Users/dkdld/Pictures/a';
-  // const formData = new FormData();
-  // formData.append('image', file);
-  // formData.append('name', userName);
-  // formData.append('birthday', birthday);
-  // formData.append('gender', gender);
-  // const config = { headers: { 'content-type': 'multipart/form-data' } };
-  // return axios.post(url, formData, config);
+  imageUrl.value = data.item.imageUrl;
+  console.log(data);
 };
-
-// var c = document.getElementById('myCanvas');
-// var ctx = c.getContext('2d');
-// var img = document.getElementById('myImage');
-// ctx.drawImage(img, 10, 10);
-// var imgString = c.toDataURL();
-// ajax({
-//   type: 'POST',
-//   dataType: 'JSON',
-//   data: {
-//     imageString: imgString,
-//   },
-//   url: 'C:/Users/dkdld/Pictures/a',
-//   success: function () {
-//     alert('success');
-//   },
-// })
-//   .then(() => {
-//     console.log('success');
-//   })
-//   .catch((e) => {
-//     console.log(e);
-//   });
 </script>
 
 <style>

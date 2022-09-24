@@ -1,4 +1,5 @@
 <template>
+  <div style="height: var(--size-h-header)"></div>
   <div class="header-nav outer">
     <header-logo />
     <header-profile />

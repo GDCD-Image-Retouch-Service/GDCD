@@ -1,5 +1,5 @@
 <template>
-  <div class="btn-score-receive">
+  <div class="btn-score-receive outer">
     <div>점수 받기</div>
   </div>
 </template>
@@ -13,7 +13,6 @@
   max-width: 380px;
   border-radius: var(--size-radius);
   background-color: var(--theme-color);
-  box-shadow: var(--default-shadow);
 }
 .btn-score-receive div {
   margin: 13px 0;

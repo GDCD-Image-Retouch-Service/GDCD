@@ -1,4 +1,5 @@
 <template>
+  <div style="height: var(--size-h-footer)"></div>
   <nav class="footer-nav">
     <div class="footer-nav-wrap outer">
       <!--  홈 -->

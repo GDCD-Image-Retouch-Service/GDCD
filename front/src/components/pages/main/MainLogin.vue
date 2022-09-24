@@ -29,7 +29,6 @@ onMounted(async () => {
       console.log('Handle the error', error);
     });
 });
-const msg = '씨ㅡ발';
 console.log(process.env.VUE_APP_GOOGLE_CLIENT_ID);
 console.log(process.env.VUE_APP_GOOGLE_CLIENT_SSIBAL);
 </script>
