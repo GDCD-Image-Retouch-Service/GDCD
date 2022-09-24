@@ -41,15 +41,15 @@ public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-//    private final String ROOT = "/app/data/images/";
-//    private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
+    private final String ROOT = "/app/data/images/";
+    private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
     private final String CORE = "https://j7b301.p.ssafy.io/core/";
     private final String SCORE_IMAGE = "score-image";
     private Map<String, Object> RESULT_OBJECT;
 
     //    Local에서 진행할 폴더
-        String ROOT = "C:/test/images/";
-        String ADDRESS = "http://localhost:8081/api/image?imageId=";
+//        String ROOT = "C:/test/images/";
+//        String ADDRESS = "http://localhost:8081/api/image?imageId=";
     public Long addImage(String token, MultipartFile image, ImageCreateRequestDto requestDto) throws Exception {
 //        ImageCreateRequestDto requestDto = new ImageCreateRequestDto();
         User user = findUserByEmail(decodeToken(token));
@@ -66,7 +66,7 @@ public class ImageServiceImpl implements ImageService {
             if (!Folder.exists()) {
                 try {
                     Folder.mkdir();
-                    System.out.println("폴더가 생성되었습니다.");
+//                    System.out.println("폴더가 생성되었습니다.");
                 } catch (Exception e) {
                     e.getStackTrace();
                 }
@@ -76,19 +76,9 @@ public class ImageServiceImpl implements ImageService {
             Long count = imageRepository.findAll().stream().count() + 1;
             requestDto.setImgUrl(ADDRESS + count.toString());
             requestDto.setUserId(user.getId());
-//            requestDto.setRegistDate(LocalDateTime.now());
-//            requestDto.setUserId(user.getId());
-//            requestDto.setRank(3);
-//            List<String> objects = new ArrayList<>();
-//            objects.add("나무");
-//            objects.add("하늘");
-//            objects.add("자연");
-//            objects.add("사람");
-//            requestDto.setObjects(objects);
-//            System.out.println(count);
-            System.out.println(image.getContentType());
-            System.out.println(image.getResource());
-//            imageRepository.save(requestDto.toDocument());
+//            System.out.println(image.getContentType());
+//            System.out.println(image.getResource());
+            imageRepository.save(requestDto.toDocument());
 
         } catch (IOException e) {
             e.printStackTrace();
