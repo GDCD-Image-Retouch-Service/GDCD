@@ -13,6 +13,8 @@ import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import com.gdcd.back.dto.image.response.ImageListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -64,7 +66,7 @@ public class ImageServiceImpl implements ImageService {
             if (!Folder.exists()) {
                 try {
                     Folder.mkdir();
-                    System.out.println("폴더가 생성되었습니다.");
+//                    System.out.println("폴더가 생성되었습니다.");
                 } catch (Exception e) {
                     e.getStackTrace();
                 }
@@ -74,16 +76,8 @@ public class ImageServiceImpl implements ImageService {
             Long count = imageRepository.findAll().stream().count() + 1;
             requestDto.setImgUrl(ADDRESS + count.toString());
             requestDto.setUserId(user.getId());
-//            requestDto.setRegistDate(LocalDateTime.now());
-//            requestDto.setUserId(user.getId());
-//            requestDto.setRank(3);
-//            List<String> objects = new ArrayList<>();
-//            objects.add("나무");
-//            objects.add("하늘");
-//            objects.add("자연");
-//            objects.add("사람");
-//            requestDto.setObjects(objects);
-//            System.out.println(count);
+//            System.out.println(image.getContentType());
+//            System.out.println(image.getResource());
             imageRepository.save(requestDto.toDocument());
 
         } catch (IOException e) {
@@ -136,37 +130,51 @@ public class ImageServiceImpl implements ImageService {
             RestTemplate restTemplate = new RestTemplate();
 
             HttpHeaders httpHeaders = new HttpHeaders();
-            System.out.println("image type : " + image.getContentType());
-            System.out.println(MediaType.MULTIPART_FORM_DATA);
+//            System.out.println("image type : " + image.getContentType());
+//            System.out.println(MediaType.MULTIPART_FORM_DATA);
 //            httpHeaders.setContentType(MediaType.parseMediaType(image.getContentType()));
-            httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+//            httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+            httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
+            System.out.println(image.getInputStream());
 
-            MultiValueMap<String, MultipartFile> body = new LinkedMultiValueMap<>();
-            body.add("images", image);
+//            MultiValueMap<String, MultipartFile> body = new LinkedMultiValueMap<>();
+            MultiValueMap<String, Resource> body = new LinkedMultiValueMap<>();
+            //List<MultipartFile> image 의 경우
+//            for (MultipartFile img : image){
+//                body.add("images", img.getResource());
+//            }
 
-            HttpEntity<MultiValueMap<String, MultipartFile>> requestMessage = new HttpEntity<>(body, httpHeaders);
+            body.add("images", image.getResource());
 
-            System.out.println("여긴가?1");
+            HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
-            HttpEntity<String> response = restTemplate.postForEntity(CORE,requestMessage,String.class);
+//            System.out.println("여긴가?1");
+            System.out.println(CORE+SCORE_IMAGE);
 
-            System.out.println("여긴가?2");
+            HttpEntity<String> response = restTemplate.postForEntity(CORE+SCORE_IMAGE,requestMessage,String.class);
+
+//            System.out.println("여긴가?2");
 
             ObjectMapper objectMapper = new ObjectMapper();
 
-            System.out.println("여긴가?3");
+//            System.out.println("여긴가?3");
             objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
 
-            System.out.println("여긴가?4");
-            CoreScoreResponseDto responseDto = objectMapper.readValue(response.getBody(), CoreScoreResponseDto.class);
+//            System.out.println("여긴가?4");
+//            CoreScoreResponseDto responseDto = objectMapper.readValue(response.getBody(), CoreScoreResponseDto.class);
+            Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
 
-            RESULT_OBJECT.put("dict",responseDto);
+//            System.out.println("여긴가?5");
+//            RESULT_OBJECT.put("dict",responseDto);
+            RESULT_OBJECT.put("dict",objects);
+//            System.out.println("여긴가?6");
         } catch (Exception e) {
             e.printStackTrace();
             RESULT_OBJECT.put("error", "IMAGE NOT SCORED");
         }
         return RESULT_OBJECT;
     }
+
 
     private Image findImage(Long imageId) {
         return imageRepository.findById(imageId)

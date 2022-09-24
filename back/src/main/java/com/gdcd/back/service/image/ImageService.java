@@ -15,6 +15,8 @@ public interface ImageService {
     public ImageDetailResponseDto findImageInfoById(Long imaageId);
     public List<ImageListResponseDto> findImageList(String token) throws Exception;
 //    public List<ImageDetailResponseDto> findImageList(Long userId) throws Exception;
+//    public Map<String, Object> requestInitialScore(List<MultipartFile> image);
     public Map<String, Object> requestInitialScore(MultipartFile image);
+
 }
 
