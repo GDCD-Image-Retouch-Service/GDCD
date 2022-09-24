@@ -13,6 +13,8 @@ import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import com.gdcd.back.dto.image.response.ImageListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -39,15 +41,15 @@ public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final String ROOT = "/app/data/images/";
-    private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
+//    private final String ROOT = "/app/data/images/";
+//    private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
     private final String CORE = "https://j7b301.p.ssafy.io/core/";
     private final String SCORE_IMAGE = "score-image";
     private Map<String, Object> RESULT_OBJECT;
 
     //    Local에서 진행할 폴더
-//        String ROOT = "C:/test/images/";
-//        String ADDRESS = "http://localhost:8081/api/image?imageId=";
+        String ROOT = "C:/test/images/";
+        String ADDRESS = "http://localhost:8081/api/image?imageId=";
     public Long addImage(String token, MultipartFile image, ImageCreateRequestDto requestDto) throws Exception {
 //        ImageCreateRequestDto requestDto = new ImageCreateRequestDto();
         User user = findUserByEmail(decodeToken(token));
@@ -84,7 +86,9 @@ public class ImageServiceImpl implements ImageService {
 //            objects.add("사람");
 //            requestDto.setObjects(objects);
 //            System.out.println(count);
-            imageRepository.save(requestDto.toDocument());
+            System.out.println(image.getContentType());
+            System.out.println(image.getResource());
+//            imageRepository.save(requestDto.toDocument());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,37 +140,51 @@ public class ImageServiceImpl implements ImageService {
             RestTemplate restTemplate = new RestTemplate();
 
             HttpHeaders httpHeaders = new HttpHeaders();
-            System.out.println("image type : " + image.getContentType());
-            System.out.println(MediaType.MULTIPART_FORM_DATA);
+//            System.out.println("image type : " + image.getContentType());
+//            System.out.println(MediaType.MULTIPART_FORM_DATA);
 //            httpHeaders.setContentType(MediaType.parseMediaType(image.getContentType()));
-            httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+//            httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+            httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
+            System.out.println(image.getInputStream());
 
-            MultiValueMap<String, MultipartFile> body = new LinkedMultiValueMap<>();
-            body.add("images", image);
+//            MultiValueMap<String, MultipartFile> body = new LinkedMultiValueMap<>();
+            MultiValueMap<String, Resource> body = new LinkedMultiValueMap<>();
+            //List<MultipartFile> image 의 경우
+//            for (MultipartFile img : image){
+//                body.add("images", img.getResource());
+//            }
 
-            HttpEntity<MultiValueMap<String, MultipartFile>> requestMessage = new HttpEntity<>(body, httpHeaders);
+            body.add("images", image.getResource());
 
-            System.out.println("여긴가?1");
+            HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
-            HttpEntity<String> response = restTemplate.postForEntity(CORE,requestMessage,String.class);
+//            System.out.println("여긴가?1");
+            System.out.println(CORE+SCORE_IMAGE);
 
-            System.out.println("여긴가?2");
+            HttpEntity<String> response = restTemplate.postForEntity(CORE+SCORE_IMAGE,requestMessage,String.class);
+
+//            System.out.println("여긴가?2");
 
             ObjectMapper objectMapper = new ObjectMapper();
 
-            System.out.println("여긴가?3");
+//            System.out.println("여긴가?3");
             objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
 
-            System.out.println("여긴가?4");
-            CoreScoreResponseDto responseDto = objectMapper.readValue(response.getBody(), CoreScoreResponseDto.class);
+//            System.out.println("여긴가?4");
+//            CoreScoreResponseDto responseDto = objectMapper.readValue(response.getBody(), CoreScoreResponseDto.class);
+            Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
 
-            RESULT_OBJECT.put("dict",responseDto);
+//            System.out.println("여긴가?5");
+//            RESULT_OBJECT.put("dict",responseDto);
+            RESULT_OBJECT.put("dict",objects);
+//            System.out.println("여긴가?6");
         } catch (Exception e) {
             e.printStackTrace();
             RESULT_OBJECT.put("error", "IMAGE NOT SCORED");
         }
         return RESULT_OBJECT;
     }
+
 
     private Image findImage(Long imageId) {
         return imageRepository.findById(imageId)
