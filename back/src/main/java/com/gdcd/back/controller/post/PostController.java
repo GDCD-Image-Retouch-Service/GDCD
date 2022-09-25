@@ -53,8 +53,8 @@ public class PostController extends Controller {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Map<String, Object>> postDelete(@RequestParam Long postId) {
-        return getResponseEntity(postService.removePost(postId));
+    public ResponseEntity<Map<String, Object>> postDelete(@RequestHeader String token, @RequestParam Long postId) throws Exception{
+        return getResponseEntity(postService.removePost(token, postId));
     }
 
     @GetMapping("/like")
@@ -68,8 +68,8 @@ public class PostController extends Controller {
     }
 
     @PostMapping("/report")
-    public ResponseEntity<Map<String, Object>> postReportSave(@RequestBody PostReportRequestDto requestDto) {
-        return getResponseEntity(postService.reportPost(requestDto));
+    public ResponseEntity<Map<String, Object>> postReportSave(@RequestHeader String token, @RequestBody PostReportRequestDto requestDto) throws Exception{
+        return getResponseEntity(postService.reportPost(token, requestDto));
     }
 
     @GetMapping("/comment")

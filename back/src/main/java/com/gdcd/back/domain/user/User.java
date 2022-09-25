@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,8 +35,13 @@ public class User {
     private int postCount;
     @Field(name = "scrap_count")
     private int scrapCount;
+    @Field(name = "scrap_posts")
+    private List<Long> scrapPosts;
+
     @Field(name = "like_count")
     private int likeCount;
+    @Field(name = "like_posts")
+    private List<Long> likePosts;
     @Field(name = "follower_count")
     private int followerCount;
     @Field(name = "following_count")
