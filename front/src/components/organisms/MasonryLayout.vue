@@ -3,10 +3,10 @@
     <div
       class="masonry-container"
       style="
-        width: 100vw;
+        width: 100%;
         padding: 10px;
         display: grid;
-        column-gap: 0px;
+        column-gap: 10px;
         grid-auto-rows: 1px;
       "
     >

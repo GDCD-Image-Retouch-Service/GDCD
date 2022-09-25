@@ -7,8 +7,8 @@
 </template>
 
 <script setup>
-import PhotoHeader from '@/components/organisms/PhotoHeader.vue';
-import PhotoSection from '@/components/organisms/PhotoSection.vue';
+import PhotoHeader from '@/components/organisms/photo/PhotoHeader.vue';
+import PhotoSection from '@/components/organisms/photo/PhotoSection.vue';
 import DateFormat from '@/components/molecules/common/DateFormat.vue';
 </script>
 

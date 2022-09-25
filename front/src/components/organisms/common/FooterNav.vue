@@ -17,10 +17,15 @@
       </router-link>
 
       <!-- 프로필 -->
-      <router-link to="/profile" @click="basicStore.isActiveFooter = 2">
+      <div
+        @click="
+          router.push({ name: 'ProfilePost', params: { userId: 100000 } }),
+            (basicStore.isActiveFooter = 2)
+        "
+      >
         <i class="bi bi-person-fill" v-if="basicStore.isActiveFooter == 2"></i>
         <i class="bi bi-person" v-else></i>
-      </router-link>
+      </div>
 
       <!-- 사진첩 -->
       <router-link to="/photo" @click="basicStore.isActiveFooter = 3">
@@ -32,13 +37,14 @@
 
 <script setup>
 import { useBasicStore } from '@/stores/basic.js';
+import router from '@/router/index.js';
 
 const basicStore = useBasicStore();
 </script>
 
 <style scoped>
 .footer-nav {
-  z-index: 100;
+  z-index: 50;
   position: fixed;
   bottom: 0;
   left: 0;
