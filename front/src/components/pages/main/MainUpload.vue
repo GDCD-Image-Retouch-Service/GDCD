@@ -12,6 +12,7 @@ import uploadCard from '@/components/organisms/main/UploadCard.vue';
 
 <style scoped>
 .main-upload {
-  width: 100vw;
+  width: 100%;
+  height: 100%;
 }
 </style>

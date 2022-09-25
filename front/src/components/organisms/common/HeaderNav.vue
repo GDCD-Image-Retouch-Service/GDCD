@@ -1,5 +1,4 @@
 <template>
-  <div style="height: var(--size-h-header)"></div>
   <div class="header-nav outer">
     <header-logo />
     <header-profile />
@@ -13,12 +12,9 @@ import HeaderProfile from '@/components/molecules/common/HeaderProfile.vue';
 
 <style scoped>
 .header-nav {
-  z-index: 100;
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100vw;
   height: var(--size-h-header);
+  min-height: var(--size-h-header);
   background: white;
 
   display: flex;

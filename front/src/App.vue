@@ -1,21 +1,16 @@
 <template>
-  <div class="d-flex flex-column align-items-center justify-content-center">
+  <div class="app d-flex flex-column align-items-center justify-content-center">
     <header-nav />
-    <router-view />
+    <div class="app-container flex-grow-1 flex-shrink-1">
+      <router-view />
+    </div>
     <footer-nav />
   </div>
 </template>
 
-<script>
+<script setup>
 import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
-
-export default {
-  components: {
-    HeaderNav,
-    FooterNav,
-  },
-};
 </script>
 
 <style>
@@ -56,7 +51,6 @@ export default {
 * {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
   box-sizing: border-box;
 
   -ms-overflow-style: none;
@@ -72,7 +66,7 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-#app {
+.app {
   height: 100vh;
   width: 100vw;
   max-height: 100vh;
@@ -86,6 +80,13 @@ body::-webkit-scrollbar {
   line-height: 16px;
   font-size: 16px;
   font-family: 'Noto Sans KR', sans-serif;
+}
+
+.app-container {
+  width: 100vw;
+  min-width: 100vw;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* 대각선 방향 그림자인데 괜찮아보여서 일단 써봄 */

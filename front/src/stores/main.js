@@ -4,6 +4,7 @@ import { defineStore } from 'pinia';
 export const useMainStore = defineStore('main', () => {
   // state
   const isCamMode = ref(false);
+  const tempImg = ref(false);
 
   // action
   function isCamModeOn() {
@@ -20,10 +21,12 @@ export const useMainStore = defineStore('main', () => {
 
   // getter
   const getIsCamMode = computed(() => isCamMode.value);
+  const getTempImg = computed(() => tempImg.value);
 
   return {
     // state
     isCamMode,
+    tempImg,
 
     // action
     isCamModeOn,
@@ -32,5 +35,6 @@ export const useMainStore = defineStore('main', () => {
 
     // getter
     getIsCamMode,
+    getTempImg,
   };
 });

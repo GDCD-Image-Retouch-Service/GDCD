@@ -23,7 +23,7 @@ const testConnection = async () => {
 };
 </script>
 
-<style>
+<style scoped>
 .main-upload {
   min-height: calc(100vh - var(--size-h-header));
   width: 100vw;

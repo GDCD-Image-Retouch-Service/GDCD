@@ -33,7 +33,7 @@ console.log(process.env.VUE_APP_GOOGLE_CLIENT_ID);
 console.log(process.env.VUE_APP_GOOGLE_CLIENT_SSIBAL);
 </script>
 
-<style>
+<style scoped>
 .main-upload {
   min-height: calc(100vh - var(--size-h-header));
   width: 100vw;
