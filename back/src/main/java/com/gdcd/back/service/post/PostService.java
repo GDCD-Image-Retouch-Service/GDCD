@@ -16,10 +16,10 @@ public interface PostService {
     public PostDetailResponseDto findPostById(String token, Long postId) throws Exception;
     public Long addPost(String token, PostCreateRequestDto requestDto) throws Exception;
     public Long modifyPost(String token, PostUpdateRequestDto requestDto);
-    public String removePost(Long postId);
+    public String removePost(String token, Long postId) throws Exception;
 
-    public PostReportRequestDto reportPost(PostReportRequestDto requestDto);
-
+    public Long reportPost(String token, PostReportRequestDto requestDto) throws Exception;
     public Long likePost(String token, Long postId) throws Exception;
+
     public Long scrapPost(String token, Long postId) throws Exception;
 }

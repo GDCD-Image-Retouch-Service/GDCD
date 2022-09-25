@@ -5,6 +5,7 @@ import com.gdcd.back.domain.image.Image;
 import com.gdcd.back.domain.image.ImageRepository;
 import com.gdcd.back.domain.post.Post;
 import com.gdcd.back.domain.post.PostRepository;
+import com.gdcd.back.domain.post.report.ReportRepository;
 import com.gdcd.back.domain.user.User;
 import com.gdcd.back.domain.user.UserRepository;
 import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
@@ -35,6 +36,7 @@ public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
+    private final ReportRepository reportRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
 
@@ -73,8 +75,8 @@ public class PostServiceImpl implements PostService{
             images.add(new ImageDetailResponseDto(findImage(id)));
         }
         requestDto.setImageList(images);
-//        user.addPostCount();
-//        userRepository.save(user);
+        user.addPostCount();
+        userRepository.save(user);
         return postRepository.save(requestDto.toDocument()).getId();
 
     };
@@ -83,11 +85,16 @@ public class PostServiceImpl implements PostService{
         Post post = findPost(requestDto.getPostId());
         if (validPost(post)){
             post.setUpdateTime(LocalDateTime.now());
+            List<ImageDetailResponseDto> images = new ArrayList<>();
+            for (Long id : requestDto.getImages()){
+                images.add(new ImageDetailResponseDto(findImage(id)));
+            }
             post.update(
                     requestDto.getTitle(),
                     requestDto.getContent(),
                     requestDto.getPrivacyBound(),
-                    requestDto.getRepresentative()
+                    requestDto.getRepresentative(),
+                    images
             );
             return postRepository.save(post).getId();
         }else {
@@ -95,9 +102,12 @@ public class PostServiceImpl implements PostService{
         }
     }
 
-    public String removePost(Long postId){
+    public String removePost(String token, Long postId) throws Exception {
         Post post = findPost(postId);
+        User user = findUserByEmail(decodeToken(token));
         if (validPost(post)){
+            user.subPostCount();
+            userRepository.save(user);
             post.setValidation(false);
             postRepository.save(post);
             return "성공적으로 삭제되었습니다.";
@@ -106,23 +116,29 @@ public class PostServiceImpl implements PostService{
         }
     }
 
-    public PostReportRequestDto reportPost(PostReportRequestDto requestDto){
-        return requestDto;
+    public Long reportPost(String token, PostReportRequestDto requestDto) throws Exception{
+        User user = findUserByEmail(decodeToken(token));
+        return reportRepository.save(requestDto.toDocument(user.getId())).getId();
     }
-
     public Long likePost(String token, Long postId) throws Exception {
         Post post = findPost(postId);
         User user = findUserByEmail(decodeToken(token));
-        // likes Document 만들어야 함 (user 구현 후)
         if (validPost(post)){
             if (!post.getLikeUsers().contains(user.getId())){
-                List<Long> likeuser = post.getLikeUsers();
-                likeuser.add(user.getId());
-                post.setLikeUsers(likeuser);
+                // likeUser(Post)
+                List<Long> likeUser = post.getLikeUsers();
+                likeUser.add(user.getId());
+                post.setLikeUsers(likeUser);
                 post.addLikeCount();
-                user.addLikeCount();
+
+                // likePost(User)
+//                List<Long> likePost = user.getLikePosts();
+//                likePost.add(postId);
+//                user.setLikePosts(likePost);
+//                user.addLikeCount();
+
                 postRepository.save(post);
-                userRepository.save(user);
+//                userRepository.save(user);
 
                 System.out.println("없어서 추가함");
             }else{
@@ -130,9 +146,15 @@ public class PostServiceImpl implements PostService{
                 likeuser.remove(user.getId());
                 post.setLikeUsers(likeuser);
                 post.subLikeCount();
-                user.subLikeCount();
-                userRepository.save(user);
+
+//                List<Long> likePost = user.getLikePosts();
+//                likePost.remove(postId);
+//                user.setLikePosts(likePost);
+//                user.subLikeCount();
+
+//                userRepository.save(user);
                 postRepository.save(post);
+
                 System.out.println("있어서 삭제함");
             }
             return postId;
@@ -149,18 +171,29 @@ public class PostServiceImpl implements PostService{
                 List<Long> scrapuser = post.getScrapUsers();
                 scrapuser.add(user.getId());
                 post.setScrapUsers(scrapuser);
-                user.addScrapCount();
+
+//                List<Long> scrapPost = user.getScrapPosts();
+//                scrapPost.add(postId);
+//                user.setScrapPosts(scrapPost);
+//                user.addScrapCount();
+
                 postRepository.save(post);
-                userRepository.save(user);
+//                userRepository.save(user);
 
                 System.out.println("없어서 추가함");
             }else{
                 List<Long> scrapUsers = post.getScrapUsers();
                 scrapUsers.remove(user.getId());
                 post.setScrapUsers(scrapUsers);
-                user.subScrapCount();
-                userRepository.save(user);
+
+//                List<Long> scrapPost = user.getScrapPosts();
+//                scrapPost.remove(postId);
+//                user.setScrapPosts(scrapPost);
+//                user.subScrapCount();
+
+//                userRepository.save(user);
                 postRepository.save(post);
+
                 System.out.println("있어서 삭제함");
             }
             return postId;
@@ -169,9 +202,11 @@ public class PostServiceImpl implements PostService{
         }
     }
 
-    private User findUser(Long userId) {
-        return userRepository.findById(userId).get();
-    }
+
+
+
+
+
     private Post findPost(Long postId) {
         return postRepository.findById(postId).get();
     }

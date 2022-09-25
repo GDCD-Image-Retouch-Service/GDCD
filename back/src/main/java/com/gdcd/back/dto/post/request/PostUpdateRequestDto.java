@@ -12,6 +12,7 @@ public class PostUpdateRequestDto {
     private Long postId;
     private String title;
     private String content;
+    private List<Long> images;
     private Long privacyBound;
     private int representative;
 }
