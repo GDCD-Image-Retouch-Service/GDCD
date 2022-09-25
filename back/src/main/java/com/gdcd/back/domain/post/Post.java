@@ -59,7 +59,7 @@ public class Post {
     private List<Long> likeUsers;
 
 
-    public void update(String title, String content, Long privacyBound, Integer representative) {
+    public void update(String title, String content, Long privacyBound, Integer representative, List<ImageDetailResponseDto> images) {
         if(title != null)
             this.title = title;
         if(content != null)
@@ -68,8 +68,17 @@ public class Post {
             this.privacyBound = privacyBound;
         if (representative != null)
             this.representative = representative;
-
+        if (images != null)
+            this.images = images;
 //        if(images != null)
 //            this.images = images;
+    }
+
+    public void addLikeCount(){
+        this.likeCount++;
+    }
+
+    public void subLikeCount(){
+        this.likeCount--;
     }
 }
