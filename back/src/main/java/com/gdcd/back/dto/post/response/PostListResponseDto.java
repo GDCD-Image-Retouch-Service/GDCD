@@ -15,12 +15,13 @@ public class PostListResponseDto {
     private Integer likeCount;
 
     private String title;
-//    private int representative;
 
+    private Boolean scrap;
+    private Boolean like;
     private ImageDetailResponseDto images;
     private LocalDateTime updateTime;
 
-    public PostListResponseDto(Post post, ImageDetailResponseDto img) {
+    public PostListResponseDto(Post post, ImageDetailResponseDto img, Boolean scrap, Boolean like) {
         this.postId =post.getId();
         this.writerNickname = post.getWriterNickname();
         this.writerProfile = post.getWriterProfile();
@@ -29,5 +30,7 @@ public class PostListResponseDto {
 //        this.representative = post.getRepresentative();
         this.updateTime = post.getUpdateTime();
         this.likeCount = post.getLikeCount();
+        this.scrap = scrap;
+        this.like = like;
     }
 }

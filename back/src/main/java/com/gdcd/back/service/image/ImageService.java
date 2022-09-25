@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface ImageService {
     public Long addImage(String token, MultipartFile image, ImageCreateRequestDto requestDto) throws Exception;
@@ -14,6 +15,8 @@ public interface ImageService {
     public ImageDetailResponseDto findImageInfoById(Long imaageId);
     public List<ImageListResponseDto> findImageList(String token) throws Exception;
 //    public List<ImageDetailResponseDto> findImageList(Long userId) throws Exception;
+//    public Map<String, Object> requestInitialScore(List<MultipartFile> image);
+    public Map<String, Object> requestInitialScore(MultipartFile image);
 
 }
 

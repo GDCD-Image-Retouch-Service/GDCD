@@ -12,12 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/image")
-@CrossOrigin("https://j7b301.p.ssafy.io/**")
 public class ImageController extends Controller {
     private final ImageService imageService;
     @PostMapping("")
@@ -59,8 +59,8 @@ public class ImageController extends Controller {
 //    }
 
     @PostMapping("/initial")
-    public ResponseEntity<Map<String, Object>> imageInitialScore() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> imageInitialScore(@RequestPart MultipartFile image) {
+        return getResponseEntity(imageService.requestInitialScore(image));
     }
 
     @PostMapping("/object")
