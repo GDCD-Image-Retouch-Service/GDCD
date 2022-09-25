@@ -1,12 +1,14 @@
 <template>
   <div
     class="post-card"
-    @click="$router.push({ name: 'CommunityDetail', params: { postId: 1 } })"
+    @click="
+      $router.push({ name: 'CommunityDetail', params: { postId: post.postId } })
+    "
   >
     <i class="bi bi-three-dots dot-icon"></i>
 
     <!-- post card image -->
-    <img :src="post.writerProfile" alt="" />
+    <img :src="post.images.imageUrl" alt="" />
     <!-- post card -title -->
     <div class="post-card-title">
       {{ post.title }}
@@ -14,7 +16,7 @@
 
     <!-- post card userprofile -->
     <div class="post-card-userinfo">
-      <img src="@/assets/sdprofile.png" class="profile-image" alt="" />
+      <img :src="writerProfile" class="profile-image" alt="" />
       <div style="margin-left: 5px">{{ post.writerNickname }}</div>
     </div>
 
@@ -55,7 +57,6 @@ import { defineProps, toRefs } from 'vue';
 const props = defineProps({
   post: Object,
 });
-
 const { post } = toRefs(props);
 </script>
 

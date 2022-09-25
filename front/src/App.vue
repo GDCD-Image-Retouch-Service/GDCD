@@ -6,16 +6,9 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
-
-export default {
-  components: {
-    HeaderNav,
-    FooterNav,
-  },
-};
 </script>
 
 <style>
