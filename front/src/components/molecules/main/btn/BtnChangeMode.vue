@@ -24,7 +24,7 @@ const leftPos = computed(() => {
 });
 
 const changeMode = () => {
-  mainStore.changeMode();
+  mainStore.isCamModeToggle();
 };
 </script>
 

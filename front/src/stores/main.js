@@ -3,27 +3,34 @@ import { defineStore } from 'pinia';
 
 export const useMainStore = defineStore('main', () => {
   // state
-  const count = ref(0);
   const isCamMode = ref(false);
 
   // action
-  function increment() {
-    count.value++;
+  function isCamModeOn() {
+    isCamMode.value = true;
   }
-  function changeMode() {
+
+  function isCamModeOff() {
+    isCamMode.value = false;
+  }
+
+  function isCamModeToggle() {
     isCamMode.value = !isCamMode.value;
   }
 
   // getter
-  const getDouble = computed(() => count.value * 2);
+  const getIsCamMode = computed(() => isCamMode.value);
+
   return {
     // state
-    count,
     isCamMode,
+
     // action
-    increment,
-    changeMode,
+    isCamModeOn,
+    isCamModeOff,
+    isCamModeToggle,
+
     // getter
-    getDouble,
+    getIsCamMode,
   };
 });

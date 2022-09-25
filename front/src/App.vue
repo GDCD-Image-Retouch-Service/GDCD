@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex flex-column align-items-center justify-content-center">
     <header-nav />
     <router-view />
     <footer-nav />
@@ -86,11 +86,6 @@ body::-webkit-scrollbar {
   line-height: 16px;
   font-size: 16px;
   font-family: 'Noto Sans KR', sans-serif;
-
-  scroll-behavior: smooth;
-
-  /* 배경 */
-  /* background-color: #e654d2; */
 }
 
 /* 대각선 방향 그림자인데 괜찮아보여서 일단 써봄 */
