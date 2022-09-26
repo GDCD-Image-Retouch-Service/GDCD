@@ -33,6 +33,7 @@ const changeMode = () => {
   position: relative;
   overflow: hidden;
   height: var(--size-h-header);
+  min-height: var(--size-h-header);
   width: 90%;
   max-width: 380px;
   background: var(--theme-color);
