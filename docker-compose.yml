@@ -47,7 +47,7 @@ services:
       - "8082"
     networks:
       - my_network
-    entrypoint: "gunicorn -k uvicorn.workers.UvicornWorker --access-logfile ./data/core/gunicorn/gunicorn-access.log main:app --bind 0.0.0.0:8082 --workers 2"
+    entrypoint: "gunicorn -k uvicorn.workers.UvicornWorker --access-logfile ./data/logs/core/gunicorn/gunicorn-access.log main:app --bind 0.0.0.0:8082 --workers 2"
 
 networks:
   my_network:
