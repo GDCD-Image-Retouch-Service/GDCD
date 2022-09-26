@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -58,8 +59,8 @@ public class ImageController extends Controller {
 //    }
 
     @PostMapping("/initial")
-    public ResponseEntity<Map<String, Object>> imageInitialScore() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> imageInitialScore(@RequestPart MultipartFile image) {
+        return getResponseEntity(imageService.requestInitialScore(image));
     }
 
     @PostMapping("/object")

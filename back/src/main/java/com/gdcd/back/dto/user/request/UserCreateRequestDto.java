@@ -8,6 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -25,6 +27,9 @@ public class UserCreateRequestDto {
     private int followingCount = 0;
     private int dailyReports = 0;
 
+//    private List<Long> scrapPosts = new ArrayList<>();
+//    private List<Long> likePosts = new ArrayList<>();
+
 
     public User toDocument() {
         return User.builder()
@@ -38,6 +43,9 @@ public class UserCreateRequestDto {
                 .followerCount(followerCount)
                 .followingCount(followingCount)
                 .dailyReports(dailyReports)
+                //추가
+//                .scrapPosts(scrapPosts)
+//                .likePosts(likePosts)
                 .build();
     }
 }

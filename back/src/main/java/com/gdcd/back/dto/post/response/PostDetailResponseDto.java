@@ -23,22 +23,23 @@ public class PostDetailResponseDto {
     private LocalDateTime updateTime;
     private Integer likeCount;
     private Long privacyBound;
-    private List<Long> scrapUsers;
-    private List<Long> likeUsers;
+    private Boolean scrap;
+    private Boolean like;
 
 
-    public PostDetailResponseDto(Post post) {
+    public PostDetailResponseDto(Post post, Boolean scrap, Boolean like) {
         this.postId = post.getId();
         this.userId = post.getWriterNo();
         this.title = post.getTitle();
         this.content = post.getContent();
+        this.privacyBound = post.getPrivacyBound();
         this.writerNickname = post.getWriterNickname();
         this.writerProfile = post.getWriterProfile();
         this.images = post.getImages();
         this.representative = post.getRepresentative();
         this.likeCount = post.getLikeCount();
-        this.likeUsers = post.getLikeUsers();
-        this.scrapUsers = post.getScrapUsers();
         this.updateTime = post.getUpdateTime();
+        this.scrap = scrap;
+        this.like = like;
     }
 }

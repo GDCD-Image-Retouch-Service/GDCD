@@ -20,13 +20,13 @@ public class PostController extends Controller {
     private final PostService postService;
     private final CommentService commentService;
     @GetMapping("/list")
-    public ResponseEntity<Map<String, Object>> postList() {
-        return getResponseEntity(postService.findPosts());
+    public ResponseEntity<Map<String, Object>> postList(@RequestHeader String token) throws Exception {
+        return getResponseEntity(postService.findPosts(token));
     }
 
     @GetMapping("")
-    public ResponseEntity<Map<String, Object>> postDetails(@RequestParam Long postId) {
-        return getResponseEntity(postService.findPostById(postId));
+    public ResponseEntity<Map<String, Object>> postDetails(@RequestHeader String token, @RequestParam Long postId) throws Exception {
+        return getResponseEntity(postService.findPostById(token, postId));
     }
 
 //    @PostMapping("")
@@ -53,23 +53,23 @@ public class PostController extends Controller {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Map<String, Object>> postDelete(@RequestParam Long postId) {
-        return getResponseEntity(postService.removePost(postId));
+    public ResponseEntity<Map<String, Object>> postDelete(@RequestHeader String token, @RequestParam Long postId) throws Exception{
+        return getResponseEntity(postService.removePost(token, postId));
     }
 
     @GetMapping("/like")
-    public ResponseEntity<Map<String, Object>> postLikeSave(@RequestParam Long postId) {
-        return getResponseEntity(postService.likePost(postId));
+    public ResponseEntity<Map<String, Object>> postLikeSave(@RequestHeader String token, @RequestParam Long postId) throws Exception {
+        return getResponseEntity(postService.likePost(token, postId));
     }
 
     @GetMapping("/scrap")
-    public ResponseEntity<Map<String, Object>> postScrapSave(@RequestParam Long postId) {
-        return getResponseEntity(postService.scrapPost(postId));
+    public ResponseEntity<Map<String, Object>> postScrapSave(@RequestHeader String token, @RequestParam Long postId) throws Exception {
+        return getResponseEntity(postService.scrapPost(token, postId));
     }
 
     @PostMapping("/report")
-    public ResponseEntity<Map<String, Object>> postReportSave(@RequestBody PostReportRequestDto requestDto) {
-        return getResponseEntity(postService.reportPost(requestDto));
+    public ResponseEntity<Map<String, Object>> postReportSave(@RequestHeader String token, @RequestBody PostReportRequestDto requestDto) throws Exception{
+        return getResponseEntity(postService.reportPost(token, requestDto));
     }
 
     @GetMapping("/comment")

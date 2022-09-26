@@ -12,14 +12,14 @@ import java.io.IOException;
 import java.util.List;
 
 public interface PostService {
-    public List<PostListResponseDto> findPosts();
-    public PostDetailResponseDto findPostById(Long postId);
-    public PostCreateRequestDto addPost(String token, PostCreateRequestDto requestDto) throws Exception;
-    public PostDetailResponseDto modifyPost(String token, PostUpdateRequestDto requestDto);
-    public String removePost(Long postId);
+    public List<PostListResponseDto> findPosts(String token) throws Exception;
+    public PostDetailResponseDto findPostById(String token, Long postId) throws Exception;
+    public Long addPost(String token, PostCreateRequestDto requestDto) throws Exception;
+    public Long modifyPost(String token, PostUpdateRequestDto requestDto);
+    public String removePost(String token, Long postId) throws Exception;
 
-    public PostReportRequestDto reportPost(PostReportRequestDto requestDto);
+    public Long reportPost(String token, PostReportRequestDto requestDto) throws Exception;
+    public Long likePost(String token, Long postId) throws Exception;
 
-    public Long likePost(Long postId);
-    public Long scrapPost(Long postId);
+    public Long scrapPost(String token, Long postId) throws Exception;
 }

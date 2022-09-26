@@ -19,17 +19,11 @@
           max-height: 380px;
         "
       >
-        <img
-          v-show="isInput"
-          ref="picBox"
-          src=""
-          width="380"
-          alt="your image"
-        />
+        <img ref="picBox" src="" width="380" alt="your image" />
       </div>
       <div class="spacer" />
       <div class="btn-set d-flex justify-content-center" v-if="!isLoading">
-        <!-- Btn Input Picture -->
+        <!-- Input Picture -->
         <label className="input-file-button" for="input-file">
           <div
             class="btn-set-button inner d-flex align-items-center justify-content-center"
@@ -46,7 +40,8 @@
           @change="setPicBox"
         />
 
-        <!-- Btn Download -->
+        <!-- download 버튼 -->
+
         <a
           v-if="isInput"
           class="btn-set-button inner d-flex align-items-center justify-content-center"
@@ -59,15 +54,7 @@
           <i class="bi bi-download"></i>
         </a>
 
-        <!-- Btn Score -->
-        <router-link
-          v-if="isInput"
-          to="main/score"
-          class="btn-set-button inner d-flex align-items-center justify-content-center"
-          style="margin-left: 8px"
-        >
-          <i class="bi bi-check-lg"></i>
-        </router-link>
+        <!-- Upload -->
       </div>
       <div class="spacer" />
     </div>
@@ -99,7 +86,7 @@
 
       <div class="spacer" />
       <div class="btn-set d-flex justify-content-center" v-if="!isLoading">
-        <!-- Btn Take Photo -->
+        <!-- 사진 찍기 버튼 -->
         <div
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           @click="takePhoto"
@@ -108,7 +95,7 @@
           <i v-else class="bi bi-arrow-clockwise"></i>
         </div>
 
-        <!-- Btn Download -->
+        <!-- download 버튼 -->
         <a
           v-if="isPhotoTaken"
           class="btn-set-button inner d-flex align-items-center justify-content-center"
@@ -120,16 +107,6 @@
         >
           <i class="bi bi-download"></i>
         </a>
-
-        <!-- Btn Score -->
-        <router-link
-          v-if="isInput"
-          to="main/score"
-          class="btn-set-button inner d-flex align-items-center justify-content-center"
-          style="margin-left: 8px"
-        >
-          <i class="bi bi-check-lg"></i>
-        </router-link>
       </div>
       <div class="spacer" />
     </div>

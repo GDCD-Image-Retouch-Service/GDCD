@@ -2,31 +2,38 @@
   <div
     class="main-upload d-flex flex-column align-items-center justify-content-center"
   >
-    시간과 정신과 구글로그인의 방
-    <a id="custom-login-btn" href="javascript:loginWithKakao()">
-      <img
-        src="//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-        width="222"
-        alt="카카오 로그인 버튼"
-      />
-    </a>
+    <div>시간과 정신과 구글로그인의 방</div>
+    <h1>{{ msg }}</h1>
+    <GoogleLogin :callback="callback" prompt auto-login />
   </div>
 </template>
 
 <script setup>
-// import { onMounted } from 'vue';
-import { loadScript } from '@/api/loadScript';
+import { onMounted } from 'vue';
+import { googleOneTap, decodeCredential } from 'vue3-google-login';
 
-loadScript('KakaoJDK', 'https://developers.kakao.com/sdk/js/kakao.js')
-  .then((value) => {
-    console.log(value);
-  })
-  .catch((value) => {
-    console.log(value);
-  });
+const callback = (response) => {
+  // decodeCredential will retrive the JWT payload from the credential
+  const userData = decodeCredential(response.credential);
+  console.log('Handle the userData', userData);
+};
+
+onMounted(async () => {
+  await googleOneTap({ autoLogin: true })
+    .then((response) => {
+      // This promise is resolved when user selects an account from the the One Tap prompt
+      console.log('Handle the response', response);
+      // callback(response);
+    })
+    .catch((error) => {
+      console.log('Handle the error', error);
+    });
+});
+console.log(process.env.VUE_APP_GOOGLE_CLIENT_ID);
+console.log(process.env.VUE_APP_GOOGLE_CLIENT_SSIBAL);
 </script>
 
-<style>
+<style scoped>
 .main-upload {
   min-height: calc(100vh - var(--size-h-header));
   width: 100vw;

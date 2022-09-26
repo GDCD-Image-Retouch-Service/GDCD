@@ -50,7 +50,6 @@ public class Post {
     @Field(name = "like_count")
     private Integer likeCount;
     private int representative;
-    private List<String> tag;
     private List<ImageDetailResponseDto> images;
 
     @Field(name = "scrap_users")
@@ -60,16 +59,26 @@ public class Post {
     private List<Long> likeUsers;
 
 
-    public void update(String title, String content, Long privacyBound, List<String> tag) {
+    public void update(String title, String content, Long privacyBound, Integer representative, List<ImageDetailResponseDto> images) {
         if(title != null)
             this.title = title;
         if(content != null)
             this.content = content;
         if(privacyBound != null)
             this.privacyBound = privacyBound;
-        if(tag != null)
-            this.tag = tag;
+        if (representative != null)
+            this.representative = representative;
+        if (images != null)
+            this.images = images;
 //        if(images != null)
 //            this.images = images;
+    }
+
+    public void addLikeCount(){
+        this.likeCount++;
+    }
+
+    public void subLikeCount(){
+        this.likeCount--;
     }
 }

@@ -14,14 +14,17 @@
 import IconCamera from '@/components/atoms/IconCamera.vue';
 import IconPicture from '@/components/atoms/IconPicture.vue';
 
-import { ref } from 'vue';
-// const leftPos = ref('4px');
+import { ref, computed } from 'vue';
+import { useMainStore } from '@/stores/main';
 
+const mainStore = useMainStore();
 const btnChangeMode = ref(null);
+const leftPos = computed(() => {
+  return mainStore.isCamMode ? 'calc(50% + 4px)' : 'calc(0% + 4px)';
+});
 
 const changeMode = () => {
-  // document.querySelector('.account-sign')
-  btnChangeMode.value.classList.toggle('camera-mode');
+  mainStore.isCamModeToggle();
 };
 </script>
 
@@ -40,7 +43,6 @@ const changeMode = () => {
   z-index: 2;
   position: absolute;
   left: calc(0% + 4px);
-  /* left: calc(50% + 4px); */
   height: calc(var(--size-h-header) - 8px);
   line-height: var(--size-h-header);
   border-radius: var(--size-radius);
@@ -48,12 +50,8 @@ const changeMode = () => {
   width: calc(50% - 8px);
   background: white;
 
-  -webkit-transition: 0.5s ease-in-out;
-  -ms-transition: 0.5s ease-in-out;
-  transition: 0.5s ease-in-out;
-}
-
-.camera-mode .btn-slider {
-  left: calc(50% + 4px);
+  -webkit-transition: 0.4s ease-out;
+  -ms-transition: 0.4s ease-out;
+  transition: 0.4s ease-out;
 }
 </style>
