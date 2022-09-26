@@ -12,12 +12,16 @@ import com.gdcd.back.dto.user.request.UserDetailUpdateRequestDto;
 import com.gdcd.back.dto.user.response.FollowListResponseDto;
 import com.gdcd.back.dto.user.response.UserDetailResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -252,9 +256,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public byte[] findProfile(String token, Long userId) {
-        
-        return null;
+    public byte[] findProfile(String storagePath) {
+        try {
+            return IOUtils.toByteArray(Files.newInputStream(Paths.get(storagePath)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private User findUserById(Long userId) throws Exception {

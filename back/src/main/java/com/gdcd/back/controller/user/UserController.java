@@ -91,7 +91,7 @@ public class UserController extends Controller {
     }
 
     @GetMapping(value = "/profile", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> userProfile(@RequestHeader String token, @RequestParam Long userId) {
-        return new ResponseEntity<byte[]>(userService.findProfile(token, userId), HttpStatus.OK);
+    public ResponseEntity<byte[]> userProfile(@RequestParam String storagePath) {
+        return new ResponseEntity<byte[]>(userService.findProfile(storagePath), HttpStatus.OK);
     }
 }
