@@ -19,9 +19,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 public class UserController extends Controller {
-
-    private static final String SUCCESS = "SUCCESS";
-    private static final String FAIL = "FAIL";
     private final UserService userService;
 
     @PostMapping("/login")
@@ -91,7 +88,7 @@ public class UserController extends Controller {
     }
 
     @GetMapping(value = "/profile", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> userProfile(@RequestParam String storagePath) {
-        return new ResponseEntity<byte[]>(userService.findProfile(storagePath), HttpStatus.OK);
+    public ResponseEntity<byte[]> userProfile(@RequestParam String from) {
+        return new ResponseEntity<>(userService.findProfile(from), HttpStatus.OK);
     }
 }

@@ -16,7 +16,8 @@ import java.util.List;
 public class UserCreateRequestDto {
     private String email;
     private String nickname;
-    private String profile = "DEFAULT IMAGE URL";
+    private String profile;
+    private String storagePath;
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH;mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime registDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
@@ -31,11 +32,12 @@ public class UserCreateRequestDto {
 //    private List<Long> likePosts = new ArrayList<>();
 
 
-    public User toDocument() {
+    public User toDocument(String profileRequestURI, String storagePath) {
         return User.builder()
                 .email(email)
-                .nickname(nickname) // default nickname creator
-                .profile(profile) // default profile url
+                .nickname(nickname)
+                .profile(profileRequestURI + storagePath)
+                .storagePath(storagePath)
                 .registDate(registDate)
                 .validation(validation)
                 .postCount(postCount)

@@ -1,6 +1,5 @@
 package com.gdcd.back.domain.user;
 
-import com.gdcd.back.dto.user.request.UserDetailUpdateRequestDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -28,6 +27,8 @@ public class User {
     private String email;
     private String nickname;
     private String profile;
+    @Field(name = "storage_path")
+    private String storagePath;
     @Field(name = "regist_date")
     private LocalDateTime registDate;
     private Boolean validation;
@@ -49,45 +50,56 @@ public class User {
     @Field(name = "daily_reports")
     private int dailyReports;
 
-    public void update(String profile, String nickname) {
-        if (profile != null)
-            this.profile = profile;
+    public void update(String requestURI, String profile, String nickname) {
+        if (profile != null) {
+            this.profile = requestURI + profile;
+            this.storagePath = profile;
+        }
         if (nickname != null)
             this.nickname = nickname;
     }
 
-    public void delete(Boolean validation){
+    public void delete(Boolean validation) {
         this.validation = validation;
     }
 
-    public void addLikeCount(){
+    public void addLikeCount() {
         this.likeCount++;
     }
-    public void subLikeCount(){
+
+    public void subLikeCount() {
         this.likeCount--;
     }
-    public void addScrapCount(){
+
+    public void addScrapCount() {
         this.scrapCount++;
     }
-    public void subScrapCount(){
+
+    public void subScrapCount() {
         this.scrapCount--;
     }
-    public void addPostCount(){
+
+    public void addPostCount() {
         this.postCount++;
     }
-    public void subPostCount(){
+
+    public void subPostCount() {
         this.postCount--;
     }
-    public void addFollowerCount(){
+
+    public void addFollowerCount() {
         this.followerCount++;
     }
-    public void subFollowerCount(){
+
+    public void subFollowerCount() {
         this.followerCount--;
     }
-    public void addFollowingCount(){
+
+    public void addFollowingCount() {
         this.likeCount++;
     }
-    public void subFollowingCount(){
+
+    public void subFollowingCount() {
         this.likeCount--;
     }
 
