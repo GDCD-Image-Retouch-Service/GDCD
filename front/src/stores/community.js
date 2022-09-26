@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import post from '@/api/rest/post';
+import { useUserStore } from './user';
 
 export const useCommunityStore = defineStore('communityStore', {
   state: () => ({
@@ -82,8 +83,7 @@ export const useCommunityStore = defineStore('communityStore', {
         url: post.postsAll(),
         method: 'GET',
         headers: {
-          token:
-            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJka2RsZHBhOTAyNEBuYXZlci5jb20iLCJpYXQiOjE2NjQxNTUzNTUsImV4cCI6MTY2NDE3MzM1NX0.ue2Qj1ShdvU2Zbgd5YttreNSELi8K3lnboIQTWawyuM',
+          token: useUserStore().token,
         },
       })
         .then((res) => {
@@ -119,8 +119,7 @@ export const useCommunityStore = defineStore('communityStore', {
         url: post.post(),
         method: 'GET',
         headers: {
-          token:
-            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+          token: useUserStore().token,
         },
         data: {
           data,
@@ -141,8 +140,7 @@ export const useCommunityStore = defineStore('communityStore', {
         url: post.post(),
         method: 'PUT',
         headers: {
-          token:
-            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+          token: useUserStore().token,
         },
         data: {
           data,
@@ -163,8 +161,7 @@ export const useCommunityStore = defineStore('communityStore', {
         url: post.post(),
         method: 'DELETE',
         headers: {
-          token:
-            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+          token: useUserStore().token,
         },
         params: {
           postId: postId,
@@ -184,8 +181,7 @@ export const useCommunityStore = defineStore('communityStore', {
         url: post.like(),
         method: 'GET',
         headers: {
-          token:
-            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+          token: useUserStore().token,
         },
         params: {
           postId: postId,
@@ -205,8 +201,7 @@ export const useCommunityStore = defineStore('communityStore', {
         url: post.scrap(),
         method: 'GET',
         headers: {
-          token:
-            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+          token: useUserStore().token,
         },
         params: {
           postId: postId,
@@ -226,8 +221,7 @@ export const useCommunityStore = defineStore('communityStore', {
         url: post.comment(),
         method: 'GET',
         headers: {
-          token:
-            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+          token: useUserStore().token,
         },
         params: {
           postId: postId,
@@ -248,8 +242,7 @@ export const useCommunityStore = defineStore('communityStore', {
         url: post.comment(),
         method: 'POST',
         headers: {
-          token:
-            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+          token: useUserStore().token,
         },
         data: {
           data: data,
