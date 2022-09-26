@@ -16,7 +16,7 @@ services:
     container_name: nginx
     restart: unless-stopped
     volumes:
-      - ./deploy/nginx:/etc/nginx/conf.d
+      # - ./deploy/nginx:/etc/nginx/conf.d
       - ./deploy/certbot/conf:/etc/letsencrypt
       - ./deploy/certbot/www:/var/www/certbot
     ports:
@@ -42,12 +42,12 @@ services:
     container_name: analysis
     restart: always
     volumes:
-      - "./data/logs/core:/app/logs"
+      - "./data:/app/data"
     expose:
       - "8082"
     networks:
       - my_network
-    entrypoint: "gunicorn -k uvicorn.workers.UvicornWorker --access-logfile ./logs/gunicorn-access.log main:app --bind 0.0.0.0:8082 --workers 2"
+    entrypoint: "gunicorn -k uvicorn.workers.UvicornWorker --access-logfile ./data/core/gunicorn/gunicorn-access.log main:app --bind 0.0.0.0:8082 --workers 2"
 
 networks:
   my_network:
