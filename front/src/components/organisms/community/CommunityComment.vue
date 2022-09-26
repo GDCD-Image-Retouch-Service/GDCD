@@ -5,9 +5,7 @@
   >
     <div class="review-wrap">
       <div class="review-item">
-        <community-comment-item
-          :comments="communityStore.commentAll.item.comments"
-        />
+        <community-comment-item :comments="communityStore.commentAll.item" />
         <community-comment-input :chat="chat[0]" />
       </div>
     </div>
@@ -19,12 +17,18 @@ import CommunityCommentItem from '@/components/molecules/community/CommunityComm
 import CommunityCommentInput from '@/components/molecules/community/CommunityCommentInput.vue';
 
 import { useCommunityStore } from '@/stores/community.js';
+import { useRoute } from 'vue-router';
 
 const communityStore = useCommunityStore();
+const route = useRoute();
+
+communityStore.getPost(route.params.postId);
+
+const postId = route.params.postId;
 
 // 데이터 초기화
 communityStore.isOpenComment = false;
-
+communityStore.getComment(postId);
 const chat = [
   {
     id: 1,

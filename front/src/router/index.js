@@ -47,7 +47,11 @@ import ProfileScrap from '@/components/pages/profile/ProfileScrap';
 import ProfileLike from '@/components/pages/profile/ProfileLike';
 import ProfileFriend from '@/components/pages/profile/ProfileFriend';
 
-// photo
+// ProfileUpdate
+import ProfileUpdateView from '@/views/ProfileUpdateView.vue';
+import ProfileUpdate from '@/components/pages/profile/ProfileUpdate';
+
+// Photo
 import PhotoView from '@/views/PhotoView.vue';
 import PhotoList from '@/components/pages/photo/PhotoList.vue';
 
@@ -95,7 +99,7 @@ const routes = [
     ],
   },
   {
-    path: '/profile',
+    path: '/profile/:userId',
     name: 'profile',
     component: ProfileView,
     children: [
@@ -118,6 +122,45 @@ const routes = [
         path: 'friend',
         name: 'ProfileFriend',
         component: ProfileFriend,
+      },
+    ],
+  },
+  {
+    path: '/profile/:userId',
+    name: 'profile',
+    component: ProfileView,
+    children: [
+      {
+        path: '', // default page
+        name: 'ProfilePost',
+        component: ProfilePost,
+      },
+      {
+        path: 'scrap',
+        name: 'ProfileScrap',
+        component: ProfileScrap,
+      },
+      {
+        path: 'like',
+        name: 'ProfileLike',
+        component: ProfileLike,
+      },
+      {
+        path: 'friend',
+        name: 'ProfileFriend',
+        component: ProfileFriend,
+      },
+    ],
+  },
+  {
+    path: '/profile/update',
+    name: 'profileUpdate',
+    component: ProfileUpdateView,
+    children: [
+      {
+        path: '', // default page
+        name: 'ProfileUpdate',
+        component: ProfileUpdate,
       },
     ],
   },

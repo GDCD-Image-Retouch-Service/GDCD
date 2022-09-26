@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia';
+import axios from 'axios';
+import user from '@/api/rest/user';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
@@ -101,7 +103,187 @@ export const useUserStore = defineStore('userStore', {
 
     // 프로필 친구
     isFriendActive: true,
-    //
+
+    // 여기서부터 새로 api 적용되는 애들 위에는 아직 더미
+    // 토큰
+    token:
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0MTEzNDg2LCJleHAiOjE2NjQxMzE0ODZ9.XX2UFV6mJT8uNZvpzUKRpefRb44YQTfoUPb36ye7StA',
+
+    // 로그인한 유저 정보
+    currentUserInfo: {},
+
+    // 스크랩 리스트
+    scrapList: {
+      item: {
+        posts: [
+          {
+            postId: 0,
+            title: 'String',
+            image: require('@/assets/sdprofile.png'),
+            rank: 1,
+            writerNickname: 'String',
+            writerProfile: require('@/assets/sdprofile.png'),
+            likeCount: 100,
+          },
+          {
+            postId: 1,
+            title: 'String',
+            image: require('@/assets/sdprofile.png'),
+            rank: 1,
+            writerNickname: 'String',
+            writerProfile: require('@/assets/sdprofile.png'),
+            likeCount: 100,
+          },
+          {
+            postId: 2,
+            title: 'String',
+            image: require('@/assets/sdprofile.png'),
+            rank: 1,
+            writerNickname: 'String',
+            writerProfile: require('@/assets/sdprofile.png'),
+            likeCount: 100,
+          },
+        ],
+      },
+      msg: 'string',
+    },
+
+    // 닉네임 중복 체크
+    nicknameOverlap: false,
+
+    // 유저별 사진 리스트
+    myPhoto: {},
   }),
-  actions: {},
+  actions: {
+    // 내정보 조회
+    getMyinfo() {
+      axios({
+        url: user.myInfo(),
+        method: 'GET',
+        headers: {
+          token: this.token,
+        },
+      })
+        .then((res) => {
+          this.currentUserInfo = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 다른 사람 정보 조회
+    getOtherinfo(userId) {
+      axios({
+        url: user.myInfo(),
+        method: 'GET',
+        headers: {
+          token: this.token,
+        },
+        params: {
+          userId: userId,
+        },
+      })
+        .then((res) => {
+          this.currentUserInfo = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 스크랩 조회
+    getMyScrap() {
+      axios({
+        url: user.myScrap(),
+        method: 'GET',
+        headers: {
+          token: this.token,
+        },
+      })
+        .then((res) => {
+          this.scrapList = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 내 사진 목록 조회
+    getMyPhoto() {
+      axios({
+        url: user.myPhoto(),
+        method: 'GET',
+        headers: {
+          token: this.token,
+        },
+      })
+        .then((res) => {
+          this.myPhoto = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 회원정보수정
+    updateMyInfo(nickname) {
+      axios({
+        url: user.myInfo(),
+        method: 'PUT',
+        headers: {
+          token: this.token,
+        },
+        data: {
+          nickname: nickname,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 회원 탈퇴
+    deleteMyInfo() {
+      axios({
+        url: user.myInfo(),
+        method: 'DELETE',
+        headers: {
+          // token: this.token,
+          token:
+            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaW5jaG9UcmFzaDRAZ21haWwuY29tIiwiaWF0IjoxNjY0MTEyNzczLCJleHAiOjE2NjQxMzA3NzN9.X621Uk3vLtljdOvvefrjJWtR7MeMZjDJ_q9b6JPnlsw',
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 닉네임 중복 체크
+    nicknameOverlapCheck(nickname) {
+      axios({
+        url: user.nicknameOverlapCheck(),
+        method: 'GET',
+        params: {
+          nickname: nickname,
+        },
+      })
+        .then((res) => {
+          console.log(res.data.item.usable);
+          this.nicknameOverlap = res.data.item.usable;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
 });

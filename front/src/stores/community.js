@@ -1,33 +1,11 @@
 import { defineStore } from 'pinia';
+import axios from 'axios';
+import post from '@/api/rest/post';
 
 export const useCommunityStore = defineStore('communityStore', {
   state: () => ({
     // 전체 게시글 조회
-    postsAll: {
-      msg: 'SUCCESS',
-      item: [
-        {
-          userId: 1,
-          writerNickname: '성덕',
-          writerProfile: require('@/assets/sdprofile.png'),
-          likeCount: 0,
-          title: '아이씐나!',
-          representative: '1',
-          rank: '1',
-          updateTime: '2022-09-18T03:12:33.844',
-        },
-        {
-          userId: 2,
-          writerNickname: '성덕',
-          writerProfile: require('@/assets/sdprofile.png'),
-          likeCount: 0,
-          title: '아이씐나!',
-          representative: '1',
-          rank: '1',
-          updateTime: '2022-09-18T03:12:33.844',
-        },
-      ],
-    },
+    postsAll: {},
 
     // 게시글 상세
     post: {
@@ -95,6 +73,195 @@ export const useCommunityStore = defineStore('communityStore', {
     },
     isToggleButton: true,
     isOpenComment: false,
+    thisContent: '',
   }),
-  actions: {},
+  actions: {
+    // 전체 게시글 조회
+    getPostsAll() {
+      axios({
+        url: post.postsAll(),
+        method: 'GET',
+        headers: {
+          token:
+            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          this.postsAll = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 게시글 상세 조회
+    getPost(postId) {
+      axios({
+        url: post.post(),
+        method: 'GET',
+        params: {
+          postId: postId,
+        },
+      })
+        .then((res) => {
+          this.post = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 게시글 생성
+    createPost: (data) => {
+      axios({
+        url: post.post(),
+        method: 'GET',
+        headers: {
+          token:
+            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+        },
+        data: {
+          data,
+        },
+      })
+        .then((res) => {
+          this.post = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 게시글 수정
+    updatePost: (data) => {
+      axios({
+        url: post.post(),
+        method: 'PUT',
+        headers: {
+          token:
+            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+        },
+        data: {
+          data,
+        },
+      })
+        .then((res) => {
+          this.post = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 게시글 삭제
+    deletPost: (postId) => {
+      axios({
+        url: post.post(),
+        method: 'DELETE',
+        headers: {
+          token:
+            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+        },
+        params: {
+          postId: postId,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 게시글 좋아요
+    likePost(postId) {
+      axios({
+        url: post.like(),
+        method: 'GET',
+        headers: {
+          token:
+            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+        },
+        params: {
+          postId: postId,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    //게시글 스크랩
+    scrapPost(postId) {
+      axios({
+        url: post.scrap(),
+        method: 'GET',
+        headers: {
+          token:
+            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+        },
+        params: {
+          postId: postId,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 댓글 조회
+    getComment(postId) {
+      axios({
+        url: post.comment(),
+        method: 'GET',
+        headers: {
+          token:
+            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+        },
+        params: {
+          postId: postId,
+        },
+      })
+        .then((res) => {
+          this.commentAll = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 댓글 생성
+    createComment(data) {
+      axios({
+        url: post.comment(),
+        method: 'POST',
+        headers: {
+          token:
+            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+        },
+        data: {
+          data: data,
+        },
+      })
+        .then((res) => {
+          this.commentAll = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
 });
