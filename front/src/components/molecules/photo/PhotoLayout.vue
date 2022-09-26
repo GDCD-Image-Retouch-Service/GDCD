@@ -11,8 +11,8 @@
 </template>
 
 <script setup>
-import DateFormat from '../common/DateFormat.vue';
-import { useUserStore } from '@/stores/user.js';
+import DateFormat from '../common/DateFormat';
+import { useUserStore } from '@/stores/user';
 const userStore = useUserStore();
 
 userStore.getMyPhoto();

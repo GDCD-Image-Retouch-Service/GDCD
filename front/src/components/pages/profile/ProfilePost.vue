@@ -6,7 +6,7 @@
 
 <script setup>
 import MasonryLayout from '@/components/organisms/MasonryLayout.vue';
-import { useUserStore } from '@/stores/user.js';
+import { useUserStore } from '@/stores/user.txt';
 
 const userStore = useUserStore();
 

@@ -32,8 +32,8 @@ public class UserServiceImpl implements UserService {
     private final FollowRepository followRepository;
     private Map<String, String> RESULT_STRING;
     private Map<String, Object> RESULT_OBJECT;
-    private final String ROOT = "/app/data/profiles/";
-//    private final String ROOT = "C:/SSAFY/AI/profiles/";
+//    private final String ROOT = "/app/data/profiles/";
+    private final String ROOT = "C:/SSAFY/AI/profiles/";
 
     @Override
     public Map<String, String> loginUser(UserCreateRequestDto requestDto) {
@@ -93,6 +93,9 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> modifyUser(String token, MultipartFile profile, String nickname) {
         RESULT_OBJECT = new HashMap<>();
         try {
+//        	System.out.println();
+//        	System.out.println(profile.getOriginalFilename());
+        	System.out.println(nickname);
             User user = findUserByEmail(decodeToken(token));
             String filePath = user.getProfile();
             if (profile != null) {
@@ -118,7 +121,8 @@ public class UserServiceImpl implements UserService {
             RESULT_OBJECT.put("userId", userRepository.save(user).getId());
             // fix) 유저 정보를 바꾸면 post가 가지고 있는 writer 정보 또한 바뀌어야함.
         } catch (Exception e) {
-            RESULT_OBJECT.put("error", "USER NOT UPDATED");
+        	e.printStackTrace();
+            RESULT_OBJECT.put("error", "USER NOT 123UPDATED");
         }
         return RESULT_OBJECT;
     }

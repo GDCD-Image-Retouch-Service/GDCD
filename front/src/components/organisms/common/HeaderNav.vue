@@ -15,9 +15,19 @@
 import HeaderLogo from '@/components/molecules/common/HeaderLogo.vue';
 import HeaderProfile from '@/components/molecules/common/HeaderProfile.vue';
 
-const callback = (response) => {
-  console.log('Handle the response', response);
+import { decodeCredential } from 'vue3-google-login';
+import { user } from '@/api/rest';
+
+const callback = async (response) => {
+  // decodeCredential will retrive the JWT payload from the credential
+  const userData = await decodeCredential(response.credential);
+  // console.log('Handle the userData', userData);
+  console.log(user.login({ email: userData.email, nickname: userData.name }));
 };
+
+// const callback = (response) => {
+//   console.log('Handle the response', response);
+// };
 </script>
 
 <style scoped>

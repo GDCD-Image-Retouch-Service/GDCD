@@ -12,8 +12,8 @@
 </template>
 
 <script setup>
-import ProfileHeaderInfo from '@/components/molecules/profile/ProfileHeaderInfo.vue';
-import { useUserStore } from '@/stores/user.js';
+import ProfileHeaderInfo from '@/components/molecules/profile/ProfileHeaderInfo';
+import { useUserStore } from '@/stores/user';
 
 const userStore = useUserStore();
 </script>

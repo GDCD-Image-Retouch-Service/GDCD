@@ -43,19 +43,19 @@ import CommunityWrite from '@/components/pages/community/CommunityWrite';
 import CommunityDetail from '@/components/pages/community/CommunityDetail';
 
 // Profile
-import ProfileView from '@/views/ProfileView.vue';
+import ProfileView from '@/views/ProfileView';
 import ProfilePost from '@/components/pages/profile/ProfilePost';
 import ProfileScrap from '@/components/pages/profile/ProfileScrap';
 import ProfileLike from '@/components/pages/profile/ProfileLike';
 import ProfileFriend from '@/components/pages/profile/ProfileFriend';
 
 // ProfileUpdate
-import ProfileUpdateView from '@/views/ProfileUpdateView.vue';
+import ProfileUpdateView from '@/views/ProfileUpdateView';
 import ProfileUpdate from '@/components/pages/profile/ProfileUpdate';
 
 // Photo
 import PhotoView from '@/views/PhotoView.vue';
-import PhotoList from '@/components/pages/photo/PhotoList.vue';
+import PhotoList from '@/components/pages/photo/PhotoList';
 
 const routes = [
   {

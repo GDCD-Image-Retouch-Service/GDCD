@@ -6,6 +6,7 @@ const createAxiosApi = () => {
     baseURL: process.env.VUE_APP_REST_SERVER,
     headers: {
       'content-type': 'application/json; charset=UTF-8',
+      token: 'empty',
     },
   });
 };

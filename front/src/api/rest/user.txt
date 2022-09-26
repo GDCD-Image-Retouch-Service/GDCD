@@ -1,7 +1,4 @@
 import { createAxiosApi } from '@/api/axios';
-import { useUserStore } from '@/stores/user';
-
-const userStore = useUserStore();
 
 const HOST = process.env.VUE_APP_REST_SERVER;
 const IMAGE = '/image';
@@ -45,9 +42,8 @@ export default {
     return new Promise((resolve, reject) => {
       axiosApi
         .post(REST_PATH + '/login', payload)
-        .then((res) => {
-          userStore.setToken(res.data.item.token);
-          resolve(res);
+        .then((response) => {
+          resolve(response);
         })
         .catch((error) => {
           reject(error);

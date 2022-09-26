@@ -14,7 +14,7 @@
 
 <script setup>
 import DeleteButton from '@/components/molecules/common/btn/BtnDelete.vue';
-import { useUserStore } from '@/stores/user.js';
+import { useUserStore } from '@/stores/user';
 
 const userStore = useUserStore();
 </script>

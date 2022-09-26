@@ -8,7 +8,7 @@
 import ProfileFriendHeader from '@/components/molecules/profile/ProfileFriendHeader.vue';
 import ProfileFriendFollow from '@/components/molecules/profile/ProfileFriendFollow.vue';
 import ProfileFriendFollowing from '@/components/molecules/profile/ProfileFriendFollowing.vue';
-import { useUserStore } from '@/stores/user.js';
+import { useUserStore } from '@/stores/user.txt';
 
 const userStore = useUserStore();
 </script>
