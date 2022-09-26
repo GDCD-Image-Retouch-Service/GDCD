@@ -16,4 +16,18 @@ export default {
         });
     });
   },
+  scoringInitial: function (image) {
+    return new Promise((resolve, reject) => {
+      axiosApi
+        .post(REST_PATH + '/initial', { image: image })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
+
+  // /initial
 };
