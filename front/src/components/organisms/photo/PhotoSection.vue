@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import PhotoLayout from '@/components/molecules/PhotoLayout.vue';
+import PhotoLayout from '@/components/molecules/photo/PhotoLayout.vue';
 </script>
 
 <style scoped>

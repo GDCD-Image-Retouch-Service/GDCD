@@ -15,7 +15,11 @@ import FooterNav from '@/components/organisms/common/FooterNav.vue';
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap');
-
+@font-face {
+  font-family: 'SFUI';
+  src: url('@/assets/font/sf-ui-text-2-cufonfonts/SFUIText-Light.ttf')
+    format('truetype');
+}
 :root {
   /* 비율 */
   --size-h-spacer: 20px;
@@ -58,11 +62,14 @@ import FooterNav from '@/components/organisms/common/FooterNav.vue';
 }
 
 body {
-  /* background-color: blue; */
+  width: 100vw;
+  background-color: blue;
+  height: 100vh;
 }
 
 *::-webkit-scrollbar,
 body::-webkit-scrollbar {
+  scrollbar-width: none;
   display: none;
 }
 
@@ -79,7 +86,17 @@ body::-webkit-scrollbar {
   color: var(--black);
   line-height: 16px;
   font-size: 16px;
-  font-family: 'Noto Sans KR', sans-serif;
+
+  /* font-family: 'Noto Sans KR', sans-serif; */
+  font-family: 'SFUI';
+  scroll-behavior: smooth;
+
+  /* 그리드 */
+  margin: calc(var(--size-h-header) + var(--grid-header)) var(--grid-side)
+    calc(var(--size-h-footer) + var(--grid-header)) var(--grid-side);
+
+  /* 배경 */
+  /* background-color: #e654d2; */
 }
 
 .app-container {
@@ -105,6 +122,15 @@ body::-webkit-scrollbar {
 }
 .spacer {
   height: var(--size-h-spacer);
+}
+.button {
+  width: 100%;
+  height: 50px;
+  background-color: var(--theme-color);
+  border-radius: 10px;
+  border: none;
+  color: var(--light-main-color);
+  font-weight: 700;
 }
 
 a {

@@ -2,39 +2,65 @@
   <div class="profile-header-info">
     <div class="nickname-follow-button">
       <div>
-        {{ userStore.currentUserd.item.nickname }}
+        {{ userStore.currentUserInfo.item?.user?.nickname }}
+        <router-link to="/profile/update">
+          <i class="bi bi-caret-right-fill"></i>
+        </router-link>
       </div>
-      <router-link to="/profile/friend" style="text-decoration: none">
+      <div
+        @click="router.push({ name: 'ProfileFriend', params: { userid: 18 } })"
+        style="text-decoration: none"
+      >
         <btn-add-friednd />
-      </router-link>
+      </div>
     </div>
     <div class="posts-scraps-likes">
       <!-- 게시물 -->
-      <router-link to="/profile" class="posts-scraps-likes-item">
+      <div
+        @click="router.push({ name: 'ProfilePost' })"
+        class="posts-scraps-likes-item"
+      >
         <div :class="{ active: userStore.isItemActive === 0 }">게시물</div>
-        <div>{{ userStore.post.item.postCount }}</div>
-      </router-link>
+        <div>{{ userStore.currentUserInfo.item?.user.postCount }}</div>
+      </div>
 
       <!-- 스크랩 -->
-      <router-link to="/profile/scrap" class="posts-scraps-likes-item">
+      <div
+        @click="router.push({ name: 'ProfileScrap' })"
+        class="posts-scraps-likes-item"
+      >
         <div :class="{ active: userStore.isItemActive === 1 }">스크랩</div>
-        <div>{{ userStore.scrap.item.scrapCount }}</div>
-      </router-link>
+        <div>{{ userStore.currentUserInfo.item?.user.scrapCount }}</div>
+      </div>
 
       <!-- 좋아요 -->
-      <router-link to="/profile/like" class="posts-scraps-likes-item">
+      <div
+        @click="router.push({ name: 'ProfileLike' })"
+        class="posts-scraps-likes-item"
+      >
         <div :class="{ active: userStore.isItemActive === 2 }">좋아요</div>
         <div>{{ userStore.like.item.likeCount }}</div>
-      </router-link>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import BtnAddFriednd from '../common/btn/BtnAddFriednd.vue';
+import router from '@/router/index.js';
+
 import { useUserStore } from '@/stores/user.js';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 const userStore = useUserStore();
+
+if (route.params.userId == 100000) {
+  userStore.getMyinfo();
+} else {
+  userStore.getOtherinfo(route.params.userId);
+}
 </script>
 
 <style scoped>

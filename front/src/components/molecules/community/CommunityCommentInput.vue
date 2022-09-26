@@ -4,21 +4,39 @@
     <img :src="chat.profileImage" alt="" class="profile-image" />
 
     <!-- 인풋 -->
-    <input type="text" class="comment-input" placeholder="댓글 달기..." />
+    <input
+      type="text"
+      class="comment-input"
+      placeholder="댓글 달기..."
+      v-model="communityStore.thisContent"
+    />
 
     <!-- 버튼 -->
-    <div class="comment-button">게시</div>
+    <div class="comment-button" @click="createComment()">게시</div>
   </div>
 </template>
 
 <script setup>
 import { defineProps, toRefs } from 'vue';
+import { useRoute } from 'vue-router';
+import { useCommunityStore } from '@/stores/community.js';
+const route = useRoute();
+const communityStore = useCommunityStore();
 
 const props = defineProps({
   chat: Object,
 });
-
 const { chat } = toRefs(props);
+
+const createComment = () => {
+  const data = {
+    postId: route.params.postId,
+    content: communityStore.thisContent,
+    upper: 0,
+  };
+  communityStore.createComment(data);
+  communityStore.thisContent = '';
+};
 </script>
 
 <style scoped>
