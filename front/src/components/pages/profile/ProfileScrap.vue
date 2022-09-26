@@ -1,13 +1,12 @@
 <template>
   <div class="scrap">
     <div class="scrap-items">
-      <div v-for="post in evenScrap" :key="post">
+      <div
+        v-for="post in userStore.scrapList?.item?.posts"
+        :key="post"
+        class="image-wrap"
+      >
         <img :src="post.writerProfile" alt="" class="card-image common-image" />
-      </div>
-    </div>
-    <div class="scrap-items">
-      <div v-for="post in oddScrap" :key="post">
-        <img :src="post.image" alt="" class="card-image common-image" />
       </div>
     </div>
   </div>
@@ -15,30 +14,16 @@
 
 <script setup>
 import { useUserStore } from '@/stores/user.js';
-import { ref } from 'vue';
 
 const userStore = useUserStore();
 
-let oddScrap = ref([]);
-let evenScrap = ref([]);
-
-const devideScrap = () => {
-  userStore.scrapList?.item?.posts?.forEach((e, index) => {
-    if (index % 2 === 0) {
-      evenScrap.value.push(e);
-    } else {
-      oddScrap.value.push(e);
-    }
-  });
-};
-// userStore.getMyScrap();
-devideScrap();
 userStore.isItemActive = 1;
 </script>
 
 <style scoped>
 .scrap {
-  width: 100%;
+  width: calc(100% - 2 * var(--grid-side));
+  margin-left: var(--grid-side);
   margin-top: var(--grid-vertical);
 
   display: flex;
@@ -46,11 +31,15 @@ userStore.isItemActive = 1;
 }
 .scrap-items {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 10px;
-  width: 50%;
+  width: 100%;
+}
+.image-wrap {
+  width: calc(50% - 5px);
 }
 .card-image {
   width: 100%;
+  object-fit: cover;
 }
 </style>

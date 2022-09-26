@@ -20,11 +20,13 @@ const userStore = useUserStore();
 
 <style scoped>
 .profile-header {
-  width: 100%;
+  width: calc(100% - 2 * var(--grid-side));
   display: flex;
   justify-content: center;
   padding-bottom: var(--grid-vertical);
   border-bottom: 1px solid var(--instagram-dark-grey);
+  margin-left: var(--grid-side);
+  margin-top: var(--grid-vertical);
 }
 .profile-header-wrap {
   width: 100%;

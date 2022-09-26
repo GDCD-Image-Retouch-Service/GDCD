@@ -107,7 +107,7 @@ export const useUserStore = defineStore('userStore', {
     // 여기서부터 새로 api 적용되는 애들 위에는 아직 더미
     // 토큰
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0MTU3ODgwLCJleHAiOjE2NjQxNzU4ODB9.TNo3hOgibv5YAttsbO3Zd9Z__dlUdp7uxsmhgx65g3M',
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0MTc3MjE0LCJleHAiOjE2NjQxOTUyMTR9.8GMovxS_lQDvb3eKaNu4xan11d8I39n3BlBtpH_hea0',
     // 로그인한 유저 정보
     currentUserInfo: {},
 
@@ -230,16 +230,19 @@ export const useUserStore = defineStore('userStore', {
     },
 
     // 회원정보수정
-    updateMyInfo(nickname) {
+    updateMyInfo(nickname, profile) {
+      const formdata = new FormData();
+
+      formdata.append('nickname', nickname);
+      formdata.append('profile', profile);
       axios({
         url: user.myInfo(),
         method: 'PUT',
         headers: {
           token: this.token,
+          'Content-Type': 'multipart/form-data',
         },
-        data: {
-          nickname: nickname,
-        },
+        data: formdata,
       })
         .then((res) => {
           console.log(res.data);
@@ -255,9 +258,7 @@ export const useUserStore = defineStore('userStore', {
         url: user.myInfo(),
         method: 'DELETE',
         headers: {
-          // token: this.token,
-          token:
-            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaW5jaG9UcmFzaDRAZ21haWwuY29tIiwiaWF0IjoxNjY0MTEyNzczLCJleHAiOjE2NjQxMzA3NzN9.X621Uk3vLtljdOvvefrjJWtR7MeMZjDJ_q9b6JPnlsw',
+          token: this.token,
         },
       })
         .then((res) => {

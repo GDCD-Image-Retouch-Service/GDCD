@@ -5,9 +5,9 @@
       type="text"
       class="profile-nickname"
       v-model="updateNickname"
-      @keyup="selectNickname(updateNickname)"
+      @keyup="selectNickname(updateNickname, updateProfile)"
     />
-
+    <input type="file" :v-model="updateProfile" />
     <div v-if="userStore.nicknameOverlap">사용할 수 있는 닉네임입니다!</div>
 
     <div>
@@ -25,22 +25,25 @@ const userStore = useUserStore();
 
 const updateImage = userStore.currentUserInfo.item.user.profile;
 const updateNickname = userStore.currentUserInfo.item.user.nickname;
-
+console.log(userStore.currentUserInfo.item.user.profile);
 const selectNickname = (nickname) => {
   userStore.nicknameOverlapCheck(nickname);
 };
+const updateProfile = '';
 
-const profileUpdate = (nickname) => {
+const profileUpdate = (nickname, profile) => {
   if (userStore.nicknameOverlap) {
     console.log(nickname);
-    userStore.updateMyInfo(nickname);
+    userStore.updateMyInfo(nickname, profile);
   }
 };
 </script>
 
 <style scoped>
 .profile-update {
-  width: 100%;
+  width: calc(100% - 2 * var(--grid-side));
+  margin-left: var(--grid-side);
+  margin-top: var(--grid-vertical);
   display: flex;
   flex-direction: column;
   align-items: center;

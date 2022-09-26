@@ -96,6 +96,7 @@ body::-webkit-scrollbar {
 }
 
 .app-container {
+  width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
 }
