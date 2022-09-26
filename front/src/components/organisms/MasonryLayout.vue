@@ -130,4 +130,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.masonry-layout {
+  width: calc(100% - 20px);
+}
+</style>

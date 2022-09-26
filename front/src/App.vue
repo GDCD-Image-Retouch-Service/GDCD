@@ -1,5 +1,5 @@
 <template>
-  <div class="app d-flex flex-column align-items-center justify-content-center">
+  <div class="app d-flex flex-column align-items-start">
     <header-nav />
     <div class="app-container flex-grow-1 flex-shrink-1">
       <router-view />
@@ -91,17 +91,11 @@ body::-webkit-scrollbar {
   font-family: 'SFUI';
   scroll-behavior: smooth;
 
-  /* 그리드 */
-  margin: calc(var(--size-h-header) + var(--grid-header)) var(--grid-side)
-    calc(var(--size-h-footer) + var(--grid-header)) var(--grid-side);
-
   /* 배경 */
   /* background-color: #e654d2; */
 }
 
 .app-container {
-  width: 100vw;
-  min-width: 100vw;
   overflow-x: hidden;
   overflow-y: auto;
 }

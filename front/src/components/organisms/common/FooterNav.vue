@@ -44,10 +44,6 @@ const basicStore = useBasicStore();
 
 <style scoped>
 .footer-nav {
-  z-index: 50;
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100vw;
   height: var(--size-h-footer);
   min-height: var(--size-h-footer);

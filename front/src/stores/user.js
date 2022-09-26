@@ -107,8 +107,7 @@ export const useUserStore = defineStore('userStore', {
     // 여기서부터 새로 api 적용되는 애들 위에는 아직 더미
     // 토큰
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0MTEzNDg2LCJleHAiOjE2NjQxMzE0ODZ9.XX2UFV6mJT8uNZvpzUKRpefRb44YQTfoUPb36ye7StA',
-
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0MTU3ODgwLCJleHAiOjE2NjQxNzU4ODB9.TNo3hOgibv5YAttsbO3Zd9Z__dlUdp7uxsmhgx65g3M',
     // 로그인한 유저 정보
     currentUserInfo: {},
 

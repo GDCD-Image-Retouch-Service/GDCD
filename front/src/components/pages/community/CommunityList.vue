@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="community-list">
     <masonry-layout />
     <btn-scroll-to-top />
     <btn-go-to-write />
@@ -16,4 +16,8 @@ const communityStore = useCommunityStore();
 communityStore.getPostsAll();
 </script>
 
-<style></style>
+<style>
+.community-list {
+  width: 100vw;
+}
+</style>

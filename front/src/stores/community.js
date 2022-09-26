@@ -83,7 +83,7 @@ export const useCommunityStore = defineStore('communityStore', {
         method: 'GET',
         headers: {
           token:
-            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ2FtaWwuY29tIiwiaWF0IjoxNjYzODkzNDYzLCJleHAiOjE2NjM5MTE0NjN9.Ul0M7hOjvECnF3RHAJ8JLDF4ZWLxNcAzF9Bek_PC1qU',
+            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJka2RsZHBhOTAyNEBuYXZlci5jb20iLCJpYXQiOjE2NjQxNTUzNTUsImV4cCI6MTY2NDE3MzM1NX0.ue2Qj1ShdvU2Zbgd5YttreNSELi8K3lnboIQTWawyuM',
         },
       })
         .then((res) => {

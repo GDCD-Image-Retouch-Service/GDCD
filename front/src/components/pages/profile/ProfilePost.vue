@@ -1,5 +1,7 @@
 <template>
-  <masonry-layout />
+  <div class="profile-post">
+    <masonry-layout />
+  </div>
 </template>
 
 <script setup>
@@ -11,4 +13,8 @@ const userStore = useUserStore();
 userStore.isItemActive = 0;
 </script>
 
-<style></style>
+<style>
+.profile-post {
+  width: 100vw;
+}
+</style>
