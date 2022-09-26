@@ -12,12 +12,16 @@ import com.gdcd.back.dto.user.request.UserDetailUpdateRequestDto;
 import com.gdcd.back.dto.user.response.FollowListResponseDto;
 import com.gdcd.back.dto.user.response.UserDetailResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +36,8 @@ public class UserServiceImpl implements UserService {
     private final FollowRepository followRepository;
     private Map<String, String> RESULT_STRING;
     private Map<String, Object> RESULT_OBJECT;
-    private final String ROOT = "/app/data/profiles/";
-//    private final String ROOT = "C:/SSAFY/AI/profiles/";
+//    private final String ROOT = "/app/data/profiles/";
+    private final String ROOT = "C:/SSAFY/AI/profiles/";
 
     @Override
     public Map<String, String> loginUser(UserCreateRequestDto requestDto) {
@@ -94,7 +98,7 @@ public class UserServiceImpl implements UserService {
         RESULT_OBJECT = new HashMap<>();
         try {
             User user = findUserByEmail(decodeToken(token));
-            String filePath = user.getProfile();
+            String filePath = null;
             if (profile != null) {
                 String type = profile.getContentType();
                 String endpoint = "." + type.substring(type.lastIndexOf("/") + 1);
@@ -108,16 +112,11 @@ public class UserServiceImpl implements UserService {
                 }
                 profile.transferTo(new File(filePath));
             }
-            if (nickname == null)
-                nickname = user.getNickname();
-            UserDetailUpdateRequestDto requestDto = UserDetailUpdateRequestDto.builder()
-                    .nickname(nickname)
-                    .profile(filePath)
-                    .build(); // profile, nickname
-            user.update(requestDto);
+            user.update(filePath, nickname);
             RESULT_OBJECT.put("userId", userRepository.save(user).getId());
             // fix) 유저 정보를 바꾸면 post가 가지고 있는 writer 정보 또한 바뀌어야함.
         } catch (Exception e) {
+            e.printStackTrace();
             RESULT_OBJECT.put("error", "USER NOT UPDATED");
         }
         return RESULT_OBJECT;
@@ -254,6 +253,16 @@ public class UserServiceImpl implements UserService {
             RESULT_OBJECT.put("error", "USER NOT FOUND");
         }
         return RESULT_OBJECT;
+    }
+
+    @Override
+    public byte[] findProfile(String storagePath) {
+        try {
+            return IOUtils.toByteArray(Files.newInputStream(Paths.get(storagePath)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private User findUserById(Long userId) throws Exception {

@@ -49,11 +49,11 @@ public class User {
     @Field(name = "daily_reports")
     private int dailyReports;
 
-    public void update(UserDetailUpdateRequestDto requestDto) {
-        if (requestDto.getProfile() != null)
-            this.profile = requestDto.getProfile();
-        if (requestDto.getNickname() != null)
-            this.nickname = requestDto.getNickname();
+    public void update(String profile, String nickname) {
+        if (profile != null)
+            this.profile = profile;
+        if (nickname != null)
+            this.nickname = nickname;
     }
 
     public void delete(Boolean validation){
