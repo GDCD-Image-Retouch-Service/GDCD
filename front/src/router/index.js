@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import store from '../stores/user';
+import store from '@/stores/account';
 import swal from 'sweetalert2';
 
 // true : 로그인을 해야 이동 가능
@@ -31,7 +31,6 @@ const beforeAuth = (needAuth) => async (from, to, next) => {
 // Main
 import MainView from '@/views/MainView.vue';
 import MainUpload from '@/components/pages/main/MainUpload';
-import MainLogin from '@/components/pages/main/MainLogin';
 import MainTest from '@/components/pages/main/MainTest';
 import MainScore from '@/components/pages/main/MainScore';
 
@@ -69,11 +68,6 @@ const routes = [
         path: 'main', // default page
         name: 'MainUpload',
         component: MainUpload,
-      },
-      {
-        path: 'main/login', // 구글 로그인 테스트 코드, 지워야함
-        name: 'MainLogin',
-        component: MainLogin,
       },
       {
         path: 'main/test', // 이미지 상호작용 테스트 코드, 지워야함

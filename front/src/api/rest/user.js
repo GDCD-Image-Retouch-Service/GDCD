@@ -1,7 +1,5 @@
 import { createAxiosApi } from '@/api/axios';
-import { useUserStore } from '@/stores/user';
-
-const userStore = useUserStore();
+import { useAccountStore } from '@/stores/account';
 
 const HOST = process.env.VUE_APP_REST_SERVER;
 const IMAGE = '/image';
@@ -24,7 +22,7 @@ export default {
   // GET: 유저별 사진 리스트 조회
   myPhoto: () => HOST + IMAGE + '/list',
 
-  testConnection: function (payload) {
+  testConnection: (payload) => {
     let params = {
       data: payload.data,
     };
@@ -46,10 +44,15 @@ export default {
       axiosApi
         .post(REST_PATH + '/login', payload)
         .then((res) => {
-          userStore.setToken(res.data.item.token);
+          const accountStore = useAccountStore();
+          accountStore.setIsLogined(true);
+          accountStore.setToken(res.data.item.token);
+
+          console.log('로그인 성공');
           resolve(res);
         })
         .catch((error) => {
+          console.log('로그인 실패');
           reject(error);
         });
     });

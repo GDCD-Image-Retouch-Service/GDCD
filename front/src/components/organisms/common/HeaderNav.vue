@@ -1,6 +1,7 @@
 <template>
-  <div class="header-nav outer">
+  <div class="header-nav outer d-flex align-items-center">
     <header-logo />
+    <div class="flex-grow-1"></div>
 
     <Popper arrow>
       <header-profile />
@@ -19,15 +20,12 @@ import { decodeCredential } from 'vue3-google-login';
 import { user } from '@/api/rest';
 
 const callback = async (response) => {
-  // decodeCredential will retrive the JWT payload from the credential
   const userData = await decodeCredential(response.credential);
-  // console.log('Handle the userData', userData);
-  console.log(user.login({ email: userData.email, nickname: userData.name }));
+  await user.login({
+    email: userData.email,
+    nickname: userData.name,
+  });
 };
-
-// const callback = (response) => {
-//   console.log('Handle the response', response);
-// };
 </script>
 
 <style scoped>
@@ -36,9 +34,10 @@ const callback = async (response) => {
   height: var(--size-h-header);
   min-height: var(--size-h-header);
   background: white;
+  overflow: hidden;
 
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; */
 }
 </style>

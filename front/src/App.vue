@@ -112,9 +112,6 @@ body::-webkit-scrollbar {
   /* font-family: 'Noto Sans KR', sans-serif; */
   font-family: 'SFUI';
   scroll-behavior: smooth;
-
-  /* 배경 */
-  /* background-color: #e654d2; */
 }
 
 .app-container {
