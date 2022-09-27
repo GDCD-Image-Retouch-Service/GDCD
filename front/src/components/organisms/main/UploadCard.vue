@@ -8,6 +8,7 @@
 
     <loading-dots v-if="isLoading" />
 
+    <!-- Pic Mode -->
     <div class="pic-mode" v-if="!mainStore.isCamMode">
       <div
         class="pic-container d-flex flex-column align-items-center justify-content-center"
@@ -17,6 +18,7 @@
           max-width: 380px;
           height: 380px;
           max-height: 380px;
+          overflow: hidden;
         "
       >
         <img
@@ -154,12 +156,18 @@ const picBox = ref(null);
 const isInput = ref(false);
 
 const setPicBox = () => {
-  const [file] = picInputButton.value.files;
-  if (file) {
-    const tempUrl = URL.createObjectURL(file);
-    picBox.value.src = tempUrl;
-    mainStore.tempImg = tempUrl;
-    isInput.value = true;
+  const file = picInputButton.value.files[0];
+  if (FileReader && file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const tempUrl = reader.result;
+      picBox.value.src = tempUrl;
+      mainStore.setTempImg(tempUrl);
+      isInput.value = true;
+    };
+    reader.readAsDataURL(file);
+  } else {
+    alert('이미지 업로드에 문제가 발생하였습니다.');
   }
 };
 
@@ -228,14 +236,16 @@ const takePhoto = () => {
   }
 
   isPhotoTaken.value = !isPhotoTaken.value;
+  isInput.value = !isInput.value;
 
   const context = canvas.value.getContext('2d');
-  console.log('테스문구');
+
   console.log(camera.value.height);
   console.log(camera.value.width);
   context.drawImage(camera.value, 0, 0, 380, 380);
 
-  mainStore.tempImg = canvas.value.toDataURL('image/png');
+  // canvas to url
+  mainStore.setTempImg(canvas.value.toDataURL('image/png'));
 };
 
 const downloadImage = () => {
@@ -243,7 +253,7 @@ const downloadImage = () => {
     .getElementById('downloadPhoto')
     .setAttribute(
       'href',
-      mainStore.getTempImg.replace('image/jpeg', 'image/octet-stream'),
+      mainStore.getTempImg.replace('image/png', 'image/octet-stream'),
     );
 };
 </script>
