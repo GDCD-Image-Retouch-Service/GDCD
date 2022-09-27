@@ -229,7 +229,7 @@ public class UserServiceImpl implements UserService {
             List<Follow> documentList = followRepository.findAllByFollower(follower);
             List<FollowListResponseDto> list = new ArrayList<>();
             for (Follow follow : documentList) {
-                list.add(new FollowListResponseDto(follow.getFollower()));
+                list.add(new FollowListResponseDto(follow.getFollowing()));
             }
             RESULT_OBJECT.put("followings", list);
             RESULT_OBJECT.put("followingCount", list.size());
