@@ -4,7 +4,7 @@
       class="masonry-container"
       style="
         width: 100%;
-        padding: 10px;
+        padding: 20px;
         display: grid;
         column-gap: 10px;
         grid-auto-rows: 1px;
@@ -77,13 +77,13 @@ export default {
       );
 
       if (containerWidth > 1440) {
-        masonryContainer.style.gridTemplateColumns = `repeat(5, calc((${containerWidth}px - 50px) / 5))`;
+        masonryContainer.style.gridTemplateColumns = `repeat(5, calc((${containerWidth}px - 60px) / 5))`;
       } else if (containerWidth > 960) {
-        masonryContainer.style.gridTemplateColumns = `repeat(4, calc((${containerWidth}px - 40px) / 4))`;
+        masonryContainer.style.gridTemplateColumns = `repeat(4, calc((${containerWidth}px - 50px) / 4))`;
       } else if (containerWidth > 560) {
-        masonryContainer.style.gridTemplateColumns = `repeat(3, calc((${containerWidth}px - 30px) / 3))`;
+        masonryContainer.style.gridTemplateColumns = `repeat(3, calc((${containerWidth}px - 40px) / 3))`;
       } else {
-        masonryContainer.style.gridTemplateColumns = `repeat(2, calc((${containerWidth}px - 20px) / 2))`;
+        masonryContainer.style.gridTemplateColumns = `repeat(2, calc((${containerWidth}px - 30px) / 2))`;
       }
       // } else if (containerWidth > 380) {
       //   masonryContainer.style.gridTemplateColumns = `repeat(2, calc((${containerWidth}px - 20px) / 2))`;
@@ -132,6 +132,6 @@ export default {
 
 <style scoped>
 .masonry-layout {
-  width: calc(100% - 10px);
+  width: calc(100% - 20px);
 }
 </style>

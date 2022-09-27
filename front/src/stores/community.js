@@ -27,7 +27,8 @@ export const useCommunityStore = defineStore('communityStore', {
             rank: 1,
           },
           {
-            imageUrl: require('@/assets/sdprofile.png'),
+            imageUrl: '',
+            // imageUrl: require('@/assets/sdprofile.png'),
             rank: 1,
           },
         ],

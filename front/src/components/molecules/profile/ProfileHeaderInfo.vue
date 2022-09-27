@@ -2,7 +2,7 @@
   <div class="profile-header-info">
     <div class="nickname-follow-button">
       <div>
-        {{ userStore.currentUserInfo.item?.user?.nickname }}
+        {{ userStore.profile.item?.user?.nickname }}
         <router-link to="/profile/update">
           <i class="bi bi-caret-right-fill"></i>
         </router-link>
@@ -21,7 +21,7 @@
         class="posts-scraps-likes-item"
       >
         <div :class="{ active: userStore.isItemActive === 0 }">게시물</div>
-        <div>{{ userStore.currentUserInfo.item?.user.postCount }}</div>
+        <div>{{ userStore.profile.item?.user?.postCount }}</div>
       </div>
 
       <!-- 스크랩 -->
@@ -30,7 +30,7 @@
         class="posts-scraps-likes-item"
       >
         <div :class="{ active: userStore.isItemActive === 1 }">스크랩</div>
-        <div>{{ userStore.currentUserInfo.item?.user.scrapCount }}</div>
+        <div>{{ userStore.profile.item?.user.scrapCount }}</div>
       </div>
 
       <!-- 좋아요 -->
@@ -39,7 +39,7 @@
         class="posts-scraps-likes-item"
       >
         <div :class="{ active: userStore.isItemActive === 2 }">좋아요</div>
-        <div>{{ userStore.like.item.likeCount }}</div>
+        <div>{{ userStore.like?.item?.likeCount }}</div>
       </div>
     </div>
   </div>

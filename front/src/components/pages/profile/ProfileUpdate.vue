@@ -1,11 +1,19 @@
 <template>
   <div class="profile-update">
-    <img :src="updateImage" alt="" class="profile-image common-image" />
+    <label for="update-profile" class="profile-image common-image">
+      <img :src="userStore.updateProfile" alt="" />
+    </label>
     <input
       type="text"
       class="profile-nickname"
-      v-model="updateNickname"
-      @keyup="selectNickname(updateNickname)"
+      v-model="userStore.updateNickname"
+      @keyup="selectNickname(userStore.updateNickname, userStore.updateProfile)"
+    />
+    <input
+      style="display: none"
+      id="update-profile"
+      type="file"
+      :v-model="updateProfile"
     />
 
     <div v-if="userStore.nicknameOverlap">사용할 수 있는 닉네임입니다!</div>
@@ -19,28 +27,34 @@
 </template>
 
 <script setup>
-import { useUserStore } from '@/stores/user.txt';
+import { useUserStore } from '@/stores/user.js';
+import { ref } from 'vue';
 
 const userStore = useUserStore();
 
-const updateImage = userStore.currentUserInfo.item.user.profile;
-const updateNickname = userStore.currentUserInfo.item.user.nickname;
-
+userStore.getMyinfo();
+const updateProfile = ref(userStore.profile.item?.user.profile);
+const updateNickname = ref(userStore.profile.item?.user.nickname);
+console.log(userStore.profile.item?.user.profile);
 const selectNickname = (nickname) => {
   userStore.nicknameOverlapCheck(nickname);
 };
 
-const profileUpdate = (nickname) => {
+console.log(userStore.profile);
+const profileUpdate = (nickname, profile) => {
   if (userStore.nicknameOverlap) {
     console.log(nickname);
-    userStore.updateMyInfo(nickname);
+    userStore.updateMyInfo(nickname, profile);
   }
 };
+console.log(userStore.updateNickname, userStore.updateProfile);
 </script>
 
 <style scoped>
 .profile-update {
-  width: 100%;
+  width: calc(100% - 2 * var(--grid-side));
+  margin-left: var(--grid-side);
+  margin-top: var(--grid-vertical);
   display: flex;
   flex-direction: column;
   align-items: center;

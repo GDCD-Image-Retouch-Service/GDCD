@@ -18,6 +18,7 @@ import { useUserStore } from '@/stores/user.txt';
 
 const userStore = useUserStore();
 </script>
+
 <style scoped>
 .follow-wrap {
   display: flex;

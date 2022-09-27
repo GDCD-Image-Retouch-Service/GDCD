@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="profile-view">
     <profile-header />
     <router-view />
   </div>

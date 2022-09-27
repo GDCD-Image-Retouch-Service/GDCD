@@ -14,6 +14,7 @@ import DateFormat from '@/components/molecules/common/DateFormat.vue';
 
 <style scoped>
 .photo-list {
-  width: 100%;
+  width: calc(100% - 2 * var(--grid-side));
+  margin-left: var(--grid-side);
 }
 </style>

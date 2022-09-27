@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="community-detail">
     <community-detail-card />
     <community-comment />
   </div>
@@ -20,4 +20,11 @@ import CommunityComment from '@/components/organisms/community/CommunityComment.
 // });
 </script>
 
-<style scoped></style>
+<style scoped>
+.community-detail {
+  width: calc(100% - 2 * var(--grid-side));
+  margin: var(--grid-vertical) var(--grid-side) 0 var(--grid-side);
+
+  overflow: hidden;
+}
+</style>

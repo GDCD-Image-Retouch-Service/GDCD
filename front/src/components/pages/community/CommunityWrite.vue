@@ -20,6 +20,9 @@
 
 <style scoped>
 .community-write {
+  width: calc(100% - 2 * var(--grid-side));
+  margin: var(--grid-vertical) var(--grid-side);
+
   display: flex;
   flex-direction: column;
   gap: var(--grid-vertical);

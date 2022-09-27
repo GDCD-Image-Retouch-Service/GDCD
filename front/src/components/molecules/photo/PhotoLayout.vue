@@ -3,16 +3,18 @@
     <date-format :updateInfo="myPhotos.item[0][0].updateTime" />
 
     <div class="photo-item-wrap">
-      <div v-for="myPhoto in myPhotos.item" :key="myPhoto">
+      <div v-for="myPhoto in myPhotos.item" :key="myPhoto" class="photo-items">
         <img :src="myPhoto[0].imageUrl" class="photo-item" />
       </div>
     </div>
+    <photo-list />
   </div>
 </template>
 
 <script setup>
-import DateFormat from '../common/DateFormat';
-import { useUserStore } from '@/stores/user';
+import DateFormat from '../common/DateFormat.vue';
+import PhotoList from '@/components/organisms/photo/PhotoList.vue';
+import { useUserStore } from '@/stores/user.js';
 const userStore = useUserStore();
 
 userStore.getMyPhoto();
@@ -164,11 +166,14 @@ const myPhotos = {
   flex-wrap: wrap;
   gap: 10px;
   width: 100%;
+
   /* justify-content: space-between; */
 }
+.photo-items {
+  width: calc((100% - 20px) / 3);
+}
 .photo-item {
-  width: 100px;
-  height: 100px;
+  width: 100%;
   object-fit: cover;
 }
 </style>
