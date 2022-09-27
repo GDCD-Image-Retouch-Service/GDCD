@@ -1,43 +1,31 @@
 <template>
   <div class="like">
     <div class="like-items">
-      <div v-for="post in oddLike" :key="post">
-        <img :src="post.image" alt="" class="card-image common-image" />
-      </div>
-    </div>
-    <div class="like-items">
-      <div v-for="post in evenLike" :key="post">
-        <img :src="post.image" alt="" class="card-image common-image" />
+      <div
+        v-for="post in userStore.likeList?.item?.posts"
+        :key="post"
+        class="image-wrap"
+      >
+        <img :src="post.writerProfile" alt="" class="card-image common-image" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useUserStore } from '@/stores/user.txt';
-import { ref } from 'vue';
+import { useUserStore } from '@/stores/user.js';
 
 const userStore = useUserStore();
 
-let oddLike = ref([]);
-let evenLike = ref([]);
-
-const devideLike = () => {
-  userStore.like.item.posts.forEach((e, index) => {
-    if (index % 2 === 0) {
-      evenLike.value.push(e);
-    } else {
-      oddLike.value.push(e);
-    }
-  });
-};
-
-devideLike();
 userStore.isItemActive = 2;
+
+userStore.getMyLike();
 </script>
 
 <style scoped>
 .like {
+  width: calc(100% - 2 * var(--grid-side));
+  margin-left: var(--grid-side);
   margin-top: var(--grid-vertical);
 
   display: flex;
@@ -45,11 +33,15 @@ userStore.isItemActive = 2;
 }
 .like-items {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 10px;
-  width: 50%;
+  width: 100%;
+}
+.image-wrap {
+  width: calc(50% - 5px);
 }
 .card-image {
   width: 100%;
+  object-fit: cover;
 }
 </style>

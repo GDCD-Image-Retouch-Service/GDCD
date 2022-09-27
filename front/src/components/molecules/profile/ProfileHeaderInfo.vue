@@ -4,14 +4,15 @@
       <div>
         {{ userStore.profile.item?.user?.nickname }}
         <router-link to="/profile/update">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class="bi bi-caret-right-fill" style="color: var(--black)"></i>
         </router-link>
       </div>
       <div
-        @click="router.push({ name: 'ProfileFriend', params: { userid: 18 } })"
+        @click="router.push({ name: 'ProfileFriend' })"
         style="text-decoration: none"
       >
         <btn-add-friednd />
+        <btn-add-follow :userId="1" />
       </div>
     </div>
     <div class="posts-scraps-likes">
@@ -39,7 +40,7 @@
         class="posts-scraps-likes-item"
       >
         <div :class="{ active: userStore.isItemActive === 2 }">좋아요</div>
-        <div>{{ userStore.like?.item?.likeCount }}</div>
+        <div>{{ userStore.profile?.item?.user.scrapCount }}</div>
       </div>
     </div>
   </div>
@@ -47,6 +48,7 @@
 
 <script setup>
 import BtnAddFriednd from '../common/btn/BtnAddFriednd.vue';
+import BtnAddFollow from '../common/btn/BtnAddFollow.vue';
 import router from '@/router/index.js';
 
 import { useUserStore } from '@/stores/user';

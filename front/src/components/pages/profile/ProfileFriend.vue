@@ -10,9 +10,16 @@
 import ProfileFriendHeader from '@/components/molecules/profile/ProfileFriendHeader.vue';
 import ProfileFriendFollow from '@/components/molecules/profile/ProfileFriendFollow.vue';
 import ProfileFriendFollowing from '@/components/molecules/profile/ProfileFriendFollowing.vue';
-import { useUserStore } from '@/stores/user.txt';
+import { useUserStore } from '@/stores/user';
+import { useCommunityStore } from '@/stores/community';
+
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 const userStore = useUserStore();
+const communityStore = useCommunityStore();
+communityStore.getMyPostsAll(route.params.userId);
 </script>
 
 <style scoped>

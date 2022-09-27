@@ -85,6 +85,7 @@ import FooterNav from '@/components/organisms/common/FooterNav.vue';
 
 body {
   width: 100vw;
+  /* background-color: blue; */
   height: 100vh;
 }
 
