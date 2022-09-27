@@ -23,4 +23,5 @@ public interface UserService {
     public Map<String, Object> followUser(String token, Long userId);
     public Map<String, Object> findFollowers(String token, Long userId);
     public Map<String, Object> findFollowings(String token, Long userId);
+    public byte[] findProfile(String from);
 }
