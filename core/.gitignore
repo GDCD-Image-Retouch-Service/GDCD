@@ -1,0 +1,13 @@
+# .pt files
+app/models/*.pt
+app/models/*.pth
+
+# json files
+train/labels/*
+
+# __pycache__
+__pycache__
+
+# dataset
+train/dataset/AVA-dataset/*
+train/dataset/TID2013/*
