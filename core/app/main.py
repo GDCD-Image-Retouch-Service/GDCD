@@ -10,11 +10,6 @@ from typing import List, Dict
 from services.nima import Nima
 from services.enhancer import Enhancer
 
-data_path = os.path.join("app", "data")
-os.makedirs("data/logs/core/gunicorn", exist_ok=True)
-os.makedirs("data/logs/core/scoring", exist_ok=True)
-os.makedirs("data/logs/core/optimize", exist_ok=True)
-os.makedirs("data/logs/core/csv_save", exist_ok=True)
 
 app = FastAPI()
 nima = Nima(aes_path="models/aesthetic_InceptionV3_0725.pt",
@@ -34,7 +29,7 @@ def get_score(image: UploadFile = File(...), user_id: str = Form()):
     filename, ext = os.path.splitext(image.filename)
 
     inputs: Image = Image.open(io.BytesIO(image.file.read()))
-    save_dir = os.path.join(data_path, "buffer", user_id)
+    save_dir = os.path.join("data", "buffer", user_id)
 
     outputs: dict = enhancer.process(inputs)
     enhancer.save(outputs, save_dir, ext)
@@ -43,7 +38,7 @@ def get_score(image: UploadFile = File(...), user_id: str = Form()):
     values = list(outputs.values())
     scores = nima.predict([Image.fromarray(v) for v in values])
 
-    return [{os.path.join(save_dir, k + ext): s} for k, s in zip(keys, scores)]
+    return [{os.path.join("/app", save_dir, k + ext): s} for k, s in zip(keys, scores)]
 # @app.post("/optimize-image", response_model=List[Dict[str, float]])
 # def get_score(image: UploadFile, user_id: str):
 #     input_image = Image.open(io.BytesIO(image.file.read()))

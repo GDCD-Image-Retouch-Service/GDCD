@@ -11,6 +11,17 @@ services:
       - ./data:/app/data
     networks:
       - my_network
+  core:
+    build: core
+    container_name: core
+    restart: always
+    volumes:
+      - "./data:/app/data"
+    expose:
+      - "8082"
+    networks:
+      - my_network
+    entrypoint: "gunicorn -k uvicorn.workers.UvicornWorker --access-logfile ./data/logs/core/gunicorn/gunicorn-access.log main:app --bind 0.0.0.0:8082 --workers 2"
   nginx:
     build: front
     container_name: nginx
@@ -37,17 +48,6 @@ services:
     networks:
       - my_network
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-  core:
-    build: core
-    container_name: core
-    restart: always
-    volumes:
-      - "./data:/app/data"
-    expose:
-      - "8082"
-    networks:
-      - my_network
-    entrypoint: "gunicorn -k uvicorn.workers.UvicornWorker --access-logfile ./data/logs/core/gunicorn/gunicorn-access.log main:app --bind 0.0.0.0:8082 --workers 2"
 
 networks:
   my_network:
