@@ -29,11 +29,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -72,6 +70,10 @@ public class ImageServiceImpl implements ImageService {
                 }
             }
             image.transferTo(new File(ROOT + FilePath));
+            if (requestDto == null){
+                requestDto = new ImageCreateRequestDto();
+                requestDto.setObjects(new ArrayList<>());
+            }
             requestDto.setFilePath(FilePath);
             Long count = imageRepository.findAll().stream().count() + 1;
             requestDto.setImgUrl(ADDRESS + count.toString());
@@ -99,14 +101,30 @@ public class ImageServiceImpl implements ImageService {
         return new ImageDetailResponseDto(img);
     }
 
-    public List<ImageListResponseDto> findImageList(String token) throws Exception {
+    public Map<LocalDate, List<ImageListResponseDto>> findImageList(String token) throws Exception {
         List<Image> imageList;
         User user = findUserByEmail(decodeToken(token));
         imageList = imageRepository.findAllByUserId(user.getId());
+        //afterImage에 들어갈 객체 : 우선 박아둘 3번 친구
+        Image afterImage = findImage(3L);
 
-        List<ImageListResponseDto> images = new ArrayList<>();
-        for (Image image : imageList) {
-            images.add(new ImageListResponseDto(image));
+        //SET으로 중복 없애기
+        Set<LocalDate> dateTime = new HashSet<>();
+        for (Image img : imageList){
+            dateTime.add(img.getRegistDate().toLocalDate());
+        }
+        List<LocalDate> dateTimeList = new ArrayList<>(dateTime);
+        dateTimeList.sort(Comparator.reverseOrder());
+
+        Map<LocalDate, List<ImageListResponseDto>> images = new HashMap<>();
+        for (LocalDate datetime : dateTimeList){
+            List<ImageListResponseDto> list = new ArrayList<>();
+            for (Image image : imageList){
+                if (image.getRegistDate().toLocalDate().equals(datetime)){
+                    list.add(new ImageListResponseDto(new ImageDetailResponseDto(image), new ImageDetailResponseDto(afterImage)));
+                }
+            }
+            images.put(datetime, list);
         }
         return images;
     }

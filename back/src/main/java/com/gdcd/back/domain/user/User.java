@@ -102,5 +102,6 @@ public class User {
     public void subFollowingCount() {
         this.likeCount--;
     }
+    public void addDailyReports(){this.dailyReports++;}
 
 }

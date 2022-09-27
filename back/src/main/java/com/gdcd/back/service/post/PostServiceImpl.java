@@ -137,6 +137,8 @@ public class PostServiceImpl implements PostService{
 
     public Long reportPost(String token, PostReportRequestDto requestDto) throws Exception{
         User user = findUserByEmail(decodeToken(token));
+        user.addDailyReports();
+        userRepository.save(user);
         return reportRepository.save(requestDto.toDocument(user.getId())).getId();
     }
     public Long likePost(String token, Long postId) throws Exception {
