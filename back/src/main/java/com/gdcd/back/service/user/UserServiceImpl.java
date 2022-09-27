@@ -86,6 +86,9 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> modifyUser(String token, MultipartFile profile, String nickname) {
         RESULT_OBJECT = new HashMap<>();
         try {
+//        	System.out.println();
+//        	System.out.println(profile.getOriginalFilename());
+        	System.out.println(nickname);
             User user = findUserByEmail(decodeToken(token));
             String filePath = DEFAULT_PATH;
             if (profile != null) {

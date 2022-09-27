@@ -29,7 +29,7 @@ let carouselValue = ref('translateX(0)');
 
 const moveCrousel = () => {
   if (carouselValue.value === 'translateX(0)') {
-    carouselValue.value = 'translateX(calc(-50% - 10px))';
+    carouselValue.value = 'translateX(calc(-100% - 20px))';
   } else {
     carouselValue.value = 'translateX(0)';
   }
@@ -38,15 +38,15 @@ const moveCrousel = () => {
 
 <style scoped>
 .card-carousel {
-  width: calc(200% + 20px);
+  width: calc(100%);
   display: flex;
   gap: 30px;
   overflow: hidden;
 }
 .image-wrap {
-  width: 100%;
+  width: 200%;
   display: flex;
-  overflow: hidden;
+  /* overflow: hidden; */
   gap: 20px;
   transition-duration: 0.3s;
 }

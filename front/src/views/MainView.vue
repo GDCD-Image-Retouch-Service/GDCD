@@ -6,4 +6,9 @@
 
 <script></script>
 
-<style scoped></style>
+<style scoped>
+.main-view {
+  width: 100vw;
+  height: 100%;
+}
+</style>

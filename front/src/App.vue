@@ -1,31 +1,30 @@
 <template>
-  <div>
+  <div class="app light d-flex flex-column align-items-start">
     <header-nav />
-    <router-view />
+    <div class="app-container flex-grow-1 flex-shrink-1">
+      <router-view />
+    </div>
     <footer-nav />
   </div>
 </template>
 
-<script>
+<script setup>
 import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
-
-export default {
-  components: {
-    HeaderNav,
-    FooterNav,
-  },
-};
 </script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap');
-
+@font-face {
+  font-family: 'SFUI';
+  src: url('@/assets/font/sf-ui-text-2-cufonfonts/SFUIText-Light.ttf')
+    format('truetype');
+}
 :root {
   /* 비율 */
   --size-h-spacer: 20px;
-  --size-h-header: 70px;
-  --size-h-footer: 60px;
+  --size-h-header: 48px;
+  --size-h-footer: 48px;
   --size-w-footer: 400px;
   --size-radius: 20px;
 
@@ -53,10 +52,31 @@ export default {
   --grid-side: 20px;
 }
 
+.dark {
+  --popper-theme-background-color: #333333;
+  --popper-theme-background-color-hover: #333333;
+  --popper-theme-text-color: white;
+  --popper-theme-border-width: 0px;
+  --popper-theme-border-radius: 6px;
+  --popper-theme-padding: 32px;
+  --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
+}
+
+.light {
+  --popper-theme-background-color: #ffffff;
+  --popper-theme-background-color-hover: #ffffff;
+  --popper-theme-text-color: #333333;
+  --popper-theme-border-width: 1px;
+  --popper-theme-border-style: solid;
+  --popper-theme-border-color: #eeeeee;
+  --popper-theme-border-radius: 6px;
+  --popper-theme-padding: 32px;
+  --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
+}
+
 * {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
   box-sizing: border-box;
 
   -ms-overflow-style: none;
@@ -64,20 +84,20 @@ export default {
 }
 
 body {
-  /* background-color: blue; */
+  width: 100vw;
+  background-color: blue;
+  height: 100vh;
 }
 
 *::-webkit-scrollbar,
 body::-webkit-scrollbar {
+  scrollbar-width: none;
   display: none;
 }
 
-#app {
-  height: calc(
-    100vh - calc(var(--size-h-header) + var(--grid-header)) -
-      calc(var(--size-h-footer) + var(--grid-header)) var(--grid-side)
-  );
-  width: calc(100vw - 2 * var(--grid-side));
+.app {
+  height: 100vh;
+  width: 100vw;
   max-height: 100vh;
   max-width: 100vw;
 
@@ -88,22 +108,16 @@ body::-webkit-scrollbar {
   color: var(--black);
   line-height: 16px;
   font-size: 16px;
-  font-family: 'Noto Sans KR', sans-serif;
 
+  /* font-family: 'Noto Sans KR', sans-serif; */
+  font-family: 'SFUI';
   scroll-behavior: smooth;
-
-  /* 그리드 */
-  margin: calc(var(--size-h-header) + var(--grid-header)) var(--grid-side)
-    calc(var(--size-h-footer) + var(--grid-header)) var(--grid-side);
-
-  /* 배경 */
-  /* background-color: #e654d2; */
 }
 
-@media (min-width: 820px) {
-  :root {
-    --grid-side: 242px;
-  }
+.app-container {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* 대각선 방향 그림자인데 괜찮아보여서 일단 써봄 */
@@ -122,6 +136,15 @@ body::-webkit-scrollbar {
 }
 .spacer {
   height: var(--size-h-spacer);
+}
+.button {
+  width: 100%;
+  height: 50px;
+  background-color: var(--theme-color);
+  border-radius: 10px;
+  border: none;
+  color: var(--light-main-color);
+  font-weight: 700;
 }
 
 a {
