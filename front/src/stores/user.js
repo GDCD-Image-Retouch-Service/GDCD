@@ -104,10 +104,10 @@ export const useUserStore = defineStore('userStore', {
     // 프로필 친구
     isFriendActive: true,
 
-    // 여기서부터 새로 api 적용되는 애들 위에는 아직 더미
+    // 여기서부터 새로 api 적용되는 애들 위에는 아직 더미e
     // 토큰
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0MjE5MDc2LCJleHAiOjE2NjQyMzcwNzZ9.kqhVRnfTzF26OyF_bmlVs98Z_w9x2ZsCJbsWcjL8d30',
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJka2RsZHBhOTAyNEBnbWFpbC5jb20iLCJpYXQiOjE2NjQyNDcxNDgsImV4cCI6MTY2NDI2NTE0OH0.XTG79f1EtHCSSCyo1Y1BHivMhjfwE68jv2pgqi-dAks',
     // 로그인한 유저 정보
     profile: {},
 
