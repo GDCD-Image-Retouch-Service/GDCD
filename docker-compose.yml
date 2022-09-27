@@ -38,7 +38,7 @@ services:
       - my_network
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
   core:
-    build: core/analysis
+    build: core
     container_name: core
     restart: always
     volumes:
