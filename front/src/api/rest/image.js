@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { createAxiosApi } from '@/api/axios';
 
 const REST_PATH = '/image';
@@ -17,17 +18,23 @@ export default {
     });
   },
   scoringInitial: function (image) {
+    const form = new FormData();
+    form.append('image', image);
     return new Promise((resolve, reject) => {
-      axiosApi
-        .post(REST_PATH + '/initial', { image: image })
+      axios
+        .post('https://j7b301.p.ssafy.io/api/image/initial', form, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
         .then((response) => {
           resolve(response.data);
+          // 응답 처리
         })
         .catch((error) => {
           reject(error);
+          // 예외 처리
         });
     });
   },
-
-  // /initial
 };
