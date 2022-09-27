@@ -1,6 +1,6 @@
 <template>
   <div
-    v-for="follower in userStore.follow.item.followers"
+    v-for="follower in userStore.follower.item?.followers"
     :key="follower.userId"
     class="follow-wrap"
   >
@@ -14,9 +14,13 @@
 
 <script setup>
 import DeleteButton from '@/components/molecules/common/btn/BtnDelete.vue';
-import { useUserStore } from '@/stores/user.txt';
+import { useUserStore } from '@/stores/user';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const userStore = useUserStore();
+
+userStore.getMyFollower(route.params.userId);
 </script>
 
 <style scoped>
