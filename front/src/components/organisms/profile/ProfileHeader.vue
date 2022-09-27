@@ -2,7 +2,7 @@
   <div class="profile-header">
     <div class="profile-header-wrap">
       <img
-        :src="userStore.currentUserd.item.profile"
+        :src="userStore.profile?.item?.profile"
         alt=""
         class="profile-image"
       />
@@ -16,15 +16,18 @@ import ProfileHeaderInfo from '@/components/molecules/profile/ProfileHeaderInfo.
 import { useUserStore } from '@/stores/user.js';
 
 const userStore = useUserStore();
+userStore.getMyinfo();
 </script>
 
 <style scoped>
 .profile-header {
-  width: 100%;
+  width: calc(100% - 2 * var(--grid-side));
   display: flex;
   justify-content: center;
   padding-bottom: var(--grid-vertical);
   border-bottom: 1px solid var(--instagram-dark-grey);
+  margin-left: var(--grid-side);
+  margin-top: var(--grid-vertical);
 }
 .profile-header-wrap {
   width: 100%;

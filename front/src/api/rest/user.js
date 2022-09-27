@@ -21,6 +21,8 @@ export default {
   // GET: 유저별 사진 리스트 조회
   myPhoto: () => HOST + IMAGE + '/list',
 
+  // GET:
+
   testConnection: function (payload) {
     let params = {
       data: payload.data,

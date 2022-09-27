@@ -1,7 +1,9 @@
 <template>
-  <profile-friend-header />
-  <profile-friend-follow v-if="userStore.isFriendActive" />
-  <profile-friend-following v-else />
+  <div class="profile-friend">
+    <profile-friend-header />
+    <profile-friend-follow v-if="userStore.isFriendActive" />
+    <profile-friend-following v-else />
+  </div>
 </template>
 
 <script setup>
@@ -13,4 +15,9 @@ import { useUserStore } from '@/stores/user.js';
 const userStore = useUserStore();
 </script>
 
-<style scoped></style>
+<style scoped>
+.profile-friend {
+  width: calc(100% - 2 * var(--grid-side));
+  margin: var(--grid-side);
+}
+</style>

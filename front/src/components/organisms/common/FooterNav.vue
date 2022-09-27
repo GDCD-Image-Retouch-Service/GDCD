@@ -23,8 +23,12 @@
             (basicStore.isActiveFooter = 2)
         "
       >
-        <i class="bi bi-person-fill" v-if="basicStore.isActiveFooter == 2"></i>
-        <i class="bi bi-person" v-else></i>
+        <i
+          class="bi bi-person-fill"
+          v-if="basicStore.isActiveFooter == 2"
+          style="font-size: 24px"
+        ></i>
+        <i class="bi bi-person" v-else style="font-size: 24px"></i>
       </div>
 
       <!-- 사진첩 -->

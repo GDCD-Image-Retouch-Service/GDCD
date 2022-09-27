@@ -165,8 +165,8 @@ const routes = [
     ],
   },
   {
-    path: '/profile/update',
-    name: 'profileUpdate',
+    path: '/profile/update/',
+    name: 'profileU',
     component: ProfileUpdateView,
     children: [
       {

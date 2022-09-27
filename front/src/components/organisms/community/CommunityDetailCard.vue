@@ -87,6 +87,7 @@ const clickComment = () => {
   padding: var(--grid-vertical) var(--grid-side);
   width: 100%;
   background-color: var(--light-main-color);
+  margin-bottom: 30px;
 }
 /* 제목 */
 .card-title {
