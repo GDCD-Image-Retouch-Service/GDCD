@@ -107,9 +107,9 @@ export const useUserStore = defineStore('userStore', {
     // 여기서부터 새로 api 적용되는 애들 위에는 아직 더미
     // 토큰
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0MTc3MjE0LCJleHAiOjE2NjQxOTUyMTR9.8GMovxS_lQDvb3eKaNu4xan11d8I39n3BlBtpH_hea0',
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0MjE5MDc2LCJleHAiOjE2NjQyMzcwNzZ9.kqhVRnfTzF26OyF_bmlVs98Z_w9x2ZsCJbsWcjL8d30',
     // 로그인한 유저 정보
-    currentUserInfo: {},
+    profile: {},
 
     // 스크랩 리스트
     scrapList: {
@@ -150,6 +150,9 @@ export const useUserStore = defineStore('userStore', {
     // 닉네임 중복 체크
     nicknameOverlap: false,
 
+    //
+    updateProfile: '',
+    updateNickname: '',
     // 유저별 사진 리스트
     myPhoto: {},
   }),
@@ -164,7 +167,9 @@ export const useUserStore = defineStore('userStore', {
         },
       })
         .then((res) => {
-          this.currentUserInfo = res.data;
+          this.profile = res.data;
+          this.updateProfile = res.data.item.user.profile;
+          this.updateNickname = res.data.item.user.nickname;
           console.log(res.data);
         })
         .catch((err) => {
@@ -185,7 +190,7 @@ export const useUserStore = defineStore('userStore', {
         },
       })
         .then((res) => {
-          this.currentUserInfo = res.data;
+          this.profile = res.data;
           console.log(res.data);
         })
         .catch((err) => {

@@ -2,7 +2,7 @@
   <div class="profile-header">
     <div class="profile-header-wrap">
       <img
-        :src="userStore.currentUserd.item.profile"
+        :src="userStore.profile?.item?.profile"
         alt=""
         class="profile-image"
       />
@@ -16,6 +16,7 @@ import ProfileHeaderInfo from '@/components/molecules/profile/ProfileHeaderInfo.
 import { useUserStore } from '@/stores/user.js';
 
 const userStore = useUserStore();
+userStore.getMyinfo();
 </script>
 
 <style scoped>

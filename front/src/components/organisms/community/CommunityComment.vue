@@ -61,6 +61,7 @@ const chat = [
       var(--grid-vertical) - var(--grid-vertical)
   );
   overflow: hidden;
+  margin-bottom: 70px;
 }
 .review-wrap {
   width: calc(100% - 2 * var(--grid-side));
