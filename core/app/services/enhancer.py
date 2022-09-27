@@ -1,11 +1,8 @@
-import sys
 import os
 from typing import Dict
 from PIL import Image
 import cv2
 import numpy as np
-
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from services.low_light_enhancer import LowLightEnhancer
 
@@ -24,10 +21,11 @@ class Enhancer():
 
     def process(self, image: Image) -> dict:
         img = np.array(image)
-    
+
         if self._check_brightness(img):
             img = self._low_enhancer.process(img)
-            img = cv2.normalize(img, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+            img = cv2.normalize(img, None, 0, 255,
+                                cv2.NORM_MINMAX).astype(np.uint8)
 
         dynamic = dynamic_hist_equal(img)
         contrast = Ying_2017_CAIP(img)
@@ -37,14 +35,14 @@ class Enhancer():
         hsv_equal_v = hist_equal_hsv(img, on="v")
         hsv_equal_sv = hist_equal_hsv(img, on="sv")
 
-        return {"dynamic": dynamic, "contrast": contrast, "ycrcb_equal": ycrcb_equal, "ycrcb_stretch": ycrcb_stretch, 
-        "hsv_equal_s": hsv_equal_s, "hsv_equal_v": hsv_equal_v, "hsv_equal_sv": hsv_equal_sv}
+        return {"dynamic": dynamic, "contrast": contrast, "ycrcb_equal": ycrcb_equal, "ycrcb_stretch": ycrcb_stretch,
+                "hsv_equal_s": hsv_equal_s, "hsv_equal_v": hsv_equal_v, "hsv_equal_sv": hsv_equal_sv}
 
     def save(self, images: Dict, save_dir: str, ext: str):
         try:
             os.makedirs(save_dir, exist_ok=True)
             for k, img in images.items():
-                print(os.path.join(save_dir, k + ext))
-                cv2.imwrite(os.path.join(save_dir, k + ext), cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
+                cv2.imwrite(os.path.join(save_dir, k + ext),
+                            cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
         except:
             print("saving error")
