@@ -11,6 +11,10 @@ from services.nima import Nima
 from services.enhancer import Enhancer
 
 data_path = os.path.join("app", "data")
+os.makedirs("data/logs/core/gunicorn", exist_ok=True)
+os.makedirs("data/logs/core/scoring", exist_ok=True)
+os.makedirs("data/logs/core/optimize", exist_ok=True)
+os.makedirs("data/logs/core/csv_save", exist_ok=True)
 
 app = FastAPI()
 nima = Nima(aes_path="models/aesthetic_InceptionV3_0725.pt",
