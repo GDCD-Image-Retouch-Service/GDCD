@@ -18,9 +18,11 @@
 </template>
 
 <script setup>
-import { useUserStore } from '@/stores/user.txt';
+import { useUserStore } from '@/stores/user';
 
 const userStore = useUserStore();
+
+userStore.isFriendActive = true;
 </script>
 
 <style scoped>

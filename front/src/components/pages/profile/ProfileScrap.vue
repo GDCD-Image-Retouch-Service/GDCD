@@ -18,6 +18,8 @@ import { useUserStore } from '@/stores/user.js';
 const userStore = useUserStore();
 
 userStore.isItemActive = 1;
+
+userStore.getMyScrap();
 </script>
 
 <style scoped>

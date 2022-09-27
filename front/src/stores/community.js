@@ -101,6 +101,9 @@ export const useCommunityStore = defineStore('communityStore', {
       axios({
         url: post.post(),
         method: 'GET',
+        headers: {
+          token: useUserStore().token,
+        },
         params: {
           postId: postId,
         },
@@ -114,6 +117,26 @@ export const useCommunityStore = defineStore('communityStore', {
         });
     },
 
+    // 내 게시글 조회
+    getMyPostsAll(userId) {
+      axios({
+        url: post.myPost(),
+        method: 'GET',
+        headers: {
+          token: useUserStore().token,
+        },
+        params: {
+          userId: userId,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          this.postsAll = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     // 게시글 생성
     createPost: (data) => {
       axios({

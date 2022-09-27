@@ -27,76 +27,7 @@ export const useUserStore = defineStore('userStore', {
       },
       msg: 'string',
     },
-    // 프로필 페이지에서 보이는 스크랩
-    scrap: {
-      item: {
-        posts: [
-          {
-            postId: 0,
-            title: 'String',
-            image: require('@/assets/sdprofile.png'),
-            rank: 0,
-          },
-          {
-            postId: 1,
-            title: 'String',
-            image: require('@/assets/logo.png'),
-            rank: 0,
-          },
-          {
-            postId: 2,
-            title: 'String',
-            image: require('@/assets/sdprofile.png'),
-            rank: 0,
-          },
-        ],
-        scrapCount: 1,
-      },
-      msg: 'string',
-    },
-    // 프로필 페이지에서 보이는 좋아요
-    like: {
-      item: {
-        posts: [
-          {
-            postId: 0,
-            title: 'String',
-            image: 'String',
-            rank: 0,
-          },
-        ],
-        likeCount: 1,
-      },
-      msg: 'string',
-    },
-    // 팔로우 리스트
-    follow: {
-      item: {
-        followers: [
-          {
-            userId: 0,
-            image: require('@/assets/sdprofile.png'),
-            nickname: 'String',
-          },
-        ],
-        followerCount: 0,
-      },
-      msg: 'string',
-    },
-    // 팔로잉 리스트
-    following: {
-      item: {
-        followings: [
-          {
-            userId: 0,
-            image: require('@/assets/sdprofile.png'),
-            nickname: 'String',
-          },
-        ],
-        followingCount: 0,
-      },
-      msg: 'string',
-    },
+
     //
     // 프로필 헤더
     isItemActive: 0,
@@ -107,45 +38,21 @@ export const useUserStore = defineStore('userStore', {
     // 여기서부터 새로 api 적용되는 애들 위에는 아직 더미
     // 토큰
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0MjE5MDc2LCJleHAiOjE2NjQyMzcwNzZ9.kqhVRnfTzF26OyF_bmlVs98Z_w9x2ZsCJbsWcjL8d30',
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0MjU1NDEzLCJleHAiOjE2NjQyNzM0MTN9.syhnVHhNy_vocp-bRJO_-z_m0ZyxTN7y4MKcSBMjyEg',
     // 로그인한 유저 정보
     profile: {},
 
     // 스크랩 리스트
-    scrapList: {
-      item: {
-        posts: [
-          {
-            postId: 0,
-            title: 'String',
-            image: require('@/assets/sdprofile.png'),
-            rank: 1,
-            writerNickname: 'String',
-            writerProfile: require('@/assets/sdprofile.png'),
-            likeCount: 100,
-          },
-          {
-            postId: 1,
-            title: 'String',
-            image: require('@/assets/sdprofile.png'),
-            rank: 1,
-            writerNickname: 'String',
-            writerProfile: require('@/assets/sdprofile.png'),
-            likeCount: 100,
-          },
-          {
-            postId: 2,
-            title: 'String',
-            image: require('@/assets/sdprofile.png'),
-            rank: 1,
-            writerNickname: 'String',
-            writerProfile: require('@/assets/sdprofile.png'),
-            likeCount: 100,
-          },
-        ],
-      },
-      msg: 'string',
-    },
+    scrapList: {},
+
+    // 좋아요 리스트
+    likeList: {},
+
+    // 팔로워 리스트
+    follower: {},
+
+    // 팔로잉 리스트
+    following: {},
 
     // 닉네임 중복 체크
     nicknameOverlap: false,
@@ -216,6 +123,24 @@ export const useUserStore = defineStore('userStore', {
         });
     },
 
+    // 라이크 조회
+    getMyLike() {
+      axios({
+        url: user.myLike(),
+        method: 'GET',
+        headers: {
+          token: this.token,
+        },
+      })
+        .then((res) => {
+          this.likeList = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     // 내 사진 목록 조회
     getMyPhoto() {
       axios({
@@ -227,6 +152,48 @@ export const useUserStore = defineStore('userStore', {
       })
         .then((res) => {
           this.myPhoto = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 내 팔로워 조회
+    getMyFollower(userId) {
+      axios({
+        url: user.myFollower(),
+        method: 'GET',
+        headers: {
+          token: this.token,
+        },
+        params: {
+          userId: userId,
+        },
+      })
+        .then((res) => {
+          this.follower = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 내 팔로워 조회
+    getMyFollowing(userId) {
+      axios({
+        url: user.myFollowing(),
+        method: 'GET',
+        headers: {
+          token: this.token,
+        },
+        params: {
+          userId: userId,
+        },
+      })
+        .then((res) => {
+          this.following = res.data;
           console.log(res.data);
         })
         .catch((err) => {
@@ -273,6 +240,27 @@ export const useUserStore = defineStore('userStore', {
           console.log(err);
         });
     },
+
+    // 팔로우
+    follow(userId) {
+      axios({
+        url: user.follow(),
+        method: 'GET',
+        headers: {
+          token: this.token,
+        },
+        params: {
+          userId: userId,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     // 닉네임 중복 체크
     nicknameOverlapCheck(nickname) {
       axios({

@@ -15,6 +15,9 @@ export default {
   // DELETE: 게시글 삭제
   post: () => HOST + REST_PATH,
 
+  // GET: 개인 게시글 리스트
+  myPost: () => HOST + '/post' + '/search',
+
   // GET: 게시글 좋아요
   like: () => HOST + REST_PATH + '/like',
 
