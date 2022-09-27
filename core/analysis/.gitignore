@@ -1,9 +1,0 @@
-# .pt files
-app/models/*.pt
-
-# __pycache__
-__pycache__
-
-# dataset
-train/dataset/AVA-dataset/*
-train/dataset/TID2013/*
