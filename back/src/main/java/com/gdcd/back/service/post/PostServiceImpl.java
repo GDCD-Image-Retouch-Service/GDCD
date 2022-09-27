@@ -9,25 +9,18 @@ import com.gdcd.back.domain.post.report.ReportRepository;
 import com.gdcd.back.domain.user.User;
 import com.gdcd.back.domain.user.UserRepository;
 import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
-import com.gdcd.back.dto.image.response.ImageSimpleResponseDto;
 import com.gdcd.back.dto.post.request.PostCreateRequestDto;
 import com.gdcd.back.dto.post.request.PostReportRequestDto;
 import com.gdcd.back.dto.post.request.PostUpdateRequestDto;
 import com.gdcd.back.dto.post.response.PostDetailResponseDto;
 import com.gdcd.back.dto.post.response.PostListResponseDto;
-import com.gdcd.back.dto.user.response.UserDetailResponseDto;
+import com.gdcd.back.dto.post.response.PostListByUserIdResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +47,32 @@ public class PostServiceImpl implements PostService{
         }
         return list;
     }
+
+    public List<PostListByUserIdResponseDto> findPostsByUser(String token, Long userId) throws Exception{
+        User user = findUserByEmail(decodeToken(token));
+        if (userId == null){
+            List<Post> documentList = postRepository.findAllByWriterNo(user.getId());
+            List<PostListByUserIdResponseDto> list = new ArrayList<>();
+            for (Post post : documentList) {
+                if (validPost(post)){
+                    ImageDetailResponseDto res = post.getImages().get(post.getRepresentative());
+                    list.add(new PostListByUserIdResponseDto(post, res));
+                }
+            }
+            return list;
+        }else {
+            List<Post> documentList = postRepository.findAllByWriterNo(userId);
+            List<PostListByUserIdResponseDto> list = new ArrayList<>();
+            for (Post post : documentList){
+                if (validPost(post)){
+                    ImageDetailResponseDto res = post.getImages().get(post.getRepresentative());
+                    list.add(new PostListByUserIdResponseDto(post, res));
+                }
+            }
+            return list;
+        }
+    }
+
     public PostDetailResponseDto findPostById(String token, Long postId) throws Exception{
         User user = findUserByEmail(decodeToken(token));
         Post post = findPost(postId);

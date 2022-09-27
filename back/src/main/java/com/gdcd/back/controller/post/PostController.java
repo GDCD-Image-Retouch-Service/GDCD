@@ -24,6 +24,11 @@ public class PostController extends Controller {
         return getResponseEntity(postService.findPosts(token));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Map<String, Object>> postListByUser(@RequestHeader String token, @RequestParam(required = false) Long userId) throws Exception{
+        return getResponseEntity(postService.findPostsByUser(token, userId));
+    }
+
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> postDetails(@RequestHeader String token, @RequestParam Long postId) throws Exception {
         return getResponseEntity(postService.findPostById(token, postId));
