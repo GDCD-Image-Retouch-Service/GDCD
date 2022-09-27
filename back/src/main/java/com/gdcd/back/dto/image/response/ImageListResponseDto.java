@@ -9,16 +9,12 @@ import java.util.List;
 @Getter
 @Setter
 public class ImageListResponseDto {
-    private String imageUrl;
-    private Long imageId;
-    private List<String> imageTag;
-    private int imageRank;
+    ImageDetailResponseDto beforeImage;
+    ImageDetailResponseDto afterImage;
 
 
-    public ImageListResponseDto(Image img) {
-        this.imageUrl = img.getImgUrl();
-        this.imageId = img.getId();
-        this.imageTag = img.getObjects();
-        this.imageRank = img.getRank();
+    public ImageListResponseDto(ImageDetailResponseDto img, ImageDetailResponseDto img2) {
+        this.beforeImage = img;
+        this.afterImage = img2;
     }
 }

@@ -2,9 +2,11 @@ package com.gdcd.back.dto.post.response;
 
 import com.gdcd.back.domain.post.Post;
 import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class PostListByUserIdResponseDto {
     private Long postId;
     private Integer likeCount;
