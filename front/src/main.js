@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import vue3GoogleLogin from 'vue3-google-login';
+import Popper from 'vue3-popper';
 
 // for bootstrap
 import { BootstrapVue3, BToastPlugin } from 'bootstrap-vue-3';
@@ -20,4 +21,5 @@ createApp(App)
   .use(vue3GoogleLogin, {
     clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
   })
+  .component('Popper', Popper)
   .mount('#app');

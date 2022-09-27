@@ -49,7 +49,7 @@
 import BtnAddFriednd from '../common/btn/BtnAddFriednd.vue';
 import router from '@/router/index.js';
 
-import { useUserStore } from '@/stores/user.js';
+import { useUserStore } from '@/stores/user';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();

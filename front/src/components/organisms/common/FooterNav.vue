@@ -41,7 +41,6 @@
 
 <script setup>
 import { useBasicStore } from '@/stores/basic.js';
-import router from '@/router/index.js';
 
 const basicStore = useBasicStore();
 </script>

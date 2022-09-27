@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { useUserStore } from '@/stores/user.js';
+import { useUserStore } from '@/stores/user';
 
 const userStore = useUserStore();
 </script>

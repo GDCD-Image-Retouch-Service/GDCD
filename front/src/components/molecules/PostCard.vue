@@ -31,22 +31,6 @@
       </div>
       <date-format :updateInfo="post.updateTime" />
     </div>
-
-    <!-- <div
-      class="d-flex align-items-center justify-content-end"
-      style="height: 28px; background: #f4f4f4"
-    >
-      <img
-        src="@/assets/grade/1.png"
-        style="margin-right: 4px; height: 20px"
-        alt="logo"
-      />
-      <img
-        src="@/assets/grade/6.png"
-        style="margin-right: 4px; height: 20px"
-        alt="logo"
-      />
-    </div> -->
   </div>
 </template>
 

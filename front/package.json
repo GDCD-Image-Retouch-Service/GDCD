@@ -19,7 +19,8 @@
     "sweetalert2": "^11.4.33",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
-    "vue3-google-login": "^2.0.12"
+    "vue3-google-login": "^2.0.12",
+    "vue3-popper": "^1.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

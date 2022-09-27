@@ -29,6 +29,7 @@
 <script setup>
 import { useUserStore } from '@/stores/user.js';
 import { ref } from 'vue';
+
 const userStore = useUserStore();
 
 userStore.getMyinfo();
