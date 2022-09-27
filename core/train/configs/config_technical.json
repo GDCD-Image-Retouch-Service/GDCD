@@ -1,0 +1,15 @@
+{
+  "train_labels": "labels/tid_labels_train.json",
+  "test_labels": "labels/tid_labels_test.json",
+  "type": "technical",
+  "image_path": "dataset/TID2013/distorted_images/",
+  "image_type": "bmp",
+  "num_workers": 8,
+  "batch_size": 64,
+  "dropout_rate": 0.75,
+  "epochs_train_fc": 25,
+  "learning_rate_fc": 0.001,
+  "epochs_train_all": 25,
+  "learning_rate_all": 0.0000003,
+  "decay": 0.95
+}
