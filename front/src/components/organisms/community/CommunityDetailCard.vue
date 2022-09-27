@@ -17,8 +17,12 @@
 
     <!-- 이미지 -->
     <card-carousel
-      :firstImage="card.cardImage.origin"
-      :secondImage="card.cardImage.edit ? card.cardImage.edit : ''"
+      :firstImage="communityStore.post.item.images[0].imageUrl"
+      :secondImage="
+        communityStore.post.item.images[1].imageUrl
+          ? communityStore.post.item.images[1].imageUrl
+          : ''
+      "
     />
     <!-- 태그들 -->
     <div class="tag-wrap">
@@ -35,10 +39,10 @@
     <div class="like-bookmark-chat">
       <div class="like-bookmark">
         <div class="herat-wrap">
-          <i class="bi bi-heart"></i>
+          <i class="bi bi-heart" @click="communityStore.likePost(postId)"></i>
           <span>{{ communityStore.post.item.likeCount }}</span>
         </div>
-        <i class="bi bi-bookmark"></i>
+        <i class="bi bi-bookmark" @click="communityStore.scrapPost(postId)"></i>
       </div>
       <i class="bi bi-chat" style="color: var(--black)" @click="clickComment()">
       </i>
@@ -50,16 +54,14 @@
 import CardCarousel from '@/components/molecules/CardCarousel.vue';
 import { useCommunityStore } from '@/stores/community.js';
 import { watch } from '@vue/runtime-core';
+import { useRoute } from 'vue-router';
 
 const communityStore = useCommunityStore();
+const route = useRoute();
 
-const card = {
-  cardImage: {
-    origin: 'https://picsum.photos/200/300',
-    edit: 'https://picsum.photos/200/301',
-  },
-};
+communityStore.getPost(route.params.postId);
 
+const postId = route.params.postId;
 const clickComment = () => {
   communityStore.isOpenComment = !communityStore.isOpenComment;
   // document.getElementById('app').scrollTop =
@@ -85,6 +87,7 @@ const clickComment = () => {
   padding: var(--grid-vertical) var(--grid-side);
   width: 100%;
   background-color: var(--light-main-color);
+  margin-bottom: 30px;
 }
 /* 제목 */
 .card-title {

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import store from '../stores/user';
+import store from '@/stores/account';
 import swal from 'sweetalert2';
 
 // true : 로그인을 해야 이동 가능
@@ -31,7 +31,8 @@ const beforeAuth = (needAuth) => async (from, to, next) => {
 // Main
 import MainView from '@/views/MainView.vue';
 import MainUpload from '@/components/pages/main/MainUpload';
-import MainLogin from '@/components/pages/main/MainLogin';
+import MainTest from '@/components/pages/main/MainTest';
+import MainScore from '@/components/pages/main/MainScore';
 
 // Community
 import CommunityView from '@/views/CommunityView.vue';
@@ -41,15 +42,19 @@ import CommunityWrite from '@/components/pages/community/CommunityWrite';
 import CommunityDetail from '@/components/pages/community/CommunityDetail';
 
 // Profile
-import ProfileView from '@/views/ProfileView.vue';
+import ProfileView from '@/views/ProfileView';
 import ProfilePost from '@/components/pages/profile/ProfilePost';
 import ProfileScrap from '@/components/pages/profile/ProfileScrap';
 import ProfileLike from '@/components/pages/profile/ProfileLike';
 import ProfileFriend from '@/components/pages/profile/ProfileFriend';
 
-// photo
+// ProfileUpdate
+import ProfileUpdateView from '@/views/ProfileUpdateView';
+import ProfileUpdate from '@/components/pages/profile/ProfileUpdate';
+
+// Photo
 import PhotoView from '@/views/PhotoView.vue';
-import PhotoList from '@/components/pages/photo/PhotoList.vue';
+import PhotoList from '@/components/pages/photo/PhotoList';
 
 const routes = [
   {
@@ -65,9 +70,14 @@ const routes = [
         component: MainUpload,
       },
       {
-        path: 'login',
-        name: 'MainLogin',
-        component: MainLogin,
+        path: 'main/test', // 이미지 상호작용 테스트 코드, 지워야함
+        name: 'MainTest',
+        component: MainTest,
+      },
+      {
+        path: 'main/score',
+        name: 'MainScore',
+        component: MainScore,
       },
     ],
   },
@@ -95,7 +105,7 @@ const routes = [
     ],
   },
   {
-    path: '/profile',
+    path: '/profile/:userId',
     name: 'profile',
     component: ProfileView,
     children: [
@@ -118,6 +128,45 @@ const routes = [
         path: 'friend',
         name: 'ProfileFriend',
         component: ProfileFriend,
+      },
+    ],
+  },
+  {
+    path: '/profile/:userId',
+    name: 'profile',
+    component: ProfileView,
+    children: [
+      {
+        path: '', // default page
+        name: 'ProfilePost',
+        component: ProfilePost,
+      },
+      {
+        path: 'scrap',
+        name: 'ProfileScrap',
+        component: ProfileScrap,
+      },
+      {
+        path: 'like',
+        name: 'ProfileLike',
+        component: ProfileLike,
+      },
+      {
+        path: 'friend',
+        name: 'ProfileFriend',
+        component: ProfileFriend,
+      },
+    ],
+  },
+  {
+    path: '/profile/update/',
+    name: 'profileU',
+    component: ProfileUpdateView,
+    children: [
+      {
+        path: '', // default page
+        name: 'ProfileUpdate',
+        component: ProfileUpdate,
       },
     ],
   },

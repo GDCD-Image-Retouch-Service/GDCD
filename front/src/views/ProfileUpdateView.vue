@@ -1,12 +1,10 @@
 <template>
-  <div class="profile-view">
-    <profile-header />
+  <div>
     <router-view />
   </div>
 </template>
 
 <script setup>
-import ProfileHeader from '@/components/organisms/profile/ProfileHeader.vue';
 import { useBasicStore } from '@/stores/basic.js';
 
 const basicStore = useBasicStore();

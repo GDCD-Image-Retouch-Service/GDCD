@@ -3,10 +3,10 @@
     <div
       class="masonry-container"
       style="
-        width: 100vw;
-        padding: 10px;
+        width: 100%;
+        padding: 20px;
         display: grid;
-        column-gap: 0px;
+        column-gap: 10px;
         grid-auto-rows: 1px;
       "
     >
@@ -25,7 +25,7 @@
 
 <script>
 import PostCard from '@/components/molecules/PostCard.vue';
-import { ref, nextTick, onMounted, onUpdated } from 'vue';
+import { ref, nextTick, onMounted, onUpdated, onBeforeMount } from 'vue';
 import { useCommunityStore } from '@/stores/community';
 
 export default {
@@ -77,13 +77,13 @@ export default {
       );
 
       if (containerWidth > 1440) {
-        masonryContainer.style.gridTemplateColumns = `repeat(5, calc((${containerWidth}px - 20px) / 5))`;
+        masonryContainer.style.gridTemplateColumns = `repeat(5, calc((${containerWidth}px - 60px) / 5))`;
       } else if (containerWidth > 960) {
-        masonryContainer.style.gridTemplateColumns = `repeat(4, calc((${containerWidth}px - 20px) / 4))`;
+        masonryContainer.style.gridTemplateColumns = `repeat(4, calc((${containerWidth}px - 50px) / 4))`;
       } else if (containerWidth > 560) {
-        masonryContainer.style.gridTemplateColumns = `repeat(3, calc((${containerWidth}px - 20px) / 3))`;
+        masonryContainer.style.gridTemplateColumns = `repeat(3, calc((${containerWidth}px - 40px) / 3))`;
       } else {
-        masonryContainer.style.gridTemplateColumns = `repeat(2, calc((${containerWidth}px - 20px) / 2))`;
+        masonryContainer.style.gridTemplateColumns = `repeat(2, calc((${containerWidth}px - 30px) / 2))`;
       }
       // } else if (containerWidth > 380) {
       //   masonryContainer.style.gridTemplateColumns = `repeat(2, calc((${containerWidth}px - 20px) / 2))`;
@@ -105,6 +105,8 @@ export default {
         )}`;
       });
     }
+
+    onBeforeMount(() => {});
 
     onMounted(() => {
       init();
@@ -128,4 +130,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.masonry-layout {
+  width: calc(100% - 20px);
+}
+</style>

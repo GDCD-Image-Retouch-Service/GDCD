@@ -2,7 +2,7 @@
   <div>
     <div
       v-for="comment in comments"
-      :key="comment.commentId"
+      :key="comment?.commentId"
       class="comment-wrap"
     >
       <div class="comment-header">

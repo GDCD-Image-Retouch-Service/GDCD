@@ -38,6 +38,8 @@
 
 - [Vue 3 Google Login](https://www.npmjs.com/package/vue3-google-login)
 
+- [Vue 3 Popper](https://valgeirb.github.io/vue3-popper/guide/getting-started.html#installation)
+
 &nbsp;
 
 ### Convention Detail
