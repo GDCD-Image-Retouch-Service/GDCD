@@ -8,12 +8,14 @@ import os
 from typing import List, Dict
 
 from services.nima import Nima
+from services.yolo import Yolo
 from services.enhancer import Enhancer
 
 
 app = FastAPI()
 nima = Nima(aes_path="models/aesthetic_InceptionV3_0725.pt",
             tec_path="models/technical_InceptionV3_0841.pt")
+yolo = Yolo(det_path="models/yolov7-d6.pt")
 enhancer = Enhancer(low_light_threshold=42)
 
 
@@ -23,6 +25,11 @@ def get_score(images: List[UploadFile] = File(...)):
     results = nima.predict(inputs)
     return results
 
+@app.post("/detect-object")
+def get_detect(image: UploadFile = File(...)):
+    inputs = Image.open(io.BytesIO(image.file.read()))
+    results = yolo.predict(inputs)
+    return results
 
 @app.post("/optimize-image", response_model=List[Dict[str, Dict[str, float]]])
 def get_score(image: UploadFile = File(...), user_id: str = Form()):
