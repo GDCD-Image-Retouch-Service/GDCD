@@ -21,16 +21,6 @@ public class UserCreateRequestDto {
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH;mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime registDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-    private Boolean validation = true;
-    private int postCount = 0;
-    private int scrapCount = 0;
-    private int followerCount = 0;
-    private int followingCount = 0;
-    private int dailyReports = 0;
-
-//    private List<Long> scrapPosts = new ArrayList<>();
-//    private List<Long> likePosts = new ArrayList<>();
-
 
     public User toDocument(String profileRequestURI, String storagePath) {
         return User.builder()
@@ -39,15 +29,15 @@ public class UserCreateRequestDto {
                 .profile(profileRequestURI + storagePath)
                 .storagePath(storagePath)
                 .registDate(registDate)
-                .validation(validation)
-                .postCount(postCount)
-                .scrapCount(scrapCount)
-                .followerCount(followerCount)
-                .followingCount(followingCount)
-                .dailyReports(dailyReports)
-                //추가
-//                .scrapPosts(scrapPosts)
-//                .likePosts(likePosts)
+                .validation(true)
+                .postCount(0)
+                .scrapCount(0)
+                .scrapPosts(new ArrayList<>())
+                .likeCount(0)
+                .likePosts(new ArrayList<>())
+                .followerCount(0)
+                .followingCount(0)
+                .dailyReports(0)
                 .build();
     }
 }
