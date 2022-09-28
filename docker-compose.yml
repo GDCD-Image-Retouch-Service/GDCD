@@ -27,9 +27,9 @@ services:
     container_name: nginx
     restart: unless-stopped
     volumes:
-      # - ./deploy/nginx:/etc/nginx/conf.d
-      - ./deploy/certbot/conf:/etc/letsencrypt
-      - ./deploy/certbot/www:/var/www/certbot
+      - ./front/deploy/nginx:/etc/nginx/conf.d
+      - ./front/deploy/certbot/conf:/etc/letsencrypt
+      - ./front/deploy/certbot/www:/var/www/certbot
     ports:
       - "80:80"
       - "443:443"
