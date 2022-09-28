@@ -49,8 +49,8 @@ export const useMainStore = defineStore('main', () => {
         console.log('E: ' + item.dict[0].aesthetic);
         console.log('Q: ' + item.dict[0].quality);
         const score = Math.ceil(
-          (((item.dict[0].aesthetic - 4.5) * 10 +
-            (item.dict[0].quality - 6.5) * 10) /
+          (((item.dict[0].aesthetic - 5) * 10 +
+            (item.dict[0].quality - 7) * 10) /
             2) *
             10 +
             50,

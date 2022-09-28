@@ -13,7 +13,7 @@ import ScoreCard from '@/components/organisms/main/ScoreCard.vue';
 <style scoped>
 .main-score {
   width: 100%;
-  height: 100%;
+  padding: 4px;
   overflow-y: auto;
 }
 </style>
