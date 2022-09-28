@@ -21,4 +21,12 @@ public class Follow {
     private Long id;
     private User follower;
     private User following;
+
+    public void modifyFollower(User follower) {
+        this.follower = follower;
+    }
+
+    public void modifyFollowing(User following) {
+        this.following = following;
+    }
 }
