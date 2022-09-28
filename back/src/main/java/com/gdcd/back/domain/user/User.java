@@ -59,6 +59,15 @@ public class User {
             this.nickname = nickname;
     }
 
+    public UserSimple simplify() {
+        return UserSimple.builder()
+                .id(id)
+                .nickname(nickname)
+                .profile(profile)
+                .validation(validation)
+                .build();
+    }
+
     public void delete(Boolean validation) {
         this.validation = validation;
     }

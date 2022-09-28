@@ -2,6 +2,7 @@ package com.gdcd.back.domain.post;
 
 
 import com.gdcd.back.domain.image.Image;
+import com.gdcd.back.domain.user.User;
 import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -72,6 +73,12 @@ public class Post {
             this.images = images;
 //        if(images != null)
 //            this.images = images;
+    }
+
+    public void modifyWriter(User user) {
+        this.writerNo = user.getId();
+        this.writerNickname = user.getNickname();
+        this.writerProfile = user.getProfile();
     }
 
     public void addLikeCount(){

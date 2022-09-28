@@ -1,12 +1,20 @@
 package com.gdcd.back.service.user;
 
 import com.gdcd.back.config.JwtTokenProvider;
+import com.gdcd.back.domain.comment.Comment;
+import com.gdcd.back.domain.comment.CommentRepository;
+import com.gdcd.back.domain.post.Post;
+import com.gdcd.back.domain.post.PostRepository;
+import com.gdcd.back.domain.post.report.Report;
+import com.gdcd.back.domain.post.report.ReportRepository;
 import com.gdcd.back.domain.user.User;
 import com.gdcd.back.domain.user.UserRepository;
+import com.gdcd.back.domain.user.UserSimple;
 import com.gdcd.back.domain.user.block.Block;
 import com.gdcd.back.domain.user.block.BlockRepository;
 import com.gdcd.back.domain.user.follow.Follow;
 import com.gdcd.back.domain.user.follow.FollowRepository;
+import com.gdcd.back.dto.post.response.PostListResponseDto;
 import com.gdcd.back.dto.user.request.UserCreateRequestDto;
 import com.gdcd.back.dto.user.request.UserDetailUpdateRequestDto;
 import com.gdcd.back.dto.user.response.FollowListResponseDto;
@@ -34,12 +42,16 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final BlockRepository blockRepository;
     private final FollowRepository followRepository;
+    private final PostRepository postRepository;
+    private final ReportRepository reportRepository;
+    private final CommentRepository commentRepository;
     private Map<String, String> RESULT_STRING;
     private Map<String, Object> RESULT_OBJECT;
     private final String ROOT = "/app/data/profiles/";
 //    private final String ROOT = "C:/SSAFY/AI/profiles/";
     private final String DEFAULT_PATH = ROOT + "default.jpeg";
-    private final String PROFILE_REQUEST_URI = "http://localhost:8081/api/user/profile?from=";
+    private final String PROFILE_REQUEST_URI = "https://j7b301.p.ssafy.io/api/user/profile?from=";
+//    private final String PROFILE_REQUEST_URI = "http://localhost:8081/api/user/profile?from=";
 
     @Override
     public Map<String, String> loginUser(UserCreateRequestDto requestDto) {
@@ -86,9 +98,8 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> modifyUser(String token, MultipartFile profile, String nickname) {
         RESULT_OBJECT = new HashMap<>();
         try {
-//        	System.out.println();
-//        	System.out.println(profile.getOriginalFilename());
         	System.out.println(nickname);
+            User target = findUserByEmail(decodeToken(token));
             User user = findUserByEmail(decodeToken(token));
             String filePath = DEFAULT_PATH;
             if (profile != null) {
@@ -98,7 +109,17 @@ public class UserServiceImpl implements UserService {
                 profile.transferTo(new File(filePath));
             }
             user.update(PROFILE_REQUEST_URI, filePath, nickname);
+
+            modifyFollower(target, user);
+            modifyFollowing(target, user);
+            modifyBlocker(target, user);
+            modifyBlocking(target, user);
+            modifyReporter(target, user);
+            modifyPostWriter(target, user);
+            modifyCommentWriter(target, user);
+
             RESULT_OBJECT.put("userId", userRepository.save(user).getId());
+
             // fix) 유저 정보를 바꾸면 post가 가지고 있는 writer 정보 또한 바뀌어야함.
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,7 +145,7 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> blockUser(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
-            String blocker = decodeToken(token);
+            User blocker = findUserByEmail(decodeToken(token));
             User blocking = findUserById(userId);
             Block block;
             if (blockRepository.findByBlockerAndBlocking(blocker, blocking).isPresent()) {
@@ -144,27 +165,55 @@ public class UserServiceImpl implements UserService {
         return RESULT_OBJECT;
     }
 
-//    public Map<String, Object> cancleBlock(Long blockId) {
-//        RESULT_OBJECT = new HashMap<>();
-//        try {
-//            blockRepository.delete(findBlockById(blockId));
-//            RESULT_OBJECT.put("unblock", blockId);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            RESULT_OBJECT.put("error", "USER NOT UNBLOCKED");
-//        }
-//        return RESULT_OBJECT;
-//    }
-
     @Override
     public Map<String, Object> findScraps(String token) {
         RESULT_OBJECT = new HashMap<>();
+        try {
+            if (userRepository.findByEmail(decodeToken(token)).isPresent()) {
+                List<Long> scrapList = userRepository.findByEmail(decodeToken(token)).get().getScrapPosts();
+                List<PostListResponseDto> list = new ArrayList<>();
+                for (Long id : scrapList) {
+                    Post post = postRepository.findById(id).get();
+                    list.add(new PostListResponseDto(
+                            post,
+                            post.getImages().get(post.getRepresentative()),
+                            scrapPost(post, findUserByEmail(decodeToken(token))),
+                            likePost(post, findUserByEmail(decodeToken(token)))
+                            ));
+                }
+                RESULT_OBJECT.put("posts", list);
+                // return scrap list : postId, image, writer nickname, profile, likeCount, (scrap = true)
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            RESULT_OBJECT.put("error", "SCRAP NOT FOUND");
+        }
         return RESULT_OBJECT;
     }
 
     @Override
     public Map<String, Object> findLikes(String token) {
         RESULT_OBJECT = new HashMap<>();
+        try {
+            if (userRepository.findByEmail(decodeToken(token)).isPresent()) {
+                List<Long> likeList = userRepository.findByEmail(decodeToken(token)).get().getLikePosts();
+                List<PostListResponseDto> list = new ArrayList<>();
+                for (Long id : likeList) {
+                    Post post = postRepository.findById(id).get();
+                    list.add(new PostListResponseDto(
+                            post,
+                            post.getImages().get(post.getRepresentative()),
+                            scrapPost(post, findUserByEmail(decodeToken(token))),
+                            likePost(post, findUserByEmail(decodeToken(token)))
+                    ));
+                }
+                RESULT_OBJECT.put("posts", list);
+                // return scrap list : postId, image, writer nickname, profile, likeCount, (scrap = true)
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            RESULT_OBJECT.put("error", "LIKE NOT FOUND");
+        }
         return RESULT_OBJECT;
     }
 
@@ -229,7 +278,7 @@ public class UserServiceImpl implements UserService {
             List<Follow> documentList = followRepository.findAllByFollower(follower);
             List<FollowListResponseDto> list = new ArrayList<>();
             for (Follow follow : documentList) {
-                list.add(new FollowListResponseDto(follow.getFollower()));
+                list.add(new FollowListResponseDto(follow.getFollowing()));
             }
             RESULT_OBJECT.put("followings", list);
             RESULT_OBJECT.put("followingCount", list.size());
@@ -264,18 +313,79 @@ public class UserServiceImpl implements UserService {
             throw new Exception("User Not Found");
     }
 
-//    private Block findBlockById(Long blockId) throws Exception {
-//        if (blockRepository.findById(blockId).isPresent())
-//            return blockRepository.findById(blockId).get();
-//        else
-//            throw new Exception("User Not Blocked");
-//    }
+    private void modifyFollower(User target, User user) {
+        List<Follow> followerList = followRepository.findAllByFollower(target);
+        for (Follow follow : followerList) {
+            follow.modifyFollower(user);
+            followRepository.save(follow);
+        }
+    }
+    private void modifyFollowing(User target, User user) {
+        List<Follow> followingList = followRepository.findAllByFollowing(target);
+        for (Follow follow : followingList) {
+            follow.modifyFollowing(user);
+            followRepository.save(follow);
+        }
+    }
+    private void modifyBlocker(User target, User user) {
+        List<Block> blockerList = blockRepository.findAllByBlocker(target);
+        for (Block block : blockerList) {
+            block.modifyBlocker(user);
+            blockRepository.save(block);
+        }
+    }
+    private void modifyBlocking(User target, User user) {
+        List<Block> blockingList = blockRepository.findAllByBlocking(target);
+        for (Block block : blockingList) {
+            block.modifyBlocking(user);
+            blockRepository.save(block);
+        }
+    }
+    private void modifyReporter(User target, User user) {
+        List<Report> reportList = reportRepository.findAllByUserId(target.getId());
+        for (Report report : reportList) {
+            report.modifyReporter(user);
+            reportRepository.save(report);
+        }
+    }
+    private void modifyPostWriter(User target, User user) {
+        List<Post> postList = postRepository.findAllByWriterNo(target.getId());
+        for (Post post : postList) {
+            post.modifyWriter(user);
+            postRepository.save(post);
+        }
+    }
+    private void modifyCommentWriter(User target, User user) {
+        UserSimple simpleTarget = target.simplify();
+        UserSimple simpleUser = user.simplify();
+            List<Comment> commentList = commentRepository.findAllByWriter(simpleTarget);
+            for (Comment comment : commentList) {
+                comment.modifyWriter(simpleUser);
+                commentRepository.save(comment);
+            }
+    }
+
+    private boolean scrapPost(Post post, User user){
+        if (post.getScrapUsers().contains(user.getId())){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    private boolean likePost(Post post, User user){
+        if (post.getLikeUsers().contains(user.getId())){
+            return true;
+        }else {
+            return false;
+        }
+    }
 
     private boolean validUser(User user) {
         return user.getValidation();
     }
 
-    public String decodeToken(String token) {
+    private String decodeToken(String token) {
         return jwtTokenProvider.decodeToken(token);
     }
 }

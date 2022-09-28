@@ -48,25 +48,29 @@ public class PostServiceImpl implements PostService{
         return list;
     }
 
-    public List<PostListByUserIdResponseDto> findPostsByUser(String token, Long userId) throws Exception{
+    public List<PostListResponseDto> findPostsByUser(String token, Long userId) throws Exception{
         User user = findUserByEmail(decodeToken(token));
         if (userId == null){
             List<Post> documentList = postRepository.findAllByWriterNo(user.getId());
-            List<PostListByUserIdResponseDto> list = new ArrayList<>();
+            List<PostListResponseDto> list = new ArrayList<>();
             for (Post post : documentList) {
                 if (validPost(post)){
+                    Boolean scrap = scrapPost(post, user);
+                    Boolean like = likePost(post, user);
                     ImageDetailResponseDto res = post.getImages().get(post.getRepresentative());
-                    list.add(new PostListByUserIdResponseDto(post, res));
+                    list.add(new PostListResponseDto(post, res, scrap, like));
                 }
             }
             return list;
         }else {
             List<Post> documentList = postRepository.findAllByWriterNo(userId);
-            List<PostListByUserIdResponseDto> list = new ArrayList<>();
+            List<PostListResponseDto> list = new ArrayList<>();
             for (Post post : documentList){
                 if (validPost(post)){
+                    Boolean scrap = scrapPost(post, user);
+                    Boolean like = likePost(post, user);
                     ImageDetailResponseDto res = post.getImages().get(post.getRepresentative());
-                    list.add(new PostListByUserIdResponseDto(post, res));
+                    list.add(new PostListResponseDto(post, res, scrap, like));
                 }
             }
             return list;
@@ -152,31 +156,27 @@ public class PostServiceImpl implements PostService{
                 post.setLikeUsers(likeUser);
                 post.addLikeCount();
 
-                // likePost(User)
-//                List<Long> likePost = user.getLikePosts();
-//                likePost.add(postId);
-//                user.setLikePosts(likePost);
-//                user.addLikeCount();
+//                likePost(User)
+                List<Long> likePost = user.getLikePosts();
+                likePost.add(postId);
+                user.setLikePosts(likePost);
+                user.addLikeCount();
 
                 postRepository.save(post);
-//                userRepository.save(user);
-
-                System.out.println("없어서 추가함");
-            }else{
+                userRepository.save(user);
+            } else {
                 List<Long> likeuser = post.getLikeUsers();
                 likeuser.remove(user.getId());
                 post.setLikeUsers(likeuser);
                 post.subLikeCount();
 
-//                List<Long> likePost = user.getLikePosts();
-//                likePost.remove(postId);
-//                user.setLikePosts(likePost);
-//                user.subLikeCount();
+                List<Long> likePost = user.getLikePosts();
+                likePost.remove(postId);
+                user.setLikePosts(likePost);
+                user.subLikeCount();
 
-//                userRepository.save(user);
+                userRepository.save(user);
                 postRepository.save(post);
-
-                System.out.println("있어서 삭제함");
             }
             return postId;
         }else {
@@ -189,33 +189,29 @@ public class PostServiceImpl implements PostService{
         User user = findUserByEmail(decodeToken(token));
         if (validPost(post)){
             if (!post.getScrapUsers().contains(user.getId())){
-                List<Long> scrapuser = post.getScrapUsers();
-                scrapuser.add(user.getId());
-                post.setScrapUsers(scrapuser);
+                List<Long> scrapUser = post.getScrapUsers();
+                scrapUser.add(user.getId());
+                post.setScrapUsers(scrapUser);
 
-//                List<Long> scrapPost = user.getScrapPosts();
-//                scrapPost.add(postId);
-//                user.setScrapPosts(scrapPost);
-//                user.addScrapCount();
+                List<Long> scrapPost = user.getScrapPosts();
+                scrapPost.add(postId);
+                user.setScrapPosts(scrapPost);
+                user.addScrapCount();
 
                 postRepository.save(post);
-//                userRepository.save(user);
-
-                System.out.println("없어서 추가함");
-            }else{
+                userRepository.save(user);
+            } else {
                 List<Long> scrapUsers = post.getScrapUsers();
                 scrapUsers.remove(user.getId());
                 post.setScrapUsers(scrapUsers);
 
-//                List<Long> scrapPost = user.getScrapPosts();
-//                scrapPost.remove(postId);
-//                user.setScrapPosts(scrapPost);
-//                user.subScrapCount();
+                List<Long> scrapPost = user.getScrapPosts();
+                scrapPost.remove(postId);
+                user.setScrapPosts(scrapPost);
+                user.subScrapCount();
 
-//                userRepository.save(user);
+                userRepository.save(user);
                 postRepository.save(post);
-
-                System.out.println("있어서 삭제함");
             }
             return postId;
         }else {

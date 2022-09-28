@@ -1,5 +1,7 @@
 package com.gdcd.back.dto.post.request;
 
+import com.gdcd.back.domain.comment.Comment;
+import com.gdcd.back.domain.user.UserSimple;
 import com.mongodb.lang.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,9 +15,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentCreateRequestDto {
-    private Long commentId = 1L;
+    private Long postId;
     private String content;
-    private LocalDateTime updateTime = LocalDateTime.now();
     @Nullable
     private Long upper;
+
+    public Comment toDocument(UserSimple writer) {
+        return Comment.builder()
+                .writer(writer)
+                .postId(postId)
+                .content(content)
+                .upper(upper)
+                .registDate(LocalDateTime.now())
+                .updateDate(LocalDateTime.now())
+                .build();
+    }
 }

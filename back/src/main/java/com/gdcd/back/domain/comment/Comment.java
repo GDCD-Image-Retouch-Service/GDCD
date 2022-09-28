@@ -1,6 +1,7 @@
 package com.gdcd.back.domain.comment;
 
 import com.gdcd.back.domain.user.User;
+import com.gdcd.back.domain.user.UserSimple;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -21,11 +22,18 @@ public class Comment {
     @Id
     @Field(name="_id")
     private Long id;
-    private User writer;
+    private UserSimple writer;
+    @Field(name = "post_id")
     private Long postId;
     private String content;
     private Long upper;
+    @Field(name = "regist_date")
     private LocalDateTime registDate;
+    @Field(name = "update_date")
     private LocalDateTime updateDate;
     private boolean validation;
+
+    public void modifyWriter(UserSimple writer) {
+        this.writer = writer;
+    }
 }

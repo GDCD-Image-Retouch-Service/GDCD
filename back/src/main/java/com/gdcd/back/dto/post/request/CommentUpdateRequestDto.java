@@ -1,5 +1,6 @@
 package com.gdcd.back.dto.post.request;
 
+import com.gdcd.back.domain.comment.Comment;
 import com.mongodb.lang.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
