@@ -25,7 +25,7 @@
           v-show="isInput"
           ref="picBox"
           src=""
-          width="380"
+          style="width: 380px; height: 380px; object-fit: cover"
           alt="your image"
         />
       </div>
@@ -85,8 +85,8 @@
         <video
           v-show="!isPhotoTaken"
           ref="camera"
-          width="380"
-          height="380"
+          width="399"
+          height="399"
           autoplay
         ></video>
 
@@ -94,8 +94,8 @@
           v-show="isPhotoTaken"
           id="photoTaken"
           ref="canvas"
-          width="380"
-          height="380"
+          width="399"
+          height="399"
         ></canvas>
       </div>
 
@@ -242,7 +242,7 @@ const takePhoto = () => {
 
   console.log(camera.value.height);
   console.log(camera.value.width);
-  context.drawImage(camera.value, 0, 0, 380, 380);
+  context.drawImage(camera.value, 0, 0, 399, 399);
 
   // canvas to url
   mainStore.setTempImg(canvas.value.toDataURL('image/png'));
@@ -267,8 +267,8 @@ const downloadImage = () => {
 }
 
 .camera-box {
-  width: 380px;
-  height: 380px;
+  width: 399px;
+  height: 399px;
   background-color: #000000;
 }
 
@@ -289,7 +289,6 @@ const downloadImage = () => {
   width: 48px;
   border-radius: 100%;
   border: solid 4px var(--theme-color);
-  /* background: #f4f4f4; */
   font-size: 14pt;
   color: #000000;
   text-decoration: none;

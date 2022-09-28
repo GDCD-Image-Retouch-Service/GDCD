@@ -41,6 +41,28 @@ export const useMainStore = defineStore('main', () => {
     return new File([u8arr], 'tempFile.' + type, { type: mime });
   });
 
+  const getScore = (item) => {
+    // console.dir(item.dict[0]);
+    // console.log('너~');
+    if (item) {
+      if (item.error) {
+        console.log('서버 에러');
+      } else {
+        console.log('E: ' + item.dict[0].aesthetic);
+        console.log('Q: ' + item.dict[0].quality);
+        const score = Math.ceil(
+          (((item.dict[0].aesthetic - 5) * 10 +
+            (item.dict[0].quality - 7) * 10) /
+            2) *
+            10 +
+            50,
+        );
+        return score > 0 ? score : 0;
+      }
+    }
+  };
+  // { "msg": "SUCCESS", "item": { "dict": [ { "aesthetic": 5.5186, "quality": 7.1093 } ] } }
+
   return {
     // state
     isCamMode,
@@ -56,5 +78,6 @@ export const useMainStore = defineStore('main', () => {
     getIsCamMode,
     getTempImg,
     getTempFile,
+    getScore,
   };
 });
