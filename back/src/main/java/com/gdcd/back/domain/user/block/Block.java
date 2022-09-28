@@ -19,6 +19,14 @@ public class Block {
     @Id
     @Field(name = "_id")
     private Long id;
-    private String blocker;
+    private User blocker;
     private User blocking;
+
+    public void modifyBlocker(User blocker) {
+        this.blocker = blocker;
+    }
+
+    public void modifyBlocking(User blocking) {
+        this.blocking = blocking;
+    }
 }

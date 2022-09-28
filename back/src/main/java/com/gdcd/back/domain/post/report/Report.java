@@ -1,6 +1,7 @@
 package com.gdcd.back.domain.post.report;
 
 
+import com.gdcd.back.domain.user.User;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -25,4 +26,8 @@ public class Report {
     @Field(name = "post_id")
     private Long postId;
     private String content;
+
+    public void modifyReporter(User user) {
+        this.userId = user.getId();
+    }
 }

@@ -32,4 +32,8 @@ public class Comment {
     @Field(name = "update_date")
     private LocalDateTime updateDate;
     private boolean validation;
+
+    public void modifyWriter(UserSimple writer) {
+        this.writer = writer;
+    }
 }
