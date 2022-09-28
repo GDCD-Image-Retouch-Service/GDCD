@@ -38,7 +38,7 @@ def get_score(image: UploadFile = File(...), user_id: str = Form()):
     values = list(outputs.values())
     scores = nima.predict([Image.fromarray(v) for v in values])
 
-    return [{os.path.join("/app", save_dir, k + ext): s} for k, s in zip(keys, scores)]
+    return [{os.path.join("https://j7b301.p.ssafy.io/api/image?from=/app", save_dir, k + ext): s} for k, s in zip(keys, scores)]
 # @app.post("/optimize-image", response_model=List[Dict[str, float]])
 # def get_score(image: UploadFile, user_id: str):
 #     input_image = Image.open(io.BytesIO(image.file.read()))
