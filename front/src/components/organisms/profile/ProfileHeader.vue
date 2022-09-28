@@ -2,7 +2,7 @@
   <div class="profile-header">
     <div class="profile-header-wrap">
       <img
-        :src="userStore.profile?.item?.profile"
+        :src="userStore.profile?.item?.user.profile"
         alt=""
         class="profile-image"
       />

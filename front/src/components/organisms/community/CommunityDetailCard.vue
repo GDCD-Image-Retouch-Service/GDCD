@@ -4,35 +4,35 @@
     <i class="bi bi-trash" @click="communityStore.deletePost(postId)"></i>
     <!-- 제목 -->
     <div class="card-title">
-      {{ communityStore.post.item.title }}
+      {{ communityStore.post.item?.title }}
     </div>
 
     <!-- 프로필 -->
     <span class="user-profile">
       <img
-        :src="communityStore.post.item.writerProfile"
+        :src="communityStore.post.item?.writerProfile"
         alt=""
         class="profile-image"
       />
-      {{ communityStore.post.item.writerNickname }}
+      {{ communityStore.post.item?.writerNickname }}
     </span>
 
     <!-- 이미지 -->
     <label for="btnMyPhoto">
       <card-carousel
-        :firstImage="communityStore.post.item.images[0].imageUrl"
+        :firstImage="communityStore.post.item?.images[0].imageUrl"
         :secondImage="
-          communityStore.post.item.images[1].imageUrl
-            ? communityStore.post.item.images[1].imageUrl
+          communityStore.post.item?.images[1].imageUrl
+            ? communityStore.post.item?.images[1].imageUrl
             : ''
         "
-        :firstTags="communityStore.post.item.images[0].imageTag"
+        :firstTags="communityStore.post.item?.images[0].imageTag"
         :secondTags="communityStore.post.item?.images[1]?.imageTag"
       />
     </label>
 
     <span class="card-content">
-      {{ communityStore.post.item.content }}
+      {{ communityStore.post.item?.content }}
     </span>
 
     <!-- 채팅 좋아요 북마크 -->
@@ -40,7 +40,7 @@
       <div class="like-bookmark">
         <div class="herat-wrap">
           <i class="bi bi-heart" @click="communityStore.likePost(postId)"></i>
-          <span>{{ communityStore.post.item.likeCount }}</span>
+          <span>{{ communityStore.post.item?.likeCount }}</span>
         </div>
         <i class="bi bi-bookmark" @click="communityStore.scrapPost(postId)"></i>
       </div>

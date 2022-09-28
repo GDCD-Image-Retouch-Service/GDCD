@@ -43,14 +43,15 @@ export const useUserStore = defineStore('userStore', {
 
     // 토큰
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2ZsODc4MEBnbWFpbC5jb20iLCJpYXQiOjE2NjQzNDk1MDMsImV4cCI6MTY2NDM2NzUwM30.KOD3s0DjDoWWF7QMh4DvaS_NqkcxzSjMzkn_WmAaPBQ',
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2ZsODc4MEBnbWFpbC5jb20iLCJpYXQiOjE2NjQzODQzMzAsImV4cCI6MTY2NDQwMjMzMH0.QeGYHGuGdFbfNaTK_fqBOueg7OyKyGHNjvGtk4h3Cgg',
     // token: useAccountStore().getToken,
 
     // 로그인한 유저 정보
     profile: {},
 
     // 스크랩 리스트
-    scrapList: {},
+    oddScrapList: {},
+    evenScrapList: {},
 
     // 좋아요 리스트
     likeList: {},
@@ -67,11 +68,18 @@ export const useUserStore = defineStore('userStore', {
     //
     updateProfile: '',
     updateNickname: '',
+
     // 유저별 사진 리스트
     myPhoto: {},
 
+    daePyoImage: '',
     photoSelect: [],
     selectedPhoto: [],
+
+    urlList: [],
+    urlPhotoList: [],
+
+    selectTag: [],
   }),
   actions: {
     // 내정보 조회
@@ -126,8 +134,17 @@ export const useUserStore = defineStore('userStore', {
         },
       })
         .then((res) => {
-          this.scrapList = res.data;
-          console.log(res.data);
+          this.oddScrapList = [];
+          this.evenScrapList = [];
+
+          res.data.item.posts.forEach((e, index) => {
+            console.log(e, '-------');
+            if (index % 2 === 0) {
+              this.oddScrapList.push(e);
+            } else {
+              this.evenScrapList.push(e);
+            }
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -218,6 +235,7 @@ export const useUserStore = defineStore('userStore', {
 
       formdata.append('nickname', nickname);
       formdata.append('profile', profile);
+
       axios({
         url: user.myInfo(),
         method: 'PUT',
