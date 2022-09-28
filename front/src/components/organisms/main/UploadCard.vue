@@ -13,7 +13,7 @@
       <div
         class="pic-container d-flex flex-column align-items-center justify-content-center"
         style="
-          background: #000000;
+          background: lightgray;
           width: 380px;
           max-width: 380px;
           height: 380px;
@@ -21,11 +21,12 @@
           overflow: hidden;
         "
       >
+        <div v-show="!isInput">사진을 올려주세요</div>
         <img
           v-show="isInput"
           ref="picBox"
           src=""
-          width="380"
+          style="width: 380px; height: 380px; object-fit: cover"
           alt="your image"
         />
       </div>
@@ -85,8 +86,8 @@
         <video
           v-show="!isPhotoTaken"
           ref="camera"
-          width="380"
-          height="380"
+          width="399"
+          height="399"
           autoplay
         ></video>
 
@@ -94,8 +95,8 @@
           v-show="isPhotoTaken"
           id="photoTaken"
           ref="canvas"
-          width="380"
-          height="380"
+          width="399"
+          height="399"
         ></canvas>
       </div>
 
@@ -163,11 +164,13 @@ const setPicBox = () => {
       const tempUrl = reader.result;
       picBox.value.src = tempUrl;
       mainStore.setTempImg(tempUrl);
-      isInput.value = true;
     };
     reader.readAsDataURL(file);
   } else {
-    alert('이미지 업로드에 문제가 발생하였습니다.');
+    mainStore.isCamModeOff();
+    isInput.value = true;
+    isInput.value = false;
+    // alert('이미지 업로드에 문제가 발생하였습니다.');
   }
 };
 
@@ -242,7 +245,7 @@ const takePhoto = () => {
 
   console.log(camera.value.height);
   console.log(camera.value.width);
-  context.drawImage(camera.value, 0, 0, 380, 380);
+  context.drawImage(camera.value, 0, 0, 399, 399);
 
   // canvas to url
   mainStore.setTempImg(canvas.value.toDataURL('image/png'));
@@ -267,8 +270,8 @@ const downloadImage = () => {
 }
 
 .camera-box {
-  width: 380px;
-  height: 380px;
+  width: 399px;
+  height: 399px;
   background-color: #000000;
 }
 
@@ -289,7 +292,6 @@ const downloadImage = () => {
   width: 48px;
   border-radius: 100%;
   border: solid 4px var(--theme-color);
-  /* background: #f4f4f4; */
   font-size: 14pt;
   color: #000000;
   text-decoration: none;

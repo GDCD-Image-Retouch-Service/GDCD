@@ -1,4 +1,3 @@
-// 성공적
 <template>
   <div
     class="main-score d-flex flex-column align-items-center justify-content-center"
