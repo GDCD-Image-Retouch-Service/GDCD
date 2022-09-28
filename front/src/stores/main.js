@@ -51,13 +51,15 @@ export const useMainStore = defineStore('main', () => {
         console.log('E: ' + item.dict[0].aesthetic);
         console.log('Q: ' + item.dict[0].quality);
         const score = Math.ceil(
-          (((item.dict[0].aesthetic - 5) * 10 +
-            (item.dict[0].quality - 7) * 10) /
+          (((item.dict[0].aesthetic - 4.5) * 10 +
+            (item.dict[0].quality - 6.5) * 10) /
             2) *
             10 +
             50,
         );
-        return score > 0 ? score : 0;
+        if (score < 100) return 100;
+        if (score > 0) return 0;
+        return score;
       }
     }
   };
