@@ -36,12 +36,6 @@ public class UserController extends Controller {
         return getResponseEntity(userService.findUser(token, userId));
     }
 
-//    @PutMapping("")
-//    public ResponseEntity<Map<String, Object>> userModify(@RequestHeader String token, @RequestBody UserDetailUpdateRequestDto requestDto) throws Exception{
-//        return getResponseEntity(userService.modifyUser(token, requestDto));
-//        // fix ) profile에 image file을 받을 수 있어야함.
-//    }
-
     @PutMapping("")
     public ResponseEntity<Map<String, Object>> userModify(@RequestHeader String token, @RequestPart(required = false) MultipartFile profile, @RequestPart(required = false) String nickname) throws Exception{
         return getResponseEntity(userService.modifyUser(token, profile, nickname));
