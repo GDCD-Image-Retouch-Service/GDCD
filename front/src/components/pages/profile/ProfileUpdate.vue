@@ -13,7 +13,7 @@
       style="display: none"
       id="update-profile"
       type="file"
-      :v-model="updateProfile"
+      :v-model="userStore.updateProfile"
     />
 
     <div v-if="userStore.nicknameOverlap">사용할 수 있는 닉네임입니다!</div>
@@ -22,19 +22,19 @@
       <img src="@/assets/image/info.png" alt="" />
       닉네임은 몇 자
     </div>
-    <button class="button" @click="profileUpdate(updateNickname)">제출</button>
+    <button class="button" @click="profileUpdate(userStore.updateNickname)">
+      제출
+    </button>
   </div>
 </template>
 
 <script setup>
 import { useUserStore } from '@/stores/user.js';
-import { ref } from 'vue';
 
 const userStore = useUserStore();
 
 userStore.getMyinfo();
-const updateProfile = ref(userStore.profile.item?.user.profile);
-const updateNickname = ref(userStore.profile.item?.user.nickname);
+
 console.log(userStore.profile.item?.user.profile);
 const selectNickname = (nickname) => {
   userStore.nicknameOverlapCheck(nickname);

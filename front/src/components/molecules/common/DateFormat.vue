@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 50px">{{ ans }}</div>
+  <div style="width: 60px">{{ ans }}</div>
 </template>
 
 <script setup>

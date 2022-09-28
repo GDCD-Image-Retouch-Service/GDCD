@@ -35,10 +35,15 @@ export const useUserStore = defineStore('userStore', {
     // 프로필 친구
     isFriendActive: true,
 
-    // 여기서부터 새로 api 적용되는 애들 위에는 아직 더미e
+    // 여기서부터 새로 api 적용되는 애들 위에는 아직 더미
+
+    // 현재 로그인한 유저
+    currentUser: {},
+
     // 토큰
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0MjU1NDEzLCJleHAiOjE2NjQyNzM0MTN9.syhnVHhNy_vocp-bRJO_-z_m0ZyxTN7y4MKcSBMjyEg',
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2ZsODc4MEBnbWFpbC5jb20iLCJpYXQiOjE2NjQzMjMxOTksImV4cCI6MTY2NDM0MTE5OX0.t0gmgav-cTkPEBv9mmQr9gL1Ksg4Eo2wEFULGp-_7rw',
+
     // 로그인한 유저 정보
     profile: {},
 
@@ -74,6 +79,7 @@ export const useUserStore = defineStore('userStore', {
         },
       })
         .then((res) => {
+          this.currentUser = res.data;
           this.profile = res.data;
           this.updateProfile = res.data.item.user.profile;
           this.updateNickname = res.data.item.user.nickname;
