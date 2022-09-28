@@ -12,12 +12,18 @@ import java.util.Map;
 
 public interface ImageService {
     public Long addImage(String token, MultipartFile image, ImageCreateRequestDto requestDto) throws Exception;
-    public byte[] findImageById(Long imageId) throws IOException;
+    public byte[] findImageById(Long imageId, String from) throws IOException;
     public ImageDetailResponseDto findImageInfoById(Long imaageId);
     public Map<LocalDate, List<ImageListResponseDto>> findImageList(String token) throws Exception;
 //    public List<ImageDetailResponseDto> findImageList(Long userId) throws Exception;
 //    public Map<String, Object> requestInitialScore(List<MultipartFile> image);
     public Map<String, Object> requestInitialScore(MultipartFile image);
+
+    public Map<String, Object> requestObjectDetection(MultipartFile image);
+//    public List<Object> requestObjectDetection(MultipartFile image);
+
+    public Map<String, Object> requestOptimization(String token, MultipartFile image);
+
 
 }
 

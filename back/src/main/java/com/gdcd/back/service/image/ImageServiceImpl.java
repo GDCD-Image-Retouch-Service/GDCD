@@ -11,6 +11,7 @@ import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
 import com.gdcd.back.dto.image.response.CoreScoreResponseDto;
 import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import com.gdcd.back.dto.image.response.ImageListResponseDto;
+//import jdk.internal.util.xml.impl.Input;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ByteArrayResource;
@@ -43,6 +44,8 @@ public class ImageServiceImpl implements ImageService {
     private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
     private final String CORE = "https://j7b301.p.ssafy.io/core/";
     private final String SCORE_IMAGE = "score-image";
+    private final String DETECT_OBJECT = "detect-object";
+    private final String OPTIMIZE_IMAGE = "optimize-image";
     private Map<String, Object> RESULT_OBJECT;
 
     //    Local에서 진행할 폴더
@@ -88,12 +91,19 @@ public class ImageServiceImpl implements ImageService {
         return urlCount;
     }
 
-    public byte[] findImageById(Long imageId) throws IOException {
-        Image img = findImage(imageId);
-        InputStream imageStream = new FileInputStream(ROOT + img.getFilePath());
-        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
-        imageStream.close();
-        return imageByteArray;
+    public byte[] findImageById(Long imageId, String from) throws IOException {
+        if (from == null){
+            Image img = findImage(imageId);
+            InputStream imageStream = new FileInputStream(ROOT + img.getFilePath());
+            byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+            imageStream.close();
+            return imageByteArray;
+        }else {
+            InputStream imageStream = new FileInputStream(from);
+            byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+            imageStream.close();
+            return imageByteArray;
+        }
     }
 
     public ImageDetailResponseDto findImageInfoById(Long imageId) {
@@ -186,6 +196,133 @@ public class ImageServiceImpl implements ImageService {
 //            RESULT_OBJECT.put("dict",responseDto);
             RESULT_OBJECT.put("dict",objects);
 //            System.out.println("여긴가?6");
+        } catch (Exception e) {
+            e.printStackTrace();
+            RESULT_OBJECT.put("error", "IMAGE NOT SCORED");
+        }
+        return RESULT_OBJECT;
+    }
+
+    public Map<String, Object> requestObjectDetection(MultipartFile image) {
+        RESULT_OBJECT = new HashMap<>();
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
+            System.out.println(image.getInputStream());
+
+            MultiValueMap<String, Resource> body = new LinkedMultiValueMap<>();
+
+
+            body.add("image", image.getResource());
+
+            HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+
+
+            HttpEntity<String> response = restTemplate.postForEntity(CORE+DETECT_OBJECT,requestMessage,String.class);
+
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+            Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
+
+            RESULT_OBJECT.put("dict",objects);
+            List<Object> objectList = new ArrayList<>();
+            System.out.println(RESULT_OBJECT.keySet());
+            for (Object obj : objects){
+                objectList.add(obj);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            RESULT_OBJECT.put("error", "IMAGE NOT SCORED");
+        }
+        return RESULT_OBJECT;
+    }
+
+//    public List<Object> requestObjectDetection(MultipartFile image) {
+//        RESULT_OBJECT = new HashMap<>();
+//        try {
+//            RestTemplate restTemplate = new RestTemplate();
+//
+//            HttpHeaders httpHeaders = new HttpHeaders();
+//            httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
+//            System.out.println(image.getInputStream());
+//
+//            MultiValueMap<String, Resource> body = new LinkedMultiValueMap<>();
+//
+//
+//            body.add("image", image.getResource());
+//
+//            HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+//
+//
+//            HttpEntity<String> response = restTemplate.postForEntity(CORE+DETECT_OBJECT,requestMessage,String.class);
+//
+//
+//            ObjectMapper objectMapper = new ObjectMapper();
+//
+//            objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+//
+//            Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
+//
+//            RESULT_OBJECT.put("dict",objects);
+//            List<Object> objectList = new ArrayList<>();
+//            System.out.println(RESULT_OBJECT.keySet());
+//            for (Object obj : objects){
+//                Map<String, Object> object = objectMapper.convertValue(obj, Map.class);
+//                Map<String, Object> res = new HashMap<String, Object>();
+//                for (String str : object.keySet()){
+//
+//                }
+//                // obj를 map으로 convert
+//                // map<String, Object>
+//                // map = new Map(String, Object)
+//                // map.keySet -> for (String str : map.KeySet) //
+//                // str =
+//                // map.put(newkey, map.get(str))
+//                objectList.add(obj);
+//                System.out.println(obj.toString());
+//            }
+//            return objectList;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            RESULT_OBJECT.put("error", "IMAGE NOT SCORED");
+//        }
+//        return null;
+//    }
+
+    public Map<String, Object> requestOptimization(String token, MultipartFile image) {
+        RESULT_OBJECT = new HashMap<>();
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
+            System.out.println(image.getInputStream());
+
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+
+            body.add("image", image.getResource());
+            body.add("user_id", findUserByEmail(decodeToken(token)).getId());
+
+            HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+
+
+            HttpEntity<String> response = restTemplate.postForEntity(CORE+OPTIMIZE_IMAGE,requestMessage,String.class);
+
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+            Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
+
+            RESULT_OBJECT.put("dict",objects);
+
         } catch (Exception e) {
             e.printStackTrace();
             RESULT_OBJECT.put("error", "IMAGE NOT SCORED");

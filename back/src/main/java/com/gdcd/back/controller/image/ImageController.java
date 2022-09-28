@@ -26,8 +26,8 @@ public class ImageController extends Controller {
     }
 
     @GetMapping(value="", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> imageDetails(@RequestParam Long imageId) throws IOException {
-        return new ResponseEntity<byte[]>(imageService.findImageById(imageId), HttpStatus.OK);
+    public ResponseEntity<byte[]> imageDetails(@RequestParam(required = false) Long imageId, @RequestParam(required = false) String from) throws IOException {
+        return new ResponseEntity<byte[]>(imageService.findImageById(imageId,from), HttpStatus.OK);
     }
 
     @GetMapping(value = "/info")
@@ -64,19 +64,20 @@ public class ImageController extends Controller {
     }
 
     @PostMapping("/object")
-    public ResponseEntity<Map<String, Object>> imageObjection() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> imageObjection(@RequestPart MultipartFile image) {
+        return getResponseEntity(imageService.requestObjectDetection(image));
     }
 
     @PostMapping("/optimization")
-    public ResponseEntity<Map<String, Object>> imageOptimization() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> imageOptimization(@RequestHeader String token, @RequestPart MultipartFile image) {
+        return getResponseEntity(imageService.requestOptimization(token, image));
     }
 
 //    @PostMapping("/storage")
 //    public ResponseEntity<Map<String, Object>> imageSave() {
 //        return getResponseEntity("hi");
 //    }
+
 
     @PostMapping("/datafication")
     public ResponseEntity<Map<String, Object>> imageDatafication() {
