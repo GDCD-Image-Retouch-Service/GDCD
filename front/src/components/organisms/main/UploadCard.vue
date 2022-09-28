@@ -86,8 +86,8 @@
         <video
           v-show="!isPhotoTaken"
           ref="camera"
-          width="399"
-          height="399"
+          width="380"
+          height="380"
           autoplay
         ></video>
 
@@ -95,8 +95,8 @@
           v-show="isPhotoTaken"
           id="photoTaken"
           ref="canvas"
-          width="399"
-          height="399"
+          width="380"
+          height="380"
         ></canvas>
       </div>
 
@@ -164,13 +164,13 @@ const setPicBox = () => {
       const tempUrl = reader.result;
       picBox.value.src = tempUrl;
       mainStore.setTempImg(tempUrl);
+      isInput.value = true;
     };
     reader.readAsDataURL(file);
   } else {
     mainStore.isCamModeOff();
-    isInput.value = true;
     isInput.value = false;
-    // alert('이미지 업로드에 문제가 발생하였습니다.');
+    alert('이미지 업로드에 문제가 발생하였습니다.');
   }
 };
 
@@ -245,7 +245,7 @@ const takePhoto = () => {
 
   console.log(camera.value.height);
   console.log(camera.value.width);
-  context.drawImage(camera.value, 0, 0, 399, 399);
+  context.drawImage(camera.value, 0, 0, 380, 380);
 
   // canvas to url
   mainStore.setTempImg(canvas.value.toDataURL('image/png'));
@@ -270,8 +270,8 @@ const downloadImage = () => {
 }
 
 .camera-box {
-  width: 399px;
-  height: 399px;
+  width: 380px;
+  height: 380px;
   background-color: #000000;
 }
 
