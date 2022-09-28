@@ -13,7 +13,7 @@
       <div
         class="pic-container d-flex flex-column align-items-center justify-content-center"
         style="
-          background: #000000;
+          background: lightgray;
           width: 380px;
           max-width: 380px;
           height: 380px;
@@ -21,6 +21,7 @@
           overflow: hidden;
         "
       >
+        <div v-show="!isInput">사진을 올려주세요</div>
         <img
           v-show="isInput"
           ref="picBox"
@@ -163,11 +164,13 @@ const setPicBox = () => {
       const tempUrl = reader.result;
       picBox.value.src = tempUrl;
       mainStore.setTempImg(tempUrl);
-      isInput.value = true;
     };
     reader.readAsDataURL(file);
   } else {
-    alert('이미지 업로드에 문제가 발생하였습니다.');
+    mainStore.isCamModeOff();
+    isInput.value = true;
+    isInput.value = false;
+    // alert('이미지 업로드에 문제가 발생하였습니다.');
   }
 };
 

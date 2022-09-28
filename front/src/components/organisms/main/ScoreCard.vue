@@ -69,7 +69,7 @@
       <div
         class="pic-container d-flex flex-column align-items-center justify-content-center"
         style="
-          background: #000000;
+          background: lightgray;
           width: 380px;
           max-width: 380px;
           height: 380px;
