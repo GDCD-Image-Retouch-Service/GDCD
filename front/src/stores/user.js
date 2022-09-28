@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import user from '@/api/rest/user';
+// import { useAccountStore } from './account';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
@@ -42,7 +43,8 @@ export const useUserStore = defineStore('userStore', {
 
     // 토큰
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2ZsODc4MEBnbWFpbC5jb20iLCJpYXQiOjE2NjQzMjMxOTksImV4cCI6MTY2NDM0MTE5OX0.t0gmgav-cTkPEBv9mmQr9gL1Ksg4Eo2wEFULGp-_7rw',
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2ZsODc4MEBnbWFpbC5jb20iLCJpYXQiOjE2NjQzNDk1MDMsImV4cCI6MTY2NDM2NzUwM30.KOD3s0DjDoWWF7QMh4DvaS_NqkcxzSjMzkn_WmAaPBQ',
+    // token: useAccountStore().getToken,
 
     // 로그인한 유저 정보
     profile: {},
@@ -67,6 +69,9 @@ export const useUserStore = defineStore('userStore', {
     updateNickname: '',
     // 유저별 사진 리스트
     myPhoto: {},
+
+    photoSelect: [],
+    selectedPhoto: [],
   }),
   actions: {
     // 내정보 조회

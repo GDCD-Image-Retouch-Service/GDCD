@@ -1,7 +1,7 @@
 <template>
   <div class="community-detail-card common-image">
     <i class="bi bi-pencil-square edit-icon"></i>
-
+    <i class="bi bi-trash" @click="communityStore.deletePost(postId)"></i>
     <!-- 제목 -->
     <div class="card-title">
       {{ communityStore.post.item.title }}
@@ -35,13 +35,6 @@
       {{ communityStore.post.item.content }}
     </span>
 
-    <div v-for="(values, key) in userStore.myPhoto.item" :key="values">
-      {{ key }}
-      <div v-for="value in values" :key="value">
-        <img :src="value.beforeImage.imageUrl" alt="" class="photo-image" />
-      </div>
-    </div>
-
     <!-- 채팅 좋아요 북마크 -->
     <div class="like-bookmark-chat">
       <div class="like-bookmark">
@@ -60,13 +53,11 @@
 <script setup>
 import CardCarousel from '@/components/molecules/CardCarousel.vue';
 import { useCommunityStore } from '@/stores/community.js';
-import { useUserStore } from '@/stores/user.js';
 import { watch } from '@vue/runtime-core';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const communityStore = useCommunityStore();
-const userStore = useUserStore();
 
 communityStore.getPost(route.params.postId);
 
@@ -83,7 +74,6 @@ const clickComment = () => {
 
   console.log('눌림');
 };
-userStore.getMyPhoto();
 </script>
 
 <style scoped>
@@ -130,7 +120,6 @@ userStore.getMyPhoto();
   object-fit: cover;
   border-radius: 35px;
 }
-
 /*  */
 .card-image {
   width: 100%;
@@ -152,26 +141,5 @@ userStore.getMyPhoto();
   display: flex;
   gap: 3px;
   margin-right: 5px;
-}
-
-.modal {
-  width: 100%;
-}
-.image-select-modal {
-  width: 100%;
-  height: 500px;
-  position: fixed;
-  bottom: 0px;
-  left: 0;
-  margin: 0;
-  background-color: var(--light-main-color);
-  border-radius: 30px 30px 0 0;
-  padding-top: var(--grid-vertical);
-}
-.photo-image {
-  width: 100px;
-}
-.modal-section {
-  overflow: scroll;
 }
 </style>

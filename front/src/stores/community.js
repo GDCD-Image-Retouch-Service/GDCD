@@ -155,7 +155,6 @@ export const useCommunityStore = defineStore('communityStore', {
         },
       })
         .then((res) => {
-          this.post = res.data;
           console.log(res.data);
         })
         .catch((err) => {
@@ -185,7 +184,7 @@ export const useCommunityStore = defineStore('communityStore', {
     },
 
     // 게시글 삭제
-    deletPost: (postId) => {
+    deletePost: (postId) => {
       axios({
         url: post.post(),
         method: 'DELETE',
