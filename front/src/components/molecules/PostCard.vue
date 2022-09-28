@@ -93,7 +93,7 @@ const { post } = toRefs(props);
 }
 .like-bookmark {
   display: flex;
-  width: calc(100% - 10px);
+  width: calc(100% - 70px);
   margin-left: 5px;
   font-size: 14px;
   gap: 5px;

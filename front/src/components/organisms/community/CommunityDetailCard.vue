@@ -1,5 +1,7 @@
 <template>
   <div class="community-detail-card common-image">
+    <i class="bi bi-pencil-square edit-icon"></i>
+
     <!-- 제목 -->
     <div class="card-title">
       {{ communityStore.post.item.title }}
@@ -16,24 +18,29 @@
     </span>
 
     <!-- 이미지 -->
-    <card-carousel
-      :firstImage="communityStore.post.item.images[0].imageUrl"
-      :secondImage="
-        communityStore.post.item.images[1].imageUrl
-          ? communityStore.post.item.images[1].imageUrl
-          : ''
-      "
-    />
-    <!-- 태그들 -->
-    <div class="tag-wrap">
-      <div v-for="tag in communityStore.post.item.tag" :key="tag" class="tag">
-        {{ tag }}
-      </div>
-    </div>
+    <label for="btnMyPhoto">
+      <card-carousel
+        :firstImage="communityStore.post.item.images[0].imageUrl"
+        :secondImage="
+          communityStore.post.item.images[1].imageUrl
+            ? communityStore.post.item.images[1].imageUrl
+            : ''
+        "
+        :firstTags="communityStore.post.item.images[0].imageTag"
+        :secondTags="communityStore.post.item?.images[1]?.imageTag"
+      />
+    </label>
 
     <span class="card-content">
       {{ communityStore.post.item.content }}
     </span>
+
+    <div v-for="(values, key) in userStore.myPhoto.item" :key="values">
+      {{ key }}
+      <div v-for="value in values" :key="value">
+        <img :src="value.beforeImage.imageUrl" alt="" class="photo-image" />
+      </div>
+    </div>
 
     <!-- 채팅 좋아요 북마크 -->
     <div class="like-bookmark-chat">
@@ -53,11 +60,13 @@
 <script setup>
 import CardCarousel from '@/components/molecules/CardCarousel.vue';
 import { useCommunityStore } from '@/stores/community.js';
+import { useUserStore } from '@/stores/user.js';
 import { watch } from '@vue/runtime-core';
 import { useRoute } from 'vue-router';
 
-const communityStore = useCommunityStore();
 const route = useRoute();
+const communityStore = useCommunityStore();
+const userStore = useUserStore();
 
 communityStore.getPost(route.params.postId);
 
@@ -74,6 +83,7 @@ const clickComment = () => {
 
   console.log('눌림');
 };
+userStore.getMyPhoto();
 </script>
 
 <style scoped>
@@ -88,7 +98,15 @@ const clickComment = () => {
   width: 100%;
   background-color: var(--light-main-color);
   margin-bottom: 30px;
+  position: relative;
 }
+.edit-icon {
+  position: absolute;
+  right: var(--grid-side);
+  font-size: 24px;
+  color: var(--black);
+}
+
 /* 제목 */
 .card-title {
   width: 100%;
@@ -113,21 +131,6 @@ const clickComment = () => {
   border-radius: 35px;
 }
 
-/* 태그 */
-.tag-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.tag {
-  padding: 0 14px;
-  line-height: 27px;
-  height: 27px;
-
-  background-color: #e7d7e9;
-  /* color: var(--light-main-color); */
-  border-radius: 30px;
-}
 /*  */
 .card-image {
   width: 100%;
@@ -149,5 +152,26 @@ const clickComment = () => {
   display: flex;
   gap: 3px;
   margin-right: 5px;
+}
+
+.modal {
+  width: 100%;
+}
+.image-select-modal {
+  width: 100%;
+  height: 500px;
+  position: fixed;
+  bottom: 0px;
+  left: 0;
+  margin: 0;
+  background-color: var(--light-main-color);
+  border-radius: 30px 30px 0 0;
+  padding-top: var(--grid-vertical);
+}
+.photo-image {
+  width: 100px;
+}
+.modal-section {
+  overflow: scroll;
 }
 </style>

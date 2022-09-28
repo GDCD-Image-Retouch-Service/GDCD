@@ -139,14 +139,19 @@ export const useCommunityStore = defineStore('communityStore', {
     },
     // 게시글 생성
     createPost: (data) => {
+      console.log(data);
       axios({
         url: post.post(),
-        method: 'GET',
+        method: 'POST',
         headers: {
           token: useUserStore().token,
         },
         data: {
-          data,
+          title: data.title,
+          content: data.content,
+          privacyBound: data.privacyBound,
+          images: data.images,
+          representative: data.representative,
         },
       })
         .then((res) => {
