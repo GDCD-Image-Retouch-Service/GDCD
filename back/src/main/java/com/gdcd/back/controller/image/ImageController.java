@@ -25,7 +25,7 @@ public class ImageController extends Controller {
         return getResponseEntity(imageService.addImage(token, image, requestDto));
     }
 
-    @GetMapping(value="", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value="", produces = MediaType.ALL_VALUE)
     public ResponseEntity<byte[]> imageDetails(@RequestParam(required = false) Long imageId, @RequestParam(required = false) String from) throws IOException {
         return new ResponseEntity<byte[]>(imageService.findImageById(imageId,from), HttpStatus.OK);
     }

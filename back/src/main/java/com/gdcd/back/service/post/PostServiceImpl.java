@@ -48,25 +48,29 @@ public class PostServiceImpl implements PostService{
         return list;
     }
 
-    public List<PostListByUserIdResponseDto> findPostsByUser(String token, Long userId) throws Exception{
+    public List<PostListResponseDto> findPostsByUser(String token, Long userId) throws Exception{
         User user = findUserByEmail(decodeToken(token));
         if (userId == null){
             List<Post> documentList = postRepository.findAllByWriterNo(user.getId());
-            List<PostListByUserIdResponseDto> list = new ArrayList<>();
+            List<PostListResponseDto> list = new ArrayList<>();
             for (Post post : documentList) {
                 if (validPost(post)){
+                    Boolean scrap = scrapPost(post, user);
+                    Boolean like = likePost(post, user);
                     ImageDetailResponseDto res = post.getImages().get(post.getRepresentative());
-                    list.add(new PostListByUserIdResponseDto(post, res));
+                    list.add(new PostListResponseDto(post, res, scrap, like));
                 }
             }
             return list;
         }else {
             List<Post> documentList = postRepository.findAllByWriterNo(userId);
-            List<PostListByUserIdResponseDto> list = new ArrayList<>();
+            List<PostListResponseDto> list = new ArrayList<>();
             for (Post post : documentList){
                 if (validPost(post)){
+                    Boolean scrap = scrapPost(post, user);
+                    Boolean like = likePost(post, user);
                     ImageDetailResponseDto res = post.getImages().get(post.getRepresentative());
-                    list.add(new PostListByUserIdResponseDto(post, res));
+                    list.add(new PostListResponseDto(post, res, scrap, like));
                 }
             }
             return list;
