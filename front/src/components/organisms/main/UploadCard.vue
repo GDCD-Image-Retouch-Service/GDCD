@@ -213,6 +213,7 @@ const createCameraElement = () => {
     })
     .catch((e) => {
       isLoading.value = false;
+      // ---------------------------------------------------------------
       console.log(e);
       alert('카메라 장치에 문제가 있거나 호환되지 않습니다.');
     });

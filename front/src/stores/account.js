@@ -5,8 +5,8 @@ export const useAccountStore = defineStore('account', () => {
   // state
   const email = ref('');
   const nickname = ref('');
-  const token = ref('');
-  const isLogined = ref(false);
+  const token = ref(localStorage.getItem('token'));
+  const isLogined = ref(localStorage.getItem('token') != null);
 
   // action
   function setEmail(newEmail) {
@@ -18,6 +18,7 @@ export const useAccountStore = defineStore('account', () => {
   }
 
   function setToken(newToken) {
+    localStorage.setItem('token', newToken);
     token.value = newToken;
   }
 
