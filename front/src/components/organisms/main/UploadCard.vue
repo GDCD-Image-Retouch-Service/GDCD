@@ -145,7 +145,9 @@ import LoadingDots from '@/components/atoms/LoadingDots.vue';
 
 import { ref, watch } from 'vue';
 import { useMainStore } from '@/stores/main';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const mainStore = useMainStore();
 
 // created
@@ -213,9 +215,9 @@ const createCameraElement = () => {
     })
     .catch((e) => {
       isLoading.value = false;
-      // ---------------------------------------------------------------
+      console.log('카메라 장치에 문제가 있거나 호환되지 않습니다.');
       console.log(e);
-      alert('카메라 장치에 문제가 있거나 호환되지 않습니다.');
+      router.go();
     });
 };
 

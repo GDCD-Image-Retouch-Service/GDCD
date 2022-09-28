@@ -3,7 +3,7 @@
     <img src="@/assets/sdprofile.png" alt="" class="profile-image" />
   </div>
   <div v-else class="open-options">
-    <div>로그아웃</div>
+    <div @click="accountStore.setIsLogined(false)">로그아웃</div>
     <div @click="userStore.deleteMyInfo()">회원탈퇴</div>
   </div>
 </template>
