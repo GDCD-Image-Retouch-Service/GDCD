@@ -73,7 +73,7 @@ public class ImageServiceImpl implements ImageService {
                 }
             }
             image.transferTo(new File(ROOT + FilePath));
-            if (requestDto == null){
+            if (requestDto == null) {
                 requestDto = new ImageCreateRequestDto();
                 requestDto.setObjects(new ArrayList<>());
             }
@@ -92,13 +92,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     public byte[] findImageById(Long imageId, String from) throws IOException {
-        if (from == null){
+        if (from == null) {
             Image img = findImage(imageId);
             InputStream imageStream = new FileInputStream(ROOT + img.getFilePath());
             byte[] imageByteArray = IOUtils.toByteArray(imageStream);
             imageStream.close();
             return imageByteArray;
-        }else {
+        } else {
             InputStream imageStream = new FileInputStream(from);
             byte[] imageByteArray = IOUtils.toByteArray(imageStream);
             imageStream.close();
@@ -115,29 +115,32 @@ public class ImageServiceImpl implements ImageService {
         List<Image> imageList;
         User user = findUserByEmail(decodeToken(token));
         imageList = imageRepository.findAllByUserId(user.getId());
-        //afterImage에 들어갈 객체 : 우선 박아둘 3번 친구
-        Image afterImage = findImage(3L);
+
 
         //SET으로 중복 없애기
         Set<LocalDate> dateTime = new HashSet<>();
-        for (Image img : imageList){
+        for (Image img : imageList) {
             dateTime.add(img.getRegistDate().toLocalDate());
         }
         List<LocalDate> dateTimeList = new ArrayList<>(dateTime);
         dateTimeList.sort(Comparator.reverseOrder());
 
         Map<LocalDate, List<ImageListResponseDto>> images = new HashMap<>();
-        for (LocalDate datetime : dateTimeList){
+        for (LocalDate datetime : dateTimeList) {
             List<ImageListResponseDto> list = new ArrayList<>();
-            for (Image image : imageList){
-                if (image.getRegistDate().toLocalDate().equals(datetime)){
-                    list.add(new ImageListResponseDto(new ImageDetailResponseDto(image), new ImageDetailResponseDto(afterImage)));
+            // 원래 코드 1
+//            for (Image image : imageList){
+//                if (image.getRegistDate().toLocalDate().equals(datetime)){
+//                    list.add(new ImageListResponseDto(new ImageDetailResponseDto(image), new ImageDetailResponseDto(afterImage)));
+            for (int i = 0; i < imageList.size() / 2; i++) {
+                if (imageList.get(2 * i).getRegistDate().toLocalDate().equals(datetime)) {
+                    list.add(new ImageListResponseDto(new ImageDetailResponseDto(imageList.get(2*i)), new ImageDetailResponseDto(imageList.get(2*i+1))));
                 }
             }
             images.put(datetime, list);
         }
         return images;
-    }
+}
 //    public List<ImageDetailResponseDto> findImageList(Long userId) throws Exception{
 //        List<Image> imageList;
 //        imageList = imageRepository.findAllByUserId(userId);
@@ -177,9 +180,9 @@ public class ImageServiceImpl implements ImageService {
             HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
 //            System.out.println("여긴가?1");
-            System.out.println(CORE+SCORE_IMAGE);
+            System.out.println(CORE + SCORE_IMAGE);
 
-            HttpEntity<String> response = restTemplate.postForEntity(CORE+SCORE_IMAGE,requestMessage,String.class);
+            HttpEntity<String> response = restTemplate.postForEntity(CORE + SCORE_IMAGE, requestMessage, String.class);
 
 //            System.out.println("여긴가?2");
 
@@ -194,7 +197,7 @@ public class ImageServiceImpl implements ImageService {
 
 //            System.out.println("여긴가?5");
 //            RESULT_OBJECT.put("dict",responseDto);
-            RESULT_OBJECT.put("dict",objects);
+            RESULT_OBJECT.put("dict", objects);
 //            System.out.println("여긴가?6");
         } catch (Exception e) {
             e.printStackTrace();
@@ -220,7 +223,7 @@ public class ImageServiceImpl implements ImageService {
             HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
 
-            HttpEntity<String> response = restTemplate.postForEntity(CORE+DETECT_OBJECT,requestMessage,String.class);
+            HttpEntity<String> response = restTemplate.postForEntity(CORE + DETECT_OBJECT, requestMessage, String.class);
 
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -229,10 +232,10 @@ public class ImageServiceImpl implements ImageService {
 
             Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
 
-            RESULT_OBJECT.put("dict",objects);
+            RESULT_OBJECT.put("dict", objects);
             List<Object> objectList = new ArrayList<>();
             System.out.println(RESULT_OBJECT.keySet());
-            for (Object obj : objects){
+            for (Object obj : objects) {
                 objectList.add(obj);
             }
         } catch (Exception e) {
@@ -312,7 +315,7 @@ public class ImageServiceImpl implements ImageService {
             HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
 
-            HttpEntity<String> response = restTemplate.postForEntity(CORE+OPTIMIZE_IMAGE,requestMessage,String.class);
+            HttpEntity<String> response = restTemplate.postForEntity(CORE + OPTIMIZE_IMAGE, requestMessage, String.class);
 
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -321,7 +324,7 @@ public class ImageServiceImpl implements ImageService {
 
             Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
 
-            RESULT_OBJECT.put("dict",objects);
+            RESULT_OBJECT.put("dict", objects);
 
         } catch (Exception e) {
             e.printStackTrace();
