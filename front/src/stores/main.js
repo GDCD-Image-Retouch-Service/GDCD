@@ -42,8 +42,6 @@ export const useMainStore = defineStore('main', () => {
   });
 
   const getScore = (item) => {
-    // console.dir(item.dict[0]);
-    // console.log('너~');
     if (item) {
       if (item.error) {
         console.log('서버 에러');
@@ -57,13 +55,13 @@ export const useMainStore = defineStore('main', () => {
             10 +
             50,
         );
-        if (score < 100) return 100;
-        if (score > 0) return 0;
+        console.log('score: ' + score);
+        if (score > 100) return 100;
+        if (score < 0) return 0;
         return score;
       }
     }
   };
-  // { "msg": "SUCCESS", "item": { "dict": [ { "aesthetic": 5.5186, "quality": 7.1093 } ] } }
 
   return {
     // state

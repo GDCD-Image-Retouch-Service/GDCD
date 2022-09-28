@@ -1,12 +1,16 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
+import { useRouter } from 'vue-router';
 
 export const useAccountStore = defineStore('account', () => {
+  // init
+  const router = useRouter();
+
   // state
   const email = ref('');
   const nickname = ref('');
-  const token = ref('');
-  const isLogined = ref(false);
+  const token = ref(localStorage.getItem('token'));
+  const isLogined = ref(localStorage.getItem('token') != null);
 
   // action
   function setEmail(newEmail) {
@@ -18,11 +22,18 @@ export const useAccountStore = defineStore('account', () => {
   }
 
   function setToken(newToken) {
+    localStorage.setItem('token', newToken);
     token.value = newToken;
   }
 
   function setIsLogined(newIsLogined) {
-    isLogined.value = newIsLogined;
+    if (newIsLogined) {
+      isLogined.value = true;
+    } else {
+      isLogined.value = false;
+      delete localStorage.token;
+      router.go();
+    }
   }
 
   // getter
