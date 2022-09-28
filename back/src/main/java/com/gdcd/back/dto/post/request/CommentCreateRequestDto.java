@@ -25,9 +25,10 @@ public class CommentCreateRequestDto {
                 .writer(writer)
                 .postId(postId)
                 .content(content)
-                .upper(upper)
+                .upper(upper == null? 0 : upper)
                 .registDate(LocalDateTime.now())
                 .updateDate(LocalDateTime.now())
+                .validation(true)
                 .build();
     }
 }

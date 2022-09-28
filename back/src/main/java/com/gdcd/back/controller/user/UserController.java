@@ -85,4 +85,9 @@ public class UserController extends Controller {
     public ResponseEntity<byte[]> userProfile(@RequestParam String from) {
         return new ResponseEntity<>(userService.findProfile(from), HttpStatus.OK);
     }
+
+    @PostMapping("insertDefault")
+    public ResponseEntity<Map<String, Object>> insertImageToServer(@RequestPart MultipartFile profile, @RequestPart String path){
+        return getResponseEntity(userService.insertImageToServer(profile, path));
+    }
 }
