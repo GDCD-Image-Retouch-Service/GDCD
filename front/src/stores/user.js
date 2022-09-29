@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import user from '@/api/rest/user';
+// import { useAccountStore } from './account';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
@@ -48,7 +49,8 @@ export const useUserStore = defineStore('userStore', {
     profile: {},
 
     // 스크랩 리스트
-    scrapList: {},
+    oddScrapList: {},
+    evenScrapList: {},
 
     // 좋아요 리스트
     likeList: {},
@@ -65,8 +67,18 @@ export const useUserStore = defineStore('userStore', {
     //
     updateProfile: '',
     updateNickname: '',
+
     // 유저별 사진 리스트
     myPhoto: {},
+
+    daePyoImage: '',
+    photoSelect: [],
+    selectedPhoto: [],
+
+    urlList: [],
+    urlPhotoList: [],
+
+    selectTag: [],
   }),
   actions: {
     // 내정보 조회
@@ -121,8 +133,17 @@ export const useUserStore = defineStore('userStore', {
         },
       })
         .then((res) => {
-          this.scrapList = res.data;
-          console.log(res.data);
+          this.oddScrapList = [];
+          this.evenScrapList = [];
+
+          res.data.item.posts.forEach((e, index) => {
+            console.log(e, '-------');
+            if (index % 2 === 0) {
+              this.oddScrapList.push(e);
+            } else {
+              this.evenScrapList.push(e);
+            }
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -213,6 +234,7 @@ export const useUserStore = defineStore('userStore', {
 
       formdata.append('nickname', nickname);
       formdata.append('profile', profile);
+
       axios({
         url: user.myInfo(),
         method: 'PUT',

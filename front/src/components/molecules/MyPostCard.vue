@@ -4,6 +4,7 @@
 
     <!-- post card image -->
     <img
+      style="width: 100%"
       :src="post.images.imageUrl"
       alt=""
       @click="
@@ -15,39 +16,19 @@
     />
     <!-- post card -title -->
     <div class="post-card-title">
-      {{ post?.title }}
+      {{ post.title }}
     </div>
 
-    <!-- post card userprofile -->
-    <div class="post-card-userinfo">
-      <img :src="post.writerProfile" class="profile-image" alt="" />
-      <div style="margin-left: 5px">{{ post.writerNickname }}</div>
-    </div>
-
-    <!-- post card like and bookmark -->
-    <div
-      style="
-        display: flex;
-        justify-content: space-between;
-        width: calc(100% - 10px);
-        margin-left: 5px;
-      "
-    >
-      <div class="like-bookmark">
-        <div class="herat-wrap">
-          <i class="bi bi-heart"></i>
-          <div>{{ post.likeCount }}</div>
-        </div>
-        <i class="bi bi-bookmark"></i>
-      </div>
-      <date-format :updateInfo="post.updateTime" />
-    </div>
+    <date-format :updateInfo="post.updateTime" style="margin-left: 10px" />
   </div>
 </template>
 
 <script setup>
 import DateFormat from '@/components/molecules/common/DateFormat.vue';
 import { defineProps, toRefs } from 'vue';
+// import { useCommunityStore } from '@/stores/community';
+
+// const communityStore = useCommunityStore();
 
 const props = defineProps({
   post: Object,
@@ -92,12 +73,7 @@ const { post } = toRefs(props);
   font-size: 14px;
   margin-top: 35px;
 }
-.profile-image {
-  width: 20px;
-  height: 20px;
-  object-fit: cover;
-  border-radius: 20px;
-}
+
 .dot-icon {
   position: absolute;
   right: 0;
@@ -105,7 +81,7 @@ const { post } = toRefs(props);
 }
 .like-bookmark {
   display: flex;
-
+  width: calc(100% - 70px);
   margin-left: 5px;
   font-size: 14px;
   gap: 5px;

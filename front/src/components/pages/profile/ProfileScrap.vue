@@ -1,13 +1,21 @@
 <template>
-  <div class="scrap">
-    <div class="scrap-items">
+  <div class="profile-scrap">
+    <div class="scraps-wrap">
       <div
-        v-for="post in userStore.scrapList?.item?.posts"
-        :key="post"
-        class="image-wrap"
+        v-for="post in userStore.oddScrapList"
+        :key="post.postId"
+        style="width: 100%"
       >
-        <img :src="post.writerProfile" alt="" class="card-image common-image" />
+        {{ post }}
       </div>
+    </div>
+
+    <div class="posts-wrap">
+      <div
+        v-for="post in userStore.evenScrapList"
+        :key="post.postId"
+        style="width: 100%"
+      ></div>
     </div>
   </div>
 </template>
