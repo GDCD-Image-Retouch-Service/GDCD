@@ -21,7 +21,7 @@ services:
       - "8082"
     networks:
       - my_network
-    entrypoint: "gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8082 --workers 1"
+    # entrypoint: "gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8082 --workers 1"
   nginx:
     build: front
     container_name: nginx
