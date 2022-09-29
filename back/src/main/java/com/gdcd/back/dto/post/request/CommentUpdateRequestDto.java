@@ -16,5 +16,4 @@ import java.time.LocalDateTime;
 public class CommentUpdateRequestDto {
     private Long commentId;
     private String content;
-    private LocalDateTime updateTime = LocalDateTime.now();
 }
