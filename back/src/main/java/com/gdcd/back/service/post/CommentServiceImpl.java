@@ -34,10 +34,10 @@ public class CommentServiceImpl implements CommentService {
             List<CommentUpperResponseDto> list = new ArrayList<>();
             List<CommentKidResponseDto> kidList;
 
-            List<Comment> UpperDocumentList = commentRepository.findAllByPostIdAndUpper(postId, 0L);
+            List<Comment> UpperDocumentList = commentRepository.findAllByPostIdAndUpperAndValidation(postId, 0L, true);
             for (Comment comment : UpperDocumentList) {
                 kidList = new ArrayList<>();
-                List<Comment> KidDocumentList = commentRepository.findAllByUpper(comment.getId());
+                List<Comment> KidDocumentList = commentRepository.findAllByUpperAndValidation(comment.getId(), true);
                 for (Comment kid : KidDocumentList) {
                     kidList.add(new CommentKidResponseDto(kid));
                 }
@@ -66,7 +66,9 @@ public class CommentServiceImpl implements CommentService {
     public Map<String, Object> modifyComment(String token, CommentUpdateRequestDto requestDto) {
         RESULT_OBJECT = new HashMap<>();
         try {
-
+            Comment comment = findCommentById(requestDto.getCommentId());
+            comment.update(requestDto);
+            RESULT_OBJECT.put("commentId", commentRepository.save(comment).getId());
         } catch (Exception e) {
             RESULT_OBJECT.put("error", "COMMENTS NOT FOUND");
         }
@@ -77,11 +79,25 @@ public class CommentServiceImpl implements CommentService {
     public Map<String, Object> deleteComment(String token, Long commentId) {
         RESULT_OBJECT = new HashMap<>();
         try {
-
+            Comment comment = findCommentById(commentId);
+            List<Comment> kidList = commentRepository.findAllByUpperAndValidation(commentId, true);
+            for (Comment kid : kidList) {
+                kid.delete();
+                commentRepository.save(kid);
+            }
+            comment.delete();
+            RESULT_OBJECT.put("commentId", commentRepository.save(comment).getId());
         } catch (Exception e) {
             RESULT_OBJECT.put("error", "COMMENTS NOT FOUND");
         }
         return RESULT_OBJECT;
+    }
+
+    private Comment findCommentById(Long commentId) throws Exception {
+        if (commentRepository.findById(commentId).isPresent())
+            return commentRepository.findById(commentId).get();
+        else
+            throw new Exception("COMMENT NOT FOUND");
     }
 
     private UserSimple findUserByToken(String token) throws Exception{
