@@ -9,7 +9,6 @@ import com.gdcd.back.dto.post.request.CommentCreateRequestDto;
 import com.gdcd.back.dto.post.request.CommentUpdateRequestDto;
 import com.gdcd.back.dto.post.response.CommentKidResponseDto;
 import com.gdcd.back.dto.post.response.CommentUpperResponseDto;
-import com.sun.org.apache.regexp.internal.RE;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
