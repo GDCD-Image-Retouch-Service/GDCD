@@ -2,6 +2,7 @@ package com.gdcd.back.domain.comment;
 
 import com.gdcd.back.domain.user.User;
 import com.gdcd.back.domain.user.UserSimple;
+import com.gdcd.back.dto.post.request.CommentUpdateRequestDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -35,5 +36,14 @@ public class Comment {
 
     public void modifyWriter(UserSimple writer) {
         this.writer = writer;
+    }
+
+    public void update(CommentUpdateRequestDto requestDto) {
+        this.content = requestDto.getContent();
+        this.updateDate = LocalDateTime.now();
+    }
+
+    public void delete() {
+        this.validation = false;
     }
 }
