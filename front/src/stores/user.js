@@ -42,7 +42,7 @@ export const useUserStore = defineStore('userStore', {
 
     // 토큰
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2ZsODc4MEBnbWFpbC5jb20iLCJpYXQiOjE2NjQzMjMxOTksImV4cCI6MTY2NDM0MTE5OX0.t0gmgav-cTkPEBv9mmQr9gL1Ksg4Eo2wEFULGp-_7rw',
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJka2RsZHBhOTAyNEBnbWFpbC5jb20iLCJpYXQiOjE2NjQ0MjQxMDksImV4cCI6MTY2NDQ0MjEwOX0.Qq1BDqu4URVsr-nJUxm9d02fIdrUny3Upcd853N_neY',
 
     // 로그인한 유저 정보
     profile: {},
