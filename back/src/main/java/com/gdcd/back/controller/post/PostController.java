@@ -78,22 +78,22 @@ public class PostController extends Controller {
     }
 
     @GetMapping("/comment")
-    public ResponseEntity<Map<String, Object>> commentList(String token, @RequestParam Long postId) {
-        return getResponseEntity(commentService.findComments(token, postId));
+    public ResponseEntity<Map<String, Object>> commentList(@RequestParam Long postId) {
+        return getResponseEntity(commentService.findComments(postId));
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<Map<String, Object>> commentAdd(@RequestHeader String token, @RequestBody CommentCreateRequestDto requestDto) {
-        return getResponseEntity(commentService.addComment(token, requestDto));
+    public ResponseEntity<Map<String, Object>> commentAdd(@RequestBody CommentCreateRequestDto requestDto) {
+        return getResponseEntity(commentService.addComment(requestDto));
     }
 
     @PutMapping("/comment")
-    public ResponseEntity<Map<String, Object>> commentModify(@RequestHeader String token, @RequestBody CommentUpdateRequestDto requestDto) {
-        return getResponseEntity(commentService.modifyComment(token, requestDto));
+    public ResponseEntity<Map<String, Object>> commentModify(@RequestBody CommentUpdateRequestDto requestDto) {
+        return getResponseEntity(commentService.modifyComment(requestDto));
     }
 
     @DeleteMapping("/comment")
-    public ResponseEntity<Map<String, Object>> commentDelete(@RequestHeader String token, @RequestParam Long commentId) {
-        return getResponseEntity(commentService.deleteComment(token, commentId));
+    public ResponseEntity<Map<String, Object>> commentDelete(@RequestParam Long commentId) {
+        return getResponseEntity(commentService.deleteComment(commentId));
     }
 }
