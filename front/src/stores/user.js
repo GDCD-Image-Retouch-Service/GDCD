@@ -43,14 +43,12 @@ export const useUserStore = defineStore('userStore', {
 
     // 토큰
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJka2RsZHBhOTAyNEBnbWFpbC5jb20iLCJpYXQiOjE2NjQ0MjQxMDksImV4cCI6MTY2NDQ0MjEwOX0.Qq1BDqu4URVsr-nJUxm9d02fIdrUny3Upcd853N_neY',
-
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2ZsODc4MEBnbWFpbC5jb20iLCJpYXQiOjE2NjQ0MzI5NDAsImV4cCI6MTY2NDQ1MDk0MH0.wnQQ6HEa7SAXpz-pND1rXkMxDd1xALPoBkOn2M80U5s',
     // 로그인한 유저 정보
     profile: {},
 
     // 스크랩 리스트
-    oddScrapList: {},
-    evenScrapList: {},
+    scrapList: {},
 
     // 좋아요 리스트
     likeList: {},
@@ -133,17 +131,7 @@ export const useUserStore = defineStore('userStore', {
         },
       })
         .then((res) => {
-          this.oddScrapList = [];
-          this.evenScrapList = [];
-
-          res.data.item.posts.forEach((e, index) => {
-            console.log(e, '-------');
-            if (index % 2 === 0) {
-              this.oddScrapList.push(e);
-            } else {
-              this.evenScrapList.push(e);
-            }
-          });
+          this.scrapList = res.data;
         })
         .catch((err) => {
           console.log(err);
