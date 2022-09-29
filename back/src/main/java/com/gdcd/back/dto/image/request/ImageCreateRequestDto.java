@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -16,7 +17,7 @@ public class ImageCreateRequestDto {
     private String filePath;
     private int rank;
     private LocalDateTime registDate;
-    private List<String> objects;
+    private List<String> objects = new ArrayList<>();
 
 
 
