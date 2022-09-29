@@ -9,31 +9,11 @@ export const useCommunityStore = defineStore('communityStore', {
     postsAll: {},
 
     // 게시글 상세
-    post: {
-      msg: 'SUCCESS',
-      item: {
-        writerNickname: '애리',
-        writerProfile: require('@/assets/sdprofile.png'),
-        title: '진짜됨!',
-        content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-        tag: ['고양이', '사람'],
-        updateTime: '2022-09-17T23:39:39.277',
-        likeCount: 0,
-        privacyBound: null,
-        images: [
-          {
-            imageUrl: require('@/assets/sdprofile.png'),
-            rank: 1,
-          },
-          {
-            imageUrl: '',
-            // imageUrl: require('@/assets/sdprofile.png'),
-            rank: 1,
-          },
-        ],
-      },
-    },
+    post: {},
+
+    // 게시물 리스트
+    oddPostList: [],
+    evenPostList: [],
 
     // 전체 댓글 조회
     commentAll: {
@@ -118,20 +98,26 @@ export const useCommunityStore = defineStore('communityStore', {
     },
 
     // 내 게시글 조회
-    getMyPostsAll(userId) {
+    getMyPostsAll() {
       axios({
         url: post.myPost(),
         method: 'GET',
         headers: {
           token: useUserStore().token,
         },
-        params: {
-          userId: userId,
-        },
       })
         .then((res) => {
           console.log(res.data);
-          this.postsAll = res.data;
+          this.oddPostList = [];
+          this.evenPostList = [];
+          res.data.item.forEach((e, index) => {
+            console.log(e);
+            if (index % 2 === 0) {
+              this.oddPostList.push(e);
+            } else {
+              this.evenPostList.push(e);
+            }
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -155,7 +141,6 @@ export const useCommunityStore = defineStore('communityStore', {
         },
       })
         .then((res) => {
-          this.post = res.data;
           console.log(res.data);
         })
         .catch((err) => {
@@ -185,7 +170,7 @@ export const useCommunityStore = defineStore('communityStore', {
     },
 
     // 게시글 삭제
-    deletPost: (postId) => {
+    deletePost: (postId) => {
       axios({
         url: post.post(),
         method: 'DELETE',
