@@ -48,47 +48,42 @@ public class ImageServiceImpl implements ImageService {
     private final String OPTIMIZE_IMAGE = "optimize-image";
     private Map<String, Object> RESULT_OBJECT;
 
+    private final String BEFORE = "/before";
+    private final String AFTER = "/after";
+
     //    Local에서 진행할 폴더
 //        String ROOT = "C:/test/images/";
 //        String ADDRESS = "http://localhost:8081/api/image?imageId=";
     public Long addImage(String token, MultipartFile image, ImageCreateRequestDto requestDto) throws Exception {
-//        ImageCreateRequestDto requestDto = new ImageCreateRequestDto();
         User user = findUserByEmail(decodeToken(token));
         Long urlCount = imageRepository.findAllByUserId(user.getId()).stream().count() + 1;
-//        System.out.println(urlCount);
         String imageType = image.getContentType();
+//        System.out.println(imageType);
         String endPoint = "." + imageType.substring(imageType.lastIndexOf("/") + 1);
         String path = user.getId().toString();
-        String urlName = "//" + urlCount.toString() + endPoint;
-        String FilePath = path + urlName;
-//        System.out.println(FilePath);
+        String urlName = "/" + urlCount.toString() + endPoint;
+        String FilePath = path+BEFORE+ urlName;
         File Folder = new File(ROOT + path);
         try {
             if (!Folder.exists()) {
                 try {
                     Folder.mkdir();
-//                    System.out.println("폴더가 생성되었습니다.");
+                    File Folder2 = new File(ROOT+path+BEFORE);
+                    Folder2.mkdir();
                 } catch (Exception e) {
                     e.getStackTrace();
                 }
             }
             image.transferTo(new File(ROOT + FilePath));
-            if (requestDto == null) {
-                requestDto = new ImageCreateRequestDto();
-                requestDto.setObjects(new ArrayList<>());
-            }
+            requestDto.setObjects(new ArrayList<>());
             requestDto.setFilePath(FilePath);
             Long count = imageRepository.findAll().stream().count() + 1;
             requestDto.setImgUrl(ADDRESS + count.toString());
             requestDto.setUserId(user.getId());
-//            System.out.println(image.getContentType());
-//            System.out.println(image.getResource());
-            imageRepository.save(requestDto.toDocument());
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return urlCount;
+        return imageRepository.save(requestDto.toDocument()).getId();
     }
 
     public byte[] findImageById(Long imageId, String from) throws IOException {
