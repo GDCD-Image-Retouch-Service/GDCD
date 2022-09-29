@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 50px">{{ ans }}</div>
+  <div>{{ ans }}</div>
 </template>
 
 <script setup>

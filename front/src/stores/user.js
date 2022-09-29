@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import user from '@/api/rest/user';
+// import { useAccountStore } from './account';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
@@ -35,15 +36,21 @@ export const useUserStore = defineStore('userStore', {
     // 프로필 친구
     isFriendActive: true,
 
-    // 여기서부터 새로 api 적용되는 애들 위에는 아직 더미e
+    // 여기서부터 새로 api 적용되는 애들 위에는 아직 더미
+
+    // 현재 로그인한 유저
+    currentUser: {},
+
     // 토큰
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0MjU1NDEzLCJleHAiOjE2NjQyNzM0MTN9.syhnVHhNy_vocp-bRJO_-z_m0ZyxTN7y4MKcSBMjyEg',
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJka2RsZHBhOTAyNEBnbWFpbC5jb20iLCJpYXQiOjE2NjQ0MjQxMDksImV4cCI6MTY2NDQ0MjEwOX0.Qq1BDqu4URVsr-nJUxm9d02fIdrUny3Upcd853N_neY',
+
     // 로그인한 유저 정보
     profile: {},
 
     // 스크랩 리스트
-    scrapList: {},
+    oddScrapList: {},
+    evenScrapList: {},
 
     // 좋아요 리스트
     likeList: {},
@@ -60,8 +67,18 @@ export const useUserStore = defineStore('userStore', {
     //
     updateProfile: '',
     updateNickname: '',
+
     // 유저별 사진 리스트
     myPhoto: {},
+
+    daePyoImage: '',
+    photoSelect: [],
+    selectedPhoto: [],
+
+    urlList: [],
+    urlPhotoList: [],
+
+    selectTag: [],
   }),
   actions: {
     // 내정보 조회
@@ -74,6 +91,7 @@ export const useUserStore = defineStore('userStore', {
         },
       })
         .then((res) => {
+          this.currentUser = res.data;
           this.profile = res.data;
           this.updateProfile = res.data.item.user.profile;
           this.updateNickname = res.data.item.user.nickname;
@@ -115,8 +133,17 @@ export const useUserStore = defineStore('userStore', {
         },
       })
         .then((res) => {
-          this.scrapList = res.data;
-          console.log(res.data);
+          this.oddScrapList = [];
+          this.evenScrapList = [];
+
+          res.data.item.posts.forEach((e, index) => {
+            console.log(e, '-------');
+            if (index % 2 === 0) {
+              this.oddScrapList.push(e);
+            } else {
+              this.evenScrapList.push(e);
+            }
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -207,6 +234,7 @@ export const useUserStore = defineStore('userStore', {
 
       formdata.append('nickname', nickname);
       formdata.append('profile', profile);
+
       axios({
         url: user.myInfo(),
         method: 'PUT',

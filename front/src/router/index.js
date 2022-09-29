@@ -33,6 +33,7 @@ import MainView from '@/views/MainView.vue';
 import MainUpload from '@/components/pages/main/MainUpload';
 import MainTest from '@/components/pages/main/MainTest';
 import MainScore from '@/components/pages/main/MainScore';
+import MainOptimize from '@/components/pages/main/MainOptimize';
 
 // Community
 import CommunityView from '@/views/CommunityView.vue';
@@ -78,6 +79,11 @@ const routes = [
         path: 'main/score',
         name: 'MainScore',
         component: MainScore,
+      },
+      {
+        path: 'main/optimize',
+        name: 'MainOptimize',
+        component: MainOptimize,
       },
     ],
   },

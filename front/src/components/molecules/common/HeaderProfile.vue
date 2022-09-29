@@ -1,17 +1,21 @@
 <template>
-  <div v-if="true" style="margin-right: var(--grid-side)">
+  <div v-if="!accountStore.getIsLogined" style="margin-right: var(--grid-side)">
     <img src="@/assets/sdprofile.png" alt="" class="profile-image" />
   </div>
   <div v-else class="open-options">
-    <div>로그아웃</div>
+    <div @click="accountStore.setIsLogined(false)">로그아웃</div>
     <div @click="userStore.deleteMyInfo()">회원탈퇴</div>
   </div>
 </template>
 
 <script setup>
 import { useUserStore } from '@/stores/user';
+import { useAccountStore } from '@/stores/account';
 
 const userStore = useUserStore();
+const accountStore = useAccountStore();
+
+console.log('로그인 상황: ' + accountStore.getIsLogined);
 </script>
 
 <style scoped>
@@ -23,7 +27,7 @@ const userStore = useUserStore();
 }
 /* deleteMyInfo */
 .open-options {
-  position: fixed;
+  /* position: fixed;
   bottom: 0;
   z-index: 51;
   left: 0;
@@ -36,6 +40,6 @@ const userStore = useUserStore();
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--grid-vertical);
+  gap: var(--grid-vertical); */
 }
 </style>

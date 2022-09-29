@@ -1,38 +1,38 @@
 <template>
   <div class="community-detail-card common-image">
+    <i class="bi bi-pencil-square edit-icon"></i>
+    <i class="bi bi-trash" @click="communityStore.deletePost(postId)"></i>
     <!-- 제목 -->
     <div class="card-title">
-      {{ communityStore.post.item.title }}
+      {{ communityStore.post.item?.title }}
     </div>
 
     <!-- 프로필 -->
     <span class="user-profile">
       <img
-        :src="communityStore.post.item.writerProfile"
+        :src="communityStore.post.item?.writerProfile"
         alt=""
         class="profile-image"
       />
-      {{ communityStore.post.item.writerNickname }}
+      {{ communityStore.post.item?.writerNickname }}
     </span>
 
     <!-- 이미지 -->
-    <card-carousel
-      :firstImage="communityStore.post.item.images[0].imageUrl"
-      :secondImage="
-        communityStore.post.item.images[1].imageUrl
-          ? communityStore.post.item.images[1].imageUrl
-          : ''
-      "
-    />
-    <!-- 태그들 -->
-    <div class="tag-wrap">
-      <div v-for="tag in communityStore.post.item.tag" :key="tag" class="tag">
-        {{ tag }}
-      </div>
-    </div>
+    <label for="btnMyPhoto">
+      <card-carousel
+        :firstImage="communityStore.post.item?.images[0].imageUrl"
+        :secondImage="
+          communityStore.post.item?.images[1].imageUrl
+            ? communityStore.post.item?.images[1].imageUrl
+            : ''
+        "
+        :firstTags="communityStore.post.item?.images[0].imageTag"
+        :secondTags="communityStore.post.item?.images[1]?.imageTag"
+      />
+    </label>
 
     <span class="card-content">
-      {{ communityStore.post.item.content }}
+      {{ communityStore.post.item?.content }}
     </span>
 
     <!-- 채팅 좋아요 북마크 -->
@@ -40,7 +40,7 @@
       <div class="like-bookmark">
         <div class="herat-wrap">
           <i class="bi bi-heart" @click="communityStore.likePost(postId)"></i>
-          <span>{{ communityStore.post.item.likeCount }}</span>
+          <span>{{ communityStore.post.item?.likeCount }}</span>
         </div>
         <i class="bi bi-bookmark" @click="communityStore.scrapPost(postId)"></i>
       </div>
@@ -56,8 +56,8 @@ import { useCommunityStore } from '@/stores/community.js';
 import { watch } from '@vue/runtime-core';
 import { useRoute } from 'vue-router';
 
-const communityStore = useCommunityStore();
 const route = useRoute();
+const communityStore = useCommunityStore();
 
 communityStore.getPost(route.params.postId);
 
@@ -88,7 +88,15 @@ const clickComment = () => {
   width: 100%;
   background-color: var(--light-main-color);
   margin-bottom: 30px;
+  position: relative;
 }
+.edit-icon {
+  position: absolute;
+  right: var(--grid-side);
+  font-size: 24px;
+  color: var(--black);
+}
+
 /* 제목 */
 .card-title {
   width: 100%;
@@ -111,22 +119,6 @@ const clickComment = () => {
   height: 35px;
   object-fit: cover;
   border-radius: 35px;
-}
-
-/* 태그 */
-.tag-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.tag {
-  padding: 0 14px;
-  line-height: 27px;
-  height: 27px;
-
-  background-color: #e7d7e9;
-  /* color: var(--light-main-color); */
-  border-radius: 30px;
 }
 /*  */
 .card-image {

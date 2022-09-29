@@ -12,7 +12,7 @@
         style="text-decoration: none"
       >
         <btn-add-friednd />
-        <btn-add-follow :userId="1" />
+        <btn-add-follow :userId="1" style="display: none" />
       </div>
     </div>
     <div class="posts-scraps-likes">
