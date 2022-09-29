@@ -32,10 +32,11 @@ public class CommentServiceImpl implements CommentService {
         RESULT_OBJECT = new HashMap<>();
         try {
             List<CommentUpperResponseDto> list = new ArrayList<>();
-            List<CommentKidResponseDto> kidList = new ArrayList<>();
+            List<CommentKidResponseDto> kidList;
 
             List<Comment> UpperDocumentList = commentRepository.findAllByPostIdAndUpper(postId, 0L);
             for (Comment comment : UpperDocumentList) {
+                kidList = new ArrayList<>();
                 List<Comment> KidDocumentList = commentRepository.findAllByUpper(comment.getId());
                 for (Comment kid : KidDocumentList) {
                     kidList.add(new CommentKidResponseDto(kid));
