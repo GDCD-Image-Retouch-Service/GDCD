@@ -1,20 +1,13 @@
 <template>
-  <div class="profile-scrap">
-    <div class="scraps-wrap">
+  <div class="scrap">
+    <div
+      v-for="post in userStore.scrapList.item?.posts"
+      :key="post.postId"
+      style="width: calc(50% - 5px)"
+    >
       <div
-        v-for="post in userStore.oddScrapList"
-        :key="post.postId"
-        style="width: 100%"
-      >
-        {{ post }}
-      </div>
-    </div>
-
-    <div class="posts-wrap">
-      <div
-        v-for="post in userStore.evenScrapList"
-        :key="post.postId"
-        style="width: 100%"
+        :style="{ backgroundImage: 'url(' + post.images.imageUrl + ')' }"
+        class="scrap-image"
       ></div>
     </div>
   </div>
@@ -37,19 +30,13 @@ userStore.getMyScrap();
   margin-top: var(--grid-vertical);
 
   display: flex;
-  gap: 10px;
-}
-.scrap-items {
-  display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  width: 100%;
 }
-.image-wrap {
-  width: calc(50% - 5px);
-}
-.card-image {
+.scrap-image {
   width: 100%;
-  object-fit: cover;
+  padding-bottom: 100%;
+  background-position: center;
+  background-size: cover;
 }
 </style>

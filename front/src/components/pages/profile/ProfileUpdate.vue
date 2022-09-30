@@ -1,22 +1,30 @@
 <template>
   <div class="profile-update">
-    <label for="update-profile" class="profile-image common-image">
-      <img :src="userStore.updateProfile" alt="" class="update-image" />
-    </label>
+    <!-- image  -->
+    <div class="wrapper">
+      <label for="file" class="upload-btn">
+        <img
+          :src="userStore.profile?.item?.user?.profile"
+          class="image-box"
+          ref="imgBox"
+        />
+      </label>
+      <input
+        id="file"
+        type="file"
+        accept="image/*"
+        @change="testfunc"
+        ref="fileInput"
+        style="display: none"
+      />
+    </div>
 
-    <!-- style="display: none" -->
-    <input
-      type="file"
-      id="update-profile"
-      @change="uploadFile"
-      ref="uploadImage"
-    />
-
+    <!-- nickname  -->
     <input
       type="text"
       class="profile-nickname"
       v-model="userStore.updateNickname"
-      @keyup="selectNickname(userStore.updateNickname, userStore.updateProfile)"
+      @change="checkOoverlap(userStore.updateNickname)"
     />
 
     <div v-if="userStore.nicknameOverlap">사용할 수 있는 닉네임입니다!</div>
@@ -25,79 +33,48 @@
       <img src="@/assets/image/info.png" alt="" />
       닉네임은 몇 자
     </div>
-    <button class="button" @click="profileUpdate(userStore.updateNickname)">
+    <button
+      class="button"
+      @click="profileUpdate(userStore.updateNickname, userStore.updateProfile)"
+    >
       제출
     </button>
-    <button @click="check()">dd</button>
-
-    {{ (userStore.updateProfile, userStore.updateNickname) }}
   </div>
 </template>
 
 <script setup>
 import { useUserStore } from '@/stores/user.js';
-import Swal from 'sweetalert2';
+
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const uploadImage = ref('');
-
+const myRouter = useRouter();
 const userStore = useUserStore();
 
-userStore.getMyinfo();
+const fileInput = ref(null);
 
-console.log(userStore.profile.item?.user.profile);
+let imgBox = ref(null);
 
-const selectNickname = (nickname) => {
-  userStore.nicknameOverlapCheck(nickname);
+// 이미지 미리보기 함수
+const testfunc = () => {
+  const reader = new FileReader();
+  reader.onload = ({ target }) => {
+    imgBox.value.src = target.result;
+  };
+  userStore.updateProfile = fileInput.value.files[0];
+  reader.readAsDataURL(fileInput.value.files[0]);
 };
 
-console.log(userStore.profile);
-const profileUpdate = (nickname, profile) => {
-  if (userStore.nicknameOverlap) {
-    Swal.fire({
-      title: 'Do you want to save the changes?',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      denyButtonText: `Don't save`,
-      timer: 1500,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire('Saved!', '', 'success');
-      } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info');
-      }
-    });
-    console.log(nickname);
-    userStore.updateMyInfo(nickname, profile);
-  }
-};
-console.log(userStore.updateNickname, userStore.updateProfile);
-
-const check = () => {
-  console.log(uploadImage);
+// 닉네임 유효성 검사
+const checkOoverlap = (nickname) => {
+  useUserStore.nicknameOverlapCheck(nickname);
 };
 
-const uploadFile = () => {
-  console.log(
-    uploadImage.value.files[0],
-    'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-    uploadImage.value.src,
-  );
+//  회원 정보 수정 요청
+const profileUpdate = (name, file) => {
+  userStore.updateMyInfo(name, file);
 
-  const file = uploadImage.value.files[0];
-  if (FileReader && file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      console.log(e);
-      const previewImage = document.getElementById('update-profile');
-      previewImage.src = e.target.result;
-      userStore.updateProfile = previewImage.src;
-
-      console.log(previewImage.src);
-    };
-    userStore.updateProfile = reader.readAsDataURL(file);
-  }
+  myRouter.push({ name: 'profile', params: { userId: 0 } });
 };
 </script>
 
@@ -105,19 +82,28 @@ const uploadFile = () => {
 .profile-update {
   width: calc(100% - 2 * var(--grid-side));
   margin-left: var(--grid-side);
-  margin-top: var(--grid-vertical);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 20px;
+  gap: var(--grid-vertical);
 }
-.profile-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 100px;
-  border: 1px solid var(--instagram-dark-grey);
-  overflow: hidden;
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: var(--grid-vertical);
+
+  text-align: center;
 }
+.image-box {
+  width: 130px;
+  height: 130px;
+  border-radius: 130px;
+  border: 1px solid var(--instagram-grey);
+  background-position: center;
+  background-size: cover;
+  object-fit: cover;
+}
+
 .profile-nickname {
   font-size: 18px;
   width: 100%;
@@ -126,9 +112,5 @@ const uploadFile = () => {
   text-align: center;
   border: none;
   border-bottom: 1px solid var(--instagram-dark-grey);
-}
-.update-image {
-  width: 100%;
-  object-fit: cover;
 }
 </style>

@@ -1,21 +1,31 @@
 <template>
   <div class="community-detail-card common-image">
-    <i class="bi bi-pencil-square edit-icon"></i>
-    <i class="bi bi-trash" @click="communityStore.deletePost(postId)"></i>
     <!-- 제목 -->
     <div class="card-title">
       {{ communityStore.post.item?.title }}
     </div>
 
-    <!-- 프로필 -->
-    <span class="user-profile">
-      <img
-        :src="communityStore.post.item?.writerProfile"
-        alt=""
-        class="profile-image"
-      />
-      {{ communityStore.post.item?.writerNickname }}
-    </span>
+    <div class="profile-update-delete">
+      <!-- 프로필 -->
+      <div class="user-profile">
+        <img
+          :src="communityStore.post.item?.writerProfile"
+          alt=""
+          class="profile-image"
+        />
+        {{ communityStore.post.item?.writerNickname }}
+      </div>
+
+      <div
+        v-if="
+          userStore.currentUser.itme?.user?.userId ===
+          communityStore.post.item?.postId
+        "
+      >
+        <span>수정</span>
+        <span @click="communityStore.deletePost(postId)">삭제</span>
+      </div>
+    </div>
 
     <!-- 이미지 -->
     <label for="btnMyPhoto">
@@ -53,11 +63,13 @@
 <script setup>
 import CardCarousel from '@/components/molecules/CardCarousel.vue';
 import { useCommunityStore } from '@/stores/community.js';
+import { useUserStore } from '@/stores/user.js';
 import { watch } from '@vue/runtime-core';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const communityStore = useCommunityStore();
+const userStore = useUserStore();
 
 communityStore.getPost(route.params.postId);
 
@@ -108,11 +120,19 @@ const clickComment = () => {
 
   height: fit-content;
 }
+/* 프로필 수정 삭제 */
+.profile-update-delete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 /* 프로필 */
 .user-profile {
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 10px;
 }
 .profile-image {
   width: 35px;

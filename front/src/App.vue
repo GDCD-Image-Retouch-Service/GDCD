@@ -11,6 +11,12 @@
 <script setup>
 import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
+import { useUserStore } from './stores/user';
+
+const userStore = useUserStore();
+if (localStorage.getItem('token')) {
+  userStore.getMyinfo;
+}
 </script>
 
 <style>
