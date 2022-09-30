@@ -19,6 +19,8 @@ warnings.filterwarnings(action='ignore')
 
 
 base_model_name = "InceptionV3"
+
+
 def work(args):
     config_file = "configs/config_aesthetic.json" if args.type == "aesthetic" else "configs/config_technical.json"
     config = Namespace(**json.load(open(config_file)))
@@ -49,9 +51,9 @@ def work(args):
                              std=[0.229, 0.224, 0.225])])
     # data loader
     trainset = AVADataset(
-        labels=train_labels, image_dir=config.image_path, image_type=config.image_type, transform=train_transform)
+        labels=train_labels, image_path=config.image_path, image_type=config.image_type, transform=train_transform)
     valset = AVADataset(
-        labels=test_labels, image_dir=config.image_path, image_type=config.image_type, transform=val_transform)
+        labels=test_labels, image_path=config.image_path, image_type=config.image_type, transform=val_transform)
 
     train_loader = torch.utils.data.DataLoader(trainset, batch_size=config.batch_size,
                                                shuffle=True, num_workers=config.num_workers)
