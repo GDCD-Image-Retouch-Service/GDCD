@@ -69,7 +69,9 @@ public class ImageServiceImpl implements ImageService {
                 try {
                     Folder.mkdir();
                     File Folder2 = new File(ROOT+path+BEFORE);
-                    Folder2.mkdir();
+                    if (!Folder2.exists()){
+                        Folder2.mkdir();
+                    }
                 } catch (Exception e) {
                     e.getStackTrace();
                 }
@@ -80,6 +82,7 @@ public class ImageServiceImpl implements ImageService {
             Long count = imageRepository.findAll().stream().count() + 1;
             requestDto.setImgUrl(ADDRESS + count.toString());
             requestDto.setUserId(user.getId());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -201,8 +204,10 @@ public class ImageServiceImpl implements ImageService {
         return RESULT_OBJECT;
     }
 
-    public Map<String, Object> requestObjectDetection(MultipartFile image) {
-        RESULT_OBJECT = new HashMap<>();
+//    public Map<String, Object> requestObjectDetection(MultipartFile image, Long imageId) {
+    public List<String> requestObjectDetection(MultipartFile image, Long imageId) {
+
+//    RESULT_OBJECT = new HashMap<>();
         try {
             RestTemplate restTemplate = new RestTemplate();
 
@@ -227,17 +232,43 @@ public class ImageServiceImpl implements ImageService {
 
             Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
 
-            RESULT_OBJECT.put("dict", objects);
-            List<Object> objectList = new ArrayList<>();
-            System.out.println(RESULT_OBJECT.keySet());
+//            RESULT_OBJECT.put("dict", objects);
+//            List<Object> objectList = new ArrayList<>();
+//            System.out.println(RESULT_OBJECT.keySet());
+//            for (Object obj : objects) {
+//                objectList.add(obj);
+//            }
+            Set<String> tags = new HashSet<>();
             for (Object obj : objects) {
-                objectList.add(obj);
+                Map<String, Object> objs = objectMapper.convertValue(obj, Map.class);
+                tags.add(objs.get("class").toString());
             }
+            List<String> objectTag = new ArrayList<>(tags);
+            Image img = findImage(imageId);
+            img.setObjects(objectTag);
+            imageRepository.save(img);
+
+
+            List<String> objectList = new ArrayList<>();
+            for (String str : tags){
+                String string = new String(str+";");
+                for (Object object : objects){
+                    Map<String, Object> obj2 = objectMapper.convertValue(object, Map.class);
+                    if (str.equals(obj2.get("class"))){
+                        ArrayList<String> ul = (ArrayList<String>) obj2.get("ul");
+                        ArrayList<String> dr = (ArrayList<String>) obj2.get("dr");
+                        string += String.valueOf(ul.get(0))+","+String.valueOf(ul.get(1))+";"+String.valueOf(dr.get(0))+","+String.valueOf(dr.get(1))+";";
+                    }
+                }
+                objectList.add(string);
+            }
+            return objectList;
         } catch (Exception e) {
             e.printStackTrace();
-            RESULT_OBJECT.put("error", "IMAGE NOT SCORED");
+            List<String> errMessage = new ArrayList<>();
+            errMessage.add("IMAGE NOT SCORED");
+            return errMessage;
         }
-        return RESULT_OBJECT;
     }
 
 //    public List<Object> requestObjectDetection(MultipartFile image) {
