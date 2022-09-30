@@ -132,7 +132,25 @@ public class PostServiceImpl implements PostService{
             user.subPostCount();
             userRepository.save(user);
             post.setValidation(false);
+            post.subLikeCount();
             postRepository.save(post);
+            List<Long> scrapUserList = post.getScrapUsers();
+            for (Long id : scrapUserList) {
+                User scrapper = userRepository.findById(id).get();
+                scrapper.cancelScrap(postId); // scrapPosts & scrapCount
+                userRepository.save(scrapper);
+            }
+            post.setScrapUsers(new ArrayList<>());
+
+            List<Long> likeUserList = post.getLikeUsers();
+            for (Long id : likeUserList) {
+                User liker = userRepository.findById(id).get();
+                liker.cancelLike(postId);
+                userRepository.save(liker);
+            }
+            post.setLikeUsers(new ArrayList<>());
+
+            // report는 급하지 않으니까 나중에
             return "성공적으로 삭제되었습니다.";
         }else {
             return "존재하지 않는 게시글입니다";

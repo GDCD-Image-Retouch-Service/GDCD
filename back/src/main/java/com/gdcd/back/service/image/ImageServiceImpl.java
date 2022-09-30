@@ -7,12 +7,14 @@ import com.gdcd.back.domain.image.Image;
 import com.gdcd.back.domain.image.ImageRepository;
 import com.gdcd.back.domain.user.User;
 import com.gdcd.back.domain.user.UserRepository;
+import com.gdcd.back.dto.image.request.AfterImageSaveRequestDto;
 import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
 import com.gdcd.back.dto.image.response.CoreScoreResponseDto;
 import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import com.gdcd.back.dto.image.response.ImageListResponseDto;
 //import jdk.internal.util.xml.impl.Input;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -50,9 +52,11 @@ public class ImageServiceImpl implements ImageService {
 
     private final String BEFORE = "/before";
     private final String AFTER = "/after";
+    private final String BUFFER = "/app/data/buffer/";
 
     //    Local에서 진행할 폴더
 //        String ROOT = "C:/test/images/";
+//        String BUFFER = "C:/test/buffer/";
 //        String ADDRESS = "http://localhost:8081/api/image?imageId=";
     public Long addImage(String token, MultipartFile image, ImageCreateRequestDto requestDto) throws Exception {
         User user = findUserByEmail(decodeToken(token));
@@ -358,6 +362,44 @@ public class ImageServiceImpl implements ImageService {
         }
         return RESULT_OBJECT;
     }
+
+
+    public Long addAfterImage(String token, AfterImageSaveRequestDto requestDto) throws Exception{
+        User user = findUserByEmail(decodeToken(token));
+        Long count = imageRepository.findAll().stream().count() + 1;
+        Image originImage = findImage(requestDto.getImageId());
+        String url = requestDto.getImageUrl();
+        String filePath = url.substring(url.lastIndexOf("=")+1);
+        String originPath = originImage.getFilePath();
+        String afterPath = originPath.replace("before", "after");
+        String path = String.valueOf(user.getId());
+        File folder = new File(ROOT+path+"/"+AFTER);
+
+        // after 폴더 생성
+        try {
+            if (!folder.exists()){
+                folder.mkdir();
+            }
+        } catch (Exception e){
+            e.getStackTrace();
+        }
+
+        // 파일 복사
+        File img = new File(filePath);
+        File newFile = new File(ROOT+afterPath);
+        FileUtils.copyFile(img, newFile);
+
+        // 파일 삭제
+        try {
+            File rootDir = new File(BUFFER+path);
+            FileUtils.deleteDirectory(rootDir);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return imageRepository.save(requestDto.toDocument(user.getId(),ADDRESS+count.toString(),afterPath,originImage.getObjects())).getId();
+    }
+
 
 
     private Image findImage(Long imageId) {

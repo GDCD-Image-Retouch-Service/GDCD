@@ -1,5 +1,6 @@
 package com.gdcd.back.service.image;
 
+import com.gdcd.back.dto.image.request.AfterImageSaveRequestDto;
 import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
 import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import com.gdcd.back.dto.image.response.ImageListResponseDto;
@@ -23,6 +24,8 @@ public interface ImageService {
 //    public List<Object> requestObjectDetection(MultipartFile image);
 
     public Map<String, Object> requestOptimization(String token, MultipartFile image);
+
+    public Long addAfterImage(String token, AfterImageSaveRequestDto requestDto) throws Exception;
 
 
 }
