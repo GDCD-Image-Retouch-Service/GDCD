@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         	System.out.println(nickname);
             User target = findUserByEmail(decodeToken(token));
             User user = findUserByEmail(decodeToken(token));
-            String filePath = DEFAULT_PATH;
+            String filePath = target.getProfile();
             if (profile != null) {
                 String type = profile.getContentType();
                 String endpoint = "." + type.substring(type.lastIndexOf("/") + 1);
