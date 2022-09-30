@@ -2,7 +2,7 @@
   <div class="profile-header">
     <div class="profile-header-wrap">
       <img
-        :src="userStore.profile?.item?.user.profile"
+        :src="userStore.profile?.item?.user?.profile"
         alt=""
         class="profile-image"
       />
@@ -41,5 +41,6 @@ userStore.getMyinfo();
   height: 80px;
   object-fit: cover;
   border-radius: 80px;
+  border: 1px solid var(--instagram-grey);
 }
 </style>

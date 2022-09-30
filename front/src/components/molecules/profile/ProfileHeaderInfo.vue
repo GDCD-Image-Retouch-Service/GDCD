@@ -31,7 +31,7 @@
         class="posts-scraps-likes-item"
       >
         <div :class="{ active: userStore.isItemActive === 1 }">스크랩</div>
-        <div>{{ userStore.profile.item?.user.scrapCount }}</div>
+        <div>{{ userStore.profile.item?.user?.scrapCount }}</div>
       </div>
 
       <!-- 좋아요 -->
@@ -40,7 +40,7 @@
         class="posts-scraps-likes-item"
       >
         <div :class="{ active: userStore.isItemActive === 2 }">좋아요</div>
-        <div>{{ userStore.profile?.item?.user.scrapCount }}</div>
+        <div>{{ userStore.profile?.item?.user?.likeCount }}</div>
       </div>
     </div>
   </div>
@@ -52,17 +52,8 @@ import BtnAddFollow from '../common/btn/BtnAddFollow.vue';
 import router from '@/router/index.js';
 
 import { useUserStore } from '@/stores/user';
-import { useRoute } from 'vue-router';
-
-const route = useRoute();
 
 const userStore = useUserStore();
-
-if (route.params.userId == 100000) {
-  userStore.getMyinfo();
-} else {
-  userStore.getOtherinfo(route.params.userId);
-}
 </script>
 
 <style scoped>
