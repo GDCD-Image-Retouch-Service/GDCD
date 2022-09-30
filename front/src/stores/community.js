@@ -123,6 +123,7 @@ export const useCommunityStore = defineStore('communityStore', {
           console.log(err);
         });
     },
+
     // 게시글 생성
     createPost: (data) => {
       console.log(data);

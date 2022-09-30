@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import user from '@/api/rest/user';
 // import { useAccountStore } from './account';
+import { ref } from 'vue';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
@@ -42,8 +43,8 @@ export const useUserStore = defineStore('userStore', {
     currentUser: {},
 
     // 토큰
-    token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2ZsODc4MEBnbWFpbC5jb20iLCJpYXQiOjE2NjQ0MzI5NDAsImV4cCI6MTY2NDQ1MDk0MH0.wnQQ6HEa7SAXpz-pND1rXkMxDd1xALPoBkOn2M80U5s',
+    token: ref(localStorage.getItem('token')),
+
     // 로그인한 유저 정보
     profile: {},
 
@@ -90,7 +91,6 @@ export const useUserStore = defineStore('userStore', {
       })
         .then((res) => {
           this.currentUser = res.data;
-          this.profile = res.data;
           this.updateProfile = res.data.item.user.profile;
           this.updateNickname = res.data.item.user.nickname;
           console.log(res.data);
@@ -102,15 +102,21 @@ export const useUserStore = defineStore('userStore', {
 
     // 다른 사람 정보 조회
     getOtherinfo(userId) {
+      let data = {
+        userId: userId,
+      };
+
+      if (userId == 0) {
+        data = {};
+      }
+
       axios({
         url: user.myInfo(),
         method: 'GET',
         headers: {
           token: this.token,
         },
-        params: {
-          userId: userId,
-        },
+        params: data,
       })
         .then((res) => {
           this.profile = res.data;
@@ -176,15 +182,19 @@ export const useUserStore = defineStore('userStore', {
 
     // 내 팔로워 조회
     getMyFollower(userId) {
+      let data = {};
+      if (userId != 0) {
+        data = {
+          userId: userId,
+        };
+      }
       axios({
         url: user.myFollower(),
         method: 'GET',
         headers: {
           token: this.token,
         },
-        params: {
-          userId: userId,
-        },
+        params: data,
       })
         .then((res) => {
           this.follower = res.data;
@@ -195,21 +205,26 @@ export const useUserStore = defineStore('userStore', {
         });
     },
 
-    // 내 팔로워 조회
+    // 내가 팔로잉 하는 사람 조회
     getMyFollowing(userId) {
+      let data = {};
+      if (userId != 0) {
+        data = {
+          userId: userId,
+        };
+      }
+
       axios({
         url: user.myFollowing(),
         method: 'GET',
         headers: {
           token: this.token,
         },
-        params: {
-          userId: userId,
-        },
+        params: data,
       })
         .then((res) => {
           this.following = res.data;
-          console.log(res.data);
+          console.log(res.data, 'dddd');
         })
         .catch((err) => {
           console.log(err);
@@ -221,7 +236,10 @@ export const useUserStore = defineStore('userStore', {
       const formdata = new FormData();
 
       formdata.append('nickname', nickname);
-      formdata.append('profile', profile);
+      if (profile.type) {
+        console.log('?');
+        formdata.append('profile', profile);
+      }
 
       axios({
         url: user.myInfo(),
@@ -234,6 +252,7 @@ export const useUserStore = defineStore('userStore', {
       })
         .then((res) => {
           console.log(res.data);
+          this.getOtherinfo(0);
         })
         .catch((err) => {
           console.log(err);

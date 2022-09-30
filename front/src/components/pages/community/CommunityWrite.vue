@@ -34,7 +34,7 @@
         :secondTags="userStore.selectTag"
       />
     </div>
-    {{ userStore.myPhoto.item.beforeImage?.imageTag }}
+    {{ userStore.myPhoto.item?.beforeImage?.imageTag }}
     <!-- 내용 -->
     <div class="wrap">
       <div>내용</div>

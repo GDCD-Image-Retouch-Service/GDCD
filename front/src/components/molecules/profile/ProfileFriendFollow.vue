@@ -5,10 +5,10 @@
     class="follow-wrap"
   >
     <div class="user-wrap">
-      <img :src="follower.image" alt="" class="profile-image" />
+      <img :src="follower.profile" alt="" class="profile-image" />
       {{ follower.nickname }}
     </div>
-    <delete-button />
+    <delete-button @click="deleteFollow" />
   </div>
 </template>
 
@@ -21,6 +21,11 @@ const route = useRoute();
 const userStore = useUserStore();
 
 userStore.getMyFollower(route.params.userId);
+
+// 내 팔로워 목록에 있는 사람 삭제
+const deleteFollow = () => {
+  console.log('팔로워 삭제');
+};
 </script>
 
 <style scoped>
