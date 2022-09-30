@@ -31,7 +31,9 @@ public class Image {
     private String imgUrl;
     @Field(name="file_path")
     private String filePath;
-    private int rank;
+//    private int rank;
+    private int aesthetic;
+    private int quality;
     @Field(name = "regist_date")
     private LocalDateTime registDate;
     private List<String> objects;

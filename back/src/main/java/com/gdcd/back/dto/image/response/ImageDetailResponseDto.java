@@ -15,13 +15,15 @@ public class ImageDetailResponseDto {
     private Long imageId;
     private List<String> imageTag;
     private String imageUrl;
-    private int imageRank;
+    private int imageAesthetic;
+    private int imageQuality;
 
 
     public ImageDetailResponseDto(Image img) {
         this.imageId = img.getId();
         this.imageTag = img.getObjects();
-        this.imageRank = img.getRank();
+        this.imageAesthetic = img.getAesthetic();
+        this.imageQuality = img.getQuality();
         this.imageUrl = img.getImgUrl();
     }
 }
