@@ -15,7 +15,9 @@ public class ImageCreateRequestDto {
     private Long userId ;
     private String imgUrl;
     private String filePath;
-    private int rank;
+    private int aesthetic;
+    private int quality;
+//    private int rank;
     private LocalDateTime registDate;
     private List<String> objects = new ArrayList<>();
 
@@ -26,7 +28,8 @@ public class ImageCreateRequestDto {
                 .userId(userId)
                 .imgUrl(imgUrl)
                 .filePath(filePath)
-                .rank(rank)
+                .aesthetic(aesthetic)
+                .quality(quality)
                 .registDate(LocalDateTime.now())
                 .objects(objects)
                 .build();

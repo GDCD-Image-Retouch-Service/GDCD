@@ -58,14 +58,14 @@ public class ImageController extends Controller {
 //        return new ResponseEntity<List<String>>(imageService.findImageList(userId), HttpStatus.OK);
 //    }
 
-    @PostMapping("/initial")
+    @PostMapping("/scoring")
     public ResponseEntity<Map<String, Object>> imageInitialScore(@RequestPart MultipartFile image) {
         return getResponseEntity(imageService.requestInitialScore(image));
     }
 
     @PostMapping("/object")
-    public ResponseEntity<Map<String, Object>> imageObjection(@RequestPart MultipartFile image) {
-        return getResponseEntity(imageService.requestObjectDetection(image));
+    public ResponseEntity<Map<String, Object>> imageObjection(@RequestPart MultipartFile image, @RequestPart Long imageId) {
+        return getResponseEntity(imageService.requestObjectDetection(image, imageId));
     }
 
     @PostMapping("/optimization")
