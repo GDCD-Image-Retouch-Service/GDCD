@@ -58,8 +58,8 @@ public class ImageController extends Controller {
     }
 
     @PostMapping("/object")
-    public ResponseEntity<Map<String, Object>> imageObjection(@RequestPart MultipartFile image, @RequestPart Long imageId) {
-        return getResponseEntity(imageService.requestObjectDetection(image, imageId));
+    public ResponseEntity<Map<String, Object>> imageObjection(@RequestPart Long imageId) {
+        return getResponseEntity(imageService.requestObjectDetection(imageId));
     }
 
     @PostMapping("/optimization")
