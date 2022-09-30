@@ -69,7 +69,9 @@ public class ImageServiceImpl implements ImageService {
                 try {
                     Folder.mkdir();
                     File Folder2 = new File(ROOT+path+BEFORE);
-                    Folder2.mkdir();
+                    if (!Folder2.exists()){
+                        Folder2.mkdir();
+                    }
                 } catch (Exception e) {
                     e.getStackTrace();
                 }
@@ -80,6 +82,7 @@ public class ImageServiceImpl implements ImageService {
             Long count = imageRepository.findAll().stream().count() + 1;
             requestDto.setImgUrl(ADDRESS + count.toString());
             requestDto.setUserId(user.getId());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
