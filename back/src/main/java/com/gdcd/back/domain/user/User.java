@@ -113,4 +113,13 @@ public class User {
     }
     public void addDailyReports(){this.dailyReports++;}
 
+    public void cancelScrap(Long postId) {
+        scrapPosts.remove(postId);
+        subScrapCount();
+    }
+
+    public void cancelLike(Long postId) {
+        likePosts.remove(postId);
+        subLikeCount();
+    }
 }

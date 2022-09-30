@@ -10,6 +10,7 @@ public class UserDetailResponseDto {
     private String nickname;
     private int postCount;
     private int scrapCount;
+    private int likeCount;
     private int followerCount;
     private int followingCount;
     private int dailyReports;
@@ -21,6 +22,7 @@ public class UserDetailResponseDto {
         this.nickname = document.getNickname();
         this.postCount = document.getPostCount();
         this.scrapCount = document.getScrapCount();
+        this.likeCount = document.getLikeCount();
         this.followerCount = document.getFollowerCount();
         this.followingCount = document.getFollowingCount();
         this.dailyReports = document.getDailyReports();
