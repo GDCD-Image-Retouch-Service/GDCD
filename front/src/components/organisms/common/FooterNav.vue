@@ -1,6 +1,6 @@
 <template>
-  <nav class="footer-nav">
-    <div class="footer-nav-wrap outer d-flex align-items-center">
+  <nav class="footer-nav main outer">
+    <div class="footer-nav-wrap d-flex align-items-center">
       <!--  홈 -->
       <router-link to="/" @click="basicStore.isActiveFooter = 0">
         <i
@@ -48,12 +48,12 @@ const basicStore = useBasicStore();
 
 <style scoped>
 .footer-nav {
+  z-index: 5000;
   width: 100vw;
   height: var(--size-h-footer);
   min-height: var(--size-h-footer);
   overflow: hidden;
-  background-color: #ffffff;
-  border-top: 1px solid var(--instagram-grey);
+  /* border-top: 1px solid var(--sub-color); */
 }
 .footer-nav-wrap {
   height: var(--size-h-footer);

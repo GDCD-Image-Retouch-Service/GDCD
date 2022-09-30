@@ -28,11 +28,9 @@ export default {
         })
         .then((response) => {
           resolve(response.data);
-          // 응답 처리
         })
         .catch((error) => {
           reject(error);
-          // 예외 처리
         });
     });
   },

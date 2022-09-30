@@ -28,6 +28,12 @@ const beforeAuth = (needAuth) => async (from, to, next) => {
   }
 };
 
+// Landing
+import LandingView from '@/views/LandingView.vue';
+
+// Home
+import HomeView from '@/views/HomeView.vue';
+
 // Main
 import MainView from '@/views/MainView.vue';
 import MainUpload from '@/components/pages/main/MainUpload';
@@ -60,9 +66,18 @@ import PhotoList from '@/components/pages/photo/PhotoList';
 const routes = [
   {
     path: '/', // Landing page
-    name: 'main',
-    redirect: '/main',
+    name: 'Landing',
     beforeEnter: beforeAuth(false),
+    component: LandingView,
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: HomeView,
+  },
+  {
+    path: '/main', // Landing page
+    name: 'main',
     component: MainView,
     children: [
       {

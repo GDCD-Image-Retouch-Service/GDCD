@@ -1,14 +1,9 @@
 <template>
-  <div class="header-nav outer d-flex align-items-center">
+  <div class="header-nav main outer d-flex align-items-center">
     <header-logo />
     <div class="flex-grow-1"></div>
 
-    <Popper arrow>
-      <header-profile />
-      <template #content>
-        <GoogleLogin :callback="callback" />
-      </template>
-    </Popper>
+    <header-profile />
   </div>
 </template>
 
@@ -16,24 +11,28 @@
 import HeaderLogo from '@/components/molecules/common/HeaderLogo.vue';
 import HeaderProfile from '@/components/molecules/common/HeaderProfile.vue';
 
-import { decodeCredential } from 'vue3-google-login';
-import { user } from '@/api/rest';
+// import { decodeCredential } from 'vue3-google-login';
+// import { user } from '@/api/rest';
+// import { useAccountStore } from '@/stores/account';
 
-const callback = async (response) => {
-  const userData = await decodeCredential(response.credential);
-  await user.login({
-    email: userData.email,
-    nickname: userData.name,
-  });
-};
+// const accountStore = useAccountStore();
+
+// const callback = async (response) => {
+//   const userData = await decodeCredential(response.credential);
+//   console.log(userData);
+//   await user.login({
+//     email: userData.email,
+//     nickname: userData.name,
+//   });
+// };
 </script>
 
 <style scoped>
 .header-nav {
+  z-index: 5001;
   width: 100vw;
   height: var(--size-h-header);
   min-height: var(--size-h-header);
-  background: white;
   overflow: hidden;
 
   /* display: flex;

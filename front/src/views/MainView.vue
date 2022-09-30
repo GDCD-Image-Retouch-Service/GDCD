@@ -9,5 +9,6 @@
 <style scoped>
 .main-view {
   width: 100vw;
+  min-height: 100%;
 }
 </style>

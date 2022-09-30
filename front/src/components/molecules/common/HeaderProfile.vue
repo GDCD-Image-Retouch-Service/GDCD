@@ -1,21 +1,36 @@
 <template>
-  <div v-if="!accountStore.getIsLogined" style="margin-right: var(--grid-side)">
-    <img src="@/assets/sdprofile.png" alt="" class="profile-image" />
-  </div>
-  <div v-else class="open-options">
-    <div @click="accountStore.setIsLogined(false)">로그아웃</div>
-    <div @click="userStore.deleteMyInfo()">회원탈퇴</div>
-  </div>
+  <Popper arrow>
+    <div v-if="!accountStore.getIsLogined">로그인안함</div>
+    <div v-else>로그인함</div>
+    <template #content="{ close }">
+      <btn-toggle borderWidth="100"></btn-toggle>
+      <Button @click="homeStore.setIsDarkToggle">색바꾸기</Button>
+      <Button @click="close">Close</Button>
+      <GoogleLogin :callback="callback" />
+    </template>
+  </Popper>
 </template>
 
 <script setup>
-import { useUserStore } from '@/stores/user';
-import { useAccountStore } from '@/stores/account';
+import BtnToggle from '@/components/molecules/common/header/BtnToggle.vue';
 
-const userStore = useUserStore();
+// import { useUserStore } from '@/stores/user';
+import { useAccountStore, useHomeStore } from '@/stores';
+// import { useAccountStore } from '@/stores/home';
+
+// const userStore = useUserStore();
 const accountStore = useAccountStore();
+const homeStore = useHomeStore();
 
-console.log('로그인 상황: ' + accountStore.getIsLogined);
+const callback = async () => {
+  console.log('개열받네?');
+  // const userData = await decodeCredential(response.credential);
+  // console.log(userData);
+  // await user.login({
+  //   email: userData.email,
+  //   nickname: userData.name,
+  // });
+};
 </script>
 
 <style scoped>

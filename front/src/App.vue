@@ -1,7 +1,7 @@
 <template>
-  <div class="app light d-flex flex-column align-items-start">
+  <div class="app d-flex flex-column align-items-start" :class="theme">
     <header-nav />
-    <div class="app-container flex-grow-1 flex-shrink-1">
+    <div class="app-container sub flex-grow-1 flex-shrink-1">
       <router-view />
     </div>
     <footer-nav />
@@ -11,6 +11,12 @@
 <script setup>
 import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
+import { computed } from 'vue';
+import { useHomeStore } from '@/stores';
+
+const homeStore = useHomeStore();
+
+const theme = computed(() => (homeStore.getIsDark ? 'dark' : 'light'));
 </script>
 
 <style>
@@ -28,19 +34,8 @@ import FooterNav from '@/components/organisms/common/FooterNav.vue';
   --size-w-footer: 400px;
   --size-radius: 20px;
 
-  /* 색상 */
   /* 테마 색 */
   --theme-color: #ffe49c;
-
-  /* 다크모드 */
-  --dark-main-color: #404040;
-  --dark-sub-color: #000000;
-  --dark-reverser-color: #f4f4f4;
-
-  /* 라이트 모드 */
-  --light-main-color: #ffffff;
-  --light-sub-color: #f4f4f4;
-  --light-reverse-color: #404040;
 
   /* 자주 사용 */
   --black: #3c3c3a;
@@ -53,6 +48,9 @@ import FooterNav from '@/components/organisms/common/FooterNav.vue';
 }
 
 .dark {
+  --main-color: #3c3c3a;
+  --sub-color: #303030;
+  --reverse-color: #f4f4f4;
   --popper-theme-background-color: #333333;
   --popper-theme-background-color-hover: #333333;
   --popper-theme-text-color: white;
@@ -63,6 +61,9 @@ import FooterNav from '@/components/organisms/common/FooterNav.vue';
 }
 
 .light {
+  --main-color: #ffffff;
+  --sub-color: #f4f4f4;
+  --reverse-color: #404040;
   --popper-theme-background-color: #ffffff;
   --popper-theme-background-color-hover: #ffffff;
   --popper-theme-text-color: #333333;
@@ -72,6 +73,18 @@ import FooterNav from '@/components/organisms/common/FooterNav.vue';
   --popper-theme-border-radius: 6px;
   --popper-theme-padding: 32px;
   --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
+}
+
+.main {
+  background: var(--main-color);
+}
+
+.sub {
+  background: var(--sub-color);
+}
+
+.reverse {
+  background: var(--reverse-color);
 }
 
 * {
@@ -85,7 +98,6 @@ import FooterNav from '@/components/organisms/common/FooterNav.vue';
 
 body {
   width: 100vw;
-  /* background-color: blue; */
   height: 100vh;
 }
 
@@ -116,6 +128,7 @@ body::-webkit-scrollbar {
 
 .app-container {
   width: 100%;
+  z-index: 1;
   overflow-x: hidden;
   overflow-y: auto;
 }
