@@ -34,7 +34,7 @@
         :secondTags="userStore.selectTag"
       />
     </div>
-    {{ userStore.myPhoto.item.beforeImage?.imageTag }}
+    {{ userStore.myPhoto.item?.beforeImage?.imageTag }}
     <!-- 내용 -->
     <div class="wrap">
       <div>내용</div>
@@ -184,8 +184,10 @@ import DateFormat from '@/components/molecules/common/DateFormat.vue';
 import { useCommunityStore } from '@/stores/community.js';
 import { useUserStore } from '@/stores/user.js';
 import { ref } from 'vue';
-import router from '@/router';
+// import router from '@/router';
+import { useRouter } from 'vue-router';
 
+const myRouter = useRouter();
 const communityStore = useCommunityStore();
 const userStore = useUserStore();
 
@@ -210,7 +212,7 @@ const createPost = (data) => {
   console.log(context, userStore.photoSelect);
   communityStore.createPost(context);
 
-  router.push({ name: 'community' });
+  myRouter.push({ name: 'main' });
 };
 
 const selectPhoto = () => {

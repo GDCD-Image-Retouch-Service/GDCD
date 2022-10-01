@@ -19,7 +19,7 @@
       <!-- 프로필 -->
       <div
         @click="
-          router.push({ name: 'ProfilePost', params: { userId: 100000 } }),
+          router.push({ name: 'ProfilePost', params: { userId: 0 } }),
             (basicStore.isActiveFooter = 2)
         "
       >

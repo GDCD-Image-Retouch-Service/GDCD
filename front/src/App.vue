@@ -12,9 +12,14 @@
 import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
 import { computed } from 'vue';
-import { useHomeStore } from '@/stores';
+import { useUserStore, useHomeStore } from '@/stores';
 
 const homeStore = useHomeStore();
+const userStore = useUserStore();
+
+if (localStorage.getItem('token')) {
+  userStore.getMyinfo;
+}
 
 const theme = computed(() => (homeStore.getIsDark ? 'dark' : 'light'));
 </script>
