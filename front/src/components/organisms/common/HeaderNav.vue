@@ -29,12 +29,11 @@ import HeaderProfile from '@/components/molecules/common/HeaderProfile.vue';
 
 <style scoped>
 .header-nav {
+  position: fixed;
   z-index: 5001;
   width: 100vw;
   height: var(--size-h-header);
   min-height: var(--size-h-header);
-  overflow: hidden;
-
   /* display: flex;
   align-items: center;
   justify-content: space-between; */
