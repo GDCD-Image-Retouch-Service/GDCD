@@ -10,9 +10,8 @@
             backgroundImage: 'url(' + value.beforeImage.imageUrl + ')',
           }"
           class="photo-image"
-        >
-          <!-- <img :src="value.beforeImage.imageUrl" alt="" class="photo-image" /> -->
-        </div>
+          @click="clickImage(value), router.push({ name: 'PhotoDetail' })"
+        ></div>
       </div>
     </div>
   </div>
@@ -21,9 +20,18 @@
 <script setup>
 import DateFormat from '../common/DateFormat.vue';
 import { useUserStore } from '@/stores/user.js';
+import { useCommunityStore } from '@/stores/community.js';
+import { useRouter } from 'vue-router';
+
 const userStore = useUserStore();
+const communityStore = useCommunityStore();
+const router = useRouter();
 
 userStore.getMyPhoto();
+
+const clickImage = (img) => {
+  communityStore.selectImage = img;
+};
 </script>
 
 <style scoped>

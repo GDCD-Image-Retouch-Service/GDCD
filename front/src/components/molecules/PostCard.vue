@@ -13,6 +13,8 @@
         })
       "
     />
+    <!-- {{ post }}
+    {{ post.scrap }} -->
     <!-- post card -title -->
     <div class="post-card-title">
       {{ post?.title }}
@@ -36,7 +38,7 @@
       <div class="like-bookmark">
         <div class="herat-wrap">
           <i class="bi bi-heart"></i>
-          <div>{{ post.likeCount }}</div>
+          <div>{{ myLikeCount }}</div>
         </div>
         <i class="bi bi-bookmark"></i>
       </div>
@@ -52,7 +54,9 @@ import { defineProps, toRefs } from 'vue';
 const props = defineProps({
   post: Object,
 });
+
 const { post } = toRefs(props);
+console.log(post);
 </script>
 
 <style scoped>

@@ -1,7 +1,11 @@
 <template>
   <div class="comment-input-wrap">
     <!-- 유저 프로필 -->
-    <img :src="chat.profileImage" alt="" class="profile-image" />
+    <img
+      :src="userStore.currentUser.item?.user?.profile"
+      alt=""
+      class="profile-image"
+    />
 
     <!-- 인풋 -->
     <input
@@ -17,16 +21,14 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import { useCommunityStore } from '@/stores/community.js';
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore();
+
 const route = useRoute();
 const communityStore = useCommunityStore();
-
-const props = defineProps({
-  chat: Object,
-});
-const { chat } = toRefs(props);
 
 const createComment = () => {
   const data = {
