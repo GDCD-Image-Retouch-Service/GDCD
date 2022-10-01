@@ -14,28 +14,27 @@ import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import com.gdcd.back.dto.image.response.ImageListResponseDto;
 //import jdk.internal.util.xml.impl.Input;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-
+import org.apache.tomcat.util.http.fileupload.FileItem.*;
 @Service
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
@@ -209,26 +208,39 @@ public class ImageServiceImpl implements ImageService {
     }
 
 //    public Map<String, Object> requestObjectDetection(MultipartFile image, Long imageId) {
-    public List<String> requestObjectDetection(MultipartFile image, Long imageId) {
-
+    public List<String> requestObjectDetection(Long imageId) {
+//        Image image = findImage(imageId);
 //    RESULT_OBJECT = new HashMap<>();
         try {
+            Image img = findImage(imageId);
             RestTemplate restTemplate = new RestTemplate();
 
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
-            System.out.println(image.getInputStream());
 
             MultiValueMap<String, Resource> body = new LinkedMultiValueMap<>();
 
+            //받아온 imageId로 file 객체 만들기
+            File file = new File(ROOT+img.getFilePath());
 
-            body.add("image", image.getResource());
+            //받아온 파일로 FileItem 만들기 (org.apache.commons.fileupload.FileItem)
+            // DistFileItem : org.apache.commons.fileupload.disk.DiskFileItem
+            FileItem fileItem = new DiskFileItem("originFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
+            try {
+                //
+                InputStream input = new FileInputStream(file);
+                OutputStream os = fileItem.getOutputStream();
+                IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            //jpa.png -> multipart 변환
+            MultipartFile mFile = new CommonsMultipartFile(fileItem);
+            body.add("image", mFile.getResource());
             HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
-
-
-            HttpEntity<String> response = restTemplate.postForEntity(CORE + DETECT_OBJECT, requestMessage, String.class);
-
+            HttpEntity<String> response = restTemplate.exchange(CORE + DETECT_OBJECT, HttpMethod.POST, requestMessage, String.class);
 
             ObjectMapper objectMapper = new ObjectMapper();
 
@@ -236,19 +248,12 @@ public class ImageServiceImpl implements ImageService {
 
             Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
 
-//            RESULT_OBJECT.put("dict", objects);
-//            List<Object> objectList = new ArrayList<>();
-//            System.out.println(RESULT_OBJECT.keySet());
-//            for (Object obj : objects) {
-//                objectList.add(obj);
-//            }
             Set<String> tags = new HashSet<>();
             for (Object obj : objects) {
                 Map<String, Object> objs = objectMapper.convertValue(obj, Map.class);
                 tags.add(objs.get("class").toString());
             }
             List<String> objectTag = new ArrayList<>(tags);
-            Image img = findImage(imageId);
             img.setObjects(objectTag);
             imageRepository.save(img);
 

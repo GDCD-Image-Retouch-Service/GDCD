@@ -20,7 +20,7 @@ public interface ImageService {
 //    public Map<String, Object> requestInitialScore(List<MultipartFile> image);
     public Map<String, Object> requestInitialScore(MultipartFile image);
 
-    public List<String> requestObjectDetection(MultipartFile image, Long imageId);
+    public List<String> requestObjectDetection(Long imageId);
 //    public List<Object> requestObjectDetection(MultipartFile image);
 
     public Map<String, Object> requestOptimization(String token, MultipartFile image);
