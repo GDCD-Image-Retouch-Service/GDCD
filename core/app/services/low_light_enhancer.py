@@ -11,6 +11,7 @@ import torch.nn.functional as F
 
 from models.mirnet_v2_arch import MIRNet_v2
 
+import traceback
 import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -47,7 +48,7 @@ class LowLightEnhancer():
             logger.info("MirnetV2 Successfully Build")
 
         except Exception as e:
-            logger.error(f"Building MirnetV2 Failed !!! - {e}")
+            logger.error(f"Building MirnetV2 Failed !!! - {traceback.format_exc()}")
 
     # input image type is RGB
     def process(self, image: Image) -> np.float32:
@@ -82,4 +83,4 @@ class LowLightEnhancer():
 
                 return cv2.normalize(restored, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
         except Exception as e:
-            logger.error(f"Enhancing Low Light Failed !!! - {id(image)} - {e}")
+            logger.error(f"Enhancing Low Light Failed !!! - {id(image)} - {traceback.format_exc()}")

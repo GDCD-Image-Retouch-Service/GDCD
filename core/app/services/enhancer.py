@@ -15,6 +15,7 @@ from dto import OptimizeRequest
 from utils.histogram import dynamic_hist_equal, hist_equal_ycrcb, hist_stretch_ycrcb, hist_equal_hsv
 from utils.contrast import Ying_2017_CAIP
 
+import traceback
 import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -40,7 +41,7 @@ def dynamic_work(queue: mp.Queue):
                 print("dynamic_work", response.text)
                 logger.info(f"Dynamic worker {id(data)} Complete")
             except Exception as e:
-                logger.error(f"Dynamic Worker Failed !!! - {id(data)} - {e}")
+                logger.error(f"Dynamic Worker Failed !!! - {id(data)} - {traceback.format_exc()}")
 
 
 def exposure_work(queue: mp.Queue):
@@ -113,4 +114,4 @@ class Optimizer():
 
             return
         except Exception as e:
-            logger.error(f"Enhancing Failed !!! - {id(optimize_request)} - {e}")
+            logger.error(f"Enhancing Failed !!! - {id(optimize_request)} - {traceback.format_exc()}")

@@ -13,6 +13,7 @@ from services.enhancer import Optimizer
 
 from dto import OptimizeRequest
 
+import traceback
 import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -44,7 +45,7 @@ def get_score(request: Request, images: List[UploadFile] = File(...)):
         logger.info(f"Response Image Scoring to {request.client.host}:{request.client.port}")
         return results
     except Exception as e:
-        logger.error(f"Image Scoring failed from {request.client.host}:{request.client.port} - {e}")
+        logger.error(f"Image Scoring failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
 
 @app.post("/detect-object")
 def get_detect(request: Request, image: UploadFile = File(...)):
@@ -55,7 +56,7 @@ def get_detect(request: Request, image: UploadFile = File(...)):
         logger.info(f"Response Object Detection to {request.client.host}:{request.client.port}")
         return results
     except Exception as e:
-        logger.error(f"Image Scoring failed from {request.client.host}:{request.client.port} - {e}")
+        logger.error(f"Image Scoring failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
 
 @app.post("/optimize-request")
 def get_optimize_request(request: Request, image: UploadFile = File(...), user_id: int = Form(), request_id: int = Form()):
@@ -71,7 +72,7 @@ def get_optimize_request(request: Request, image: UploadFile = File(...), user_i
 
         return request_id
     except Exception as e:
-        logger.error(f"Image Optimization failed from {request.client.host}:{request.client.port} - {e}")
+        logger.error(f"Image Optimization failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
 
 
 # @app.post("/optimize-image", response_model=List[Dict[str, float]])
