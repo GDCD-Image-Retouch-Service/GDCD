@@ -4,6 +4,7 @@ import com.gdcd.back.controller.Controller;
 import com.gdcd.back.dto.image.request.*;
 import com.gdcd.back.service.image.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,8 +45,8 @@ public class ImageController extends Controller {
 
     @GetMapping(value="/list")
 //    @ResponseBody
-    public ResponseEntity<Map<String, Object>> imageList(@RequestHeader String token) throws Exception {
-        return getResponseEntity(imageService.findImageList(token));
+    public ResponseEntity<Map<String, Object>> imageList(@RequestHeader String token, Pageable pageable) throws Exception {
+        return getResponseEntity(imageService.findImageList(token, pageable));
     }
 
     @PostMapping("/scoring")

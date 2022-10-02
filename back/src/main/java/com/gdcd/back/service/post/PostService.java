@@ -6,12 +6,13 @@ import com.gdcd.back.dto.post.request.PostUpdateRequestDto;
 import com.gdcd.back.dto.post.response.PostDetailResponseDto;
 import com.gdcd.back.dto.post.response.PostListResponseDto;
 import com.gdcd.back.dto.post.response.PostListByUserIdResponseDto;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface PostService {
-    public List<PostListResponseDto> findPosts(String token) throws Exception;
-    public List<PostListResponseDto> findPostsByUser(String token, Long userId) throws Exception;
+    public List<PostListResponseDto> findPosts(String token, Pageable pageable) throws Exception;
+    public List<PostListResponseDto> findPostsByUser(String token, Long userId, Pageable pageable) throws Exception;
     public PostDetailResponseDto findPostById(String token, Long postId) throws Exception;
     public Long addPost(String token, PostCreateRequestDto requestDto) throws Exception;
     public Long modifyPost(String token, PostUpdateRequestDto requestDto);

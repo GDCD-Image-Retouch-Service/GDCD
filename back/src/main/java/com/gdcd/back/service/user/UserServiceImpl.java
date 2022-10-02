@@ -21,6 +21,7 @@ import com.gdcd.back.dto.user.response.FollowListResponseDto;
 import com.gdcd.back.dto.user.response.UserDetailResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -163,7 +164,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> findScraps(String token) {
+    public Map<String, Object> findScraps(String token, Pageable pageable) {
         RESULT_OBJECT = new HashMap<>();
         try {
             if (userRepository.findByEmail(decodeToken(token)).isPresent()) {
@@ -179,7 +180,9 @@ public class UserServiceImpl implements UserService {
                             ));
                 }
                 Collections.reverse(list);
-                RESULT_OBJECT.put("posts", list);
+                int from = pageable.getPageNumber() * pageable.getPageSize();
+                int to = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(), list.size());
+                RESULT_OBJECT.put("posts", list.subList(from, to));
                 // return scrap list : postId, image, writer nickname, profile, likeCount, (scrap = true)
             }
         } catch (Exception e) {
@@ -190,7 +193,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> findLikes(String token) {
+    public Map<String, Object> findLikes(String token, Pageable pageable) {
         RESULT_OBJECT = new HashMap<>();
         try {
             if (userRepository.findByEmail(decodeToken(token)).isPresent()) {
@@ -206,7 +209,9 @@ public class UserServiceImpl implements UserService {
                     ));
                 }
                 Collections.reverse(list);
-                RESULT_OBJECT.put("posts", list);
+                int from = pageable.getPageNumber() * pageable.getPageSize();
+                int to = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(), list.size());
+                RESULT_OBJECT.put("posts", list.subList(from, to));
                 // return scrap list : postId, image, writer nickname, profile, likeCount, (scrap = true)
             }
         } catch (Exception e) {
@@ -259,7 +264,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> findFollowers(String token, Long userId) {
+    public Map<String, Object> findFollowers(String token, Long userId, Pageable pageable) {
         RESULT_OBJECT = new HashMap<>();
         try {
             User following;
@@ -267,7 +272,7 @@ public class UserServiceImpl implements UserService {
                 following = findUserByEmail(decodeToken(token));
             else
                 following = findUserById(userId);
-            List<Follow> documentList = followRepository.findAllByFollowing(following.simplify());
+            List<Follow> documentList = followRepository.findAllByFollowingOrderById(following.simplify(), pageable);
             List<FollowListResponseDto> list = new ArrayList<>();
             for (Follow follow : documentList) {
                 list.add(new FollowListResponseDto(follow.getFollower()));
@@ -282,7 +287,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> findFollowings(String token, Long userId) {
+    public Map<String, Object> findFollowings(String token, Long userId, Pageable pageable) {
         RESULT_OBJECT = new HashMap<>();
         try {
             User follower;
@@ -290,7 +295,7 @@ public class UserServiceImpl implements UserService {
                 follower = findUserByEmail(decodeToken(token));
             else
                 follower = findUserById(userId);
-            List<Follow> documentList = followRepository.findAllByFollower(follower.simplify());
+            List<Follow> documentList = followRepository.findAllByFollowerOrderById(follower.simplify(), pageable);
             List<FollowListResponseDto> list = new ArrayList<>();
             for (Follow follow : documentList) {
                 list.add(new FollowListResponseDto(follow.getFollowing()));

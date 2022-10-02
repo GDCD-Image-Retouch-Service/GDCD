@@ -5,6 +5,7 @@ import com.gdcd.back.dto.user.request.UserCreateRequestDto;
 import com.gdcd.back.dto.user.request.UserDetailUpdateRequestDto;
 import com.gdcd.back.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -57,13 +58,13 @@ public class UserController extends Controller {
 //    }
 
     @GetMapping("/scrap-list")
-    public ResponseEntity<Map<String, Object>> userScrapList(@RequestHeader String token) {
-        return getResponseEntity(userService.findScraps(token));
+    public ResponseEntity<Map<String, Object>> userScrapList(@RequestHeader String token, Pageable pageable) {
+        return getResponseEntity(userService.findScraps(token, pageable));
     }
 
     @GetMapping("/like-list")
-    public ResponseEntity<Map<String, Object>> userLikeList(@RequestHeader String token) {
-        return getResponseEntity(userService.findLikes(token));
+    public ResponseEntity<Map<String, Object>> userLikeList(@RequestHeader String token, Pageable pageable) {
+        return getResponseEntity(userService.findLikes(token, pageable));
     }
 
     @GetMapping("/follow")
@@ -72,13 +73,13 @@ public class UserController extends Controller {
     }
 
     @GetMapping("/follower")
-    public ResponseEntity<Map<String, Object>> userFollowerList(@RequestHeader String token, @RequestParam(required = false) Long userId) {
-        return getResponseEntity(userService.findFollowers(token, userId));
+    public ResponseEntity<Map<String, Object>> userFollowerList(@RequestHeader String token, @RequestParam(required = false) Long userId, Pageable pageable) {
+        return getResponseEntity(userService.findFollowers(token, userId, pageable));
     }
 
     @GetMapping("/following")
-    public ResponseEntity<Map<String, Object>> userFollowingList(@RequestHeader String token, @RequestParam(required = false) Long userId) {
-        return getResponseEntity(userService.findFollowings(token, userId));
+    public ResponseEntity<Map<String, Object>> userFollowingList(@RequestHeader String token, @RequestParam(required = false) Long userId, Pageable pageable) {
+        return getResponseEntity(userService.findFollowings(token, userId, pageable));
     }
 
     @GetMapping(value = "/profile", produces = MediaType.IMAGE_JPEG_VALUE)

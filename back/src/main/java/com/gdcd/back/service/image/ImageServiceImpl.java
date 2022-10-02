@@ -20,6 +20,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -116,7 +117,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
 //    public List<LocalDate> findImageList(String token) throws Exception {
-    public Map<LocalDate, List<ImageListResponseDto>> findImageList(String token) throws Exception {
+    public Map<LocalDate, List<ImageListResponseDto>> findImageList(String token, Pageable pageable) throws Exception {
 //        List<Image> imageList;
         User user = findUserByEmail(decodeToken(token));
         List<Image> imageList = imageRepository.findAllByUserIdAndBeforeImage(user.getId(), true);
