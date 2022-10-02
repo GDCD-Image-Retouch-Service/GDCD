@@ -41,8 +41,8 @@ public class ImageServiceImpl implements ImageService {
     private final JwtTokenProvider jwtTokenProvider;
     private final OptRequestRepository optRequestRepository;
     private final DataRepository dataRepository;
-    private final String ROOT = "/app/data/images/";
-    private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
+//    private final String ROOT = "/app/data/images/";
+//    private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
     private final String CORE = "https://j7b301.p.ssafy.io/core/";
     private final String SCORE_IMAGE = "score-image";
     private final String DETECT_OBJECT = "detect-object";
@@ -57,9 +57,9 @@ public class ImageServiceImpl implements ImageService {
     private final String BUFFER = "/app/data/buffer/";
 
     //    Local에서 진행할 폴더
-//        String ROOT = "C:/test/images/";
+        String ROOT = "C:/test/images/";
 //        String BUFFER = "C:/test/buffer/";
-//        String ADDRESS = "http://localhost:8081/api/image?imageId=";
+        String ADDRESS = "http://localhost:8081/api/image?imageId=";
     public Long addImage(String token, MultipartFile image, ImageCreateRequestDto requestDto) throws Exception {
         User user = findUserByEmail(decodeToken(token));
         Long urlCount = imageRepository.findAllByUserId(user.getId()).stream().count() + 1;
@@ -274,18 +274,15 @@ public class ImageServiceImpl implements ImageService {
 
 
             List<String> objectList = new ArrayList<>();
-            for (String str : tags) {
-                String string = new String(str + ";");
-                for (Object object : objects) {
-                    Map<String, Object> obj2 = objectMapper.convertValue(object, Map.class);
-                    if (str.equals(obj2.get("class"))) {
-                        ArrayList<String> ul = (ArrayList<String>) obj2.get("ul");
-                        ArrayList<String> dr = (ArrayList<String>) obj2.get("dr");
-                        string += String.valueOf(ul.get(0)) + "," + String.valueOf(ul.get(1)) + ";" + String.valueOf(dr.get(0)) + "," + String.valueOf(dr.get(1)) + ";";
-                    }
-                }
-                objectList.add(string);
+            for (Object object : objects) {
+                Map<String, Object> obj2 = objectMapper.convertValue(object, Map.class);
+                ArrayList<String> ul = (ArrayList<String>) obj2.get("ul");
+                ArrayList<String> dr = (ArrayList<String>) obj2.get("dr");
+                String str = (String) obj2.get("class");
+                str += ";"+String.valueOf(ul.get(0)) + "," + String.valueOf(ul.get(1)) + ";" + String.valueOf(dr.get(0)) + "," + String.valueOf(dr.get(1)) + ";";
+                objectList.add(str);
             }
+
             return objectList;
         } catch (Exception e) {
             e.printStackTrace();
