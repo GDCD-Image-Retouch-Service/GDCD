@@ -16,6 +16,7 @@ import com.gdcd.back.dto.post.response.PostDetailResponseDto;
 import com.gdcd.back.dto.post.response.PostListResponseDto;
 import com.gdcd.back.dto.post.response.PostListByUserIdResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,9 +35,9 @@ public class PostServiceImpl implements PostService{
     private final JwtTokenProvider jwtTokenProvider;
 
 
-    public List<PostListResponseDto> findPosts(String token) throws Exception{
+    public List<PostListResponseDto> findPosts(String token, Pageable pageable) throws Exception{
         User user = findUserByEmail(decodeToken(token));
-        List<Post> documentList = postRepository.findAllByOrderByRegistTimeDesc();
+        List<Post> documentList = postRepository.findAllByOrderByRegistTimeDesc(pageable);
         List<PostListResponseDto> list = new ArrayList<>();
         for (Post post : documentList) {
             if (validPost(post)){
@@ -49,10 +50,10 @@ public class PostServiceImpl implements PostService{
         return list;
     }
 
-    public List<PostListResponseDto> findPostsByUser(String token, Long userId) throws Exception{
+    public List<PostListResponseDto> findPostsByUser(String token, Long userId, Pageable pageable) throws Exception{
         User user = findUserByEmail(decodeToken(token));
         if (userId == null){
-            List<Post> documentList = postRepository.findAllByWriterNoOrderByRegistTimeDesc(user.getId());
+            List<Post> documentList = postRepository.findAllByWriterNoOrderByRegistTimeDesc(user.getId(), pageable);
             List<PostListResponseDto> list = new ArrayList<>();
             for (Post post : documentList) {
                 if (validPost(post)){
@@ -64,7 +65,7 @@ public class PostServiceImpl implements PostService{
             }
             return list;
         }else {
-            List<Post> documentList = postRepository.findAllByWriterNoOrderByRegistTimeDesc(userId);
+            List<Post> documentList = postRepository.findAllByWriterNoOrderByRegistTimeDesc(userId, pageable);
             List<PostListResponseDto> list = new ArrayList<>();
             for (Post post : documentList){
                 if (validPost(post)){
