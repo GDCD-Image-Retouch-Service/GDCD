@@ -9,4 +9,8 @@ import java.util.Optional;
 
 public interface ImageRepository extends MongoRepository<Image, Long> {
     List<Image> findAllByUserId(Long userId);
+    List<Image> findAllByUserIdAndBeforeImage(Long userId, Boolean before);
+
+    Optional<Image> findByFilePath(String path);
+
 }

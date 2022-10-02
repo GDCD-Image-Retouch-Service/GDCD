@@ -24,6 +24,7 @@ public class AfterImageSaveRequestDto {
                 .quality(quality)
                 .registDate(LocalDateTime.now())
                 .objects(obj)
+                .beforeImage(false)
                 .build();
     }
 }
