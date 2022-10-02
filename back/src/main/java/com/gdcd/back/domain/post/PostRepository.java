@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface PostRepository extends MongoRepository<Post, Long> {
     List<Post> findAllByWriterNo(Long userId);
+    List<Post> findAllByWriterNoOrderByRegistTimeDesc(Long userId);
+
+    List<Post> findAllByOrderByRegistTimeDesc();
+
 }
