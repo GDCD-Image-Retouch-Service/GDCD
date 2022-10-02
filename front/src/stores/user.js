@@ -15,22 +15,8 @@ export const useUserStore = defineStore('userStore', {
       msg: 'string',
     },
     // 프로필 페이지에서 보이는 게시글
-    post: {
-      item: {
-        posts: [
-          {
-            postId: 0,
-            title: 'String',
-            image: 'String',
-            rank: 0,
-          },
-        ],
-        postCount: 1,
-      },
-      msg: 'string',
-    },
+    post: {},
 
-    //
     // 프로필 헤더
     isItemActive: 0,
 
@@ -45,7 +31,8 @@ export const useUserStore = defineStore('userStore', {
     // 토큰
     // token: ref(localStorage.getItem('token')),
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0NjgxOTM5LCJleHAiOjE2NjQ2OTk5Mzl9.EOfA_Rscp0VB2c7lOS6QC5l8fUJ8kecSoHOzdL4HQQg',
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0NzAxNTc5LCJleHAiOjE2NjQ3MTk1Nzl9.bjEPajmvInBhlJqemAV3Lx51ZC_dycop3gU-yz6Ra-A',
+
     // 로그인한 유저 정보
     profile: {},
 

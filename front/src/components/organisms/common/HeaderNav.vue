@@ -1,7 +1,6 @@
 <template>
-  <div class="header-nav outer d-flex align-items-center">
+  <div class="header-nav outer">
     <header-logo />
-    <div class="flex-grow-1"></div>
 
     <Popper arrow>
       <header-profile />
@@ -36,8 +35,8 @@ const callback = async (response) => {
   background: white;
   overflow: hidden;
 
-  /* display: flex;
+  display: flex;
   align-items: center;
-  justify-content: space-between; */
+  justify-content: space-between;
 }
 </style>

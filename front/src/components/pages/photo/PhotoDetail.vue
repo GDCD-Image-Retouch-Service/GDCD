@@ -21,9 +21,9 @@
   </div>
 </template>
 
-<script setup scoped>
+<script setup>
 import { useCommunityStore } from '@/stores/community.js';
-import { BtnImageToggle } from '@/components/molecules/common/btn/BtnImageToggle.vue';
+import BtnImageToggle from '@/components/molecules/common/btn/BtnImageToggle.vue';
 import { ref } from 'vue';
 const communityStore = useCommunityStore();
 

@@ -16,7 +16,7 @@
         class="masonry-content"
       >
         <div class="masonry-item">
-          <post-card :post="post" />
+          <post-card :post="post" :likeCount="post.likeCount" />
         </div>
       </div>
     </div>
