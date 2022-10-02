@@ -53,8 +53,8 @@ def get_score(request: Request, image: UploadFile = File(...)):
     except Exception as e:
         logger.error(f"Image Scoring failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
 
-@app.post("/score-image-by-user-id")
-def get_score(request: Request, userId: str = File(...)):
+@app.get("/score-image-by-user-id")
+def get_score(request: Request, userId: str):
     try:
         logger.info(f"Request Image Scoring by Paths from {request.client.host}:{request.client.port}")
 

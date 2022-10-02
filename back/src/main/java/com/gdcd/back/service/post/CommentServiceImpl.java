@@ -13,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -33,10 +30,13 @@ public class CommentServiceImpl implements CommentService {
             List<CommentUpperResponseDto> list = new ArrayList<>();
             List<CommentKidResponseDto> kidList;
 
-            List<Comment> UpperDocumentList = commentRepository.findAllByPostIdAndUpperAndValidation(postId, 0L, true);
+//            List<Comment> UpperDocumentList = commentRepository.findAllByPostIdAndUpperAndValidation(postId, 0L, true);
+            List<Comment> UpperDocumentList = commentRepository.findAllByPostIdAndUpperAndValidationOrderByRegistDateDesc(postId, 0L, true);
             for (Comment comment : UpperDocumentList) {
                 kidList = new ArrayList<>();
-                List<Comment> KidDocumentList = commentRepository.findAllByUpperAndValidation(comment.getId(), true);
+//                List<Comment> KidDocumentList = commentRepository.findAllByUpperAndValidation(comment.getId(), true);
+                List<Comment> KidDocumentList = commentRepository.findAllByUpperAndValidationOrderByRegistDateDesc(comment.getId(), true);
+
                 for (Comment kid : KidDocumentList) {
                     kidList.add(new CommentKidResponseDto(kid));
                 }
