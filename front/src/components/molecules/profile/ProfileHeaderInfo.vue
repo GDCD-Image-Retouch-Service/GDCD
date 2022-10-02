@@ -3,7 +3,13 @@
     <div class="nickname-follow-button">
       <div>
         {{ userStore.profile.item?.user?.nickname }}
-        <router-link to="/profile/update">
+        <router-link
+          to="/profile/update"
+          v-if="
+            userStore.currentUser.item?.user?.userId ==
+            userStore.profile.item?.user?.userId
+          "
+        >
           <i class="bi bi-caret-right-fill" style="color: var(--black)"></i>
         </router-link>
       </div>
@@ -11,8 +17,13 @@
         @click="router.push({ name: 'ProfileFriend' })"
         style="text-decoration: none"
       >
-        <btn-add-friednd />
-        <btn-add-follow :userId="1" style="display: none" />
+        <btn-add-friednd
+          v-if="
+            userStore.currentUser.item?.user?.userId ==
+            userStore.profile.item?.user?.userId
+          "
+        />
+        <btn-add-follow :userId="userStore.profile.item?.user?.userId" v-else />
       </div>
     </div>
     <div class="posts-scraps-likes">

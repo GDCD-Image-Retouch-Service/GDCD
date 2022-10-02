@@ -48,9 +48,11 @@ import MainOptimize from '@/components/pages/main/MainOptimize';
 // Community
 import CommunityView from '@/views/CommunityView.vue';
 import CommunityList from '@/components/pages/community/CommunityList';
-
 import CommunityWrite from '@/components/pages/community/CommunityWrite';
 import CommunityDetail from '@/components/pages/community/CommunityDetail';
+
+import CommunityUpdateView from '@/views/CommunityUpdateView.vue';
+import CommunityUpdate from '@/components/pages/community/CommunityUpdate';
 
 // Profile
 import ProfileView from '@/views/ProfileView';
@@ -66,6 +68,7 @@ import ProfileUpdate from '@/components/pages/profile/ProfileUpdate';
 // Photo
 import PhotoView from '@/views/PhotoView.vue';
 import PhotoList from '@/components/pages/photo/PhotoList';
+import PhotoDetail from '@/components/pages/photo/PhotoDetail';
 
 const routes = [
   {
@@ -129,30 +132,16 @@ const routes = [
       },
     ],
   },
+
   {
-    path: '/profile/:userId',
-    name: 'profile',
-    component: ProfileView,
+    path: '/community/:postId/update',
+    name: 'CommunityUpdate',
+    component: CommunityUpdateView,
     children: [
       {
         path: '', // default page
-        name: 'ProfilePost',
-        component: ProfilePost,
-      },
-      {
-        path: 'scrap',
-        name: 'ProfileScrap',
-        component: ProfileScrap,
-      },
-      {
-        path: 'like',
-        name: 'ProfileLike',
-        component: ProfileLike,
-      },
-      {
-        path: 'friend',
-        name: 'ProfileFriend',
-        component: ProfileFriend,
+        name: 'CommunityUpdateList',
+        component: CommunityUpdate,
       },
     ],
   },
@@ -183,6 +172,7 @@ const routes = [
       },
     ],
   },
+
   {
     path: '/profile/update/',
     name: 'profileU',
@@ -204,6 +194,11 @@ const routes = [
         path: '', // default page
         name: 'PhotoList',
         component: PhotoList,
+      },
+      {
+        path: 'detail',
+        name: 'PhotoDetail',
+        component: PhotoDetail,
       },
     ],
   },

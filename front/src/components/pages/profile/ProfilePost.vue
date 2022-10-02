@@ -2,19 +2,9 @@
   <div class="profile-post">
     <div class="posts-wrap">
       <div
-        v-for="post in communityStore.oddPostList"
+        v-for="post in communityStore.postList"
         :key="post.postId"
-        style="width: 100%"
-      >
-        <my-post-card :post="post" />
-      </div>
-    </div>
-
-    <div class="posts-wrap">
-      <div
-        v-for="post in communityStore.evenPostList"
-        :key="post.postId"
-        style="width: 100%"
+        class="my-post-card"
       >
         <my-post-card :post="post" />
       </div>
@@ -34,8 +24,7 @@ const communityStore = useCommunityStore();
 const userStore = useUserStore();
 
 userStore.isItemActive = 0;
-console.log(route.params.userId);
-communityStore.getMyPostsAll();
+communityStore.getMyPostsAll(route.params.userId);
 </script>
 
 <style>
@@ -48,9 +37,12 @@ communityStore.getMyPostsAll();
   margin-bottom: 30px;
 }
 .posts-wrap {
-  width: calc(50% - 5px);
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 10px;
+}
+.my-post-card {
+  width: calc(50% - 5px);
 }
 </style>

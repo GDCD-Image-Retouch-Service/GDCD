@@ -18,12 +18,22 @@
 
       <div
         v-if="
-          userStore.currentUser.itme?.user?.userId ===
-          communityStore.post.item?.postId
+          userStore.currentUser.item?.user?.userId ==
+          communityStore.post.item?.userId
         "
       >
-        <span>수정</span>
-        <span @click="communityStore.deletePost(postId)">삭제</span>
+        <span
+          style="margin-right: 10px"
+          @click="
+            router.push({
+              name: 'CommunityUpdateList',
+              params: { postId: route.params.postId },
+            })
+          "
+          >수정</span
+        >
+        <span>삭제</span>
+        <!-- <span @click="communityStore.deletePost(postId)">삭제</span> -->
       </div>
     </div>
 
@@ -65,9 +75,10 @@ import CardCarousel from '@/components/molecules/CardCarousel.vue';
 import { useCommunityStore } from '@/stores/community.js';
 import { useUserStore } from '@/stores/user.js';
 import { watch } from '@vue/runtime-core';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 const communityStore = useCommunityStore();
 const userStore = useUserStore();
 
@@ -86,6 +97,11 @@ const clickComment = () => {
 
   console.log('눌림');
 };
+console.log(userStore.currentUser.item?.user?.userId, '확인');
+console.log(communityStore.post.item?.userId);
+console.log(
+  userStore.currentUser.item?.user?.userId == communityStore.post.item?.userId,
+);
 </script>
 
 <style scoped>

@@ -7,7 +7,7 @@
     >
       <div
         :style="{ backgroundImage: 'url(' + post.images.imageUrl + ')' }"
-        class="scrap-image"
+        class="scrap-image common-image"
       ></div>
     </div>
   </div>
@@ -15,12 +15,14 @@
 
 <script setup>
 import { useUserStore } from '@/stores/user.js';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const userStore = useUserStore();
 
 userStore.isItemActive = 1;
 
-userStore.getMyScrap();
+userStore.getMyScrap(route.params.userId);
 </script>
 
 <style scoped>

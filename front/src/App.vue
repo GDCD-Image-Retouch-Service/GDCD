@@ -20,9 +20,8 @@ const homeStore = useHomeStore();
 const userStore = useUserStore();
 
 if (localStorage.getItem('token')) {
-  userStore.getMyinfo;
+  userStore.getMyinfo();
 }
-
 const theme = computed(() => (homeStore.getIsDark ? 'dark' : 'light'));
 </script>
 

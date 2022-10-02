@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-for="comment in comments"
+      v-for="comment in communityStore.commentAll.item?.comments"
       :key="comment?.commentId"
       class="comment-wrap"
     >
@@ -30,13 +30,10 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs } from 'vue';
+import { useCommunityStore } from '@/stores/community.js';
 
-const props = defineProps({
-  comments: Object,
-});
-
-const { comments } = toRefs(props);
+const communityStore = useCommunityStore();
+console.log(communityStore.commentAll.item.comments, '잉?');
 </script>
 
 <style scoped>
