@@ -7,10 +7,10 @@ import { onMounted, onUnmounted } from 'vue';
 
 let gameInstance = null;
 const containerId = 'game-container';
-const game = await import('@/api/phaser/game');
+const { createPuzzleGame } = await import('@/api/phaser');
 
 onMounted(() => {
-  gameInstance = game.launch(containerId);
+  gameInstance = createPuzzleGame(containerId);
 });
 
 onUnmounted(() => {

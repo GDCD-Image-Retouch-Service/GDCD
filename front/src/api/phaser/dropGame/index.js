@@ -2,11 +2,11 @@ import Phaser from 'phaser';
 import BootScene from './scenes/BootScene';
 import PlayScene from './scenes/PlayScene';
 
-function launch(containerId) {
+function createDropGame(containerId) {
   return new Phaser.Game({
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: window.innerWidth,
+    height: window.innerHeight,
     parent: containerId,
     physics: {
       default: 'arcade',
@@ -16,8 +16,9 @@ function launch(containerId) {
       },
     },
     scene: [BootScene, PlayScene],
+    fps: 30,
+    render: { transparent: true },
   });
 }
 
-export default launch;
-export { launch };
+export { createDropGame };
