@@ -11,3 +11,6 @@ __pycache__
 # dataset
 train/dataset/AVA-dataset/*
 train/dataset/TID2013/*
+
+# data for test
+data

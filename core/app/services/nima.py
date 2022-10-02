@@ -7,6 +7,7 @@ from typing import List, Dict
 
 from utils.utils import calc_mean_score
 
+import traceback
 import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -37,7 +38,7 @@ class Nima():
             
             logger.info("Nima Successfully Build")
         except Exception as e:
-            logger.error(f"Building Nima Failed !!! - {e}")
+            logger.error(f"Building Nima Failed !!! - {traceback.format_exc()}")
 
     @torch.no_grad()
     @torch.inference_mode()
@@ -57,4 +58,4 @@ class Nima():
                     "quality": round(calc_mean_score(tec_out), 4)}
                     for aes_out, tec_out in zip(aes_outputs, tec_outputs)]
         except Exception as e:
-            logger.error(f"Predicting Failed!!! - {id(images)} - {e}")
+            logger.error(f"Predicting Failed!!! - {id(images)} - {traceback.format_exc()}")
