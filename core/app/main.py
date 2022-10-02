@@ -53,17 +53,16 @@ def get_score(request: Request, image: UploadFile = File(...)):
     except Exception as e:
         logger.error(f"Image Scoring failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
 
-# @app.post("/score-image-by-paths", response_model=List[Dict[str, float]])
-@app.post("/score-image-by-paths")
-def get_score(request: Request, user_id: str = File(...)):
+@app.post("/score-image-by-user-id")
+def get_score(request: Request, userId: str = File(...)):
     try:
         logger.info(f"Request Image Scoring by Paths from {request.client.host}:{request.client.port}")
 
-        files = os.listdir(f"data/buffer/{user_id}")
-        results = nima.predict([Image.open(os.path.join("data/buffer", user_id, path)).convert("RGB") for path in files])
+        files = os.listdir(f"data/buffer/{userId}")
+        results = nima.predict([Image.open(os.path.join("data/buffer", userId, path)).convert("RGB") for path in files])
 
         logger.info(f"Response Image Scoring by Paths to {request.client.host}:{request.client.port}")
-        path_prefix = f"https://j7b301.p.ssafy.io/api/image?from=/app/data/buffer/{user_id}/"
+        path_prefix = f"https://j7b301.p.ssafy.io/api/image?from=/app/data/buffer/{userId}/"
         return [{path_prefix + filename: result} for filename, result in zip(files, results)]
     except Exception as e:
         logger.error(f"Image Scoring by Paths failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
@@ -81,18 +80,18 @@ def get_detect(request: Request, image: UploadFile = File(...)):
         logger.error(f"Image Scoring failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
 
 @app.post("/optimize-request")
-def get_optimize_request(request: Request, image: UploadFile = File(...), user_id: int = Form(), request_id: int = Form()):
+def get_optimize_request(request: Request, image: UploadFile = File(...), userId: int = Form(), requestId: int = Form()):
     try:
         logger.info(f"Request Image Optimization from {request.client.host}:{request.client.port}")
 
         ext = os.path.splitext(image.filename)[1]
-        save_dir = os.path.join("data", "buffer", str(user_id))
+        save_dir = os.path.join("data", "buffer", str(userId))
         os.makedirs(save_dir, exist_ok=True)
         
-        optimizer.process(OptimizeRequest(image=Image.open(io.BytesIO(image.file.read())).convert("RGB"), user_id=user_id, request_id=request_id, save_dir=save_dir, ext=ext))
+        optimizer.process(OptimizeRequest(image=Image.open(io.BytesIO(image.file.read())).convert("RGB"), user_id=userId, request_id=requestId, save_dir=save_dir, ext=ext))
         
         logger.info(f"Response Image Optimization to {request.client.host}:{request.client.port}")
-        return request_id
+        return requestId
     except Exception as e:
         logger.error(f"Image Optimization failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
 

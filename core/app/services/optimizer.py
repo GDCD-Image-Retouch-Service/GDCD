@@ -37,9 +37,10 @@ def dynamic_work(queue: mp.Queue):
                 logger.info(f"Dynamic worker got {id(data)}")
                 output = dynamic_hist_equal(data.image)
                 cv2.imwrite(os.path.join(data.save_dir, f"dynamic{data.ext}"), cv2.cvtColor(output, cv2.COLOR_RGB2BGR))
-                response = requests.post("https://j7b301.p.ssafy.io/api/image/datafication")
-                print("dynamic_work", response.text)
-                logger.info(f"Dynamic worker {id(data)} Complete")
+                response = requests.post("https://j7b301.p.ssafy.io/api/image/request-process", data={"requestId": data.request_id, "finished": 1})
+
+                logger.info(f"Dynamic Worker {id(data)} Got Response {response.text}")
+                logger.info(f"Dynamic Worker {id(data)} Complete")
             except Exception as e:
                 logger.error(f"Dynamic Worker Failed !!! - {id(data)} - {traceback.format_exc()}")
 
@@ -53,9 +54,10 @@ def exposure_work(queue: mp.Queue):
                 logger.info(f"Exposure worker got {id(data)}")
                 output = Ying_2017_CAIP(data.image)
                 cv2.imwrite(os.path.join(data.save_dir, f"exposure{data.ext}"), cv2.cvtColor(output, cv2.COLOR_RGB2BGR))
-                response = requests.post("https://j7b301.p.ssafy.io/api/image/datafication")
-                print("exposure_work", response.text)
-                logger.info(f"Exposure worker {id(data)} Complete")
+                response = requests.post("https://j7b301.p.ssafy.io/api/image/request-process", data={"requestId": data.request_id, "finished": 1})
+
+                logger.info(f"Exposure Worker {id(data)} Got Response {response.text}")
+                logger.info(f"Exposure Worker {id(data)} Complete")
             except Exception as e:
                 logger.error(f"Exposure Worker Failed !!! - {id(data)} - {e}")
 
@@ -106,6 +108,9 @@ class Optimizer():
             cv2.imwrite(os.path.join(optimize_request.save_dir, f"hsv_equal_v{optimize_request.ext}"), cv2.cvtColor(hsv_equal_v, cv2.COLOR_RGB2BGR))
             hsv_equal_sv = hist_equal_hsv(optimize_request.image, on="sv")
             cv2.imwrite(os.path.join(optimize_request.save_dir, f"hsv_equal_sv{optimize_request.ext}"), cv2.cvtColor(hsv_equal_sv, cv2.COLOR_RGB2BGR))
+            response = requests.post("https://j7b301.p.ssafy.io/api/image/request-process", data={"requestId": optimize_request.request_id, "finished": 5})
+            print("exposure_work", response.text)
+            logger.info(f"Histogram Processing {id(optimize_request)} Got Response {response.text}")
             logger.info(f"Histogram Processing {id(optimize_request)} Complete")
 
             logger.info(f"Put Queue {id(optimize_request)} ...")
