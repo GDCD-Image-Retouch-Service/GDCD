@@ -274,18 +274,15 @@ public class ImageServiceImpl implements ImageService {
 
 
             List<String> objectList = new ArrayList<>();
-            for (String str : tags) {
-                String string = new String(str + ";");
-                for (Object object : objects) {
-                    Map<String, Object> obj2 = objectMapper.convertValue(object, Map.class);
-                    if (str.equals(obj2.get("class"))) {
-                        ArrayList<String> ul = (ArrayList<String>) obj2.get("ul");
-                        ArrayList<String> dr = (ArrayList<String>) obj2.get("dr");
-                        string += String.valueOf(ul.get(0)) + "," + String.valueOf(ul.get(1)) + ";" + String.valueOf(dr.get(0)) + "," + String.valueOf(dr.get(1)) + ";";
-                    }
-                }
-                objectList.add(string);
+            for (Object object : objects) {
+                Map<String, Object> obj2 = objectMapper.convertValue(object, Map.class);
+                ArrayList<String> ul = (ArrayList<String>) obj2.get("ul");
+                ArrayList<String> dr = (ArrayList<String>) obj2.get("dr");
+                String str = (String) obj2.get("class");
+                str += ";"+String.valueOf(ul.get(0)) + "," + String.valueOf(ul.get(1)) + ";" + String.valueOf(dr.get(0)) + "," + String.valueOf(dr.get(1)) + ";";
+                objectList.add(str);
             }
+
             return objectList;
         } catch (Exception e) {
             e.printStackTrace();
