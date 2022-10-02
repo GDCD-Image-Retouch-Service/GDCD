@@ -37,5 +37,7 @@ public class Image {
     @Field(name = "regist_date")
     private LocalDateTime registDate;
     private List<String> objects;
+    @Field(name = "before_image")
+    private Boolean beforeImage;
 
 }

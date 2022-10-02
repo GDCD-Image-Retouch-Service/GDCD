@@ -1,6 +1,7 @@
 package com.gdcd.back.dto.image.response;
 
 import com.gdcd.back.domain.image.Image;
+import com.mongodb.lang.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,8 @@ import java.util.List;
 @Setter
 public class ImageListResponseDto {
     ImageDetailResponseDto beforeImage;
+
+    @Nullable
     ImageDetailResponseDto afterImage;
 
 

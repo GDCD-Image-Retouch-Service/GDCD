@@ -116,10 +116,11 @@ public class ImageServiceImpl implements ImageService {
         return new ImageDetailResponseDto(img);
     }
 
+//    public List<LocalDate> findImageList(String token) throws Exception {
     public Map<LocalDate, List<ImageListResponseDto>> findImageList(String token) throws Exception {
-        List<Image> imageList;
+//        List<Image> imageList;
         User user = findUserByEmail(decodeToken(token));
-        imageList = imageRepository.findAllByUserId(user.getId());
+        List<Image> imageList = imageRepository.findAllByUserIdAndBeforeImage(user.getId(), true);
 
 
         //SET으로 중복 없애기
@@ -134,28 +135,39 @@ public class ImageServiceImpl implements ImageService {
         for (LocalDate datetime : dateTimeList) {
             List<ImageListResponseDto> list = new ArrayList<>();
             // 원래 코드 1
-//            for (Image image : imageList){
-//                if (image.getRegistDate().toLocalDate().equals(datetime)){
-//                    list.add(new ImageListResponseDto(new ImageDetailResponseDto(image), new ImageDetailResponseDto(afterImage)));
-            for (int i = 0; i < imageList.size() / 2; i++) {
-                if (imageList.get(2 * i).getRegistDate().toLocalDate().equals(datetime)) {
-                    list.add(new ImageListResponseDto(new ImageDetailResponseDto(imageList.get(2 * i)), new ImageDetailResponseDto(imageList.get(2 * i + 1))));
+            for (Image image : imageList) {
+                if (image.getRegistDate().toLocalDate().equals(datetime)) {
+                    System.out.println(datetime);
+                    Optional<Image> afterImage = imageRepository.findByFilePath(image.getFilePath().replace("before","after"));
+                    if (afterImage.isPresent()){
+                        list.add(new ImageListResponseDto(new ImageDetailResponseDto(image), new ImageDetailResponseDto(afterImage.get())));
+                    }
+                    else {
+                        list.add(new ImageListResponseDto(new ImageDetailResponseDto(image), null));
+                    }
                 }
             }
             images.put(datetime, list);
+            System.out.println(datetime);
         }
         return images;
+//        return dateTimeList;
     }
-//    public List<ImageDetailResponseDto> findImageList(Long userId) throws Exception{
+//    public List<ImageDetailResponseDto> findImageList(String token) throws Exception{
 //        List<Image> imageList;
-//        imageList = imageRepository.findAllByUserId(userId);
-//
+//        User user = findUserByEmail(decodeToken(token));
+//        imageList = imageRepository.findAllByUserIdAndBeforeImage(user.getId(),true);
+////        imageList = imageRepository.findAllByUserId(user.getId());
+////        imageList = imageRepository.findAllByDone(true);
 //        List<ImageDetailResponseDto> images = new ArrayList<>();
 //        for (Image image : imageList){
-//            String url = ADDRESS + image.getId().toString();
-//            images.add(new ImageDetailResponseDto(url, image.getId()));
+//            images.add(new ImageDetailResponseDto(image));
 //        }
 //        return images;
+//    }
+
+//                if (image.getBefore().equals(true)){
+//        images.add(new ImageDetailResponseDto(image));
 //    }
 
 
@@ -180,7 +192,7 @@ public class ImageServiceImpl implements ImageService {
 //                body.add("images", img.getResource());
 //            }
 
-            body.add("images", image.getResource());
+            body.add("image", image.getResource());
 
             HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
