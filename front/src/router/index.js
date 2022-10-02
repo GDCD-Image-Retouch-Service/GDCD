@@ -28,12 +28,23 @@ const beforeAuth = (needAuth) => async (from, to, next) => {
   }
 };
 
+// Landing
+// import LandingView from '@/views/LandingView.vue';
+
+// Error Handling
+// import LoadingView from '@/views/LoadingView.vue';
+
+// Home
+import HomeView from '@/views/HomeView.vue';
+import LandingView from '@/views/LandingView.vue';
+
 // Main
 import MainView from '@/views/MainView.vue';
 import MainUpload from '@/components/pages/main/MainUpload';
 import MainTest from '@/components/pages/main/MainTest';
 import MainScore from '@/components/pages/main/MainScore';
 import MainOptimize from '@/components/pages/main/MainOptimize';
+import MainInpaint from '@/components/pages/main/MainInpaint';
 
 // Community
 import CommunityView from '@/views/CommunityView.vue';
@@ -63,30 +74,44 @@ import PhotoDetail from '@/components/pages/photo/PhotoDetail';
 const routes = [
   {
     path: '/', // Landing page
-    name: 'main',
-    redirect: '/main',
+    name: 'Landing',
     beforeEnter: beforeAuth(false),
+    component: LandingView,
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: HomeView,
+  },
+  {
+    path: '/main', // Landing page
+    name: 'main',
     component: MainView,
     children: [
       {
-        path: 'main', // default page
+        path: '', // default page
         name: 'MainUpload',
         component: MainUpload,
       },
       {
-        path: 'main/test', // 이미지 상호작용 테스트 코드, 지워야함
+        path: 'test', // 이미지 상호작용 테스트 코드, 지워야함
         name: 'MainTest',
         component: MainTest,
       },
       {
-        path: 'main/score',
+        path: 'score',
         name: 'MainScore',
         component: MainScore,
       },
       {
-        path: 'main/optimize',
+        path: 'optimize',
         name: 'MainOptimize',
         component: MainOptimize,
+      },
+      {
+        path: 'inpaint',
+        name: 'MainInpaint',
+        component: MainInpaint,
       },
     ],
   },

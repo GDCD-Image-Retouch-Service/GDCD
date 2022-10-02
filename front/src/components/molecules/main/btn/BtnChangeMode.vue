@@ -4,7 +4,7 @@
     @click="changeMode()"
     ref="btnChangeMode"
   >
-    <div class="btn-slider outer" :style="{ left: leftPos }"></div>
+    <div class="btn-slider main outer" :style="{ left: leftPos }"></div>
     <icon-picture />
     <icon-camera />
   </div>
@@ -49,7 +49,6 @@ const changeMode = () => {
   border-radius: var(--size-radius);
   font-size: 20pt;
   width: calc(50% - 8px);
-  background: white;
 
   -webkit-transition: 0.4s ease-out;
   -ms-transition: 0.4s ease-out;
