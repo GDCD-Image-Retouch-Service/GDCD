@@ -20,6 +20,7 @@ public class PostDetailResponseDto {
     private String content;
     private List<ImageDetailResponseDto> images;
     private int representative;
+    private LocalDateTime registTime;
     private LocalDateTime updateTime;
     private Integer likeCount;
     private Long privacyBound;
@@ -38,7 +39,8 @@ public class PostDetailResponseDto {
         this.images = post.getImages();
         this.representative = post.getRepresentative();
         this.likeCount = post.getLikeCount();
-        this.updateTime = post.getUpdateTime();
+        this.registTime = post.getRegistTime().plusHours(9);
+        this.updateTime = post.getUpdateTime().plusHours(9);
         this.scrap = scrap;
         this.like = like;
     }
