@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-import numpy as np
+from PIL.Image import Image
 
 @dataclass
 class OptimizeRequest:
-    img: np.ndarray
+    image: Image
     user_id: int
     request_id: int
     save_dir: str

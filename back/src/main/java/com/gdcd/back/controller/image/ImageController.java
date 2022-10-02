@@ -3,6 +3,8 @@ package com.gdcd.back.controller.image;
 import com.gdcd.back.controller.Controller;
 import com.gdcd.back.dto.image.request.AfterImageSaveRequestDto;
 import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
+import com.gdcd.back.dto.image.request.ImageOptProcessingRequestDto;
+import com.gdcd.back.dto.image.request.InpaintingRequestDto;
 import com.gdcd.back.service.image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -49,29 +51,50 @@ public class ImageController extends Controller {
         return getResponseEntity(imageService.findImageList(token));
     }
 
-
-
-
     @PostMapping("/scoring")
     public ResponseEntity<Map<String, Object>> imageInitialScore(@RequestPart MultipartFile image) {
         return getResponseEntity(imageService.requestInitialScore(image));
     }
 
     @PostMapping("/object")
-    public ResponseEntity<Map<String, Object>> imageObjection(@RequestPart MultipartFile image, @RequestPart Long imageId) {
-        return getResponseEntity(imageService.requestObjectDetection(image, imageId));
+    public ResponseEntity<Map<String, Object>> imageObjection(@RequestPart Long imageId) {
+        return getResponseEntity(imageService.requestObjectDetection(imageId));
     }
 
-    @PostMapping("/optimization")
-    public ResponseEntity<Map<String, Object>> imageOptimization(@RequestHeader String token, @RequestPart MultipartFile image) {
-        return getResponseEntity(imageService.requestOptimization(token, image));
+    @PostMapping("/optimization-old")
+    public ResponseEntity<Map<String, Object>> imageOptimizationOld(@RequestHeader String token, @RequestPart MultipartFile image) {
+        return getResponseEntity(imageService.requestOptimizationOld(token, image));
+    }
+
+//    @PostMapping("/optimization")
+//    public ResponseEntity<Map<String, Object>> imageOptimization(@RequestHeader String token, @RequestPart MultipartFile image) {
+//        return getResponseEntity(imageService.requestOptimization(token, image));
+//    }
+
+    @GetMapping("/optimization")
+    public ResponseEntity<Map<String, Object>> imageOptimization(@RequestHeader String token, @RequestParam Long imageId) {
+        return getResponseEntity(imageService.requestOptimization(token, imageId));
+    }
+
+    @GetMapping("/process")
+    public ResponseEntity<Map<String, Object>> optimizationProcess(@RequestParam Long requestId) {
+        return getResponseEntity(imageService.optimizationProgress(requestId));
+    }
+
+    @GetMapping("/request-process")
+    public ResponseEntity<Map<String, Object>> requestProcess(@RequestBody ImageOptProcessingRequestDto requestDto) {
+        return getResponseEntity(imageService.requestProcess(requestDto));
+    }
+
+    @GetMapping("/inpainting")
+    public ResponseEntity<Map<String, Object>> inpainting(@RequestBody InpaintingRequestDto requestDto) {
+        return getResponseEntity(imageService.inpaintImage(requestDto));
     }
 
     @PostMapping("/storage")
     public ResponseEntity<Map<String, Object>> afterImageSave(@RequestHeader String token, @RequestBody AfterImageSaveRequestDto requestDto) throws Exception {
         return getResponseEntity(imageService.addAfterImage(token,requestDto));
     }
-
 
     @PostMapping("/datafication")
     public ResponseEntity<Map<String, Object>> imageDatafication() {
