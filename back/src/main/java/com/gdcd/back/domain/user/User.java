@@ -105,11 +105,11 @@ public class User {
     }
 
     public void addFollowingCount() {
-        this.likeCount++;
+        this.followingCount++;
     }
 
     public void subFollowingCount() {
-        this.likeCount--;
+        this.followingCount--;
     }
     public void addDailyReports(){this.dailyReports++;}
 

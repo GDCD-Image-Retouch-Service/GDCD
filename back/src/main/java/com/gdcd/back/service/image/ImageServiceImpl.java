@@ -440,16 +440,8 @@ public class ImageServiceImpl implements ImageService {
                     // 2. true 일 때는 score-image-by-path 요청
                     RestTemplate restTemplate = new RestTemplate();
 
-                    HttpHeaders httpHeaders = new HttpHeaders();
-                    httpHeaders.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-
-                    // 2-1. list에 넣어서 core로 보내줘야해
-                    JSONObject jsonObj = new JSONObject();
-                    jsonObj.put("userId", request.getUser());
-                    String body = jsonObj.toString();
-
-                    HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
-                    HttpEntity<String> response = restTemplate.postForEntity(CORE + SCORING_PATHS, requestMessage, String.class);
+                    ResponseEntity<String> response = restTemplate.getForEntity(
+                            CORE + SCORING_PATHS + "?userId=" + request.getUser(), String.class);
 
                     // 2-2. 반환값 프론트로 전달
                     ObjectMapper objectMapper = new ObjectMapper();
