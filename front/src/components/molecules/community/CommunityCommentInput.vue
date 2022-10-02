@@ -34,7 +34,6 @@ const createComment = () => {
   const data = {
     postId: route.params.postId,
     content: communityStore.thisContent,
-    upper: 0,
   };
   communityStore.createComment(data);
   communityStore.thisContent = '';

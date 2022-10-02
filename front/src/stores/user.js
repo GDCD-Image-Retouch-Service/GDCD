@@ -45,7 +45,7 @@ export const useUserStore = defineStore('userStore', {
     // 토큰
     // token: ref(localStorage.getItem('token')),
     token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0NjQxMDA5LCJleHAiOjE2NjQ2NTkwMDl9.BEYSx7y1aUFcUItPHeB6fACrHvUqY5KIMs839nJ_zBg',
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0NjgxOTM5LCJleHAiOjE2NjQ2OTk5Mzl9.EOfA_Rscp0VB2c7lOS6QC5l8fUJ8kecSoHOzdL4HQQg',
     // 로그인한 유저 정보
     profile: {},
 
