@@ -53,8 +53,8 @@ public class ImageController extends Controller {
         return getResponseEntity(imageService.requestInitialScore(image));
     }
 
-    @PostMapping("/object")
-    public ResponseEntity<Map<String, Object>> imageObjection(@RequestPart Long imageId) {
+    @GetMapping("/object")
+    public ResponseEntity<Map<String, Object>> imageObjection(@RequestParam Long imageId) {
         return getResponseEntity(imageService.requestObjectDetection(imageId));
     }
 

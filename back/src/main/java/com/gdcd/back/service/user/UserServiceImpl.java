@@ -30,10 +30,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -181,6 +178,7 @@ public class UserServiceImpl implements UserService {
                             likePost(post, findUserByEmail(decodeToken(token)))
                             ));
                 }
+                Collections.reverse(list);
                 RESULT_OBJECT.put("posts", list);
                 // return scrap list : postId, image, writer nickname, profile, likeCount, (scrap = true)
             }
@@ -207,6 +205,7 @@ public class UserServiceImpl implements UserService {
                             likePost(post, findUserByEmail(decodeToken(token)))
                     ));
                 }
+                Collections.reverse(list);
                 RESULT_OBJECT.put("posts", list);
                 // return scrap list : postId, image, writer nickname, profile, likeCount, (scrap = true)
             }
