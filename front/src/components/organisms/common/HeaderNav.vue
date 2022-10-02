@@ -19,7 +19,6 @@ import HeaderProfile from '@/components/molecules/common/header/HeaderProfile.vu
   height: var(--size-h-header);
   min-height: var(--size-h-header);
   background: white;
-  overflow: hidden;
 
   display: flex;
   align-items: center;
