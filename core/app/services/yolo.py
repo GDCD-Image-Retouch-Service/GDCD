@@ -3,7 +3,6 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 import torch
-import torchvision.transforms as transforms
 import numpy as np
 from numpy import random
 
@@ -17,6 +16,7 @@ from utils.general import check_img_size, check_requirements, check_imshow, non_
 from utils.datasets import letterbox
 from models.experimental import attempt_load
 
+import traceback
 import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -39,15 +39,15 @@ class Yolo():
 
             logger.info("Yolo Successfully Build")
         except Exception as e:
-            logger.error(f"Building Yolo Failed !!! - {e}")
+            logger.error(f"Building Yolo Failed !!! - {traceback.format_exc()}")
     
 
-    def predict(self, image: Image) -> Dict[str, float]:
+    def predict(self, image: Image):
         try:
-            logger.info(f"Preprocessing {id(image)} ... size : {image.size()}")
+            logger.info(f"Preprocessing {id(image)} ...")
             img0 = np.array(image)
             imgsz = check_img_size(min(img0.shape[:2]), s=self.stride)  # check img_size
-            print(imgsz, min(img0.shape[:2]))
+
             img = letterbox(img0, imgsz, stride=self.stride)[0]
             img = img.transpose(2, 0, 1)
             img = np.ascontiguousarray(img)
@@ -88,5 +88,5 @@ class Yolo():
 
             return line            
         except Exception as e:
-            logger.error(f"Detection Failed !!! - {id(image)} - {e}")
+            logger.error(f"Detection Failed !!! - {id(image)} - {traceback.format_exc()}")
 
