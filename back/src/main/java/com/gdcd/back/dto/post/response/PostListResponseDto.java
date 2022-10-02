@@ -19,6 +19,7 @@ public class PostListResponseDto {
     private Boolean scrap;
     private Boolean like;
     private ImageDetailResponseDto images;
+    private LocalDateTime registTime;
     private LocalDateTime updateTime;
 
     public PostListResponseDto(Post post, ImageDetailResponseDto img, Boolean scrap, Boolean like) {
@@ -28,6 +29,7 @@ public class PostListResponseDto {
         this.title = post.getTitle();
         this.images = img;
 //        this.representative = post.getRepresentative();
+        this.registTime = post.getRegistTime().plusHours(9);
         this.updateTime = post.getUpdateTime().plusHours(9);
         this.likeCount = post.getLikeCount();
         this.scrap = scrap;

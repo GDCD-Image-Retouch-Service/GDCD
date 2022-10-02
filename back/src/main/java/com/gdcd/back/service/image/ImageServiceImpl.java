@@ -477,12 +477,15 @@ public class ImageServiceImpl implements ImageService {
     public Map<String, Object> requestProcess(ImageOptProcessingRequestDto requestDto) {
         RESULT_OBJECT = new HashMap<>();
         try {
+            System.out.println("id : " + requestDto.getRequestId());
+            System.out.println("done : " + requestDto.getFinished());
             if (!optRequestRepository.findById(requestDto.getRequestId()).isPresent())
                 throw new Exception("REQUEST NOT FOUND");
             OptRequest request = optRequestRepository.findById(requestDto.getRequestId()).get();
             request.update(requestDto.getFinished());
             optRequestRepository.save(request);
         } catch (Exception e) {
+            e.printStackTrace();
             RESULT_OBJECT.put("error", e.getMessage());
         }
         return RESULT_OBJECT;
