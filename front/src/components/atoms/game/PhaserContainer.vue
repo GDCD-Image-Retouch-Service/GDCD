@@ -7,7 +7,7 @@ import { onMounted, onUnmounted } from 'vue';
 
 let gameInstance = null;
 const containerId = 'game-container';
-const game = await import(/* webpackChunkName: "game" */ '@/api/phaser/game');
+const game = await import('@/api/phaser/game');
 
 onMounted(() => {
   gameInstance = game.launch(containerId);

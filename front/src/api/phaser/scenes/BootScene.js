@@ -1,8 +1,8 @@
 import { Scene } from 'phaser';
-import sky from '@/api/phaser/assets/sky.png';
-import bomb from '@/api/phaser/assets/bomb.png';
-import thudMp3 from '@/api/phaser/assets/thud.mp3';
-import thudOgg from '@/api/phaser/assets/thud.ogg';
+import sky from '../assets/sky.png';
+import bomb from '../assets/bomb.png';
+import thudMp3 from '../assets/thud.mp3';
+import thudOgg from '../assets/thud.ogg';
 
 export default class BootScene extends Scene {
   constructor() {

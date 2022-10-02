@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import PhaserContainer from '@/components/PhaserContainer';
+import PhaserContainer from '@/components/atoms/game/PhaserContainer.vue';
 </script>
 
 <style scoped>

@@ -2,12 +2,12 @@
   <div
     class="loading-view blur d-flex flex-column align-items-center justify-content-center"
   >
-    <phaser-box />
+    <game-container />
   </div>
 </template>
 
 <script setup>
-import PhaserBox from '@/components/atoms/phaser/PhaserBox.vue';
+import GameContainer from '@/components/atoms/game/GameContainer.vue';
 </script>
 
 <style scoped>

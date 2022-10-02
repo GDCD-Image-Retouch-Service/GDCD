@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
-import BootScene from '@/api/phaser/scenes/BootScene';
-import PlayScene from '@/api/phaser/scenes/PlayScene';
+import BootScene from './scenes/BootScene';
+import PlayScene from './scenes/PlayScene';
 
 function launch(containerId) {
   return new Phaser.Game({
