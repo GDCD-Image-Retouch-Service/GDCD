@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -45,6 +46,7 @@ public class PostServiceImpl implements PostService{
                 list.add(new PostListResponseDto(post, res, scrap, like));
             }
         }
+        Collections.reverse(list);
         return list;
     }
 
