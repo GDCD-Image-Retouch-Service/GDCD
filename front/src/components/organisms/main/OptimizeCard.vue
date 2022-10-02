@@ -2,115 +2,92 @@
   <div
     class="optimize-card main outer d-flex flex-column align-items-center justify-content-center"
   >
-    <div
-      id="carouselExampleCaptions"
-      class="carousel slide"
-      :class="[$root.theme ? '' : 'carousel-dark']"
-      data-bs-ride="false"
-      style="width: 100%"
-    >
-      <!-- carousel bottom button -->
-      <div class="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#carouselExampleCaptions"
-          data-bs-slide-to="0"
-          class="active"
-          aria-current="true"
-          aria-label="Slide 1"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselExampleCaptions"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
-        ></button>
-      </div>
-
-      <!-- carousel contents -->
-      <div class="carousel-inner" style="height: 100%">
-        <div class="carousel-item active" style="height: 100%">
-          <div class="carousel-item-1 itemBox d-flex" style="height: 100%">
-            <div
-              class="d-flex flex-column align-items-center justify-content-center"
-              style="height: 100%; width: 400px"
-            >
-              <div class="textBox">
-                <img src="https://picsum.photos/200/300" alt="임시" />
-
-                <h2>사진</h2>
-                <div class="spacer"></div>
-                <p>점수</p>
-              </div>
-              <img
-                src="@/assets/grade/1.png"
-                style="height: 100px; object-fit: cover"
-                alt="logo"
-              />
-            </div>
-            <div class="carousel-item-1-img flex-grow-1"></div>
-          </div>
-        </div>
-
-        <div class="carousel-item" style="height: 100%">
-          <div class="carousel-item-2 itemBox d-flex" style="height: 100%">
-            <div class="container-fluid" style="height: 100%; width: 100%">
-              <div class="row" style="height: 100%; width: 100%">
-                <div
-                  class="textBox col-12 col-sm-4"
-                  style="padding-top: 24vh; padding-left: 8%"
-                >
-                  <h2>
-                    <span>사진</span>
-                  </h2>
-                  <div class="spacer"></div>
-                  <p>optimize 점수 내역:</p>
-                  <p>tag</p>
-                </div>
-
-                <div
-                  class="carousel-item-2-img col-12 col-sm-8"
-                  :style="{
-                    'min-height': '50%',
-                    'background-image':
-                      'url(' + require('@/assets/grade/1.png') + ')',
-                    'background-size': 'contain',
-                    'background-repeat': 'no-repeat',
-                    'background-position': 'center',
-                  }"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- carousel side button -->
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#carouselExampleCaptions"
-        data-bs-slide="prev"
-        style="width: 4%"
-      >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#carouselExampleCaptions"
-        data-bs-slide="next"
-        style="width: 4%"
-      >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+    <div class="spacer" />
+    <div class="d-flex align-items-center" style="font-size: 24pt">
+      <img
+        :src="require('@/assets/grade/1.png')"
+        style="width: 48px; height: 48px; object-fit: cover"
+        alt="your image"
+      />
+      <div>: {{ score }}</div>
     </div>
+    <div class="spacer" />
+
+    <loading-dots v-if="isLoading" />
+
+    <div class="pic-mode" v-show="!isLoading">
+      <div
+        class="pic-container d-flex flex-column align-items-center justify-content-center"
+        style="
+          background: lightgray;
+          width: 380px;
+          max-width: 380px;
+          height: 380px;
+          max-height: 380px;
+        "
+      >
+        <img
+          ref="picBox"
+          src=""
+          style="width: 380px; height: 380px; object-fit: cover"
+          alt="your image"
+        />
+      </div>
+    </div>
+    <div class="spacer" />
+    <div class="btn-set d-flex justify-content-center">
+      <div
+        @click="save"
+        class="btn-set-button inner d-flex align-items-center justify-content-center"
+        style="margin-left: 8px"
+      >
+        <i class="bi bi-stars"></i>
+      </div>
+    </div>
+    <div class="spacer" />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import LoadingDots from '@/components/atoms/LoadingDots.vue';
+
+import { ref, onMounted } from 'vue';
+import { image } from '@/api/rest';
+import { useMainStore } from '@/stores/main';
+
+// init
+const mainStore = useMainStore();
+
+// data
+const isLoading = ref(true);
+const picBox = ref(null);
+// const data = ref(null);
+const score = ref(0);
+
+// method
+const save = async () => {
+  console.log('저장시작');
+  await image.save({
+    image: mainStore.getTempFile,
+    aesthetic: mainStore.getTempEScore,
+    quality: mainStore.getTempQScore,
+  });
+};
+
+const init = async () => {
+  picBox.value.src = mainStore.getTempImg;
+
+  // console.log(data.value);
+  // score.value = mainStore.setScore(data.item);
+  // console.log(score.value);
+  // score.value = 0;
+  isLoading.value = false;
+};
+
+onMounted(() => {
+  init();
+});
+</script>
 
 <style scoped>
 .optimize-card {

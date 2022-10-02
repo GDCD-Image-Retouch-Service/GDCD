@@ -34,8 +34,7 @@ const beforeAuth = (needAuth) => async (from, to, next) => {
 // Error Handling
 // import LoadingView from '@/views/LoadingView.vue';
 
-// Home
-import HomeView from '@/views/HomeView.vue';
+// Landing
 import LandingView from '@/views/LandingView.vue';
 
 // Main
@@ -77,11 +76,6 @@ const routes = [
     name: 'Landing',
     beforeEnter: beforeAuth(false),
     component: LandingView,
-  },
-  {
-    path: '/home',
-    name: 'home',
-    component: HomeView,
   },
   {
     path: '/main', // Landing page

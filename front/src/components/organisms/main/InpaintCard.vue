@@ -53,6 +53,14 @@
       >
         <i class="bi bi-eraser-fill"></i>
       </router-link>
+
+      <router-link
+        to="inpaint"
+        class="btn-set-button inner d-flex align-items-center justify-content-center"
+        style="margin-left: 8px"
+      >
+        <i class="bi bi-cloud-arrow-up-fill"></i>
+      </router-link>
     </div>
     <div class="spacer" />
   </div>
@@ -60,13 +68,18 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useMainStore } from '@/stores/main';
+import { image } from '@/api/rest';
+import { useMainStore } from '@/stores';
 
 const mainStore = useMainStore();
-
 const picBox = ref(null);
+const data = ref(null);
+
 const init = async () => {
   picBox.value.src = mainStore.getTempImg;
+
+  data.value = await image.objectDetection(2);
+  console.log(data.value);
 };
 
 onMounted(() => {
