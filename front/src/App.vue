@@ -1,18 +1,16 @@
 <template>
   <div class="app d-flex flex-column" :class="theme">
-    <header-nav />
-    <div class="app-container sub flex-grow-1 flex-shrink-1">
-      <router-view />
-    </div>
-    <footer-nav />
+    <game-view />
   </div>
 </template>
 
 <script setup>
-import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
-import FooterNav from '@/components/organisms/common/FooterNav.vue';
+// import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
+// import FooterNav from '@/components/organisms/common/FooterNav.vue';
 import { computed } from 'vue';
 import { useHomeStore, useUserStore } from '@/stores';
+
+import GameView from '@/components/GameView.vue';
 
 const homeStore = useHomeStore();
 
