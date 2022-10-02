@@ -94,11 +94,19 @@
       </router-link>
 
       <router-link
-        to="/optimize"
+        to="optimize"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
         style="margin-left: 8px"
       >
         <i class="bi bi-stars"></i>
+      </router-link>
+
+      <router-link
+        to="inpaint"
+        class="btn-set-button inner d-flex align-items-center justify-content-center"
+        style="margin-left: 8px"
+      >
+        <i class="bi bi-eraser-fill"></i>
       </router-link>
     </div>
     <div class="spacer" />

@@ -16,6 +16,6 @@ import uploadCard from '@/components/organisms/main/UploadCard.vue';
   min-height: calc(100vh - 96px);
   width: 100%;
   padding: 4px;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 </style>

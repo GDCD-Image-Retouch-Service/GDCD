@@ -10,21 +10,6 @@
 <script setup>
 import HeaderLogo from '@/components/molecules/common/header/HeaderLogo.vue';
 import HeaderProfile from '@/components/molecules/common/header/HeaderProfile.vue';
-
-// import { decodeCredential } from 'vue3-google-login';
-// import { user } from '@/api/rest';
-// import { useAccountStore } from '@/stores/account';
-
-// const accountStore = useAccountStore();
-
-// const callback = async (response) => {
-//   const userData = await decodeCredential(response.credential);
-//   console.log(userData);
-//   await user.login({
-//     email: userData.email,
-//     nickname: userData.name,
-//   });
-// };
 </script>
 
 <style scoped>
@@ -34,8 +19,5 @@ import HeaderProfile from '@/components/molecules/common/header/HeaderProfile.vu
   width: 100vw;
   height: var(--size-h-header);
   min-height: var(--size-h-header);
-  /* display: flex;
-  align-items: center;
-  justify-content: space-between; */
 }
 </style>

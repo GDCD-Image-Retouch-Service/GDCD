@@ -280,13 +280,17 @@ const downloadImage = () => {
 
 .camera-shutter {
   opacity: 0;
-  width: 380px;
-  height: 380px;
+  width: 0px;
+  height: 0px;
   background-color: #ffffff;
   position: absolute;
 }
 
 .camera-shutter.flash {
+  width: 380px;
+  max-width: 100vw;
+  height: 380px;
+  max-height: 100vh;
   opacity: 1;
 }
 

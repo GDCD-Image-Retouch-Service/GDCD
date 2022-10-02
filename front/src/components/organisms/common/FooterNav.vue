@@ -1,7 +1,11 @@
 <template>
   <nav class="footer-nav d-flex justify-content-center">
     <div class="footer-nav-wrap main outer d-flex justify-content-around">
-      <router-link to="/" class="list d-flex flex-column align-items-center">
+      <!--  홈 -->
+      <router-link
+        to="/main"
+        class="list d-flex flex-column align-items-center"
+      >
         <div
           class="icon-circle d-flex justify-content-center align-items-center"
         >
@@ -9,7 +13,8 @@
         </div>
       </router-link>
 
-      <router-link to="/">
+      <!-- 커뮤니티 -->
+      <router-link to="/community">
         <div
           class="icon-circle d-flex justify-content-center align-items-center"
         >
@@ -17,15 +22,16 @@
         </div>
       </router-link>
 
-      <router-link to="/" class="list d-flex flex-column">
+      <!-- 프로필 -->
+      <div @click="router.push({ name: 'ProfilePost', params: { userId: 0 } })">
         <div
           class="icon-circle d-flex justify-content-center align-items-center"
         >
           <span class="icon"><i class="bi bi-person"></i></span>
         </div>
-      </router-link>
+      </div>
 
-      <router-link to="/" class="list d-flex flex-column">
+      <router-link to="/photo" class="list d-flex flex-column">
         <div
           class="icon-circle d-flex justify-content-center align-items-center"
         >
@@ -38,7 +44,7 @@
 
 <script setup>
 // import { useBasicStore } from '@/stores/basic.js';
-// import router from '@/router/index.js';
+import router from '@/router/index.js';
 
 // const basicStore = useBasicStore();
 </script>
@@ -51,7 +57,6 @@
   width: 100vw;
   height: var(--size-h-footer);
   min-height: var(--size-h-footer);
-  /* background: red; */
 }
 
 .footer-nav-wrap {

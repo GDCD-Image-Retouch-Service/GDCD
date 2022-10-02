@@ -34,4 +34,28 @@ export default {
         });
     });
   },
+  save: function (payload) {
+    let param = {
+      aesthetic: payload.aesthetic,
+      quality: payload.quality,
+    };
+    const form = new FormData();
+    form.append('image', payload.image);
+    form.append('requestDto', param);
+
+    return new Promise((resolve, reject) => {
+      axiosApi
+        .post(REST_PATH, form, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
 };

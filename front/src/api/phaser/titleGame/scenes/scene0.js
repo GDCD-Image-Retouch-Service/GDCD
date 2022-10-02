@@ -7,8 +7,6 @@ export default class scene0 extends Scene {
   }
 
   preload() {
-    // this.load.setBaseURL('https://cdn.jsdelivr.net/gh/kefik/kenney/Shooter/');
-    this.load.image('playership1', 'playerShip1_blue.png');
     this.load.image('chaltteogi', chaltteogi);
   }
 

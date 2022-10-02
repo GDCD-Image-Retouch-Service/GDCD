@@ -44,6 +44,7 @@ import MainUpload from '@/components/pages/main/MainUpload';
 import MainTest from '@/components/pages/main/MainTest';
 import MainScore from '@/components/pages/main/MainScore';
 import MainOptimize from '@/components/pages/main/MainOptimize';
+import MainInpaint from '@/components/pages/main/MainInpaint';
 
 // Community
 import CommunityView from '@/views/CommunityView.vue';
@@ -106,6 +107,11 @@ const routes = [
         path: 'optimize',
         name: 'MainOptimize',
         component: MainOptimize,
+      },
+      {
+        path: 'inpaint',
+        name: 'MainInpaint',
+        component: MainInpaint,
       },
     ],
   },

@@ -12,15 +12,16 @@
 import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
 import { computed } from 'vue';
-import { useHomeStore, useUserStore } from '@/stores';
+import { useHomeStore } from '@/stores';
+// import { useHomeStore, useUserStore } from '@/stores';
 
 const homeStore = useHomeStore();
 
 // 바꿀 예정
-const userStore = useUserStore();
+// const userStore = useUserStore();
 
 if (localStorage.getItem('token')) {
-  userStore.getMyinfo();
+  // userStore.getMyinfo();
 }
 const theme = computed(() => (homeStore.getIsDark ? 'dark' : 'light'));
 </script>
@@ -182,7 +183,10 @@ body::-webkit-scrollbar {
 .app-container {
   padding-top: var(--size-h-header);
   padding-bottom: var(--size-h-header);
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
+  max-height: 100vh;
+  max-width: 100vw;
   overflow-x: hidden;
   overflow-y: auto;
 }
