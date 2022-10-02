@@ -15,8 +15,9 @@ import { useUserStore } from './stores/user';
 
 const userStore = useUserStore();
 if (localStorage.getItem('token')) {
-  userStore.getMyinfo;
+  userStore.getMyinfo();
 }
+userStore.getMyinfo();
 </script>
 
 <style>

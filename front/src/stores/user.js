@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import user from '@/api/rest/user';
 // import { useAccountStore } from './account';
-import { ref } from 'vue';
+// import { ref } from 'vue';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
@@ -43,8 +43,9 @@ export const useUserStore = defineStore('userStore', {
     currentUser: {},
 
     // 토큰
-    token: ref(localStorage.getItem('token')),
-
+    // token: ref(localStorage.getItem('token')),
+    token:
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0NjQxMDA5LCJleHAiOjE2NjQ2NTkwMDl9.BEYSx7y1aUFcUItPHeB6fACrHvUqY5KIMs839nJ_zBg',
     // 로그인한 유저 정보
     profile: {},
 
@@ -73,7 +74,7 @@ export const useUserStore = defineStore('userStore', {
     daePyoImage: '',
     photoSelect: [],
     selectedPhoto: [],
-
+    selectedPhotoList: [],
     urlList: [],
     urlPhotoList: [],
 
@@ -128,13 +129,20 @@ export const useUserStore = defineStore('userStore', {
     },
 
     // 스크랩 조회
-    getMyScrap() {
+    getMyScrap(userId) {
+      let data = {
+        userId: userId,
+      };
+      if (userId == 0) {
+        data = {};
+      }
       axios({
         url: user.myScrap(),
         method: 'GET',
         headers: {
           token: this.token,
         },
+        params: data,
       })
         .then((res) => {
           this.scrapList = res.data;
@@ -145,13 +153,20 @@ export const useUserStore = defineStore('userStore', {
     },
 
     // 라이크 조회
-    getMyLike() {
+    getMyLike(userId) {
+      let data = {
+        userId: userId,
+      };
+      if (userId == 0) {
+        data = {};
+      }
       axios({
         url: user.myLike(),
         method: 'GET',
         headers: {
           token: this.token,
         },
+        params: data,
       })
         .then((res) => {
           this.likeList = res.data;

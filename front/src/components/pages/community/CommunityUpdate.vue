@@ -104,7 +104,7 @@
       ></textarea>
     </div>
 
-    <button class="button" @click="createPost(data)">제출</button>
+    <button class="button" @click="updatePost(data)">수정</button>
 
     <div
       class="modal fade"
@@ -268,15 +268,16 @@ import { useCommunityStore } from '@/stores/community.js';
 import { useUserStore } from '@/stores/user.js';
 import { ref } from 'vue';
 // import router from '@/router';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const myRouter = useRouter();
+const route = useRoute();
 const communityStore = useCommunityStore();
 const userStore = useUserStore();
 
 const data = ref({
-  title: '',
-  content: '',
+  title: communityStore.post.item?.title,
+  content: communityStore.post.item?.content,
   privacyBound: 1,
   images: [],
   representative: 0,
@@ -284,12 +285,14 @@ const data = ref({
 
 const firstCheck = ref(false);
 const secondCheck = ref(false);
-const selectTags = ref([]);
+const selectTags = ref([communityStore.post.item?.images[0]?.imageTag]);
 
-const createPost = (data) => {
+console.log(route.params.postId);
+const updatePost = (data) => {
   console.log(userStore.photoSelect);
 
   const context = {
+    postId: route.params.postId,
     title: data.title,
     content: data.content,
     privacyBound: 1,
@@ -297,7 +300,7 @@ const createPost = (data) => {
     representative: 0,
   };
   console.log(context, userStore.photoSelect);
-  communityStore.createPost(context);
+  communityStore.updatePost(context);
 
   myRouter.push({ name: 'main' });
 };
@@ -306,7 +309,6 @@ const selectPhoto = () => {
   userStore.urlPhotoList = userStore.urlList;
   userStore.urlList = [];
   userStore.selectedPhotoList = userStore.selectedPhoto;
-
   console.log(userStore.selectedPhoto);
 };
 
@@ -353,10 +355,25 @@ const pushSelectedNumber = (num, url, tag) => {
 
 userStore.getMyPhoto();
 
-userStore.photoSelect = [];
-userStore.selectedPhoto = [];
 userStore.urlList = [];
-userStore.urlPhotoList = [];
+if (communityStore.post.item?.images[1]) {
+  userStore.urlPhotoList = [
+    communityStore.post.item?.images[0]?.imageUrl,
+    communityStore.post.item?.images[1]?.imageUrl,
+  ];
+  userStore.photoSelect = [
+    communityStore.post.item?.images[0]?.imageId,
+    communityStore.post.item?.images[1]?.imageId,
+  ];
+  userStore.selectedPhoto = [
+    communityStore.post.item?.images[0]?.imageId,
+    communityStore.post.item?.images[1]?.imageId,
+  ];
+} else {
+  userStore.urlPhotoList = [communityStore.post.item?.images[0]?.imageUrl];
+  userStore.photoSelect = [communityStore.post.item?.images[0]?.imageId];
+  userStore.selectedPhoto = [communityStore.post.item?.images[0]?.imageId];
+}
 userStore.selectTag = [];
 </script>
 
