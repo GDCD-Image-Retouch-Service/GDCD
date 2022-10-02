@@ -21,9 +21,17 @@ import java.util.Map;
 @RequestMapping("/image")
 public class ImageController extends Controller {
     private final ImageService imageService;
+//    @PostMapping("")
+//    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestPart MultipartFile image,  @RequestPart(required = false) ImageCreateRequestDto requestDto) throws Exception {
+//        return getResponseEntity(imageService.addImage(token, image, requestDto));
+//    }
+
     @PostMapping("")
-    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestPart MultipartFile image,  @RequestPart(required = false) ImageCreateRequestDto requestDto) throws Exception {
-        return getResponseEntity(imageService.addImage(token, image, requestDto));
+    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestPart MultipartFile image,  @RequestPart(required = false) int aesthetic, @RequestPart(required = false) int quality) throws Exception {
+        return getResponseEntity(imageService.addImage(token, image, ImageCreateRequestDto.builder()
+                        .aesthetic(aesthetic).quality(quality)
+                .build()
+        ));
     }
 
     @GetMapping(value="", produces = MediaType.IMAGE_JPEG_VALUE)

@@ -2,6 +2,7 @@ package com.gdcd.back.dto.image.request;
 
 import com.gdcd.back.domain.image.Image;
 import com.gdcd.back.domain.post.Post;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 public class ImageCreateRequestDto {
     private Long userId ;
     private String imgUrl;
