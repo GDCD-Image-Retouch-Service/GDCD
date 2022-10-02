@@ -3,17 +3,17 @@
     <i class="bi bi-three-dots dot-icon"></i>
 
     <!-- post card image -->
-    <img
-      style="width: 100%"
-      :src="post.images.imageUrl"
-      alt=""
+    <div
+      :style="{ backgroundImage: 'url(' + post.images.imageUrl + ')' }"
+      class="post-image common-image"
       @click="
         $router.push({
           name: 'CommunityDetail',
           params: { postId: post.postId },
         })
       "
-    />
+    ></div>
+
     <!-- post card -title -->
     <div class="post-card-title">
       {{ post.title }}
@@ -33,6 +33,7 @@ import { defineProps, toRefs } from 'vue';
 const props = defineProps({
   post: Object,
 });
+
 const { post } = toRefs(props);
 </script>
 
@@ -89,5 +90,11 @@ const { post } = toRefs(props);
 .herat-wrap {
   display: flex;
   gap: 3px;
+}
+.post-image {
+  width: 100%;
+  padding-bottom: 100%;
+  background-position: center;
+  background-size: cover;
 }
 </style>

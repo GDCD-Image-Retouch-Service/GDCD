@@ -16,23 +16,45 @@ export default {
         });
     });
   },
-  scoringInitial: function (image) {
+  scoring: function (image) {
     const form = new FormData();
     form.append('image', image);
     return new Promise((resolve, reject) => {
       axiosApi
-        .post(REST_PATH + '/initial', form, {
+        .post(REST_PATH + '/scoring', form, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         })
         .then((response) => {
           resolve(response.data);
-          // 응답 처리
         })
         .catch((error) => {
           reject(error);
-          // 예외 처리
+        });
+    });
+  },
+  save: function (payload) {
+    let param = {
+      aesthetic: payload.aesthetic,
+      quality: payload.quality,
+    };
+    const form = new FormData();
+    form.append('image', payload.image);
+    form.append('requestDto', param);
+
+    return new Promise((resolve, reject) => {
+      axiosApi
+        .post(REST_PATH, form, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
         });
     });
   },

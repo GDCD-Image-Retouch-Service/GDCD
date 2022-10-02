@@ -5,6 +5,7 @@
       <div>제목</div>
       <input type="text" class="write-input" v-model="data.title" />
     </div>
+
     <!-- 이미지 -->
     <div class="wrap" v-if="userStore.urlPhotoList.length === 0">
       <div>이미지</div>
@@ -14,27 +15,85 @@
         href="#exampleModalToggle"
         role="button"
         id="image-input"
+        @click="
+          (firstCheck = false),
+            (secondCheck = false),
+            (userStore.selectedPhoto = []),
+            (userStore.urlList = [])
+        "
       >
       </a>
     </div>
-
-    <div v-else>
+    <div class="wrap" v-if="userStore.urlPhotoList.length === 1">
+      <div>이미지</div>
       <a
         data-bs-toggle="modal"
         href="#exampleModalToggle"
         role="button"
         id="image-input"
+        @click="
+          (firstCheck = false),
+            (secondCheck = false),
+            (userStore.selectedPhoto = []),
+            (userStore.urlList = [])
+        "
         style="padding: 0; text-decoration: none; color: var(--black)"
-        ><div>이미지</div>
+      >
+        <img
+          :src="userStore.urlPhotoList?.[0]"
+          alt=""
+          class="one-image common-image"
+        />
       </a>
-      <card-carousel
-        :firstImage="userStore.urlPhotoList?.[0]"
-        :secondImage="userStore.urlPhotoList?.[1]"
-        :firstTags="userStore.selectTag"
-        :secondTags="userStore.selectTag"
-      />
+      <div class="tag-wrap">
+        <div
+          v-for="(tag, index) in selectTags[0]"
+          :key="index"
+          class="tag common-image"
+        >
+          {{ tag }}
+        </div>
+      </div>
     </div>
-    {{ userStore.myPhoto.item?.beforeImage?.imageTag }}
+    <div class="wrap" v-if="userStore.urlPhotoList.length === 2">
+      <div>이미지</div>
+      <a
+        data-bs-toggle="modal"
+        href="#exampleModalToggle"
+        role="button"
+        id="image-input"
+        @click="
+          (firstCheck = false),
+            (secondCheck = false),
+            (userStore.selectedPhoto = []),
+            (userStore.urlList = [])
+        "
+        style="padding: 0; text-decoration: none; color: var(--black)"
+      >
+        <div style="display: flex; width: 100%; gap: 10px">
+          <img
+            :src="userStore.urlPhotoList?.[0]"
+            alt=""
+            class="two-image common-image"
+          />
+          <img
+            :src="userStore.urlPhotoList?.[1]"
+            alt=""
+            class="two-image common-image"
+          />
+        </div>
+      </a>
+      <div class="tag-wrap">
+        <div
+          v-for="(tag, index) in selectTags[0]"
+          :key="index"
+          class="tag common-image"
+        >
+          {{ tag }}
+        </div>
+      </div>
+    </div>
+
     <!-- 내용 -->
     <div class="wrap">
       <div>내용</div>
@@ -77,10 +136,12 @@
                         {
                           id: value.beforeImage.imageId,
                           url: value.beforeImage.imageUrl,
+                          tag: value.beforeImage.imageTag,
                         },
                         {
                           id: value.afterImage.imageId,
                           url: value.afterImage.imageUrl,
+                          tag: value.afterImage.imageTag,
                         },
                       ]),
                         (userStore.daePyoImage = value.beforeImage.imageUrl);
@@ -99,7 +160,7 @@
             data-bs-toggle="modal"
             data-bs-dismiss="modal"
             id="select-image"
-            style="height: 50px"
+            style="display: none"
           ></button>
         </div>
       </div>
@@ -119,33 +180,57 @@
             <img :src="userStore.daePyoImage" alt="" class="main-image" />
 
             <div style="display: flex; gap: 10px">
-              <div
-                :style="{
-                  backgroundImage: 'url(' + userStore.photoSelect[0]?.url + ')',
-                }"
-                class="sub-image"
-                @click="
-                  (userStore.daePyoImage = userStore.photoSelect[0]?.url),
+              <div class="sub-wrap">
+                <div
+                  :style="{
+                    backgroundImage:
+                      'url(' + userStore.photoSelect[0]?.url + ')',
+                  }"
+                  class="sub-image"
+                  :class="{ firstCheck: firstCheck }"
+                  @click="userStore.daePyoImage = userStore.photoSelect[0]?.url"
+                ></div>
+
+                <i
+                  class="bi bi-check-circle-fill check-icon"
+                  style="font-size: 20px; background-color: #ffffff"
+                  @click="
                     pushSelectedNumber(
                       userStore.photoSelect[0]?.id,
                       userStore.photoSelect[0]?.url,
-                    )
-                "
-              ></div>
-              <div
-                :style="{
-                  backgroundImage: 'url(' + userStore.photoSelect[1]?.url + ')',
-                }"
-                class="sub-image"
-                @click="
-                  (userStore.daePyoImage = userStore.photoSelect[1]?.url),
+                      userStore.photoSelect[0]?.tag,
+                    ),
+                      (firstCheck = !firstCheck)
+                  "
+                ></i>
+              </div>
+              <div class="sub-wrap">
+                <div
+                  :style="{
+                    backgroundImage:
+                      'url(' + userStore.photoSelect[1]?.url + ')',
+                  }"
+                  class="sub-image"
+                  :class="{ secondCheck: secondCheck }"
+                  @click="userStore.daePyoImage = userStore.photoSelect[1]?.url"
+                ></div>
+
+                <i
+                  class="bi bi-check-circle-fill check-icon"
+                  style="font-size: 20px; background-color: #ffffff"
+                  @click="
                     pushSelectedNumber(
                       userStore.photoSelect[1]?.id,
                       userStore.photoSelect[1]?.url,
-                    )
-                "
-              ></div>
+                      userStore.photoSelect[1]?.tag,
+                    ),
+                      (secondCheck = !secondCheck)
+                  "
+                ></i>
+              </div>
             </div>
+
+            <!-- 버튼 -->
             <div style="margin-top: var(--grid-vertical)">
               <button
                 class="befor-btn"
@@ -157,9 +242,8 @@
               </button>
               <button
                 class="select-btn"
-                data-bs-target="#exampleModalToggle"
-                data-bs-toggle="modal"
                 data-bs-dismiss="modal"
+                aria-label="Close"
                 @click="
                   (data.images = [
                     userStore.photoSelect[0]?.id,
@@ -179,7 +263,6 @@
 </template>
 
 <script setup>
-import CardCarousel from '@/components/molecules/CardCarousel.vue';
 import DateFormat from '@/components/molecules/common/DateFormat.vue';
 import { useCommunityStore } from '@/stores/community.js';
 import { useUserStore } from '@/stores/user.js';
@@ -199,6 +282,10 @@ const data = ref({
   representative: 0,
 });
 
+const firstCheck = ref(false);
+const secondCheck = ref(false);
+const selectTags = ref([]);
+
 const createPost = (data) => {
   console.log(userStore.photoSelect);
 
@@ -206,7 +293,7 @@ const createPost = (data) => {
     title: data.title,
     content: data.content,
     privacyBound: 1,
-    images: userStore.selectedPhoto,
+    images: userStore.selectedPhotoList,
     representative: 0,
   };
   console.log(context, userStore.photoSelect);
@@ -218,10 +305,12 @@ const createPost = (data) => {
 const selectPhoto = () => {
   userStore.urlPhotoList = userStore.urlList;
   userStore.urlList = [];
+  userStore.selectedPhotoList = userStore.selectedPhoto;
+
   console.log(userStore.selectedPhoto);
 };
 
-const pushSelectedNumber = (num, url) => {
+const pushSelectedNumber = (num, url, tag) => {
   let checked = true;
   userStore.selectedPhoto.filter((e) => {
     if (e === num) {
@@ -246,6 +335,18 @@ const pushSelectedNumber = (num, url) => {
     userStore.urlList.push(url);
   }
 
+  checked = true;
+  selectTags.value.filter((e) => {
+    if (e === tag) {
+      checked = false;
+      const index = selectTags.value.indexOf(e);
+      selectTags.value.splice(index, 1);
+    }
+  });
+  if (checked) {
+    selectTags.value.push(tag);
+  }
+
   console.log(userStore.selectedPhoto);
   console.log(userStore.urlList);
 };
@@ -265,8 +366,12 @@ userStore.selectTag = [];
     bottom: -600px;
   }
   100% {
-    bottom: -48px;
+    bottom: -98px;
   }
+}
+.firstCheck,
+.secondCheck {
+  opacity: 0.5;
 }
 
 .community-write {
@@ -311,9 +416,9 @@ userStore.selectTag = [];
   position: fixed;
   width: 100%;
   min-width: 100%;
-  bottom: -48px;
+  bottom: -98px;
   animation-name: openDialog;
-  animation-duration: 0.1s;
+  animation-duration: 0.3s;
   margin: 0;
   border-radius: 130px 130px 0 0;
   height: 700px;
@@ -341,9 +446,13 @@ userStore.selectTag = [];
   margin-bottom: var(--grid-vertical);
   border-radius: 5px;
 }
+.sub-wrap {
+  width: 100%;
+  position: relative;
+}
 .sub-image {
-  width: 50%;
-  padding-bottom: 50%;
+  width: 100%;
+  padding-bottom: 100%;
   background-position: center;
   background-size: cover;
   border-radius: 5px;
@@ -367,5 +476,26 @@ userStore.selectTag = [];
 }
 .selected-image {
   width: 100%;
+}
+.one-image {
+  width: 100%;
+}
+.two-image {
+  width: calc(50% - 5px);
+}
+.check-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.tag-wrap {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: var(--grid-vertical);
+}
+.tag {
+  padding: 3px 10px;
 }
 </style>

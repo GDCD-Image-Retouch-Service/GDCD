@@ -5,22 +5,27 @@ export const useMainStore = defineStore('main', () => {
   // state
   const isCamMode = ref(false);
   const tempImg = ref(null);
+  const tempEScore = ref(0);
+  const tempQScore = ref(0);
 
   // action
   const isCamModeOn = () => {
     isCamMode.value = true;
   };
-
   const isCamModeOff = () => {
     isCamMode.value = false;
   };
-
   const isCamModeToggle = () => {
     isCamMode.value = !isCamMode.value;
   };
-
   const setTempImg = (img) => {
     tempImg.value = img;
+  };
+  const setTempEScore = (eScore) => {
+    tempEScore.value = eScore;
+  };
+  const setTempQScore = (qScore) => {
+    tempQScore.value = qScore;
   };
 
   // getter
@@ -40,14 +45,17 @@ export const useMainStore = defineStore('main', () => {
 
     return new File([u8arr], 'tempFile.' + type, { type: mime });
   });
-
+  const getTempEScore = computed(() => tempEScore.value);
+  const getTempQScore = computed(() => tempQScore.value);
   const getScore = (item) => {
     if (item) {
       if (item.error) {
         console.log('서버 에러');
       } else {
-        console.log('E: ' + item.dict[0].aesthetic);
-        console.log('Q: ' + item.dict[0].quality);
+        setTempEScore(item.dict[0].aesthetic);
+        setTempQScore(item.dict[0].quality);
+        console.log('E: ' + tempEScore.value);
+        console.log('Q: ' + tempQScore.value);
         const score = Math.ceil(
           (((item.dict[0].aesthetic - 5) * 10 +
             (item.dict[0].quality - 7) * 10) /
@@ -73,11 +81,15 @@ export const useMainStore = defineStore('main', () => {
     isCamModeOff,
     isCamModeToggle,
     setTempImg,
+    setTempEScore,
+    setTempQScore,
 
     // getter
     getIsCamMode,
     getTempImg,
     getTempFile,
+    getTempEScore,
+    getTempQScore,
     getScore,
   };
 });

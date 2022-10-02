@@ -28,19 +28,32 @@ const beforeAuth = (needAuth) => async (from, to, next) => {
   }
 };
 
+// Landing
+// import LandingView from '@/views/LandingView.vue';
+
+// Error Handling
+// import LoadingView from '@/views/LoadingView.vue';
+
+// Home
+import HomeView from '@/views/HomeView.vue';
+import LandingView from '@/views/LandingView.vue';
+
 // Main
 import MainView from '@/views/MainView.vue';
 import MainUpload from '@/components/pages/main/MainUpload';
 import MainTest from '@/components/pages/main/MainTest';
 import MainScore from '@/components/pages/main/MainScore';
 import MainOptimize from '@/components/pages/main/MainOptimize';
+import MainInpaint from '@/components/pages/main/MainInpaint';
 
 // Community
 import CommunityView from '@/views/CommunityView.vue';
 import CommunityList from '@/components/pages/community/CommunityList';
-
 import CommunityWrite from '@/components/pages/community/CommunityWrite';
 import CommunityDetail from '@/components/pages/community/CommunityDetail';
+
+import CommunityUpdateView from '@/views/CommunityUpdateView.vue';
+import CommunityUpdate from '@/components/pages/community/CommunityUpdate';
 
 // Profile
 import ProfileView from '@/views/ProfileView';
@@ -56,34 +69,49 @@ import ProfileUpdate from '@/components/pages/profile/ProfileUpdate';
 // Photo
 import PhotoView from '@/views/PhotoView.vue';
 import PhotoList from '@/components/pages/photo/PhotoList';
+import PhotoDetail from '@/components/pages/photo/PhotoDetail';
 
 const routes = [
   {
     path: '/', // Landing page
-    name: 'main',
-    redirect: '/main',
+    name: 'Landing',
     beforeEnter: beforeAuth(false),
+    component: LandingView,
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: HomeView,
+  },
+  {
+    path: '/main', // Landing page
+    name: 'main',
     component: MainView,
     children: [
       {
-        path: 'main', // default page
+        path: '', // default page
         name: 'MainUpload',
         component: MainUpload,
       },
       {
-        path: 'main/test', // 이미지 상호작용 테스트 코드, 지워야함
+        path: 'test', // 이미지 상호작용 테스트 코드, 지워야함
         name: 'MainTest',
         component: MainTest,
       },
       {
-        path: 'main/score',
+        path: 'score',
         name: 'MainScore',
         component: MainScore,
       },
       {
-        path: 'main/optimize',
+        path: 'optimize',
         name: 'MainOptimize',
         component: MainOptimize,
+      },
+      {
+        path: 'inpaint',
+        name: 'MainInpaint',
+        component: MainInpaint,
       },
     ],
   },
@@ -110,30 +138,16 @@ const routes = [
       },
     ],
   },
+
   {
-    path: '/profile/:userId',
-    name: 'profile',
-    component: ProfileView,
+    path: '/community/:postId/update',
+    name: 'CommunityUpdate',
+    component: CommunityUpdateView,
     children: [
       {
         path: '', // default page
-        name: 'ProfilePost',
-        component: ProfilePost,
-      },
-      {
-        path: 'scrap',
-        name: 'ProfileScrap',
-        component: ProfileScrap,
-      },
-      {
-        path: 'like',
-        name: 'ProfileLike',
-        component: ProfileLike,
-      },
-      {
-        path: 'friend',
-        name: 'ProfileFriend',
-        component: ProfileFriend,
+        name: 'CommunityUpdateList',
+        component: CommunityUpdate,
       },
     ],
   },
@@ -164,6 +178,7 @@ const routes = [
       },
     ],
   },
+
   {
     path: '/profile/update/',
     name: 'profileU',
@@ -185,6 +200,11 @@ const routes = [
         path: '', // default page
         name: 'PhotoList',
         component: PhotoList,
+      },
+      {
+        path: 'detail',
+        name: 'PhotoDetail',
+        component: PhotoDetail,
       },
     ],
   },

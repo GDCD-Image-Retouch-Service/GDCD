@@ -12,50 +12,18 @@ export const useCommunityStore = defineStore('communityStore', {
     post: {},
 
     // 게시물 리스트
-    oddPostList: [],
-    evenPostList: [],
+    postList: [],
 
     // 전체 댓글 조회
-    commentAll: {
-      item: {
-        comments: [
-          {
-            commentId: 0,
-            content: 'String',
-            writerNickname: 'String',
-            writerProfile: require('@/assets/sdprofile.png'),
-            updateDate: '2022-09-16T15:40:05.03495',
-            kids: [
-              {
-                content: 'String',
-                writerNickname: 'String',
-                writerProfile: 'string',
-                updateDate: '2022-09-16T15:40:05.03495',
-              },
-            ],
-          },
-          {
-            commentId: 1,
-            content: 'String',
-            writerNickname: 'String',
-            writerProfile: 'string',
-            updateDate: '2022-09-16T15:40:05.03495',
-            kids: [
-              {
-                content: 'String',
-                writerNickname: 'String',
-                writerProfile: 'string',
-                updateDate: '2022-09-16T15:40:05.03495',
-              },
-            ],
-          },
-        ],
-      },
-      msg: 'string',
-    },
+    commentAll: {},
     isToggleButton: true,
     isOpenComment: false,
     thisContent: '',
+
+    // 이미지 선택
+    selectImage: '',
+
+    updateCommentContent: '',
   }),
   actions: {
     // 전체 게시글 조회
@@ -98,26 +66,24 @@ export const useCommunityStore = defineStore('communityStore', {
     },
 
     // 내 게시글 조회
-    getMyPostsAll() {
+    getMyPostsAll(userId) {
+      let data = {
+        userId: userId,
+      };
+      if (userId == 0) {
+        data = {};
+      }
       axios({
         url: post.myPost(),
         method: 'GET',
         headers: {
           token: useUserStore().token,
         },
+        params: data,
       })
         .then((res) => {
+          this.postList = res.data.item;
           console.log(res.data);
-          this.oddPostList = [];
-          this.evenPostList = [];
-          res.data.item.forEach((e, index) => {
-            console.log(e);
-            if (index % 2 === 0) {
-              this.oddPostList.push(e);
-            } else {
-              this.evenPostList.push(e);
-            }
-          });
         })
         .catch((err) => {
           console.log(err);
@@ -126,7 +92,6 @@ export const useCommunityStore = defineStore('communityStore', {
 
     // 게시글 생성
     createPost: (data) => {
-      console.log(data);
       axios({
         url: post.post(),
         method: 'POST',
@@ -151,6 +116,7 @@ export const useCommunityStore = defineStore('communityStore', {
 
     // 게시글 수정
     updatePost: (data) => {
+      console.log(data, '데이터 도착');
       axios({
         url: post.post(),
         method: 'PUT',
@@ -158,12 +124,16 @@ export const useCommunityStore = defineStore('communityStore', {
           token: useUserStore().token,
         },
         data: {
-          data,
+          postId: data.postId,
+          title: data.title,
+          content: data.content,
+          privacyBound: data.privacyBound,
+          images: data.images,
+          representative: data.representative,
         },
       })
         .then((res) => {
-          this.post = res.data;
-          console.log(res.data);
+          console.log(res.data, '수정완료');
         })
         .catch((err) => {
           console.log(err);
@@ -260,11 +230,55 @@ export const useCommunityStore = defineStore('communityStore', {
           token: useUserStore().token,
         },
         data: {
-          data: data,
+          postId: data.postId,
+          content: data.content,
         },
       })
         .then((res) => {
-          this.commentAll = res.data;
+          this.getComment(data.postId);
+
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 댓글 수정
+    updateComment(data) {
+      axios({
+        url: post.comment(),
+        method: 'PUT',
+        headers: {
+          token: useUserStore().token,
+        },
+        data: {
+          commentId: data.commentId,
+          content: data.content,
+        },
+      })
+        .then((res) => {
+          this.getComment(data.postId);
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 댓글 삭제
+    deleteComment(data) {
+      axios({
+        url: post.comment(),
+        method: 'DELETE',
+        headers: {
+          token: useUserStore().token,
+        },
+        params: {
+          commentId: data.commentId,
+        },
+      })
+        .then((res) => {
           console.log(res.data);
         })
         .catch((err) => {
