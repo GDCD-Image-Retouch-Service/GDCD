@@ -28,7 +28,7 @@ public class PostListResponseDto {
         this.title = post.getTitle();
         this.images = img;
 //        this.representative = post.getRepresentative();
-        this.updateTime = post.getUpdateTime();
+        this.updateTime = post.getUpdateTime().plusHours(9);
         this.likeCount = post.getLikeCount();
         this.scrap = scrap;
         this.like = like;
