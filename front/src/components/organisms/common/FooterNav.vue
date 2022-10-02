@@ -23,7 +23,14 @@
       </router-link>
 
       <!-- 프로필 -->
-      <div @click="router.push({ name: 'ProfilePost', params: { userId: 0 } })">
+      <div
+        @click="
+          router.push({
+            name: 'ProfilePost',
+            params: { userId: userStore.currentUser.item?.user?.userId },
+          })
+        "
+      >
         <div
           class="icon-circle d-flex justify-content-center align-items-center"
         >
@@ -43,10 +50,10 @@
 </template>
 
 <script setup>
-// import { useBasicStore } from '@/stores/basic.js';
 import router from '@/router/index.js';
+import { useUserStore } from '@/stores/user';
 
-// const basicStore = useBasicStore();
+const userStore = useUserStore();
 </script>
 
 <style scoped>
