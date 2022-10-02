@@ -79,8 +79,11 @@ public class ImageController extends Controller {
     }
 
     @GetMapping("/request-process")
-    public ResponseEntity<Map<String, Object>> requestProcess(@RequestBody ImageOptProcessingRequestDto requestDto) {
-        return getResponseEntity(imageService.requestProcess(requestDto));
+    public ResponseEntity<Map<String, Object>> requestProcess(@RequestParam Long requestId, @RequestParam int finished) {
+        return getResponseEntity(imageService.requestProcess(ImageOptProcessingRequestDto.builder()
+                        .requestId(requestId)
+                        .finished(finished)
+                .build()));
     }
 
     @GetMapping("/inpainting")
