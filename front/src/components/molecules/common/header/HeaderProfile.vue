@@ -13,23 +13,22 @@
 
 <script setup>
 import BtnToggle from '@/components/molecules/common/header/BtnToggle.vue';
-
-// import { useUserStore } from '@/stores/user';
 import { useAccountStore, useHomeStore } from '@/stores';
-// import { useAccountStore } from '@/stores/home';
+import { decodeCredential } from 'vue3-google-login';
+import { user } from '@/api/rest';
 
 // const userStore = useUserStore();
 const accountStore = useAccountStore();
 const homeStore = useHomeStore();
 
-const callback = async () => {
+const callback = async (response) => {
   console.log('개열받네?');
-  // const userData = await decodeCredential(response.credential);
-  // console.log(userData);
-  // await user.login({
-  //   email: userData.email,
-  //   nickname: userData.name,
-  // });
+  const userData = await decodeCredential(response.credential);
+  console.log(userData);
+  await user.login({
+    email: userData.email,
+    nickname: userData.name,
+  });
 };
 </script>
 

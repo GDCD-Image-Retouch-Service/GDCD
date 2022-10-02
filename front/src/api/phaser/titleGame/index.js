@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import scene0 from './scenes/scene0';
 import scene1 from './scenes/scene1';
 
-function createPuzzleGame(containerId) {
+function createTitleGame(containerId) {
   return new Phaser.Game({
     type: Phaser.AUTO,
     width: window.innerWidth,
@@ -21,4 +21,4 @@ function createPuzzleGame(containerId) {
   });
 }
 
-export { createPuzzleGame };
+export { createTitleGame };

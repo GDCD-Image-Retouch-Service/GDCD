@@ -71,6 +71,10 @@ const theme = computed(() => (homeStore.getIsDark ? 'dark' : 'light'));
   --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
 }
 
+.dark * {
+  color: var(--color-reverse);
+}
+
 .light {
   --color-main: #ffffff;
   --color-sub: #f4f4f4;
@@ -84,6 +88,10 @@ const theme = computed(() => (homeStore.getIsDark ? 'dark' : 'light'));
   --popper-theme-border-radius: 6px;
   --popper-theme-padding: 32px;
   --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
+}
+
+.light * {
+  color: var(--color-reverse);
 }
 
 .main {

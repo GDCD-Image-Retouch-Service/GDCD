@@ -36,6 +36,7 @@
   width: 100vw;
   height: var(--size-h-footer);
   min-height: var(--size-h-footer);
+  /* background: red; */
 }
 
 .footer-nav-wrap {

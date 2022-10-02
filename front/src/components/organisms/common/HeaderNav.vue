@@ -8,8 +8,8 @@
 </template>
 
 <script setup>
-import HeaderLogo from '@/components/molecules/common/HeaderLogo.vue';
-import HeaderProfile from '@/components/molecules/common/HeaderProfile.vue';
+import HeaderLogo from '@/components/molecules/common/header/HeaderLogo.vue';
+import HeaderProfile from '@/components/molecules/common/header/HeaderProfile.vue';
 
 // import { decodeCredential } from 'vue3-google-login';
 // import { user } from '@/api/rest';

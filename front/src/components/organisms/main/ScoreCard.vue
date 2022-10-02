@@ -1,6 +1,6 @@
 <template>
   <div
-    class="score-card outer d-flex flex-column align-items-center justify-content-center"
+    class="score-card main outer d-flex flex-column align-items-center justify-content-center"
   >
     <div class="spacer" />
     <div class="d-flex align-items-center" style="font-size: 24pt">

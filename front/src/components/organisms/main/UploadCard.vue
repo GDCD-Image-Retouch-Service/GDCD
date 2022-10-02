@@ -1,6 +1,6 @@
 <template>
   <div
-    class="upload-card outer d-flex flex-column align-items-center justify-content-center"
+    class="upload-card main outer d-flex flex-column align-items-center justify-content-center"
   >
     <div class="spacer" />
     <btn-change-mode />

@@ -32,10 +32,11 @@ const beforeAuth = (needAuth) => async (from, to, next) => {
 // import LandingView from '@/views/LandingView.vue';
 
 // Error Handling
-import LoadingView from '@/views/LoadingView.vue';
+// import LoadingView from '@/views/LoadingView.vue';
 
 // Home
 import HomeView from '@/views/HomeView.vue';
+import LandingView from '@/views/LandingView.vue';
 
 // Main
 import MainView from '@/views/MainView.vue';
@@ -71,7 +72,7 @@ const routes = [
     path: '/', // Landing page
     name: 'Landing',
     beforeEnter: beforeAuth(false),
-    component: LoadingView,
+    component: LandingView,
   },
   {
     path: '/home',
@@ -84,22 +85,22 @@ const routes = [
     component: MainView,
     children: [
       {
-        path: 'main', // default page
+        path: '', // default page
         name: 'MainUpload',
         component: MainUpload,
       },
       {
-        path: 'main/test', // 이미지 상호작용 테스트 코드, 지워야함
+        path: 'test', // 이미지 상호작용 테스트 코드, 지워야함
         name: 'MainTest',
         component: MainTest,
       },
       {
-        path: 'main/score',
+        path: 'score',
         name: 'MainScore',
         component: MainScore,
       },
       {
-        path: 'main/optimize',
+        path: 'optimize',
         name: 'MainOptimize',
         component: MainOptimize,
       },
