@@ -87,7 +87,7 @@
     <div class="spacer" />
     <div class="btn-set d-flex justify-content-center">
       <router-link
-        to="/"
+        to="/main"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
       >
         <i class="bi bi-arrow-counterclockwise"></i>
@@ -122,7 +122,7 @@ const score = ref(0);
 const init = async () => {
   picBox.value.src = mainStore.getTempImg;
 
-  data.value = await image.scoringInitial(mainStore.getTempFile);
+  data.value = await image.scoring(mainStore.getTempFile);
   score.value = mainStore.getScore(data.value.item);
   isLoading.value = false;
 };

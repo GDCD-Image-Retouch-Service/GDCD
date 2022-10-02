@@ -4,8 +4,8 @@
     <div v-else>로그인함</div>
     <template #content="{ close }">
       <btn-toggle borderWidth="100"></btn-toggle>
-      <Button @click="homeStore.setIsDarkToggle">색바꾸기</Button>
-      <Button @click="close">Close</Button>
+      <div @click="homeStore.setIsDarkToggle">색바꾸기</div>
+      <div @click="close">Close</div>
       <GoogleLogin :callback="callback" />
     </template>
   </Popper>

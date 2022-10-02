@@ -16,12 +16,12 @@ export default {
         });
     });
   },
-  scoringInitial: function (image) {
+  scoring: function (image) {
     const form = new FormData();
     form.append('image', image);
     return new Promise((resolve, reject) => {
       axiosApi
-        .post(REST_PATH + '/initial', form, {
+        .post(REST_PATH + '/scoring', form, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

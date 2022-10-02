@@ -2,20 +2,35 @@
   <nav class="footer-nav d-flex justify-content-center">
     <div class="footer-nav-wrap main outer d-flex justify-content-around">
       <router-link to="/" class="list d-flex flex-column align-items-center">
-        <span class="icon"><i class="bi bi-house-door"></i></span>
-        <span class="text">홈</span>
+        <div
+          class="icon-circle d-flex justify-content-center align-items-center"
+        >
+          <span class="icon"><i class="bi bi-house-door"></i></span>
+        </div>
       </router-link>
+
       <router-link to="/">
-        <span class="icon"><i class="bi bi-people"></i></span>
-        <span class="text">커뮤니티</span>
+        <div
+          class="icon-circle d-flex justify-content-center align-items-center"
+        >
+          <span class="icon"><i class="bi bi-people"></i></span>
+        </div>
       </router-link>
+
       <router-link to="/" class="list d-flex flex-column">
-        <span class="icon"><i class="bi bi-person"></i></span>
-        <span class="text">프로필</span>
+        <div
+          class="icon-circle d-flex justify-content-center align-items-center"
+        >
+          <span class="icon"><i class="bi bi-person"></i></span>
+        </div>
       </router-link>
+
       <router-link to="/" class="list d-flex flex-column">
-        <span class="icon"><i class="bi bi-image"></i> </span>
-        <span class="text">사진첩</span>
+        <div
+          class="icon-circle d-flex justify-content-center align-items-center"
+        >
+          <span class="icon"><i class="bi bi-image"></i> </span>
+        </div>
       </router-link>
     </div>
   </nav>
@@ -52,5 +67,14 @@
   justify-content: center;
   align-items: center;
   color: var(--color-reverse);
+}
+
+.icon-circle {
+  height: calc(var(--size-h-footer) - 8px);
+  width: calc(var(--size-h-footer) - 8px);
+  border-radius: 50%;
+  overflow: hidden;
+  font-size: 16pt;
+  /* border: solid 4px var(--color-theme); */
 }
 </style>
