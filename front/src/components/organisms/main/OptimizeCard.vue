@@ -1,6 +1,6 @@
 <template>
   <div
-    class="optimize-card outer d-flex flex-column align-items-center justify-content-center"
+    class="optimize-card main outer d-flex flex-column align-items-center justify-content-center"
   >
     <div
       id="carouselExampleCaptions"

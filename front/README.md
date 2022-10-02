@@ -40,6 +40,8 @@
 
 - [Vue 3 Popper](https://valgeirb.github.io/vue3-popper/guide/getting-started.html#installation)
 
+- [Phaser](https://www.npmjs.com/package/phaser)
+
 &nbsp;
 
 ### Convention Detail

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="score-card outer d-flex flex-column align-items-center justify-content-center"
+    class="score-card main outer d-flex flex-column align-items-center justify-content-center"
   >
     <div class="spacer" />
     <div class="d-flex align-items-center" style="font-size: 24pt">
@@ -87,18 +87,26 @@
     <div class="spacer" />
     <div class="btn-set d-flex justify-content-center">
       <router-link
-        to="/"
+        to="/main"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
       >
         <i class="bi bi-arrow-counterclockwise"></i>
       </router-link>
 
       <router-link
-        to="/optimize"
+        to="optimize"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
         style="margin-left: 8px"
       >
         <i class="bi bi-stars"></i>
+      </router-link>
+
+      <router-link
+        to="inpaint"
+        class="btn-set-button inner d-flex align-items-center justify-content-center"
+        style="margin-left: 8px"
+      >
+        <i class="bi bi-eraser-fill"></i>
       </router-link>
     </div>
     <div class="spacer" />
@@ -122,7 +130,7 @@ const score = ref(0);
 const init = async () => {
   picBox.value.src = mainStore.getTempImg;
 
-  data.value = await image.scoringInitial(mainStore.getTempFile);
+  data.value = await image.scoring(mainStore.getTempFile);
   score.value = mainStore.getScore(data.value.item);
   isLoading.value = false;
 };

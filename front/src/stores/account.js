@@ -7,6 +7,8 @@ export const useAccountStore = defineStore('account', () => {
   const router = useRouter();
 
   // state
+  // const msg = ref('');
+  // const profile = ref(null);
   const email = ref('');
   const nickname = ref('');
   const token = ref(localStorage.getItem('token'));

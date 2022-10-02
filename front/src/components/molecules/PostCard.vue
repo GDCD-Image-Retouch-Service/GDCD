@@ -106,6 +106,8 @@ const clickLike = () => {
   background-color: var(--light-main-color);
   font-size: 14px;
   overflow: hidden;
+
+  background: var(--color-main);
 }
 .post-card-title {
   text-align: start;

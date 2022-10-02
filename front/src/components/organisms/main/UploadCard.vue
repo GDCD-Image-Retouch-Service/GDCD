@@ -1,6 +1,6 @@
 <template>
   <div
-    class="upload-card outer d-flex flex-column align-items-center justify-content-center"
+    class="upload-card main outer d-flex flex-column align-items-center justify-content-center"
   >
     <div class="spacer" />
     <btn-change-mode />
@@ -280,13 +280,17 @@ const downloadImage = () => {
 
 .camera-shutter {
   opacity: 0;
-  width: 380px;
-  height: 380px;
+  width: 0px;
+  height: 0px;
   background-color: #ffffff;
   position: absolute;
 }
 
 .camera-shutter.flash {
+  width: 380px;
+  max-width: 100vw;
+  height: 380px;
+  max-height: 100vh;
   opacity: 1;
 }
 

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import user from '@/api/rest/user';
 // import { useAccountStore } from './account';
-// import { ref } from 'vue';
+import { ref } from 'vue';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
@@ -29,9 +29,8 @@ export const useUserStore = defineStore('userStore', {
     currentUser: {},
 
     // 토큰
-    // token: ref(localStorage.getItem('token')),
-    token:
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0NzAxNTc5LCJleHAiOjE2NjQ3MTk1Nzl9.bjEPajmvInBhlJqemAV3Lx51ZC_dycop3gU-yz6Ra-A',
+    token: ref(localStorage.getItem('token')),
+    // token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0NjQxMDA5LCJleHAiOjE2NjQ2NTkwMDl9.BEYSx7y1aUFcUItPHeB6fACrHvUqY5KIMs839nJ_zBg',
 
     // 로그인한 유저 정보
     profile: {},
@@ -78,6 +77,7 @@ export const useUserStore = defineStore('userStore', {
         },
       })
         .then((res) => {
+          console.dir(res);
           this.currentUser = res.data;
           this.updateProfile = res.data.item.user.profile;
           this.updateNickname = res.data.item.user.nickname;
