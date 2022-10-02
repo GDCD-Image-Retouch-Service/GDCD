@@ -17,11 +17,8 @@ public class ImageCreateRequestDto {
     private String filePath;
     private int aesthetic;
     private int quality;
-//    private int rank;
-    private LocalDateTime registDate;
     private List<String> objects = new ArrayList<>();
 
-//    private Boolean before = true;
 
 
 
@@ -34,7 +31,7 @@ public class ImageCreateRequestDto {
                 .quality(quality)
                 .registDate(LocalDateTime.now())
                 .objects(objects)
-//                .beforeImage(before)
+                .beforeImage(true)
                 .build();
     }
 }
