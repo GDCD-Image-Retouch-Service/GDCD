@@ -1,5 +1,5 @@
 <template>
-  <div class="masonry-layout d-flex flex-column align-items-center main">
+  <div class="masonry-layout sub d-flex flex-column align-items-center main">
     <div
       class="masonry-container"
       style="
@@ -16,7 +16,7 @@
         class="masonry-content"
       >
         <div class="masonry-item">
-          <post-card :post="post" />
+          <post-card :post="post" :likeCount="post.likeCount" />
         </div>
       </div>
     </div>

@@ -15,9 +15,6 @@ const createAxiosApi = () => {
       const accountStore = useAccountStore();
       if (accountStore.getIsLogined) {
         config.headers.common['token'] = accountStore.getToken;
-        console.log('TOKEN 추가 : ' + accountStore.getToken);
-      } else {
-        console.log('TOKEN 없음 : 로그인 안함');
       }
       return config;
     },

@@ -9,6 +9,23 @@ export default {
   // GET: 전체 글 리스트 조회
   postsAll: () => HOST + REST_PATH + '/list',
 
+  list: function (payload) {
+    let params = {
+      data: payload.data,
+    };
+
+    return new Promise((resolve, reject) => {
+      axiosApi
+        .post(REST_PATH + '/list', params)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
+
   // GET: 게시글 단일 조회
   // POST: 게시글 생성
   // PUT: 게시글 수정

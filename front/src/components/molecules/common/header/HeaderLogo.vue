@@ -1,8 +1,8 @@
 <template>
   <div class="nav-logo-wrap">
     <img src="@/assets/logo.png" class="logo" alt="logo" />
-    <div style="font-weight: 700">
-      <span style="color: var(--theme-color)">개떡</span><span>찰떡</span>
+    <div class="nav-logo-title">
+      <span class="nav-logo-title-gd">개떡</span><span>찰떡</span>
     </div>
   </div>
 </template>
@@ -18,5 +18,12 @@
 }
 .logo {
   height: 30px;
+}
+.nav-logo-title {
+  font-weight: 700;
+  display: flex;
+}
+.nav-logo-title-gd {
+  color: var(--theme-color);
 }
 </style>

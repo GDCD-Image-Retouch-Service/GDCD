@@ -15,22 +15,8 @@ export const useUserStore = defineStore('userStore', {
       msg: 'string',
     },
     // 프로필 페이지에서 보이는 게시글
-    post: {
-      item: {
-        posts: [
-          {
-            postId: 0,
-            title: 'String',
-            image: 'String',
-            rank: 0,
-          },
-        ],
-        postCount: 1,
-      },
-      msg: 'string',
-    },
+    post: {},
 
-    //
     // 프로필 헤더
     isItemActive: 0,
 
@@ -44,6 +30,7 @@ export const useUserStore = defineStore('userStore', {
 
     // 토큰
     token: ref(localStorage.getItem('token')),
+    // token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0NjQxMDA5LCJleHAiOjE2NjQ2NTkwMDl9.BEYSx7y1aUFcUItPHeB6fACrHvUqY5KIMs839nJ_zBg',
 
     // 로그인한 유저 정보
     profile: {},
@@ -73,7 +60,7 @@ export const useUserStore = defineStore('userStore', {
     daePyoImage: '',
     photoSelect: [],
     selectedPhoto: [],
-
+    selectedPhotoList: [],
     urlList: [],
     urlPhotoList: [],
 
@@ -90,6 +77,7 @@ export const useUserStore = defineStore('userStore', {
         },
       })
         .then((res) => {
+          console.dir(res);
           this.currentUser = res.data;
           this.updateProfile = res.data.item.user.profile;
           this.updateNickname = res.data.item.user.nickname;
@@ -128,13 +116,20 @@ export const useUserStore = defineStore('userStore', {
     },
 
     // 스크랩 조회
-    getMyScrap() {
+    getMyScrap(userId) {
+      let data = {
+        userId: userId,
+      };
+      if (userId == 0) {
+        data = {};
+      }
       axios({
         url: user.myScrap(),
         method: 'GET',
         headers: {
           token: this.token,
         },
+        params: data,
       })
         .then((res) => {
           this.scrapList = res.data;
@@ -145,13 +140,20 @@ export const useUserStore = defineStore('userStore', {
     },
 
     // 라이크 조회
-    getMyLike() {
+    getMyLike(userId) {
+      let data = {
+        userId: userId,
+      };
+      if (userId == 0) {
+        data = {};
+      }
       axios({
         url: user.myLike(),
         method: 'GET',
         headers: {
           token: this.token,
         },
+        params: data,
       })
         .then((res) => {
           this.likeList = res.data;
