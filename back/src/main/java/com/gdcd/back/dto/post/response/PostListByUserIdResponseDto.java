@@ -13,13 +13,15 @@ public class PostListByUserIdResponseDto {
 
     private String title;
     private ImageDetailResponseDto images;
+    private LocalDateTime registTime;
     private LocalDateTime updateTime;
 
     public PostListByUserIdResponseDto(Post post, ImageDetailResponseDto img) {
         this.postId =post.getId();
         this.title = post.getTitle();
         this.images = img;
-        this.updateTime = post.getUpdateTime();
+        this.registTime = post.getRegistTime().plusHours(9);
+        this.updateTime = post.getUpdateTime().plusHours(9);
         this.likeCount = post.getLikeCount();
     }
 }
