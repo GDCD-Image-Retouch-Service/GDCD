@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,9 @@ public interface ImageService {
     public byte[] findImageById(Long imageId, String from) throws IOException;
     public ImageDetailResponseDto findImageInfoById(Long imaageId);
     public Map<LocalDate, List<ImageListResponseDto>> findImageList(String token) throws Exception;
-//    public List<ImageDetailResponseDto> findImageList(Long userId) throws Exception;
+//    public List<LocalDate> findImageList(String token) throws Exception;
+
+    //    public List<ImageDetailResponseDto> findImageList(String token) throws Exception;
 //    public Map<String, Object> requestInitialScore(List<MultipartFile> image);
     public Map<String, Object> requestInitialScore(MultipartFile image);
 

@@ -21,6 +21,8 @@ public class ImageCreateRequestDto {
     private LocalDateTime registDate;
     private List<String> objects = new ArrayList<>();
 
+//    private Boolean before = true;
+
 
 
     public Image toDocument(){
@@ -32,6 +34,7 @@ public class ImageCreateRequestDto {
                 .quality(quality)
                 .registDate(LocalDateTime.now())
                 .objects(objects)
+//                .beforeImage(before)
                 .build();
     }
 }
