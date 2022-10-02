@@ -38,19 +38,22 @@
     </div>
 
     <!-- 이미지 -->
-    <label for="btnMyPhoto">
-      <card-carousel
-        :firstImage="communityStore.post.item?.images[0].imageUrl"
-        :secondImage="
-          communityStore.post.item?.images[1].imageUrl
-            ? communityStore.post.item?.images[1].imageUrl
-            : ''
-        "
-        :firstTags="communityStore.post.item?.images[0].imageTag"
-        :secondTags="communityStore.post.item?.images[1]?.imageTag"
-      />
-    </label>
+    <div v-if="communityStore.post.item?.images?.length == 1">일</div>
 
+    <div v-if="communityStore.post.item?.images?.length == 2">
+      <img
+        :src="communityStore.post.item?.images[0].imageUrl"
+        alt=""
+        class="main-image common-image"
+      />
+      <img
+        :src="communityStore.post.item?.images[1].imageUrl"
+        alt=""
+        class="main-image common-image"
+      />
+    </div>
+
+    <btn-image-toggle />
     <span class="card-content">
       {{ communityStore.post.item?.content }}
     </span>
@@ -71,7 +74,7 @@
 </template>
 
 <script setup>
-import CardCarousel from '@/components/molecules/CardCarousel.vue';
+import { BtnImageToggle } from '@/components/molecules/common/btn/BtnImageToggle.vue';
 import { useCommunityStore } from '@/stores/community.js';
 import { useUserStore } from '@/stores/user.js';
 import { watch } from '@vue/runtime-core';
@@ -92,16 +95,9 @@ const clickComment = () => {
   // document.getElementById('app').scrollTop = 1200;
   watch(communityStore.isOpenComment, (newValues) => {
     window.scrollTo(0, document.body.scrollHeight);
-    console.log(newValues, '아아아아아아아왜안돼애애애애');
+    console.log(newValues);
   });
-
-  console.log('눌림');
 };
-console.log(userStore.currentUser.item?.user?.userId, '확인');
-console.log(communityStore.post.item?.userId);
-console.log(
-  userStore.currentUser.item?.user?.userId == communityStore.post.item?.userId,
-);
 </script>
 
 <style scoped>
@@ -177,5 +173,8 @@ console.log(
   display: flex;
   gap: 3px;
   margin-right: 5px;
+}
+.main-image {
+  width: 100%;
 }
 </style>

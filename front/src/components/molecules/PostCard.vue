@@ -13,8 +13,7 @@
         })
       "
     />
-    <!-- {{ post }}
-    {{ post.scrap }} -->
+
     <!-- post card -title -->
     <div class="post-card-title">
       {{ post?.title }}
@@ -37,10 +36,25 @@
     >
       <div class="like-bookmark">
         <div class="herat-wrap">
-          <i class="bi bi-heart"></i>
+          <i class="bi bi-heart" v-if="!myLike" @click="clickLike()"></i>
+          <i
+            class="bi bi-heart-fill"
+            style="color: #ed4956"
+            v-else
+            @click="clickLike()"
+          ></i>
           <div>{{ myLikeCount }}</div>
         </div>
-        <i class="bi bi-bookmark"></i>
+        <i
+          class="bi bi-bookmark"
+          v-if="!myScrap"
+          @click="(myScrap = !myScrap), communityStore.scrapPost(post.postId)"
+        ></i>
+        <i
+          class="bi bi-bookmark-fill"
+          v-else
+          @click="(myScrap = !myScrap), communityStore.scrapPost(post.postId)"
+        ></i>
       </div>
       <date-format :updateInfo="post.updateTime" />
     </div>
@@ -49,14 +63,29 @@
 
 <script setup>
 import DateFormat from '@/components/molecules/common/DateFormat.vue';
-import { defineProps, toRefs } from 'vue';
+import { defineProps, ref } from 'vue';
+import { useCommunityStore } from '@/stores/community';
+
+const communityStore = useCommunityStore();
 
 const props = defineProps({
   post: Object,
+  likeCount: Number,
 });
 
-const { post } = toRefs(props);
-console.log(post);
+let myLike = ref(props.post.like);
+let myScrap = ref(props.post.scrap);
+let myLikeCount = ref(props.likeCount);
+
+const clickLike = () => {
+  if (!myLike.value) {
+    myLikeCount.value += 1;
+  } else {
+    myLikeCount.value -= 1;
+  }
+  myLike.value = !myLike.value;
+  communityStore.likePost(props.post.postId);
+};
 </script>
 
 <style scoped>

@@ -1,7 +1,6 @@
 <template>
-  <div class="header-nav main outer d-flex align-items-center">
+  <div class="header-nav outer">
     <header-logo />
-    <div class="flex-grow-1"></div>
 
     <header-profile />
   </div>
@@ -19,5 +18,11 @@ import HeaderProfile from '@/components/molecules/common/header/HeaderProfile.vu
   width: 100vw;
   height: var(--size-h-header);
   min-height: var(--size-h-header);
+  background: white;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

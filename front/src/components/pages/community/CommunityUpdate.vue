@@ -288,6 +288,7 @@ const secondCheck = ref(false);
 const selectTags = ref([communityStore.post.item?.images[0]?.imageTag]);
 
 console.log(route.params.postId);
+
 const updatePost = (data) => {
   console.log(userStore.photoSelect);
 
@@ -375,6 +376,8 @@ if (communityStore.post.item?.images[1]) {
   userStore.selectedPhoto = [communityStore.post.item?.images[0]?.imageId];
 }
 userStore.selectTag = [];
+
+userStore.selectedPhotoList = userStore.selectedPhoto;
 </script>
 
 <style scoped>

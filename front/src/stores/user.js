@@ -15,22 +15,8 @@ export const useUserStore = defineStore('userStore', {
       msg: 'string',
     },
     // 프로필 페이지에서 보이는 게시글
-    post: {
-      item: {
-        posts: [
-          {
-            postId: 0,
-            title: 'String',
-            image: 'String',
-            rank: 0,
-          },
-        ],
-        postCount: 1,
-      },
-      msg: 'string',
-    },
+    post: {},
 
-    //
     // 프로필 헤더
     isItemActive: 0,
 

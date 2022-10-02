@@ -15,49 +15,15 @@ export const useCommunityStore = defineStore('communityStore', {
     postList: [],
 
     // 전체 댓글 조회
-    commentAll: {
-      item: {
-        comments: [
-          {
-            commentId: 0,
-            content: 'String',
-            writerNickname: 'String',
-            writerProfile: require('@/assets/sdprofile.png'),
-            updateDate: '2022-09-16T15:40:05.03495',
-            kids: [
-              {
-                content: 'String',
-                writerNickname: 'String',
-                writerProfile: 'string',
-                updateDate: '2022-09-16T15:40:05.03495',
-              },
-            ],
-          },
-          {
-            commentId: 1,
-            content: 'String',
-            writerNickname: 'String',
-            writerProfile: 'string',
-            updateDate: '2022-09-16T15:40:05.03495',
-            kids: [
-              {
-                content: 'String',
-                writerNickname: 'String',
-                writerProfile: 'string',
-                updateDate: '2022-09-16T15:40:05.03495',
-              },
-            ],
-          },
-        ],
-      },
-      msg: 'string',
-    },
+    commentAll: {},
     isToggleButton: true,
     isOpenComment: false,
     thisContent: '',
 
     // 이미지 선택
     selectImage: '',
+
+    updateCommentContent: '',
   }),
   actions: {
     // 전체 게시글 조회
@@ -126,7 +92,6 @@ export const useCommunityStore = defineStore('communityStore', {
 
     // 게시글 생성
     createPost: (data) => {
-      console.log(data);
       axios({
         url: post.post(),
         method: 'POST',
@@ -267,10 +232,11 @@ export const useCommunityStore = defineStore('communityStore', {
         data: {
           postId: data.postId,
           content: data.content,
-          upper: 1,
         },
       })
         .then((res) => {
+          this.getComment(data.postId);
+
           console.log(res.data);
         })
         .catch((err) => {
@@ -292,6 +258,7 @@ export const useCommunityStore = defineStore('communityStore', {
         },
       })
         .then((res) => {
+          this.getComment(data.postId);
           console.log(res.data);
         })
         .catch((err) => {

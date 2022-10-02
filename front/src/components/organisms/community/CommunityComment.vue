@@ -1,15 +1,18 @@
 <template>
   <div
     class="community-review common-image"
-    v-if="communityStore.isOpenComment"
+    v-if="
+      communityStore.isOpenComment &
+      (communityStore.commentAll.item?.comments.length !== 0)
+    "
   >
     <div class="review-wrap">
       <div class="review-item">
         <community-comment-item />
-        <community-comment-input />
       </div>
     </div>
   </div>
+  <community-comment-input v-if="communityStore.isOpenComment" />
 </template>
 
 <script setup>
@@ -28,7 +31,7 @@ const postId = route.params.postId;
 
 // 데이터 초기화
 communityStore.isOpenComment = false;
-// communityStore.getComment(postId);
+communityStore.getComment(postId);
 console.log(postId);
 </script>
 
@@ -56,6 +59,7 @@ console.log(postId);
       var(--grid-vertical) - var(--grid-vertical) - var(--grid-vertical) -
       var(--grid-vertical)
   );
+  overflow: hidden;
 }
 .review-item {
   width: 100%;
