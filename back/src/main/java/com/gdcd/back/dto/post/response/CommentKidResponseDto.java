@@ -17,6 +17,7 @@ public class CommentKidResponseDto {
     private String content;
     private String writerNickname;
     private String writerProfile;
+    private LocalDateTime registTime;
     private LocalDateTime updateTime;
 
     public CommentKidResponseDto(Comment comment) {
@@ -24,6 +25,7 @@ public class CommentKidResponseDto {
         this.content = comment.getContent();
         this.writerNickname = comment.getWriter().getNickname();
         this.writerProfile = comment.getWriter().getProfile();
-        this.updateTime = comment.getUpdateDate();
+        this.registTime = comment.getRegistDate().plusHours(9);
+        this.updateTime = comment.getUpdateDate().plusHours(9);
     }
 }
