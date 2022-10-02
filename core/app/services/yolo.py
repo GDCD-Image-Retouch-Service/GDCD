@@ -3,7 +3,6 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 import torch
-import torchvision.transforms as transforms
 import numpy as np
 from numpy import random
 
@@ -43,12 +42,12 @@ class Yolo():
             logger.error(f"Building Yolo Failed !!! - {traceback.format_exc()}")
     
 
-    def predict(self, image: Image) -> Dict[str, float]:
+    def predict(self, image: Image):
         try:
             logger.info(f"Preprocessing {id(image)} ...")
             img0 = np.array(image)
             imgsz = check_img_size(min(img0.shape[:2]), s=self.stride)  # check img_size
-            print(imgsz, min(img0.shape[:2]))
+
             img = letterbox(img0, imgsz, stride=self.stride)[0]
             img = img.transpose(2, 0, 1)
             img = np.ascontiguousarray(img)
