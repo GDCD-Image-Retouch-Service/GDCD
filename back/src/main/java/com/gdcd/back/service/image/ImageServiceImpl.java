@@ -5,14 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdcd.back.config.JwtTokenProvider;
 import com.gdcd.back.domain.image.Image;
 import com.gdcd.back.domain.image.ImageRepository;
+import com.gdcd.back.domain.image.data.DataRepository;
 import com.gdcd.back.domain.image.optrequest.OptRequest;
 import com.gdcd.back.domain.image.optrequest.OptRequestRepository;
 import com.gdcd.back.domain.user.User;
 import com.gdcd.back.domain.user.UserRepository;
-import com.gdcd.back.dto.image.request.AfterImageSaveRequestDto;
-import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
-import com.gdcd.back.dto.image.request.ImageOptProcessingRequestDto;
-import com.gdcd.back.dto.image.request.InpaintingRequestDto;
+import com.gdcd.back.dto.image.request.*;
 import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import com.gdcd.back.dto.image.response.ImageListResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +40,7 @@ public class ImageServiceImpl implements ImageService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final OptRequestRepository optRequestRepository;
+    private final DataRepository dataRepository;
     private final String ROOT = "/app/data/images/";
     private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
     private final String CORE = "https://j7b301.p.ssafy.io/core/";
@@ -131,7 +130,7 @@ public class ImageServiceImpl implements ImageService {
         List<LocalDate> dateTimeList = new ArrayList<>(dateTime);
         dateTimeList.sort(Comparator.reverseOrder());
 
-        Map<LocalDate, List<ImageListResponseDto>> images = new HashMap<>();
+        Map<LocalDate, List<ImageListResponseDto>> images = new LinkedHashMap<>();
         for (LocalDate datetime : dateTimeList) {
             List<ImageListResponseDto> list = new ArrayList<>();
             // 원래 코드 1
@@ -559,6 +558,10 @@ public class ImageServiceImpl implements ImageService {
         }
 
         return imageRepository.save(requestDto.toDocument(user.getId(), ADDRESS + count.toString(), afterPath, originImage.getObjects())).getId();
+    }
+
+    public Long addCsvData(ImageSaveRequestDto requestDto){
+        return dataRepository.save(requestDto.toDocument()).getId();
     }
 
 

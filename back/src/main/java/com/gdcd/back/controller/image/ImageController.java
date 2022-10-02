@@ -1,10 +1,7 @@
 package com.gdcd.back.controller.image;
 
 import com.gdcd.back.controller.Controller;
-import com.gdcd.back.dto.image.request.AfterImageSaveRequestDto;
-import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
-import com.gdcd.back.dto.image.request.ImageOptProcessingRequestDto;
-import com.gdcd.back.dto.image.request.InpaintingRequestDto;
+import com.gdcd.back.dto.image.request.*;
 import com.gdcd.back.service.image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -97,7 +94,7 @@ public class ImageController extends Controller {
     }
 
     @PostMapping("/datafication")
-    public ResponseEntity<Map<String, Object>> imageDatafication() {
-        return getResponseEntity("hi");
+    public ResponseEntity<Map<String, Object>> imageDatafication(@RequestBody ImageSaveRequestDto requestDto) {
+        return getResponseEntity(imageService.addCsvData(requestDto));
     }
 }
