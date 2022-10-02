@@ -1,5 +1,5 @@
 <template>
-  <Popper arrow>
+  <Popper arrow class="arrow">
     <div v-if="!accountStore.getIsLogined">로그인안함</div>
     <div v-else>로그인함</div>
     <template #content="{ close }">
@@ -55,5 +55,9 @@ const callback = async (response) => {
   flex-direction: column;
   align-items: center;
   gap: var(--grid-vertical); */
+}
+
+.popper {
+  z-index: 9000;
 }
 </style>
