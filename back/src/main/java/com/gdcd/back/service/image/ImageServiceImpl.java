@@ -5,21 +5,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdcd.back.config.JwtTokenProvider;
 import com.gdcd.back.domain.image.Image;
 import com.gdcd.back.domain.image.ImageRepository;
+import com.gdcd.back.domain.image.optrequest.OptRequest;
+import com.gdcd.back.domain.image.optrequest.OptRequestRepository;
 import com.gdcd.back.domain.user.User;
 import com.gdcd.back.domain.user.UserRepository;
 import com.gdcd.back.dto.image.request.AfterImageSaveRequestDto;
 import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
-import com.gdcd.back.dto.image.response.CoreScoreResponseDto;
+import com.gdcd.back.dto.image.request.ImageOptProcessingRequestDto;
+import com.gdcd.back.dto.image.request.InpaintingRequestDto;
 import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import com.gdcd.back.dto.image.response.ImageListResponseDto;
-//import jdk.internal.util.xml.impl.Input;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.tomcat.util.http.fileupload.FileUpload;
-import org.springframework.core.io.ByteArrayResource;
+import org.json.simple.JSONObject;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -32,21 +33,24 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import java.io.*;
 import java.nio.file.Files;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
-import org.apache.tomcat.util.http.fileupload.FileItem.*;
+
 @Service
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final OptRequestRepository optRequestRepository;
     private final String ROOT = "/app/data/images/";
     private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
     private final String CORE = "https://j7b301.p.ssafy.io/core/";
     private final String SCORE_IMAGE = "score-image";
     private final String DETECT_OBJECT = "detect-object";
     private final String OPTIMIZE_IMAGE = "optimize-image";
+    private final String OPTIMIZE_REQUEST = "optimize-request";
+    private final String SCORING_PATHS = "score-image-by-user-id";
+    private final String INPAINT_IMAGE = "inpaint-image";
     private Map<String, Object> RESULT_OBJECT;
 
     private final String BEFORE = "/before";
@@ -65,14 +69,14 @@ public class ImageServiceImpl implements ImageService {
         String endPoint = "." + imageType.substring(imageType.lastIndexOf("/") + 1);
         String path = user.getId().toString();
         String urlName = "/" + urlCount.toString() + endPoint;
-        String FilePath = path+BEFORE+ urlName;
+        String FilePath = path + BEFORE + urlName;
         File Folder = new File(ROOT + path);
         try {
             if (!Folder.exists()) {
                 try {
                     Folder.mkdir();
-                    File Folder2 = new File(ROOT+path+BEFORE);
-                    if (!Folder2.exists()){
+                    File Folder2 = new File(ROOT + path + BEFORE);
+                    if (!Folder2.exists()) {
                         Folder2.mkdir();
                     }
                 } catch (Exception e) {
@@ -135,13 +139,13 @@ public class ImageServiceImpl implements ImageService {
 //                    list.add(new ImageListResponseDto(new ImageDetailResponseDto(image), new ImageDetailResponseDto(afterImage)));
             for (int i = 0; i < imageList.size() / 2; i++) {
                 if (imageList.get(2 * i).getRegistDate().toLocalDate().equals(datetime)) {
-                    list.add(new ImageListResponseDto(new ImageDetailResponseDto(imageList.get(2*i)), new ImageDetailResponseDto(imageList.get(2*i+1))));
+                    list.add(new ImageListResponseDto(new ImageDetailResponseDto(imageList.get(2 * i)), new ImageDetailResponseDto(imageList.get(2 * i + 1))));
                 }
             }
             images.put(datetime, list);
         }
         return images;
-}
+    }
 //    public List<ImageDetailResponseDto> findImageList(Long userId) throws Exception{
 //        List<Image> imageList;
 //        imageList = imageRepository.findAllByUserId(userId);
@@ -194,11 +198,14 @@ public class ImageServiceImpl implements ImageService {
 
 //            System.out.println("여긴가?4");
 //            CoreScoreResponseDto responseDto = objectMapper.readValue(response.getBody(), CoreScoreResponseDto.class);
-            Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
+
+            // list가 아닌 단일 객체를 보내주기로 했음. 될지는 모르겠고.
+//            Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
+            Object object = objectMapper.readValue(response.getBody(), Object.class);
 
 //            System.out.println("여긴가?5");
 //            RESULT_OBJECT.put("dict",responseDto);
-            RESULT_OBJECT.put("dict", objects);
+            RESULT_OBJECT.put("dict", object);
 //            System.out.println("여긴가?6");
         } catch (Exception e) {
             e.printStackTrace();
@@ -207,7 +214,7 @@ public class ImageServiceImpl implements ImageService {
         return RESULT_OBJECT;
     }
 
-//    public Map<String, Object> requestObjectDetection(MultipartFile image, Long imageId) {
+    //    public Map<String, Object> requestObjectDetection(MultipartFile image, Long imageId) {
     public List<String> requestObjectDetection(Long imageId) {
 //        Image image = findImage(imageId);
 //    RESULT_OBJECT = new HashMap<>();
@@ -221,16 +228,13 @@ public class ImageServiceImpl implements ImageService {
             MultiValueMap<String, Resource> body = new LinkedMultiValueMap<>();
 
             //받아온 imageId로 file 객체 만들기
-            File file = new File(ROOT+img.getFilePath());
+            File file = new File(ROOT + img.getFilePath());
 
             //받아온 파일로 FileItem 만들기 (org.apache.commons.fileupload.FileItem)
             // DistFileItem : org.apache.commons.fileupload.disk.DiskFileItem
             FileItem fileItem = new DiskFileItem("originFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
             try {
-                //
-                InputStream input = new FileInputStream(file);
-                OutputStream os = fileItem.getOutputStream();
                 IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -259,14 +263,14 @@ public class ImageServiceImpl implements ImageService {
 
 
             List<String> objectList = new ArrayList<>();
-            for (String str : tags){
-                String string = new String(str+";");
-                for (Object object : objects){
+            for (String str : tags) {
+                String string = new String(str + ";");
+                for (Object object : objects) {
                     Map<String, Object> obj2 = objectMapper.convertValue(object, Map.class);
-                    if (str.equals(obj2.get("class"))){
+                    if (str.equals(obj2.get("class"))) {
                         ArrayList<String> ul = (ArrayList<String>) obj2.get("ul");
                         ArrayList<String> dr = (ArrayList<String>) obj2.get("dr");
-                        string += String.valueOf(ul.get(0))+","+String.valueOf(ul.get(1))+";"+String.valueOf(dr.get(0))+","+String.valueOf(dr.get(1))+";";
+                        string += String.valueOf(ul.get(0)) + "," + String.valueOf(ul.get(1)) + ";" + String.valueOf(dr.get(0)) + "," + String.valueOf(dr.get(1)) + ";";
                     }
                 }
                 objectList.add(string);
@@ -332,7 +336,7 @@ public class ImageServiceImpl implements ImageService {
 //        return null;
 //    }
 
-    public Map<String, Object> requestOptimization(String token, MultipartFile image) {
+    public Map<String, Object> requestOptimizationOld(String token, MultipartFile image) {
         RESULT_OBJECT = new HashMap<>();
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -360,7 +364,6 @@ public class ImageServiceImpl implements ImageService {
             Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
 
             RESULT_OBJECT.put("dict", objects);
-
         } catch (Exception e) {
             e.printStackTrace();
             RESULT_OBJECT.put("error", "IMAGE NOT SCORED");
@@ -368,43 +371,183 @@ public class ImageServiceImpl implements ImageService {
         return RESULT_OBJECT;
     }
 
+//    public Map<String, Object> requestOptimizationImage(String token, MultipartFile image) {
+//        RESULT_OBJECT = new HashMap<>();
+//        // OptRequest 객체 생성해서 repository.save
+//        // Core로 request 생성해서 전달 return type은 Long
+//        // RESUTL_OBJECT에 put해서 프론트로 response 전달
+//        return RESULT_OBJECT;
+//    }
 
-    public Long addAfterImage(String token, AfterImageSaveRequestDto requestDto) throws Exception{
+    public Map<String, Object> requestOptimization(String token, Long imageId) {
+        RESULT_OBJECT = new HashMap<>();
+        try {
+            User user = findUserByEmail(decodeToken(token));
+            // 1. OptRequest 객체 저장
+            OptRequest request = optRequestRepository.save(OptRequest.builder()
+                    .user(user.getId())
+                    .done(0)
+                    .build());
+            // 2. MultiPartFile 재구성
+            Image img = findImage(imageId);
+            File file = new File(ROOT + img.getFilePath());
+            FileItem fileItem = new DiskFileItem("originFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
+            IOUtils.copy(Files.newInputStream(file.toPath()), fileItem.getOutputStream());
+
+            // 3. Core로 optimization request 전달
+
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
+
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            MultipartFile mFile = new CommonsMultipartFile(fileItem);
+            body.add("image", mFile.getResource());
+            body.add("userId", user.getId());
+            body.add("requestId", request.getId());
+
+            HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+            HttpEntity<String> response = restTemplate.postForEntity(CORE + OPTIMIZE_REQUEST, requestMessage, String.class);
+
+            // 4. return 값을 reponse로 전달
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+            Long requestId = objectMapper.readValue(response.getBody(), Long.class);
+
+            RESULT_OBJECT.put("requestId", requestId);
+        } catch (Exception e) {
+            RESULT_OBJECT.put("error", e.getMessage());
+        }
+        return RESULT_OBJECT;
+    }
+
+    public Map<String, Object> optimizationProgress(Long requestId) {
+        RESULT_OBJECT = new HashMap<>();
+        try {
+            // 1. OptRequestRepository에서 requestId로 find.finished == 7?
+            if (optRequestRepository.findById(requestId).isPresent()) {
+                OptRequest request = optRequestRepository.findById(requestId).get();
+                if (request.getDone() >= 7) {
+                    // 2. true 일 때는 score-image-by-path 요청
+                    RestTemplate restTemplate = new RestTemplate();
+
+                    HttpHeaders httpHeaders = new HttpHeaders();
+                    httpHeaders.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+
+                    // 2-1. list에 넣어서 core로 보내줘야해
+                    JSONObject jsonObj = new JSONObject();
+                    jsonObj.put("userId", request.getUser());
+                    String body = jsonObj.toString();
+
+                    HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+                    HttpEntity<String> response = restTemplate.postForEntity(CORE + SCORING_PATHS, requestMessage, String.class);
+
+                    // 2-2. 반환값 프론트로 전달
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+                    Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
+
+                    RESULT_OBJECT.put("progress", request.getDone());
+                    RESULT_OBJECT.put("dict", objects);
+                } else {
+                    // 3. false 일 때는 finished 개수만 전달
+                    RESULT_OBJECT.put("progress", request.getDone());
+                }
+            } else {
+                throw new Exception("REQUEST NOT FOUND");
+            }
+        } catch (Exception e) {
+            RESULT_OBJECT.put("error", e.getMessage());
+        }
+        return RESULT_OBJECT;
+    }
+
+    public Map<String, Object> requestProcess(ImageOptProcessingRequestDto requestDto) {
+        RESULT_OBJECT = new HashMap<>();
+        try {
+            if (!optRequestRepository.findById(requestDto.getRequestId()).isPresent())
+                throw new Exception("REQUEST NOT FOUND");
+            OptRequest request = optRequestRepository.findById(requestDto.getRequestId()).get();
+            request.update(requestDto.getFinished());
+            optRequestRepository.save(request);
+        } catch (Exception e) {
+            RESULT_OBJECT.put("error", e.getMessage());
+        }
+        return RESULT_OBJECT;
+    }
+
+    public Map<String, Object> inpaintImage(InpaintingRequestDto requestDto) {
+        RESULT_OBJECT = new HashMap<>();
+        try {
+            // 2. MultiPartFile 재구성
+            Image img = findImage(requestDto.getImageId());
+            File file = new File(ROOT + img.getFilePath());
+            FileItem fileItem = new DiskFileItem("originFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
+            IOUtils.copy(Files.newInputStream(file.toPath()), fileItem.getOutputStream());
+
+            // 3. Core로 optimization request 전달
+
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
+
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            MultipartFile mFile = new CommonsMultipartFile(fileItem);
+            body.add("image", mFile.getResource());
+            body.add("points", requestDto.getObjects());
+
+            HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+
+            HttpEntity<String> response = restTemplate.postForEntity(CORE + INPAINT_IMAGE, requestMessage, String.class);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+            Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
+
+            RESULT_OBJECT.put("dict", objects);
+        } catch (Exception e) {
+            RESULT_OBJECT.put("error", e.getMessage());
+        }
+        return RESULT_OBJECT;
+    }
+
+    public Long addAfterImage(String token, AfterImageSaveRequestDto requestDto) throws Exception {
         User user = findUserByEmail(decodeToken(token));
         Long count = imageRepository.findAll().stream().count() + 1;
         Image originImage = findImage(requestDto.getImageId());
         String url = requestDto.getImageUrl();
-        String filePath = url.substring(url.lastIndexOf("=")+1);
+        String filePath = url.substring(url.lastIndexOf("=") + 1);
         String originPath = originImage.getFilePath();
         String afterPath = originPath.replace("before", "after");
         String path = String.valueOf(user.getId());
-        File folder = new File(ROOT+path+"/"+AFTER);
+        File folder = new File(ROOT + path + "/" + AFTER);
 
         // after 폴더 생성
         try {
-            if (!folder.exists()){
+            if (!folder.exists()) {
                 folder.mkdir();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.getStackTrace();
         }
 
         // 파일 복사
         File img = new File(filePath);
-        File newFile = new File(ROOT+afterPath);
+        File newFile = new File(ROOT + afterPath);
         FileUtils.copyFile(img, newFile);
 
         // 파일 삭제
         try {
-            File rootDir = new File(BUFFER+path);
+            File rootDir = new File(BUFFER + path);
             FileUtils.deleteDirectory(rootDir);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return imageRepository.save(requestDto.toDocument(user.getId(),ADDRESS+count.toString(),afterPath,originImage.getObjects())).getId();
+        return imageRepository.save(requestDto.toDocument(user.getId(), ADDRESS + count.toString(), afterPath, originImage.getObjects())).getId();
     }
-
 
 
     private Image findImage(Long imageId) {

@@ -2,6 +2,8 @@ package com.gdcd.back.service.image;
 
 import com.gdcd.back.dto.image.request.AfterImageSaveRequestDto;
 import com.gdcd.back.dto.image.request.ImageCreateRequestDto;
+import com.gdcd.back.dto.image.request.ImageOptProcessingRequestDto;
+import com.gdcd.back.dto.image.request.InpaintingRequestDto;
 import com.gdcd.back.dto.image.response.ImageDetailResponseDto;
 import com.gdcd.back.dto.image.response.ImageListResponseDto;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,10 +25,17 @@ public interface ImageService {
     public List<String> requestObjectDetection(Long imageId);
 //    public List<Object> requestObjectDetection(MultipartFile image);
 
-    public Map<String, Object> requestOptimization(String token, MultipartFile image);
+    public Map<String, Object> requestOptimizationOld(String token, MultipartFile image);
+
+//    public Map<String, Object> requestOptimization(String token, MultipartFile image);
+    public Map<String, Object> requestOptimization(String token, Long imageId);
+
+    public Map<String, Object> optimizationProgress(Long requestId);
+
+    public Map<String, Object> requestProcess(ImageOptProcessingRequestDto requestDto);
+
+    public Map<String, Object> inpaintImage(InpaintingRequestDto requestDto);
 
     public Long addAfterImage(String token, AfterImageSaveRequestDto requestDto) throws Exception;
-
-
 }
 
