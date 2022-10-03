@@ -8,23 +8,16 @@
       <img :src="following.profile" alt="" class="profile-image" />
       {{ following.nickname }}
     </div>
-    <delete-button
-      @click="
-        userStore.follow(following.userId),
-          router.push({ name: 'ProfileFriend' })
-      "
-    />
+    <delete-button @click="userStore.follow(following.userId)" />
   </div>
 </template>
 
 <script setup>
 import DeleteButton from '@/components/molecules/common/btn/BtnDelete.vue';
 import { useUserStore } from '@/stores/user';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
-const router = useRouter();
 const route = useRoute();
-console.log(router);
 const userStore = useUserStore();
 
 userStore.getMyFollowing(route.params.userId);
@@ -39,6 +32,8 @@ userStore.getMyFollowing(route.params.userId);
   display: flex;
   gap: 20px;
   align-items: center;
+  font-size: 15px;
+  font-weight: 700;
 }
 .profile-image {
   width: 50px;

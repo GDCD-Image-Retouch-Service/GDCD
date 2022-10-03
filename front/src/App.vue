@@ -125,7 +125,7 @@ document.addEventListener('scroll', (e) => {
   --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
 }
 
-.light * {
+.light {
   color: var(--color-reverse);
 }
 

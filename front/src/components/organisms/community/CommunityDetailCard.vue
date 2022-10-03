@@ -61,10 +61,37 @@
     <div class="like-bookmark-chat">
       <div class="like-bookmark">
         <div class="herat-wrap">
-          <i class="bi bi-heart" @click="communityStore.likePost(postId)"></i>
+          <i
+            class="bi bi-heart"
+            v-if="!communityStore.post.item?.like"
+            @click="clickLike()"
+          ></i>
+          <i
+            v-else
+            class="bi bi-heart-fill"
+            @click="clickLike()"
+            style="color: #ed4956"
+          ></i>
           <span>{{ communityStore.post.item?.likeCount }}</span>
         </div>
-        <i class="bi bi-bookmark" @click="communityStore.scrapPost(postId)"></i>
+        <i
+          class="bi bi-bookmark"
+          v-if="!communityStore.post.item?.scrap"
+          @click="
+            communityStore.scrapPost(postId),
+              (communityStore.post.item.scrap =
+                !communityStore.post.item?.scrap)
+          "
+        ></i>
+        <i
+          class="bi bi-bookmark-fill"
+          v-else
+          @click="
+            communityStore.scrapPost(postId),
+              (communityStore.post.item.scrap =
+                !communityStore.post.item?.scrap)
+          "
+        ></i>
       </div>
       <i class="bi bi-chat" style="color: var(--black)" @click="clickComment()">
       </i>
@@ -85,6 +112,17 @@ const router = useRouter();
 const postId = route.params.postId;
 const userStore = useUserStore();
 const communityStore = useCommunityStore();
+
+const clickLike = () => {
+  if (!communityStore.post.item?.like) {
+    console.log(communityStore.post.item?.likeCount);
+    console.log(!communityStore.post.item?.like);
+    communityStore.post.item.likeCount += 1;
+  } else {
+    communityStore.post.item.likeCount -= 1;
+  }
+  communityStore.post.item.like = !communityStore.post.item?.like;
+};
 
 const clickComment = () => {
   communityStore.isOpenComment = !communityStore.isOpenComment;

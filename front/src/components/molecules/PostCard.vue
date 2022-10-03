@@ -3,16 +3,16 @@
     <i class="bi bi-three-dots dot-icon"></i>
 
     <!-- post card image -->
-    <img
-      :src="post.images.imageUrl"
-      alt=""
+    <div
+      :style="{ backgroundImage: 'url(' + post.images.imageUrl + ')' }"
       @click="
         $router.push({
           name: 'CommunityDetail',
           params: { postId: post.postId },
         })
       "
-    />
+      class="post-image"
+    ></div>
 
     <!-- post card -title -->
     <div class="post-card-title">
@@ -22,7 +22,7 @@
     <!-- post card userprofile -->
     <div class="post-card-userinfo">
       <img :src="post.writerProfile" class="profile-image" alt="" />
-      <div style="margin-left: 5px">{{ post.writerNickname }}</div>
+      <div class="profile-nickname">{{ post.writerNickname }}</div>
     </div>
 
     <!-- post card like and bookmark -->
@@ -109,6 +109,12 @@ const clickLike = () => {
 
   background: var(--color-main);
 }
+.post-image {
+  width: 100%;
+  padding-bottom: 100%;
+  background-size: cover;
+  background-position: center;
+}
 .post-card-title {
   text-align: start;
   width: calc(100% - 10px);
@@ -125,6 +131,7 @@ const clickLike = () => {
   margin-right: 10px;
   justify-content: flex-end;
   font-size: 14px;
+  align-items: center;
   margin-top: 35px;
 }
 .profile-image {
@@ -132,6 +139,11 @@ const clickLike = () => {
   height: 20px;
   object-fit: cover;
   border-radius: 20px;
+  border: 1px solid var(--instagram-grey);
+}
+.profile-nickname {
+  margin-left: 5px;
+  text-align: center;
 }
 .dot-icon {
   position: absolute;

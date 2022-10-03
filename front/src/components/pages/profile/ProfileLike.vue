@@ -8,6 +8,12 @@
       <div
         :style="{ backgroundImage: 'url(' + post.images.imageUrl + ')' }"
         class="scrap-image common-image"
+        @click="
+          router.push({
+            name: 'CommunityDetail',
+            params: { postId: post.postId },
+          })
+        "
       ></div>
       <btn-image-toggle />
     </div>
@@ -17,8 +23,9 @@
 <script setup>
 import { useUserStore } from '@/stores/user.js';
 import { BtnImageToggle } from '@/components/molecules/common/btn/BtnImageToggle.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
+const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
 
