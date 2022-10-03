@@ -16,10 +16,7 @@ import { computed, ref, onBeforeMount } from 'vue';
 
 import { useUserStore } from '@/stores';
 
-import { computed } from 'vue';
 import { useMainStore } from '@/stores';
-
-
 
 const mainStore = useMainStore();
 
@@ -30,7 +27,7 @@ if (localStorage.getItem('token')) {
   userStore.getMyinfo();
 }
 
-const theme = computed(() => (homeStore.getIsDark ? 'dark' : 'light'));
+const theme = computed(() => (mainStore.getIsDark ? 'dark' : 'light'));
 
 onBeforeMount(() => {
   window.addEventListener('scroll', handleScroll);
@@ -61,7 +58,6 @@ document.addEventListener('scroll', (e) => {
     isVisible.value = false;
   }
 });
-
 </script>
 
 <style>
