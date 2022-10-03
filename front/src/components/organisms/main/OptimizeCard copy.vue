@@ -1,25 +1,9 @@
+// 캐러셀로 해놓음
+
 <template>
   <div
     class="optimize-card main outer d-flex flex-column align-items-center justify-content-center"
   >
-    <div class="spacer" />
-    <div
-      class="d-flex align-items-center"
-      style="height: 48px; font-size: 12pt"
-    >
-      <!-- <img
-        :src="require('@/assets/grade/1.png')"
-        style="width: 48px; height: 48px; object-fit: cover"
-        alt="your image"
-      /> -->
-      <div v-if="isLoading">사진을 최적화하는 중입니다 {{ progress }}/7</div>
-      <!-- <div>iId:{{ mainStore.getTempId }}</div>
-      <div style="margin-left: 8px">rId:{{ mainStore.getRequestId }}</div> -->
-    </div>
-    <div class="spacer" />
-
-    <loading-dots v-if="!isLoading" />
-
     <div
       id="carouselExampleCaptions"
       class="carousel slide"
@@ -54,15 +38,17 @@
               style="height: 100%; width: 400px"
             >
               <div class="textBox">
-                <img
-                  ref="picBox"
-                  src=""
-                  style="width: 380px; height: 380px; object-fit: cover"
-                  alt="your image"
-                />
-                <h2>원본</h2>
-                <h2>점수</h2>
+                <img src="https://picsum.photos/200/300" alt="임시" />
+
+                <h2>사진</h2>
+                <div class="spacer"></div>
+                <p>점수</p>
               </div>
+              <img
+                src="@/assets/grade/1.png"
+                style="height: 100px; object-fit: cover"
+                alt="logo"
+              />
             </div>
             <div class="carousel-item-1-img flex-grow-1"></div>
           </div>
@@ -107,7 +93,7 @@
         type="button"
         data-bs-target="#carouselExampleCaptions"
         data-bs-slide="prev"
-        style="width: 10%"
+        style="width: 4%"
       >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -117,80 +103,16 @@
         type="button"
         data-bs-target="#carouselExampleCaptions"
         data-bs-slide="next"
-        style="width: 10%"
+        style="width: 4%"
       >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-
-    <div class="spacer" />
-    <div class="btn-set d-flex justify-content-center">
-      <div
-        @click="optimize"
-        class="btn-set-button inner d-flex align-items-center justify-content-center"
-        style="margin-left: 8px"
-      >
-        <i class="bi bi-stars"></i>
-      </div>
-
-      <div
-        @click="process"
-        class="btn-set-button inner d-flex align-items-center justify-content-center"
-        style="margin-left: 8px"
-      >
-        <i class="bi bi-cloud-check-fill"></i>
-      </div>
-    </div>
-    <div class="spacer" />
   </div>
 </template>
 
-<script setup>
-import LoadingDots from '@/components/atoms/LoadingDots.vue';
-
-import { ref, onMounted } from 'vue';
-import { image } from '@/api/rest';
-import { useMainStore } from '@/stores/main';
-
-// init
-const mainStore = useMainStore();
-
-// data
-const isLoading = ref(true);
-const picBox = ref(null);
-const progress = ref(0);
-const optiList = ref([]);
-
-// method
-const init = async () => {
-  picBox.value.src = mainStore.getTempImg;
-  // isLoading.value = false;
-};
-
-const optimize = async () => {
-  const data = await image.optimization(mainStore.getTempId);
-  console.log(data);
-  mainStore.setRequestId(data.item.requestId);
-};
-
-const process = async () => {
-  const data = await image.optimizingProcess(mainStore.getRequestId);
-  console.log(data);
-  progress.value = data.item.progress;
-  if (progress.value != 7) {
-    setTimeout(process, 10000);
-  } else {
-    optiList.value = data.item.dict;
-    console.log(optiList.value);
-  }
-};
-
-// Life Cycle
-onMounted(() => {
-  init();
-});
-</script>
+<script setup></script>
 
 <style scoped>
 .optimize-card {
