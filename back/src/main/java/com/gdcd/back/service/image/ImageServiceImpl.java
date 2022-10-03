@@ -20,6 +20,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -116,7 +117,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
 //    public List<LocalDate> findImageList(String token) throws Exception {
-    public Map<LocalDate, List<ImageListResponseDto>> findImageList(String token) throws Exception {
+    public Map<LocalDate, List<ImageListResponseDto>> findImageList(String token, Pageable pageable) throws Exception {
 //        List<Image> imageList;
         User user = findUserByEmail(decodeToken(token));
         List<Image> imageList = imageRepository.findAllByUserIdAndBeforeImage(user.getId(), true);
@@ -274,18 +275,15 @@ public class ImageServiceImpl implements ImageService {
 
 
             List<String> objectList = new ArrayList<>();
-            for (String str : tags) {
-                String string = new String(str + ";");
-                for (Object object : objects) {
-                    Map<String, Object> obj2 = objectMapper.convertValue(object, Map.class);
-                    if (str.equals(obj2.get("class"))) {
-                        ArrayList<String> ul = (ArrayList<String>) obj2.get("ul");
-                        ArrayList<String> dr = (ArrayList<String>) obj2.get("dr");
-                        string += String.valueOf(ul.get(0)) + "," + String.valueOf(ul.get(1)) + ";" + String.valueOf(dr.get(0)) + "," + String.valueOf(dr.get(1)) + ";";
-                    }
-                }
-                objectList.add(string);
+            for (Object object : objects) {
+                Map<String, Object> obj2 = objectMapper.convertValue(object, Map.class);
+                ArrayList<String> ul = (ArrayList<String>) obj2.get("ul");
+                ArrayList<String> dr = (ArrayList<String>) obj2.get("dr");
+                String str = (String) obj2.get("class");
+                str += ";"+String.valueOf(ul.get(0)) + "," + String.valueOf(ul.get(1)) + ";" + String.valueOf(dr.get(0)) + "," + String.valueOf(dr.get(1)) + ";";
+                objectList.add(str);
             }
+
             return objectList;
         } catch (Exception e) {
             e.printStackTrace();
@@ -443,16 +441,8 @@ public class ImageServiceImpl implements ImageService {
                     // 2. true 일 때는 score-image-by-path 요청
                     RestTemplate restTemplate = new RestTemplate();
 
-                    HttpHeaders httpHeaders = new HttpHeaders();
-                    httpHeaders.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-
-                    // 2-1. list에 넣어서 core로 보내줘야해
-                    JSONObject jsonObj = new JSONObject();
-                    jsonObj.put("userId", request.getUser());
-                    String body = jsonObj.toString();
-
-                    HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
-                    HttpEntity<String> response = restTemplate.postForEntity(CORE + SCORING_PATHS, requestMessage, String.class);
+                    ResponseEntity<String> response = restTemplate.getForEntity(
+                            CORE + SCORING_PATHS + "?userId=" + request.getUser(), String.class);
 
                     // 2-2. 반환값 프론트로 전달
                     ObjectMapper objectMapper = new ObjectMapper();
