@@ -42,8 +42,8 @@ public class ImageServiceImpl implements ImageService {
     private final JwtTokenProvider jwtTokenProvider;
     private final OptRequestRepository optRequestRepository;
     private final DataRepository dataRepository;
-//    private final String ROOT = "/app/data/images/";
-//    private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
+    private final String ROOT = "/app/data/images/";
+    private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
     private final String CORE = "https://j7b301.p.ssafy.io/core/";
     private final String SCORE_IMAGE = "score-image";
     private final String DETECT_OBJECT = "detect-object";
@@ -55,12 +55,12 @@ public class ImageServiceImpl implements ImageService {
 
     private final String BEFORE = "/before";
     private final String AFTER = "/after";
-//    private final String BUFFER = "/app/data/buffer/";
+    private final String BUFFER = "/app/data/buffer/";
 
     //    Local에서 진행할 폴더
-        String ROOT = "C:/test/images/";
-        String BUFFER = "C:/test/buffer/";
-        String ADDRESS = "http://localhost:8081/api/image?imageId=";
+//        String ROOT = "C:/test/images/";
+//        String BUFFER = "C:/test/buffer/";
+//        String ADDRESS = "http://localhost:8081/api/image?imageId=";
     public Long addImage(String token, MultipartFile image, ImageCreateRequestDto requestDto) throws Exception {
         User user = findUserByEmail(decodeToken(token));
         Long urlCount = imageRepository.findAllByUserId(user.getId()).stream().count() + 1;
