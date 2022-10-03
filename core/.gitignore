@@ -1,4 +1,5 @@
-# .pt files
+# trained files
+app/models/*.ckpt
 app/models/*.pt
 app/models/*.pth
 
