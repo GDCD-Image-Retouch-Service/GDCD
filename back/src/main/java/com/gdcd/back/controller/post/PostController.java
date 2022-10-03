@@ -35,26 +35,13 @@ public class PostController extends Controller {
         return getResponseEntity(postService.findPostById(token, postId));
     }
 
-//    @PostMapping("")
-//    public ResponseEntity<Map<String, Object>> postAdd(@RequestPart("requestDto") PostCreateRequestDto requestDto) {
-//        return getResponseEntity(postService.addPost(requestDto));
-////        return getResponseEntity(images);
-//    }
-
     @PostMapping("")
     public ResponseEntity<Map<String, Object>> postAdd(@RequestHeader String token, @RequestBody PostCreateRequestDto requestDto) throws Exception {
         return getResponseEntity(postService.addPost(token, requestDto));
-//        return getResponseEntity(images);
     }
 
-//    @PostMapping("")
-//    public String postAdd(@RequestPart MultipartFile images, @RequestBody PostCreateRequestDto requestDto) {
-////        return getResponseEntity(postService.addPost(requestDto));
-//        return images.getOriginalFilename();
-//    }
-
     @PutMapping("")
-    public ResponseEntity<Map<String, Object>> postModify(@RequestHeader String token, @RequestBody PostUpdateRequestDto requestDto) {
+    public ResponseEntity<Map<String, Object>> postModify(@RequestHeader String token, @RequestBody PostUpdateRequestDto requestDto) throws Exception {
         return getResponseEntity(postService.modifyPost(token, requestDto));
     }
 

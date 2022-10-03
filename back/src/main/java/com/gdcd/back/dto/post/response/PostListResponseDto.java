@@ -13,9 +13,7 @@ public class PostListResponseDto {
     private String writerNickname;
     private String writerProfile;
     private Integer likeCount;
-
     private String title;
-
     private Boolean scrap;
     private Boolean like;
     private ImageDetailResponseDto images;
@@ -28,7 +26,6 @@ public class PostListResponseDto {
         this.writerProfile = post.getWriterProfile();
         this.title = post.getTitle();
         this.images = img;
-//        this.representative = post.getRepresentative();
         this.registTime = post.getRegistTime().plusHours(9);
         this.updateTime = post.getUpdateTime().plusHours(9);
         this.likeCount = post.getLikeCount();

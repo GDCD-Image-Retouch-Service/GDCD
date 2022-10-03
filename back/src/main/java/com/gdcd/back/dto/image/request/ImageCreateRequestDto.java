@@ -21,9 +21,6 @@ public class ImageCreateRequestDto {
     private int quality;
     private List<String> objects = new ArrayList<>();
 
-
-
-
     public Image toDocument(){
         return Image.builder()
                 .userId(userId)

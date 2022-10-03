@@ -14,14 +14,13 @@ import com.gdcd.back.dto.post.request.PostReportRequestDto;
 import com.gdcd.back.dto.post.request.PostUpdateRequestDto;
 import com.gdcd.back.dto.post.response.PostDetailResponseDto;
 import com.gdcd.back.dto.post.response.PostListResponseDto;
-import com.gdcd.back.dto.post.response.PostListByUserIdResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -106,7 +105,7 @@ public class PostServiceImpl implements PostService{
 
     };
 
-    public Long modifyPost(String token, PostUpdateRequestDto requestDto){
+    public Long modifyPost(String token, PostUpdateRequestDto requestDto) throws Exception {
         Post post = findPost(requestDto.getPostId());
         if (validPost(post)){
             post.setUpdateTime(LocalDateTime.now());
@@ -151,7 +150,6 @@ public class PostServiceImpl implements PostService{
                 userRepository.save(liker);
             }
             post.setLikeUsers(new ArrayList<>());
-
             // report는 급하지 않으니까 나중에
             return "성공적으로 삭제되었습니다.";
         }else {
@@ -170,13 +168,11 @@ public class PostServiceImpl implements PostService{
         User user = findUserByEmail(decodeToken(token));
         if (validPost(post)){
             if (!post.getLikeUsers().contains(user.getId())){
-                // likeUser(Post)
                 List<Long> likeUser = post.getLikeUsers();
                 likeUser.add(user.getId());
                 post.setLikeUsers(likeUser);
                 post.addLikeCount();
 
-//                likePost(User)
                 List<Long> likePost = user.getLikePosts();
                 likePost.add(postId);
                 user.setLikePosts(likePost);
@@ -239,51 +235,17 @@ public class PostServiceImpl implements PostService{
         }
     }
 
-
-
-//.
-
-
-    private Post findPost(Long postId) {
-        return postRepository.findById(postId).get();
+    private Post findPost(Long postId) throws Exception {
+        if (postRepository.findById(postId).isPresent())
+            return postRepository.findById(postId).get();
+        else
+            throw new Exception("POST NOT FOUND");
     }
 
     private Image findImage(Long imageId) {
         return imageRepository.findById(imageId)
                 .orElseThrow(() -> new IllegalArgumentException(imageId + "번은(는) 존재하지 않는 게시글입니다."));
     }
-//    private Boolean validPost(Post post){
-//        if (post.getValidation().equals(true)){
-//            return true;
-//        }else {
-//            return false;
-//        }
-//    }
-
-//    private List<ImageSimpleResponseDto> list(Post post){
-//        List<ImageSimpleResponseDto> result = new ArrayList<>();
-//        List<String> list = post.getImages();
-//        for(String url : list){
-//            result.add(ImageSimpleResponseDto.builder()
-//                    .imageUrl(url)
-//                    .rank(1)
-//                    .build());
-//        }
-//        return result;
-//    }
-    // 찐
-//    private List<ImageSimpleResponseDto> list(Post post){
-//        List<ImageSimpleResponseDto> result = new ArrayList<>();
-//        List<String> list = post.getImages();
-//        for(String _id : list){
-//            Image image = findImage(_id);
-//            result.add(ImageSimpleResponseDto.builder()
-//                    .imageUrl(image.getImgUrl())
-////                            .rank()
-//                    .build());
-//        }
-//        return result;
-//    }
     private User findUserByEmail(String email) throws Exception {
         if (userRepository.findByEmail(email).isPresent())
             return userRepository.findByEmail(email).get();
