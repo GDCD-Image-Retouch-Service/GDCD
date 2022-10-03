@@ -12,16 +12,8 @@
     <div class="pic-mode" v-if="!mainStore.isCamMode">
       <div
         class="pic-container d-flex flex-column align-items-center justify-content-center"
-        style="
-          background: lightgray;
-          width: 380px;
-          max-width: 380px;
-          height: 380px;
-          max-height: 380px;
-          overflow: hidden;
-        "
       >
-        <div v-show="!isInput">사진을 올려주세요</div>
+        <div v-show="!isInput" class="pic-comment">사진을 올려주세요</div>
         <img
           v-show="isInput"
           ref="picBox"
@@ -268,9 +260,21 @@ const downloadImage = () => {
   border-radius: 20px;
   width: 90%;
   max-width: 380px;
-  overflow: hidden;
 }
-
+.pic-mode {
+  width: 100%;
+}
+.pic-container {
+  background: lightgray;
+  width: 100%;
+  padding-bottom: 100%;
+  position: relative;
+}
+.pic-comment {
+  position: absolute;
+  left: calc(50% - 66px);
+  top: calc(50% - 8px);
+}
 .camera-box {
   width: 380px;
   height: 380px;

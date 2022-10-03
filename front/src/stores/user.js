@@ -99,6 +99,7 @@ export const useUserStore = defineStore('userStore', {
         },
       })
         .then((res) => {
+          this.profile = [];
           this.profile = res.data;
           console.log(res.data);
         })
@@ -209,18 +210,17 @@ export const useUserStore = defineStore('userStore', {
         });
     },
 
-    // 회원정보수정
-    updateMyInfo(nickname, profile) {
+    // 회원 이미지 수정
+    updateUserProfile(profile) {
       const formdata = new FormData();
 
-      formdata.append('nickname', nickname);
       if (profile.type) {
         console.log('?');
         formdata.append('profile', profile);
       }
 
       axios({
-        url: user.myInfo(),
+        url: user.updateProfile(),
         method: 'PUT',
         headers: {
           token: this.token,
@@ -229,8 +229,30 @@ export const useUserStore = defineStore('userStore', {
         data: formdata,
       })
         .then((res) => {
+          this.getMyinfo();
+
           console.log(res.data);
-          this.getOtherinfo(0);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 회원 닉네임 수정
+    updateUserNickname(nickname) {
+      axios({
+        url: user.updateNickname(),
+        method: 'PUT',
+        headers: {
+          token: this.token,
+        },
+        params: {
+          nickname: nickname,
+        },
+      })
+        .then((res) => {
+          this.getMyinfo();
+          console.log(res.data);
         })
         .catch((err) => {
           console.log(err);

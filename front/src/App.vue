@@ -2,7 +2,7 @@
   <div class="app d-flex flex-column" :class="theme">
     <header-nav />
     <div class="app-container sub flex-grow-1 flex-shrink-1">
-      <router-view />
+      <router-view :key="$route.fullPath" />
     </div>
     <footer-nav :class="{ visible: isVisible }" />
   </div>
@@ -13,13 +13,13 @@ import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
 
 import { computed, ref, onBeforeMount } from 'vue';
-
+// import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores';
 
 import { useMainStore } from '@/stores';
 
 const mainStore = useMainStore();
-
+// const route = useRoute();
 // 바꿀 예정
 const userStore = useUserStore();
 
@@ -70,8 +70,8 @@ document.addEventListener('scroll', (e) => {
 :root {
   /* 비율 */
   --size-h-spacer: 20px;
-  --size-h-header: 48px;
-  --size-h-footer: 48px;
+  --size-h-header: 70px;
+  --size-h-footer: 60px;
   --size-w-footer: 400px;
   --size-radius: 24px;
 
@@ -217,13 +217,7 @@ body::-webkit-scrollbar {
 
 .app-container {
   padding-top: var(--size-h-header);
-  padding-bottom: var(--size-h-header);
-  height: 100vh;
-  width: 100vw;
-  max-height: 100vh;
-  max-width: 100vw;
-  overflow-x: hidden;
-  overflow-y: auto;
+  padding-bottom: var(--size-h-footer);
 }
 
 .common-image {

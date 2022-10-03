@@ -32,7 +32,6 @@ import LandingView from '@/views/LandingView.vue';
 // Main
 import MainView from '@/views/MainView.vue';
 import MainUpload from '@/components/pages/main/MainUpload';
-import MainTest from '@/components/pages/main/MainTest';
 import MainScore from '@/components/pages/main/MainScore';
 import MainOptimize from '@/components/pages/main/MainOptimize';
 import MainInpaint from '@/components/pages/main/MainInpaint';
@@ -66,11 +65,11 @@ const routes = [
   {
     path: '/', // Landing page
     name: 'Landing',
-    beforeEnter: beforeAuth(false),
+    // beforeEnter: beforeAuth(false),
     component: LandingView,
   },
   {
-    path: '/main', // Landing page
+    path: '/main',
     name: 'main',
     component: MainView,
     children: [
@@ -80,11 +79,6 @@ const routes = [
         component: MainUpload,
       },
       {
-        path: 'test', // 이미지 상호작용 테스트 코드, 지워야함
-        name: 'MainTest',
-        component: MainTest,
-      },
-      {
         path: 'score',
         name: 'MainScore',
         component: MainScore,
@@ -92,11 +86,13 @@ const routes = [
       {
         path: 'optimize',
         name: 'MainOptimize',
+        beforeEnter: beforeAuth(true),
         component: MainOptimize,
       },
       {
         path: 'inpaint',
         name: 'MainInpaint',
+        beforeEnter: beforeAuth(true),
         component: MainInpaint,
       },
     ],

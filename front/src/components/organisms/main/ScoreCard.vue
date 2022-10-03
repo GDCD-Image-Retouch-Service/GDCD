@@ -4,61 +4,7 @@
   >
     <div class="spacer" />
     <div class="d-flex align-items-center" style="font-size: 24pt">
-      <img
-        v-if="score > 90"
-        :src="require('@/assets/grade/1.png')"
-        style="width: 48px; height: 48px; object-fit: cover"
-        alt="your image"
-      />
-      <img
-        v-else-if="score > 80"
-        :src="require('@/assets/grade/2.png')"
-        style="width: 48px; height: 48px; object-fit: cover"
-        alt="your image"
-      />
-      <img
-        v-else-if="score > 70"
-        :src="require('@/assets/grade/3.png')"
-        style="width: 48px; height: 48px; object-fit: cover"
-        alt="your image"
-      />
-      <img
-        v-else-if="score > 60"
-        :src="require('@/assets/grade/4.png')"
-        style="width: 48px; height: 48px; object-fit: cover"
-        alt="your image"
-      />
-      <img
-        v-else-if="score > 50"
-        :src="require('@/assets/grade/5.png')"
-        style="width: 48px; height: 48px; object-fit: cover"
-        alt="your image"
-      />
-      <img
-        v-else-if="score > 40"
-        :src="require('@/assets/grade/6.png')"
-        style="width: 48px; height: 48px; object-fit: cover"
-        alt="your image"
-      />
-      <img
-        v-else-if="score > 30"
-        :src="require('@/assets/grade/7.png')"
-        style="width: 48px; height: 48px; object-fit: cover"
-        alt="your image"
-      />
-      <img
-        v-else-if="score > 20"
-        :src="require('@/assets/grade/8.png')"
-        style="width: 48px; height: 48px; object-fit: cover"
-        alt="your image"
-      />
-      <img
-        v-else
-        :src="require('@/assets/grade/9.png')"
-        style="width: 48px; height: 48px; object-fit: cover"
-        alt="your image"
-      />
-
+      <icon-rank :rank="Math.ceil(9 - (score * 8) / 100)" />
       <div>: {{ score }}</div>
     </div>
     <div class="spacer" />
@@ -108,14 +54,6 @@
       >
         <i class="bi bi-eraser-fill"></i>
       </router-link>
-
-      <div
-        @click="save"
-        class="btn-set-button inner d-flex align-items-center justify-content-center"
-        style="margin-left: 8px"
-      >
-        <i class="bi bi-cloud-arrow-up-fill"></i>
-      </div>
     </div>
     <div class="spacer" />
   </div>
@@ -123,13 +61,15 @@
 
 <script setup>
 import LoadingDots from '@/components/atoms/LoadingDots.vue';
+import IconRank from '@/components/atoms/IconRank.vue';
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { image } from '@/api/rest';
-import { useMainStore } from '@/stores/main';
+import { useMainStore, useAccountStore } from '@/stores/';
 
 // init
 const mainStore = useMainStore();
+const accountStore = useAccountStore();
 
 // data
 const isLoading = ref(true);
@@ -139,6 +79,10 @@ const score = ref(0);
 
 // method
 const save = async () => {
+  if (!accountStore.getIsLogined) {
+    console.log('비로그인');
+    return;
+  }
   console.log('저장시작');
   const data = await image.save({
     image: mainStore.getTempFile,
@@ -160,6 +104,17 @@ const init = async () => {
   // score.value = 0;
   isLoading.value = false;
 };
+
+// Watch
+watch(
+  () => accountStore.getIsLogined,
+  () => {
+    save();
+  },
+);
+
+// Life Cycle
+save();
 
 onMounted(() => {
   init();

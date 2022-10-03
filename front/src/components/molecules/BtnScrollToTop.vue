@@ -10,7 +10,6 @@
 <script setup>
 const scrollToTop = () => {
   document.getElementById('app').scrollTop = 0;
-  console.log('눌림');
 };
 </script>
 
