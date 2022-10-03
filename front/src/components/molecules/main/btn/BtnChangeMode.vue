@@ -32,8 +32,8 @@ const changeMode = () => {
 .btn-change-mode {
   position: relative;
   overflow: hidden;
-  height: var(--size-h-header);
-  min-height: var(--size-h-header);
+  height: 48px;
+  min-height: 48px;
   width: 90%;
   max-width: 380px;
   background: var(--theme-color);
@@ -44,7 +44,7 @@ const changeMode = () => {
   z-index: 2;
   position: absolute;
   left: calc(0% + 4px);
-  height: calc(var(--size-h-header) - 8px);
+  height: 40px;
   line-height: var(--size-h-header);
   border-radius: var(--size-radius);
   font-size: 20pt;

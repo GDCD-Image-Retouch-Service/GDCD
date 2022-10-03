@@ -290,8 +290,6 @@ const selectTags = ref([communityStore.post.item?.images[0]?.imageTag]);
 console.log(route.params.postId);
 
 const updatePost = (data) => {
-  console.log(userStore.photoSelect);
-
   const context = {
     postId: route.params.postId,
     title: data.title,
@@ -300,17 +298,15 @@ const updatePost = (data) => {
     images: userStore.selectedPhotoList,
     representative: 0,
   };
-  console.log(context, userStore.photoSelect);
   communityStore.updatePost(context);
 
-  myRouter.push({ name: 'main' });
+  myRouter.push({ name: 'CommunityList' });
 };
 
 const selectPhoto = () => {
   userStore.urlPhotoList = userStore.urlList;
   userStore.urlList = [];
   userStore.selectedPhotoList = userStore.selectedPhoto;
-  console.log(userStore.selectedPhoto);
 };
 
 const pushSelectedNumber = (num, url, tag) => {
@@ -349,9 +345,6 @@ const pushSelectedNumber = (num, url, tag) => {
   if (checked) {
     selectTags.value.push(tag);
   }
-
-  console.log(userStore.selectedPhoto);
-  console.log(userStore.urlList);
 };
 
 userStore.getMyPhoto();

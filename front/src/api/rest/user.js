@@ -1,5 +1,6 @@
 import { createAxiosApi } from '@/api/axios';
 import { useAccountStore } from '@/stores/account';
+import { useUserStore } from '@/stores/user';
 
 const HOST = process.env.VUE_APP_REST_SERVER;
 const IMAGE = '/image';
@@ -8,7 +9,6 @@ const axiosApi = createAxiosApi();
 
 export default {
   // GET: 현재 유저 정보
-  // PUT: 회원 정보 수정
   // DELETE: 회원 탈퇴
   // 파라미터 없이 주면 내정보/ 파라미터로 userId주면 해당 유저 정보 조회
   myInfo: () => HOST + REST_PATH,
@@ -34,6 +34,12 @@ export default {
   // GET: 팔로우 버튼
   follow: () => HOST + REST_PATH + '/follow',
 
+  // PUT: 회원 정보 수정
+  updateProfile: () => HOST + REST_PATH + '/profile',
+
+  // PUT: 닉네임 수정
+  updateNickname: () => HOST + REST_PATH + '/nickname',
+
   testConnection: (payload) => {
     let params = {
       data: payload.data,
@@ -57,9 +63,10 @@ export default {
         .post(REST_PATH + '/login', payload)
         .then((res) => {
           const accountStore = useAccountStore();
+          const userStore = useUserStore();
           accountStore.setIsLogined(true);
           accountStore.setToken(res.data.item.token);
-
+          userStore.setToken(res.data.item.token);
           console.log('로그인 성공');
           resolve(res);
         })

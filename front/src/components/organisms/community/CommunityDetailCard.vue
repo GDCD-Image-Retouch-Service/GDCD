@@ -32,8 +32,8 @@
           "
           >수정</span
         >
-        <span>삭제</span>
-        <!-- <span @click="communityStore.deletePost(postId)">삭제</span> -->
+        <!-- <span>삭제</span> -->
+        <span @click="communityStore.deletePost(postId)">삭제</span>
       </div>
     </div>
 
@@ -41,16 +41,24 @@
     <div v-if="communityStore.post.item?.images?.length == 1">일</div>
 
     <div v-if="communityStore.post.item?.images?.length == 2">
-      <img
-        :src="communityStore.post.item?.images[0].imageUrl"
-        alt=""
-        class="main-image common-image"
-      />
-      <img
-        :src="communityStore.post.item?.images[1].imageUrl"
-        alt=""
-        class="main-image common-image"
-      />
+      <div style="position: relative">
+        <img
+          :src="communityStore.post.item?.images[0].imageUrl"
+          class="main-image common-image"
+        />
+        <img
+          :src="communityStore.post.item?.images[1].imageUrl"
+          class="main-image-second common-image"
+          v-if="isClick"
+        />
+      </div>
+    </div>
+
+    <div class="button-wrap">
+      <div class="image-toggle-button">
+        <div class="button-left"></div>
+        <div class="button-right"></div>
+      </div>
     </div>
 
     <btn-image-toggle />
@@ -62,10 +70,37 @@
     <div class="like-bookmark-chat">
       <div class="like-bookmark">
         <div class="herat-wrap">
-          <i class="bi bi-heart" @click="communityStore.likePost(postId)"></i>
+          <i
+            class="bi bi-heart"
+            v-if="!communityStore.post.item?.like"
+            @click="clickLike()"
+          ></i>
+          <i
+            v-else
+            class="bi bi-heart-fill"
+            @click="clickLike()"
+            style="color: #ed4956"
+          ></i>
           <span>{{ communityStore.post.item?.likeCount }}</span>
         </div>
-        <i class="bi bi-bookmark" @click="communityStore.scrapPost(postId)"></i>
+        <i
+          class="bi bi-bookmark"
+          v-if="!communityStore.post.item?.scrap"
+          @click="
+            communityStore.scrapPost(postId),
+              (communityStore.post.item.scrap =
+                !communityStore.post.item?.scrap)
+          "
+        ></i>
+        <i
+          class="bi bi-bookmark-fill"
+          v-else
+          @click="
+            communityStore.scrapPost(postId),
+              (communityStore.post.item.scrap =
+                !communityStore.post.item?.scrap)
+          "
+        ></i>
       </div>
       <i class="bi bi-chat" style="color: var(--black)" @click="clickComment()">
       </i>
@@ -79,25 +114,54 @@ import { useCommunityStore } from '@/stores/community.js';
 import { useUserStore } from '@/stores/user.js';
 import { watch } from '@vue/runtime-core';
 import { useRoute, useRouter } from 'vue-router';
+import { ref, onBeforeMount, onMounted } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
-const communityStore = useCommunityStore();
-const userStore = useUserStore();
-
-communityStore.getPost(route.params.postId);
-
 const postId = route.params.postId;
+const userStore = useUserStore();
+const communityStore = useCommunityStore();
+
+const isClick = ref(false);
+
+const clickLike = () => {
+  if (!communityStore.post.item?.like) {
+    console.log(communityStore.post.item?.likeCount);
+    console.log(!communityStore.post.item?.like);
+    communityStore.post.item.likeCount += 1;
+  } else {
+    communityStore.post.item.likeCount -= 1;
+  }
+  communityStore.post.item.like = !communityStore.post.item?.like;
+};
+
 const clickComment = () => {
   communityStore.isOpenComment = !communityStore.isOpenComment;
-  // document.getElementById('app').scrollTop =
-  //   document.getElementById('app').scrollHeight;
-  // document.getElementById('app').scrollTop = 1200;
+
   watch(communityStore.isOpenComment, (newValues) => {
     window.scrollTo(0, document.body.scrollHeight);
     console.log(newValues);
   });
 };
+
+onBeforeMount(() => {
+  communityStore.getPost(route.params.postId);
+  communityStore.targetImage = communityStore.post.item?.images[0].imageUrl;
+});
+
+onMounted(() => {
+  document
+    .getElementsByClassName('image-toggle-button')[0]
+    .addEventListener('touchstart', function () {
+      isClick.value = true;
+    });
+
+  document
+    .getElementsByClassName('image-toggle-button')[0]
+    .addEventListener('touchend', function () {
+      isClick.value = false;
+    });
+});
 </script>
 
 <style scoped>
@@ -176,5 +240,40 @@ const clickComment = () => {
 }
 .main-image {
   width: 100%;
+}
+.main-image-second {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.button-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+.image-toggle-button {
+  width: 40px;
+  height: 20px;
+  display: flex;
+  overflow: hidden;
+}
+.button-left {
+  width: 50%;
+  border-right: none;
+  border: 1px solid var(--instagram-grey);
+  border-radius: 2px;
+}
+.button-right {
+  width: 50%;
+  border: 1px solid var(--instagram-grey);
+}
+.image-toggle-button:active .button-left {
+  border: 1px solid var(--instagram-grey);
+  background-color: #ffffff;
+}
+.image-toggle-button:active .button-right {
+  border: 1px solid var(--instagram-grey);
+  background-color: var(--instagram-grey);
 }
 </style>

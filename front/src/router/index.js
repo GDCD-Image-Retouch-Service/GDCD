@@ -121,7 +121,6 @@ const routes = [
       },
     ],
   },
-
   {
     path: '/community/:postId/update',
     name: 'CommunityUpdate',
@@ -163,7 +162,6 @@ const routes = [
       },
     ],
   },
-
   {
     path: '/profile/update/',
     name: 'profileU',

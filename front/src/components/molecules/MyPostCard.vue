@@ -5,7 +5,7 @@
     <!-- post card image -->
     <div
       :style="{ backgroundImage: 'url(' + post.images.imageUrl + ')' }"
-      class="post-image common-image"
+      class="post-image"
       @click="
         $router.push({
           name: 'CommunityDetail',
@@ -19,7 +19,7 @@
       {{ post.title }}
     </div>
 
-    <date-format :updateInfo="post.updateTime" style="margin-left: 10px" />
+    <date-format :updateInfo="post.registTime" style="margin-left: 10px" />
   </div>
 </template>
 

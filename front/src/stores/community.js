@@ -24,6 +24,7 @@ export const useCommunityStore = defineStore('communityStore', {
     selectImage: '',
 
     updateCommentContent: '',
+    targetImage: '',
   }),
   actions: {
     // 전체 게시글 조회
@@ -107,6 +108,7 @@ export const useCommunityStore = defineStore('communityStore', {
         },
       })
         .then((res) => {
+          this.getPostsAll();
           console.log(res.data);
         })
         .catch((err) => {
