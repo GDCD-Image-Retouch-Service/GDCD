@@ -34,7 +34,7 @@ export const useAccountStore = defineStore('account', () => {
     } else {
       isLogined.value = false;
       delete localStorage.token;
-      router.go();
+      router.push('/main');
     }
   }
 
