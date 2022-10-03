@@ -8,6 +8,12 @@
       <div
         :style="{ backgroundImage: 'url(' + post.images.imageUrl + ')' }"
         class="scrap-image common-image"
+        @click="
+          router.push({
+            name: 'CommunityDetail',
+            params: { postId: post.postId },
+          })
+        "
       ></div>
     </div>
   </div>
@@ -15,13 +21,14 @@
 
 <script setup>
 import { useUserStore } from '@/stores/user.js';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 const userStore = useUserStore();
 
 userStore.isItemActive = 1;
-
+userStore.scrapList = [];
 userStore.getMyScrap(route.params.userId);
 </script>
 

@@ -42,15 +42,14 @@
 
     <div v-if="communityStore.post.item?.images?.length == 2">
       <img
-        :src="communityStore.post.item?.images[0].imageUrl"
+        :src="targetImage"
+        :ref="targetImage"
         alt=""
         class="main-image common-image"
       />
-      <img
-        :src="communityStore.post.item?.images[1].imageUrl"
-        alt=""
-        class="main-image common-image"
-      />
+    </div>
+    <div>
+      <button class="img-toggle-btn">클릭</button>
     </div>
 
     <btn-image-toggle />
@@ -62,10 +61,37 @@
     <div class="like-bookmark-chat">
       <div class="like-bookmark">
         <div class="herat-wrap">
-          <i class="bi bi-heart" @click="communityStore.likePost(postId)"></i>
+          <i
+            class="bi bi-heart"
+            v-if="!communityStore.post.item?.like"
+            @click="clickLike()"
+          ></i>
+          <i
+            v-else
+            class="bi bi-heart-fill"
+            @click="clickLike()"
+            style="color: #ed4956"
+          ></i>
           <span>{{ communityStore.post.item?.likeCount }}</span>
         </div>
-        <i class="bi bi-bookmark" @click="communityStore.scrapPost(postId)"></i>
+        <i
+          class="bi bi-bookmark"
+          v-if="!communityStore.post.item?.scrap"
+          @click="
+            communityStore.scrapPost(postId),
+              (communityStore.post.item.scrap =
+                !communityStore.post.item?.scrap)
+          "
+        ></i>
+        <i
+          class="bi bi-bookmark-fill"
+          v-else
+          @click="
+            communityStore.scrapPost(postId),
+              (communityStore.post.item.scrap =
+                !communityStore.post.item?.scrap)
+          "
+        ></i>
       </div>
       <i class="bi bi-chat" style="color: var(--black)" @click="clickComment()">
       </i>
@@ -79,25 +105,58 @@ import { useCommunityStore } from '@/stores/community.js';
 import { useUserStore } from '@/stores/user.js';
 import { watch } from '@vue/runtime-core';
 import { useRoute, useRouter } from 'vue-router';
+import { ref, onBeforeMount, onMounted, onUnmounted } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
-const communityStore = useCommunityStore();
-const userStore = useUserStore();
-
-communityStore.getPost(route.params.postId);
-
 const postId = route.params.postId;
+const userStore = useUserStore();
+const communityStore = useCommunityStore();
+
+const clickLike = () => {
+  if (!communityStore.post.item?.like) {
+    console.log(communityStore.post.item?.likeCount);
+    console.log(!communityStore.post.item?.like);
+    communityStore.post.item.likeCount += 1;
+  } else {
+    communityStore.post.item.likeCount -= 1;
+  }
+  communityStore.post.item.like = !communityStore.post.item?.like;
+};
+
 const clickComment = () => {
   communityStore.isOpenComment = !communityStore.isOpenComment;
-  // document.getElementById('app').scrollTop =
-  //   document.getElementById('app').scrollHeight;
-  // document.getElementById('app').scrollTop = 1200;
+
   watch(communityStore.isOpenComment, (newValues) => {
     window.scrollTo(0, document.body.scrollHeight);
     console.log(newValues);
   });
 };
+const targetImage = ref(communityStore.post.item?.images[0].imageUrl);
+
+onBeforeMount(() => {
+  communityStore.getPost(route.params.postId);
+});
+
+onMounted(() => {
+  document
+    .getElementsByClassName('img-toggle-btn')[0]
+    .addEventListener('touchstart', function () {
+      targetImage.value = communityStore.post.item?.images[1].imageUrl;
+      console.log(targetImage);
+    });
+
+  document
+    .getElementsByClassName('img-toggle-btn')[0]
+    .addEventListener('touchend', function () {
+      targetImage.value = communityStore.post.item?.images[0].imageUrl;
+      console.log(targetImage);
+    });
+});
+
+onUnmounted(() => {
+  targetImage.value = communityStore.post.item?.images[0].imageUrl;
+});
 </script>
 
 <style scoped>

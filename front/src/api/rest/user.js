@@ -1,5 +1,6 @@
 import { createAxiosApi } from '@/api/axios';
 import { useAccountStore } from '@/stores/account';
+import { useUserStore } from '@/stores/user';
 
 const HOST = process.env.VUE_APP_REST_SERVER;
 const IMAGE = '/image';
@@ -57,9 +58,10 @@ export default {
         .post(REST_PATH + '/login', payload)
         .then((res) => {
           const accountStore = useAccountStore();
+          const userStore = useUserStore();
           accountStore.setIsLogined(true);
           accountStore.setToken(res.data.item.token);
-
+          userStore.setToken(res.data.item.token);
           console.log('로그인 성공');
           resolve(res);
         })
@@ -68,5 +70,10 @@ export default {
           reject(error);
         });
     });
+  },
+
+  logout: () => {
+    const accountStore = useAccountStore();
+    accountStore.setIsLogined(false);
   },
 };

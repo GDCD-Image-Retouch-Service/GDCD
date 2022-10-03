@@ -1,28 +1,31 @@
 <template>
-  <Popper arrow class="arrow">
-    <div v-if="!accountStore.getIsLogined">로그인안함</div>
-    <div v-else>로그인함</div>
-    <template #content="{ close }">
-      <btn-toggle borderWidth="100"></btn-toggle>
-      <div @click="homeStore.setIsDarkToggle">색바꾸기</div>
-      <div @click="close">Close</div>
-      <GoogleLogin :callback="callback" />
-    </template>
-  </Popper>
+  <div class="header-profile">
+    <Popper arrow>
+      <div v-if="!accountStore.getIsLogined">
+        <i class="bi bi-person-circle"></i>
+      </div>
+      <div v-else><i class="bi bi-person-circle"></i></div>
+      <template #content="{ close }">
+        <div @click="close"><i class="bi bi-x-circle"></i></div>
+        <div @click="mainStore.setIsDarkToggle">색바꾸기</div>
+        <div v-if="!accountStore.getIsLogined">
+          <GoogleLogin :callback="callback" />
+        </div>
+        <div v-else @click="user.logout()">(로그아웃)</div>
+      </template>
+    </Popper>
+  </div>
 </template>
 
 <script setup>
-import BtnToggle from '@/components/molecules/common/header/BtnToggle.vue';
-import { useAccountStore, useHomeStore } from '@/stores';
+import { useAccountStore, useMainStore } from '@/stores';
 import { decodeCredential } from 'vue3-google-login';
 import { user } from '@/api/rest';
 
-// const userStore = useUserStore();
 const accountStore = useAccountStore();
-const homeStore = useHomeStore();
+const mainStore = useMainStore();
 
 const callback = async (response) => {
-  console.log('개열받네?');
   const userData = await decodeCredential(response.credential);
   console.log(userData);
   await user.login({
@@ -33,6 +36,9 @@ const callback = async (response) => {
 </script>
 
 <style scoped>
+.header-profile {
+  margin-right: var(--grid-side);
+}
 .profile-image {
   width: 30px;
   height: 30px;
@@ -55,9 +61,5 @@ const callback = async (response) => {
   flex-direction: column;
   align-items: center;
   gap: var(--grid-vertical); */
-}
-
-.popper {
-  z-index: 9000;
 }
 </style>

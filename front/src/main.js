@@ -19,7 +19,7 @@ createApp(App)
   .use(BootstrapVue3)
   .use(BToastPlugin)
   .use(vue3GoogleLogin, {
-    clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
+    clientId: '736357393555-9a6a7qk74dngs5ovcmvfa6pnhdl0m8th',
   })
   .component('Popper', Popper)
   .mount('#app');
