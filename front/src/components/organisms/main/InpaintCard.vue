@@ -11,8 +11,6 @@
       <div v-for="(item, index) in objectList" :key="index">
         <div>{{ item.split(';')[0] }} ,</div>
       </div>
-      <!-- <div>iId:{{ mainStore.getTempId }}</div>
-      <div style="margin-left: 8px">rId:{{ mainStore.getRequestId }}</div> -->
     </div>
     <div class="spacer" />
 

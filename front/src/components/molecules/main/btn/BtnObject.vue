@@ -27,6 +27,10 @@ const btnObject = ref(null);
 
 onMounted(() => {
   console.log('props1', props.objectData);
+  if (props.objectData == 'IMAGE NOT SCORED') {
+    console.log('이미지 점수 계산이 되지 않았습니다');
+    return;
+  }
 
   let fixedHeight = 0;
   let fixedWidth = 0;
@@ -36,15 +40,29 @@ onMounted(() => {
   if (isHeightBigger) {
     fixedHeight = (props.naturalHeight * 380) / props.naturalWidth;
     fixedWidth = 380;
+
+    const dy = (fixedHeight - 380) / 2;
+    const dx = 0;
+
+    console.log('-dy', dy);
+    console.log('-dx', dx);
   } else {
     fixedHeight = 380;
     fixedWidth = (props.naturalWidth * 380) / props.naturalHeight;
+    console.log('-dx', (fixedWidth - 380) / 2);
+
+    const dy = 0;
+    const dx = (fixedWidth - 380) / 2;
+
+    console.log('-dy', dy);
+    console.log('-dx', dx);
   }
 
   console.log('FH : ', fixedHeight);
   console.log('FW : ', fixedWidth);
 
   const objectData = props.objectData.split(';');
+  console.log('디텍션:', objectData);
   const objectName = objectData[0];
   const objectLU = objectData[1].split(',');
   const objectRD = objectData[2].split(',');
