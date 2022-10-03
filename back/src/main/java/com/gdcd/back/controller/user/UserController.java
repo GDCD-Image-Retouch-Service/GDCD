@@ -42,6 +42,16 @@ public class UserController extends Controller {
         return getResponseEntity(userService.modifyUser(token, profile, nickname));
     }
 
+    @PutMapping("/profile")
+    public ResponseEntity<Map<String, Object>> profileModify(@RequestHeader String token, @RequestPart MultipartFile profile) {
+        return getResponseEntity(userService.modifyProfile(token, profile));
+    }
+
+    @PutMapping("/nickname")
+    public ResponseEntity<Map<String, Object>> nicknameModify(@RequestHeader String token, @RequestParam String nickname) {
+        return getResponseEntity(userService.modifyNickname(token, nickname));
+    }
+
     @DeleteMapping("")
     public ResponseEntity<Map<String, Object>> userRemove(@RequestHeader String token) throws Exception{
         return getResponseEntity(userService.removeUser(token));
