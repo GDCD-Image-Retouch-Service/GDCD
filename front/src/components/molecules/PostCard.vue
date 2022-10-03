@@ -56,7 +56,7 @@
           @click="(myScrap = !myScrap), communityStore.scrapPost(post.postId)"
         ></i>
       </div>
-      <date-format :updateInfo="post.updateTime" />
+      <date-format :updateInfo="post.registTime" />
     </div>
   </div>
 </template>

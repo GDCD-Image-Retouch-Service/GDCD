@@ -21,7 +21,7 @@ const route = useRoute();
 const userStore = useUserStore();
 
 userStore.isItemActive = 1;
-
+userStore.scrapList = [];
 userStore.getMyScrap(route.params.userId);
 </script>
 
