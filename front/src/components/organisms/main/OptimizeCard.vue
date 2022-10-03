@@ -2,14 +2,15 @@
   <div
     class="optimize-card main outer d-flex flex-column align-items-center justify-content-center"
   >
-    <div class="spacer" />
+    <div v-if="isLoading" class="spacer" />
     <div
+      v-if="isLoading"
       class="d-flex align-items-center"
       style="height: 48px; font-size: 12pt"
     >
-      <div v-if="isLoading">사진을 최적화하는 중입니다 {{ progress }}/7</div>
+      <div>사진을 최적화하는 중입니다 {{ progress }}/7</div>
     </div>
-    <div class="spacer" />
+    <div v-if="isLoading" class="spacer" />
 
     <loading-dots v-if="isLoading" />
 
@@ -17,7 +18,7 @@
       v-show="!isLoading"
       id="carouselExampleCaptions"
       class="carousel slide"
-      :class="[$root.theme ? '' : 'carousel-dark']"
+      :class="[$root.theme == 'light' ? '' : 'carousel-dark']"
       data-bs-ride="false"
       style="width: 100%"
     >
@@ -53,15 +54,42 @@
             <div
               class="d-flex flex-column align-items-center justify-content-center"
             >
-              <div class="textBox">
-                <img
-                  ref="picBox"
-                  src=""
-                  style="width: 380px; height: 380px; object-fit: cover"
-                />
-                <div>에스테</div>
-                <div>퀄리티</div>
+              <!-- score 보여줄 공간 -->
+              <div class="spacer" />
+              <div
+                class="d-flex align-items-center justify-content-evenly"
+                style="
+                  height: 48px;
+                  width: 100%;
+                  max-width: 100%;
+                  font-size: 12pt;
+                "
+              >
+                <div class="d-flex flex-column align-items-center">
+                  <icon-rank
+                    :rank="Math.ceil(9 - (mainStore.getTempScore * 8) / 100)"
+                  />
+                  <div style="height: 8px" />
+                  <div>총점</div>
+                </div>
+                <div class="d-flex flex-column align-items-center">
+                  <icon-rank :rank="mainStore.getTempEScore" />
+                  <div style="height: 8px" />
+                  <div>심미성</div>
+                </div>
+                <div class="d-flex flex-column align-items-center">
+                  <icon-rank :rank="mainStore.getTempQScore" />
+                  <div style="height: 8px" />
+                  <div>선명도</div>
+                </div>
               </div>
+              <div class="spacer" />
+
+              <img
+                ref="picBox"
+                src=""
+                style="width: 380px; height: 380px; object-fit: cover"
+              />
             </div>
           </div>
         </div>
@@ -79,15 +107,39 @@
             <div
               class="d-flex flex-column align-items-center justify-content-center"
             >
-              <div class="textBox">
-                <img
-                  :src="opti.url"
-                  style="width: 380px; height: 380px; object-fit: cover"
-                  alt="your image"
-                />
-                <div>에스테{{ opti.e }}</div>
-                <div>퀄리티{{ opti.q }}</div>
+              <!-- score 보여줄 페공간 -->
+              <div class="spacer" />
+              <div
+                class="d-flex align-items-center justify-content-evenly"
+                style="
+                  height: 48px;
+                  width: 100%;
+                  max-width: 100%;
+                  font-size: 12pt;
+                "
+              >
+                <div class="d-flex flex-column align-items-center">
+                  <icon-rank :rank="Math.ceil(9 - (opti.score * 8) / 100)" />
+                  <div style="height: 8px" />
+                  <div>총점</div>
+                </div>
+                <div class="d-flex flex-column align-items-center">
+                  <icon-rank :rank="opti.e" />
+                  <div style="height: 8px" />
+                  <div>심미성</div>
+                </div>
+                <div class="d-flex flex-column align-items-center">
+                  <icon-rank :rank="opti.q" />
+                  <div style="height: 8px" />
+                  <div>선명도</div>
+                </div>
               </div>
+              <div class="spacer" />
+
+              <img
+                :src="opti.url"
+                style="width: 380px; height: 380px; object-fit: cover"
+              />
             </div>
           </div>
         </div>
@@ -127,6 +179,8 @@
         <i class="bi bi-arrow-counterclockwise"></i>
       </router-link>
       <div
+        v-if="!isLoading"
+        @click="optimizeSave"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
         style="margin-left: 8px"
       >
@@ -139,6 +193,7 @@
 
 <script setup>
 import LoadingDots from '@/components/atoms/LoadingDots.vue';
+import IconRank from '@/components/atoms/IconRank.vue';
 
 import { ref, onMounted } from 'vue';
 import { image } from '@/api/rest';
@@ -168,7 +223,7 @@ const setSelectNoUp = () => {
 };
 
 const setSelectNoDown = () => {
-  selectNo.value = selectNo.value == 0 ? 6 : selectNo.value - 1;
+  selectNo.value = selectNo.value == 0 ? 7 : selectNo.value - 1;
   console.log('다운', selectNo.value);
 };
 
@@ -187,21 +242,23 @@ const init = async () => {
   // }
 };
 
-// const optimizeSave = async (photoNo) => {
-//   const payload = {
-//     imageId: mainStore.getTempId,
-//     imageUrl: mainStore.getTempOptiList[photoNo].url,
-//     aesthetic: mainStore.getTempOptiList[photoNo].e,
-//     quality: mainStore.getTempOptiList[photoNo].q,
-//   };
+const optimizeSave = async () => {
+  const photoNo = selectNo.value;
+  const payload = {
+    imageId: mainStore.getTempId,
+    imageUrl: mainStore.getTempOptiList[photoNo].url,
+    aesthetic: mainStore.getTempOptiList[photoNo].e,
+    quality: mainStore.getTempOptiList[photoNo].q,
+  };
 
-//   console.log('저장값', payload);
+  console.log('저장값', payload);
 
-//   const data = await image.optimizingSave(payload);
-//   console.log('데이터', data);
-// };
+  const data = await image.optimizingSave(payload);
+  console.log('데이터', data);
+};
 
 const optimize = async () => {
+  mainStore.resetTempOptiList();
   const data = await image.optimization(mainStore.getTempId);
   console.log('최적화 요청 전달', data);
   mainStore.setRequestId(data.item.requestId);
@@ -225,11 +282,28 @@ const process = async () => {
 
       for (var i = 0; i < 7; i++) {
         let url = Object.keys(optiList.value[i])[0];
+        let aesthetic = optiList.value[i][url]['aesthetic'];
+        let quality = optiList.value[i][url]['quality'];
+
+        let e = Math.ceil((5.8 - aesthetic) * 14 + 1);
+        if (e > 9) e = 9;
+        else if (e < 1) e = 1;
+
+        let q = Math.ceil((6.8 - quality) * 14 + 1);
+        if (q > 9) q = 9;
+        else if (q < 1) q = 1;
+
+        let score = Math.ceil(
+          (((aesthetic - 5.5) * 10 + (quality - 6.5) * 10) / 2) * 10 + 50,
+        );
+        if (score > 100) score = 100;
+        else if (score < 0) score = 0;
 
         mainStore.pushTempOptiList({
           url: url,
-          e: optiList.value[i][url]['aesthetic'],
-          q: optiList.value[i][url]['quality'],
+          e: e,
+          q: q,
+          score: score,
         });
       }
 

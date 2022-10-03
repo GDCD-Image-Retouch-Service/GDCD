@@ -4,7 +4,7 @@
   >
     <div class="spacer" />
     <div class="d-flex align-items-center" style="font-size: 24pt">
-      <img
+      <!-- <img
         v-if="score > 90"
         :src="require('@/assets/grade/1.png')"
         style="width: 48px; height: 48px; object-fit: cover"
@@ -57,8 +57,8 @@
         :src="require('@/assets/grade/9.png')"
         style="width: 48px; height: 48px; object-fit: cover"
         alt="your image"
-      />
-
+      /> -->
+      <icon-rank :rank="Math.ceil(9 - (score * 8) / 100)" />
       <div>: {{ score }}</div>
     </div>
     <div class="spacer" />
@@ -115,6 +115,7 @@
 
 <script setup>
 import LoadingDots from '@/components/atoms/LoadingDots.vue';
+import IconRank from '@/components/atoms/IconRank.vue';
 
 import { ref, onMounted, watch } from 'vue';
 import { image } from '@/api/rest';

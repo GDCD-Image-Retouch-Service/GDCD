@@ -89,6 +89,9 @@ export const useMainStore = defineStore('main', () => {
   const setRequestId = (id) => {
     requestId.value = id;
   };
+  const resetTempOptiList = () => {
+    tempOptiList.value = [];
+  };
   const setTempOptiList = (newOtiList) => {
     tempOptiList.value = newOtiList;
   };
@@ -143,6 +146,7 @@ export const useMainStore = defineStore('main', () => {
     setScore,
     setTempId,
     setRequestId,
+    resetTempOptiList,
     setTempOptiList,
     pushTempOptiList,
     deleteTempOptiList,
