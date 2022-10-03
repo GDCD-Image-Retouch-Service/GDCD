@@ -22,7 +22,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 const userStore = useUserStore();
 
-userStore.isItemActive = 1;
+userStore.isItemActive = 2;
 
 userStore.getMyLike(route.params.userId);
 </script>
