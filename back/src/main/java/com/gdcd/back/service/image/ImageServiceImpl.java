@@ -18,7 +18,6 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.json.simple.JSONObject;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
@@ -31,6 +30,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -49,26 +49,25 @@ public class ImageServiceImpl implements ImageService {
     private final String DETECT_OBJECT = "detect-object";
     private final String OPTIMIZE_IMAGE = "optimize-image";
     private final String OPTIMIZE_REQUEST = "optimize-request";
-    private final String SCORING_PATHS = "score-image-by-user-id";
+    private final String SCORING_IMAGE_BY_USER_ID = "score-image-by-user-id";
     private final String INPAINT_IMAGE = "inpaint-image";
-    private Map<String, Object> RESULT_OBJECT;
-
     private final String BEFORE = "/before";
     private final String AFTER = "/after";
     private final String BUFFER = "/app/data/buffer/";
+    private Map<String, Object> RESULT_OBJECT;
 
-    //    Local에서 진행할 폴더
-//        String ROOT = "C:/test/images/";
-//        String BUFFER = "C:/test/buffer/";
-//        String ADDRESS = "http://localhost:8081/api/image?imageId=";
+//        Local Path
+//        private final String ROOT = "C:/test/images/";
+//        private final String BUFFER = "C:/test/buffer/";
+//        private final String ADDRESS = "http://localhost:8081/api/image?imageId=";
+
     public Long addImage(String token, MultipartFile image, ImageCreateRequestDto requestDto) throws Exception {
         User user = findUserByEmail(decodeToken(token));
         Long urlCount = imageRepository.findAllByUserId(user.getId()).stream().count() + 1;
         String imageType = image.getContentType();
-//        System.out.println(imageType);
         String endPoint = "." + imageType.substring(imageType.lastIndexOf("/") + 1);
         String path = user.getId().toString();
-        String urlName = "/" + urlCount.toString() + endPoint;
+        String urlName = "/" + urlCount + endPoint;
         String FilePath = path + BEFORE + urlName;
         File Folder = new File(ROOT + path);
         try {
@@ -87,7 +86,7 @@ public class ImageServiceImpl implements ImageService {
             requestDto.setObjects(new ArrayList<>());
             requestDto.setFilePath(FilePath);
             Long count = imageRepository.findAll().stream().count() + 1;
-            requestDto.setImgUrl(ADDRESS + count.toString());
+            requestDto.setImgUrl(ADDRESS + count);
             requestDto.setUserId(user.getId());
 
         } catch (IOException e) {
@@ -99,12 +98,12 @@ public class ImageServiceImpl implements ImageService {
     public byte[] findImageById(Long imageId, String from) throws IOException {
         if (from == null) {
             Image img = findImage(imageId);
-            InputStream imageStream = new FileInputStream(ROOT + img.getFilePath());
+            InputStream imageStream = Files.newInputStream(Paths.get(ROOT + img.getFilePath()));
             byte[] imageByteArray = IOUtils.toByteArray(imageStream);
             imageStream.close();
             return imageByteArray;
         } else {
-            InputStream imageStream = new FileInputStream(from);
+            InputStream imageStream = Files.newInputStream(Paths.get(from));
             byte[] imageByteArray = IOUtils.toByteArray(imageStream);
             imageStream.close();
             return imageByteArray;
@@ -116,14 +115,11 @@ public class ImageServiceImpl implements ImageService {
         return new ImageDetailResponseDto(img);
     }
 
-//    public List<LocalDate> findImageList(String token) throws Exception {
     public Map<LocalDate, List<ImageListResponseDto>> findImageList(String token, Pageable pageable) throws Exception {
-//        List<Image> imageList;
         User user = findUserByEmail(decodeToken(token));
         List<Image> imageList = imageRepository.findAllByUserIdAndBeforeImage(user.getId(), true);
 
-
-        //SET으로 중복 없애기
+        //SET으로 중복 제거
         Set<LocalDate> dateTime = new HashSet<>();
         for (Image img : imageList) {
             dateTime.add(img.getRegistDate().toLocalDate());
@@ -138,11 +134,10 @@ public class ImageServiceImpl implements ImageService {
             for (Image image : imageList) {
                 if (image.getRegistDate().toLocalDate().equals(datetime)) {
                     System.out.println(datetime);
-                    Optional<Image> afterImage = imageRepository.findByFilePath(image.getFilePath().replace("before","after"));
-                    if (afterImage.isPresent()){
+                    Optional<Image> afterImage = imageRepository.findByFilePath(image.getFilePath().replace("before", "after"));
+                    if (afterImage.isPresent()) {
                         list.add(new ImageListResponseDto(new ImageDetailResponseDto(image), new ImageDetailResponseDto(afterImage.get())));
-                    }
-                    else {
+                    } else {
                         list.add(new ImageListResponseDto(new ImageDetailResponseDto(image), null));
                     }
                 }
@@ -151,25 +146,7 @@ public class ImageServiceImpl implements ImageService {
             System.out.println(datetime);
         }
         return images;
-//        return dateTimeList;
     }
-//    public List<ImageDetailResponseDto> findImageList(String token) throws Exception{
-//        List<Image> imageList;
-//        User user = findUserByEmail(decodeToken(token));
-//        imageList = imageRepository.findAllByUserIdAndBeforeImage(user.getId(),true);
-////        imageList = imageRepository.findAllByUserId(user.getId());
-////        imageList = imageRepository.findAllByDone(true);
-//        List<ImageDetailResponseDto> images = new ArrayList<>();
-//        for (Image image : imageList){
-//            images.add(new ImageDetailResponseDto(image));
-//        }
-//        return images;
-//    }
-
-//                if (image.getBefore().equals(true)){
-//        images.add(new ImageDetailResponseDto(image));
-//    }
-
 
     @Override
     public Map<String, Object> requestInitialScore(MultipartFile image) {
@@ -241,14 +218,13 @@ public class ImageServiceImpl implements ImageService {
             img.setObjects(objectTag);
             imageRepository.save(img);
 
-
             List<String> objectList = new ArrayList<>();
             for (Object object : objects) {
                 Map<String, Object> obj2 = objectMapper.convertValue(object, Map.class);
                 ArrayList<String> ul = (ArrayList<String>) obj2.get("ul");
                 ArrayList<String> dr = (ArrayList<String>) obj2.get("dr");
                 String str = (String) obj2.get("class");
-                str += ";"+String.valueOf(ul.get(0)) + "," + String.valueOf(ul.get(1)) + ";" + String.valueOf(dr.get(0)) + "," + String.valueOf(dr.get(1)) + ";";
+                str += ";" + ul.get(0) + "," + ul.get(1) + ";" + dr.get(0) + "," + dr.get(1) + ";";
                 objectList.add(str);
             }
 
@@ -266,26 +242,24 @@ public class ImageServiceImpl implements ImageService {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
+            // header
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
-            System.out.println(image.getInputStream());
 
+            // body
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-
-
             body.add("image", image.getResource());
             body.add("user_id", findUserByEmail(decodeToken(token)).getId());
 
+            // requestMessage
             HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
-
+            // request
             HttpEntity<String> response = restTemplate.postForEntity(CORE + OPTIMIZE_IMAGE, requestMessage, String.class);
 
-
+            // response
             ObjectMapper objectMapper = new ObjectMapper();
-
             objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-
             Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
 
             RESULT_OBJECT.put("dict", objects);
@@ -300,44 +274,43 @@ public class ImageServiceImpl implements ImageService {
         RESULT_OBJECT = new HashMap<>();
         try {
             User user = findUserByEmail(decodeToken(token));
-//             1. OptRequest 객체 저장
+            // 1. OptRequest 객체 저장
             OptRequest request = optRequestRepository.save(OptRequest.builder()
                     .user(user.getId())
                     .done(0)
                     .build());
-//             2. MultiPartFile 재구성
+            // 2. MultiPartFile 재구성
             Image img = findImage(imageId);
             File file = new File(ROOT + img.getFilePath());
             FileItem fileItem = new DiskFileItem("originFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
             IOUtils.copy(Files.newInputStream(file.toPath()), fileItem.getOutputStream());
 
-            //2-1 /app/data/buffer/userId 폴더가 있으면, 폴더 삭제
+            // 2-1. /app/data/buffer/userId 폴더가 있으면, 폴더 삭제
             File rootDir = new File(BUFFER + user.getId());
-            if (rootDir.isDirectory()){
-                try {
-                    FileUtils.deleteDirectory(rootDir);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            if (rootDir.isDirectory())
+                FileUtils.deleteDirectory(rootDir);
 
             // 3. Core로 optimization request 전달
-
             RestTemplate restTemplate = new RestTemplate();
 
+            // 3-1. header
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
 
+            // 3-2. body
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             MultipartFile mFile = new CommonsMultipartFile(fileItem);
             body.add("image", mFile.getResource());
             body.add("userId", user.getId());
             body.add("requestId", request.getId());
 
+            // 3-3. requestMessage
             HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+
+            // 3-4. request
             HttpEntity<String> response = restTemplate.postForEntity(CORE + OPTIMIZE_REQUEST, requestMessage, String.class);
 
-//             4. return 값을 reponse로 전달
+            // 3-5. parse response
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
             Long requestId = objectMapper.readValue(response.getBody(), Long.class);
@@ -360,7 +333,8 @@ public class ImageServiceImpl implements ImageService {
                     RestTemplate restTemplate = new RestTemplate();
 
                     ResponseEntity<String> response = restTemplate.getForEntity(
-                            CORE + SCORING_PATHS + "?userId=" + request.getUser(), String.class);
+                            CORE + SCORING_IMAGE_BY_USER_ID + "?userId=" + request.getUser(), String.class
+                    );
 
                     // 2-2. 반환값 프론트로 전달
                     ObjectMapper objectMapper = new ObjectMapper();
@@ -385,15 +359,12 @@ public class ImageServiceImpl implements ImageService {
     public Map<String, Object> requestProcess(ImageOptProcessingRequestDto requestDto) {
         RESULT_OBJECT = new HashMap<>();
         try {
-            System.out.println("id : " + requestDto.getRequestId());
-            System.out.println("done : " + requestDto.getFinished());
             if (!optRequestRepository.findById(requestDto.getRequestId()).isPresent())
                 throw new Exception("REQUEST NOT FOUND");
             OptRequest request = optRequestRepository.findById(requestDto.getRequestId()).get();
             request.update(requestDto.getFinished());
             optRequestRepository.save(request);
         } catch (Exception e) {
-            e.printStackTrace();
             RESULT_OBJECT.put("error", e.getMessage());
         }
         return RESULT_OBJECT;
@@ -409,7 +380,6 @@ public class ImageServiceImpl implements ImageService {
             IOUtils.copy(Files.newInputStream(file.toPath()), fileItem.getOutputStream());
 
             // 3. Core로 optimization request 전달
-
             RestTemplate restTemplate = new RestTemplate();
 
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -471,7 +441,7 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.save(requestDto.toDocument(user.getId(), ADDRESS + count.toString(), afterPath, originImage.getObjects())).getId();
     }
 
-    public Long addCsvData(ImageSaveRequestDto requestDto){
+    public Long addCsvData(ImageSaveRequestDto requestDto) {
         return dataRepository.save(requestDto.toDocument()).getId();
     }
 

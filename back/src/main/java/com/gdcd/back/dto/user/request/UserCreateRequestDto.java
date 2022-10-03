@@ -19,8 +19,8 @@ public class UserCreateRequestDto {
     private String profile;
     private String storagePath;
     @CreatedDate
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH;mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime registDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH;mm:ss")
+    private LocalDateTime registDate = LocalDateTime.now();
 
     public User toDocument(String profileRequestURI, String storagePath) {
         return User.builder()

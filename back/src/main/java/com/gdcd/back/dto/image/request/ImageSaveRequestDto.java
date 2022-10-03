@@ -12,8 +12,6 @@ public class ImageSaveRequestDto {
     private int aesthetic;
     private int quality;
 
-
-
     public Data toDocument(){
         return Data.builder()
                 .imageId(imageId)

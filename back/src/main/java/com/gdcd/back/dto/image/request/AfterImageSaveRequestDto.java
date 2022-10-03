@@ -2,16 +2,15 @@ package com.gdcd.back.dto.image.request;
 
 import com.gdcd.back.domain.image.Image;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 public class AfterImageSaveRequestDto {
-    private Long imageId; //원본아이디
+    private Long imageId;
 
-    private String imageUrl; //요청된 url
+    private String imageUrl;
     private int aesthetic;
     private int quality;
 

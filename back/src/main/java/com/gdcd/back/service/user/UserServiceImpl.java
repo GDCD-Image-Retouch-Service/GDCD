@@ -16,19 +16,15 @@ import com.gdcd.back.domain.user.follow.Follow;
 import com.gdcd.back.domain.user.follow.FollowRepository;
 import com.gdcd.back.dto.post.response.PostListResponseDto;
 import com.gdcd.back.dto.user.request.UserCreateRequestDto;
-import com.gdcd.back.dto.user.request.UserDetailUpdateRequestDto;
 import com.gdcd.back.dto.user.response.FollowListResponseDto;
 import com.gdcd.back.dto.user.response.UserDetailResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -46,10 +42,10 @@ public class UserServiceImpl implements UserService {
     private Map<String, String> RESULT_STRING;
     private Map<String, Object> RESULT_OBJECT;
     private final String ROOT = "/app/data/profiles/";
-//        private final String ROOT = "C:/SSAFY/AI/profiles/";
-    private final String DEFAULT_PATH = ROOT + "default.jpeg";
     private final String PROFILE_REQUEST_URI = "https://j7b301.p.ssafy.io/api/user/profile?from=";
+//    private final String ROOT = "C:/SSAFY/AI/profiles/";
 //    private final String PROFILE_REQUEST_URI = "http://localhost:8081/api/user/profile?from=";
+    private final String DEFAULT_PATH = ROOT + "default.jpeg";
 
     @Override
     public Map<String, String> loginUser(UserCreateRequestDto requestDto) {
@@ -89,37 +85,6 @@ public class UserServiceImpl implements UserService {
                 RESULT_OBJECT.put("user", new UserDetailResponseDto(user));
         } catch (Exception e) {
             RESULT_OBJECT.put("error", "USER NOT FOUND");
-        }
-        return RESULT_OBJECT;
-    }
-
-    @Override
-    public Map<String, Object> modifyUser(String token, MultipartFile profile, String nickname) {
-        RESULT_OBJECT = new HashMap<>();
-        try {
-            User target = findUserByEmail(decodeToken(token));
-            User user = findUserByEmail(decodeToken(token));
-            String filePath = target.getStoragePath();
-            if (profile != null) {
-                String type = profile.getContentType();
-                String endpoint = "." + type.substring(type.lastIndexOf("/") + 1);
-                filePath = ROOT + user.getId().toString() + endpoint;
-                profile.transferTo(new File(filePath));
-            }
-            user.update(PROFILE_REQUEST_URI, filePath, nickname);
-
-            modifyFollower(target.simplify(), user.simplify());
-            modifyFollowing(target.simplify(), user.simplify());
-            modifyBlocker(target, user);
-            modifyBlocking(target, user);
-            modifyReporter(target, user);
-            modifyPostWriter(target, user);
-            modifyCommentWriter(target, user);
-
-            RESULT_OBJECT.put("userId", userRepository.save(user).getId());
-        } catch (Exception e) {
-            e.printStackTrace();
-            RESULT_OBJECT.put("error", "USER NOT UPDATED");
         }
         return RESULT_OBJECT;
     }
@@ -185,8 +150,8 @@ public class UserServiceImpl implements UserService {
                 RESULT_OBJECT.put("unblock", userId);
             } else {
                 block = Block.builder()
-                        .blocker(blocker)
-                        .blocking(blocking)
+                        .blocker(blocker.simplify())
+                        .blocking(blocking.simplify())
                         .build();
                 RESULT_OBJECT.put("block", blockRepository.save(block).getId());
             }
@@ -246,7 +211,6 @@ public class UserServiceImpl implements UserService {
                 int from = pageable.getPageNumber() * pageable.getPageSize();
                 int to = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(), list.size());
                 RESULT_OBJECT.put("posts", list.subList(from, to));
-                // return scrap list : postId, image, writer nickname, profile, likeCount, (scrap = true)
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -275,7 +239,6 @@ public class UserServiceImpl implements UserService {
                 userRepository.save(followingUser);
                 followRepository.deleteByFollowerAndFollowing(follower, following);
                 RESULT_OBJECT.put("unfollow", userId);
-                // fix) unFollow할 때는, user의 followCount--
             } else {
                 User followerUser = findUserByEmail(decodeToken(token));
                 followerUser.addFollowingCount();
@@ -288,7 +251,6 @@ public class UserServiceImpl implements UserService {
                         .following(following)
                         .build();
                 RESULT_OBJECT.put("follow", followRepository.save(follow).getId());
-                // fix) Follow할 때는, user의 followCount++
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -313,7 +275,6 @@ public class UserServiceImpl implements UserService {
             }
             RESULT_OBJECT.put("followers", list);
             RESULT_OBJECT.put("followerCount", list.size());
-            // fix) 그냥 유저의 followCount field 참조하도록 수정
         } catch (Exception e) {
             RESULT_OBJECT.put("error", "USER NOT FOUND");
         }
@@ -336,7 +297,6 @@ public class UserServiceImpl implements UserService {
             }
             RESULT_OBJECT.put("followings", list);
             RESULT_OBJECT.put("followingCount", list.size());
-            // fix) user의 followCount field 참조하도록 수정
         } catch (Exception e) {
             RESULT_OBJECT.put("error", "USER NOT FOUND");
         }
@@ -396,7 +356,7 @@ public class UserServiceImpl implements UserService {
     private void modifyBlocker(User target, User user) {
         List<Block> blockerList = blockRepository.findAllByBlocker(target);
         for (Block block : blockerList) {
-            block.modifyBlocker(user);
+            block.modifyBlocker(user.simplify());
             blockRepository.save(block);
         }
     }
@@ -404,7 +364,7 @@ public class UserServiceImpl implements UserService {
     private void modifyBlocking(User target, User user) {
         List<Block> blockingList = blockRepository.findAllByBlocking(target);
         for (Block block : blockingList) {
-            block.modifyBlocking(user);
+            block.modifyBlocking(user.simplify());
             blockRepository.save(block);
         }
     }
@@ -436,19 +396,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean scrapPost(Post post, User user) {
-        if (post.getScrapUsers().contains(user.getId())) {
-            return true;
-        } else {
-            return false;
-        }
+        return post.getScrapUsers().contains(user.getId());
     }
 
     private boolean likePost(Post post, User user) {
-        if (post.getLikeUsers().contains(user.getId())) {
-            return true;
-        } else {
-            return false;
-        }
+        return post.getLikeUsers().contains(user.getId());
     }
 
     private boolean validUser(User user) {
