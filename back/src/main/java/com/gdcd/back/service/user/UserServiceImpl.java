@@ -45,11 +45,11 @@ public class UserServiceImpl implements UserService {
     private final CommentRepository commentRepository;
     private Map<String, String> RESULT_STRING;
     private Map<String, Object> RESULT_OBJECT;
-    private final String ROOT = "/app/data/profiles/";
-//    private final String ROOT = "C:/SSAFY/AI/profiles/";
+//    private final String ROOT = "/app/data/profiles/";
+        private final String ROOT = "C:/SSAFY/AI/profiles/";
     private final String DEFAULT_PATH = ROOT + "default.jpeg";
-    private final String PROFILE_REQUEST_URI = "https://j7b301.p.ssafy.io/api/user/profile?from=";
-//    private final String PROFILE_REQUEST_URI = "http://localhost:8081/api/user/profile?from=";
+//    private final String PROFILE_REQUEST_URI = "https://j7b301.p.ssafy.io/api/user/profile?from=";
+    private final String PROFILE_REQUEST_URI = "http://localhost:8081/api/user/profile?from=";
 
     @Override
     public Map<String, String> loginUser(UserCreateRequestDto requestDto) {
@@ -66,6 +66,7 @@ public class UserServiceImpl implements UserService {
         RESULT_STRING.put("token", jwtTokenProvider.createToken(email));
         return RESULT_STRING;
     }
+
     @Override
     public Map<String, Object> checkNickname(String nickname) {
         RESULT_OBJECT = new HashMap<>();
@@ -96,7 +97,6 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> modifyUser(String token, MultipartFile profile, String nickname) {
         RESULT_OBJECT = new HashMap<>();
         try {
-        	System.out.println(nickname);
             User target = findUserByEmail(decodeToken(token));
             User user = findUserByEmail(decodeToken(token));
             String filePath = target.getStoragePath();
@@ -117,11 +117,45 @@ public class UserServiceImpl implements UserService {
             modifyCommentWriter(target, user);
 
             RESULT_OBJECT.put("userId", userRepository.save(user).getId());
-
-            // fix) 유저 정보를 바꾸면 post가 가지고 있는 writer 정보 또한 바뀌어야함.
         } catch (Exception e) {
             e.printStackTrace();
             RESULT_OBJECT.put("error", "USER NOT UPDATED");
+        }
+        return RESULT_OBJECT;
+    }
+
+    public Map<String, Object> modifyProfile(String token, MultipartFile profile) {
+        RESULT_OBJECT = new HashMap<>();
+        try {
+            User target = findUserByEmail(decodeToken(token));
+            User user = findUserByEmail(decodeToken(token));
+            String type = profile.getContentType();
+            String endpoint = "." + type.substring(type.lastIndexOf("/") + 1);
+            String filePath = ROOT + user.getId().toString() + endpoint;
+            profile.transferTo(new File(filePath));
+            user.updateProfile(PROFILE_REQUEST_URI, filePath);
+
+            modifySet(target, user);
+
+            RESULT_OBJECT.put("userId", userRepository.save(user).getId());
+        } catch (Exception e) {
+            RESULT_OBJECT.put("error", e.getMessage());
+        }
+        return RESULT_OBJECT;
+    }
+
+    public Map<String, Object> modifyNickname(String token, String nickname) {
+        RESULT_OBJECT = new HashMap<>();
+        try {
+            User target = findUserByEmail(decodeToken(token));
+            User user = findUserByEmail(decodeToken(token));
+            user.updateNickname(nickname);
+
+            modifySet(target, user);
+
+            RESULT_OBJECT.put("userId", userRepository.save(user).getId());
+        } catch (Exception e) {
+            RESULT_OBJECT.put("error", e.getMessage());
         }
         return RESULT_OBJECT;
     }
@@ -177,7 +211,7 @@ public class UserServiceImpl implements UserService {
                             post.getImages().get(post.getRepresentative()),
                             scrapPost(post, findUserByEmail(decodeToken(token))),
                             likePost(post, findUserByEmail(decodeToken(token)))
-                            ));
+                    ));
                 }
                 Collections.reverse(list);
                 int from = pageable.getPageNumber() * pageable.getPageSize();
@@ -333,6 +367,16 @@ public class UserServiceImpl implements UserService {
             throw new Exception("User Not Found");
     }
 
+    private void modifySet(User target, User user) {
+        modifyFollower(target.simplify(), user.simplify());
+        modifyFollowing(target.simplify(), user.simplify());
+        modifyBlocker(target, user);
+        modifyBlocking(target, user);
+        modifyReporter(target, user);
+        modifyPostWriter(target, user);
+        modifyCommentWriter(target, user);
+    }
+
     private void modifyFollower(UserSimple target, UserSimple user) {
         List<Follow> followerList = followRepository.findAllByFollower(target);
         for (Follow follow : followerList) {
@@ -340,6 +384,7 @@ public class UserServiceImpl implements UserService {
             followRepository.save(follow);
         }
     }
+
     private void modifyFollowing(UserSimple target, UserSimple user) {
         List<Follow> followingList = followRepository.findAllByFollowing(target);
         for (Follow follow : followingList) {
@@ -347,6 +392,7 @@ public class UserServiceImpl implements UserService {
             followRepository.save(follow);
         }
     }
+
     private void modifyBlocker(User target, User user) {
         List<Block> blockerList = blockRepository.findAllByBlocker(target);
         for (Block block : blockerList) {
@@ -354,6 +400,7 @@ public class UserServiceImpl implements UserService {
             blockRepository.save(block);
         }
     }
+
     private void modifyBlocking(User target, User user) {
         List<Block> blockingList = blockRepository.findAllByBlocking(target);
         for (Block block : blockingList) {
@@ -361,6 +408,7 @@ public class UserServiceImpl implements UserService {
             blockRepository.save(block);
         }
     }
+
     private void modifyReporter(User target, User user) {
         List<Report> reportList = reportRepository.findAllByUserId(target.getId());
         for (Report report : reportList) {
@@ -368,6 +416,7 @@ public class UserServiceImpl implements UserService {
             reportRepository.save(report);
         }
     }
+
     private void modifyPostWriter(User target, User user) {
         List<Post> postList = postRepository.findAllByWriterNo(target.getId());
         for (Post post : postList) {
@@ -375,28 +424,29 @@ public class UserServiceImpl implements UserService {
             postRepository.save(post);
         }
     }
+
     private void modifyCommentWriter(User target, User user) {
         UserSimple simpleTarget = target.simplify();
         UserSimple simpleUser = user.simplify();
-            List<Comment> commentList = commentRepository.findAllByWriter(simpleTarget);
-            for (Comment comment : commentList) {
-                comment.modifyWriter(simpleUser);
-                commentRepository.save(comment);
-            }
+        List<Comment> commentList = commentRepository.findAllByWriter(simpleTarget);
+        for (Comment comment : commentList) {
+            comment.modifyWriter(simpleUser);
+            commentRepository.save(comment);
+        }
     }
 
-    private boolean scrapPost(Post post, User user){
-        if (post.getScrapUsers().contains(user.getId())){
+    private boolean scrapPost(Post post, User user) {
+        if (post.getScrapUsers().contains(user.getId())) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
-    private boolean likePost(Post post, User user){
-        if (post.getLikeUsers().contains(user.getId())){
+    private boolean likePost(Post post, User user) {
+        if (post.getLikeUsers().contains(user.getId())) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
