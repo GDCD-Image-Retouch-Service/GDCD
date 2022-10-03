@@ -58,6 +58,7 @@ export const useCommunityStore = defineStore('communityStore', {
       })
         .then((res) => {
           this.post = res.data;
+
           console.log(res.data);
         })
         .catch((err) => {
@@ -107,6 +108,7 @@ export const useCommunityStore = defineStore('communityStore', {
         },
       })
         .then((res) => {
+          this.getPostsAll();
           console.log(res.data);
         })
         .catch((err) => {

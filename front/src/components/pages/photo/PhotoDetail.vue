@@ -6,9 +6,9 @@
       alt=""
       class="main-image common-image"
     />
-
-    <btn-image-toggle />
-    <button class="image-toggle-button">클릭</button>
+    <div>
+      <button class="image-toggle-button">클릭</button>
+    </div>
     <div class="tag-wrap">
       <div
         v-for="(tag, index) in communityStore.selectImage.beforeImage.imageTag"
@@ -23,23 +23,25 @@
 
 <script setup>
 import { useCommunityStore } from '@/stores/community.js';
-import BtnImageToggle from '@/components/molecules/common/btn/BtnImageToggle.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 const communityStore = useCommunityStore();
 
 const targetImage = ref(communityStore.selectImage.beforeImage.imageUrl);
 
-// const imageToggleButton = document.getElementsByClassName(
-//   'image-toggle-button',
-// );
-document.addEventListener('touchstart', function (event) {
-  targetImage.value = communityStore.selectImage.afterImage.imageUrl;
-  console.log(targetImage, event);
-});
+onMounted(() => {
+  document
+    .getElementsByClassName('image-toggle-button')[0]
+    .addEventListener('touchstart', function () {
+      targetImage.value = communityStore.selectImage.afterImage.imageUrl;
+      console.log(targetImage);
+    });
 
-document.addEventListener('touchend', function (event) {
-  targetImage.value = communityStore.selectImage.beforeImage.imageUrl;
-  console.log(targetImage, event);
+  document
+    .getElementsByClassName('image-toggle-button')[0]
+    .addEventListener('touchend', function () {
+      targetImage.value = communityStore.selectImage.beforeImage.imageUrl;
+      console.log(targetImage);
+    });
 });
 </script>
 
@@ -59,5 +61,8 @@ document.addEventListener('touchend', function (event) {
 }
 .tag {
   padding: 3px 10px;
+}
+.image-toggle-button {
+  width: 100%;
 }
 </style>

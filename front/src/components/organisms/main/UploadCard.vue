@@ -65,7 +65,7 @@
         <!-- Btn Score -->
         <router-link
           v-if="isInput"
-          to="main/score"
+          to="/main/score"
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
         >
@@ -127,7 +127,7 @@
         <!-- Btn Score -->
         <router-link
           v-if="isInput"
-          to="main/score"
+          to="/main/score"
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
         >
@@ -186,8 +186,9 @@ const isLoading = ref(false);
 watch(
   () => mainStore.isCamMode,
   () => {
-    console.log(mainStore.isCamMode);
+    console.log(mainStore.isCamMode ? '카메라모드' : '사진모드');
     if (!mainStore.isCamMode) {
+      isInput.value = false;
       isPhotoTaken.value = false;
       isShotPhoto.value = false;
       stopCameraStreame();
@@ -246,8 +247,6 @@ const takePhoto = () => {
 
   const context = canvas.value.getContext('2d');
 
-  console.log(camera.value.height);
-  console.log(camera.value.width);
   context.drawImage(camera.value, 0, 0, 380, 380);
 
   // canvas to url
