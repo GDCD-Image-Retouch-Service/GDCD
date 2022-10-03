@@ -60,6 +60,11 @@ export const useUserStore = defineStore('userStore', {
     selectTag: [],
   }),
   actions: {
+    setToken(token) {
+      this.token = token;
+      this.getMyinfo();
+    },
+
     // 내정보 조회
     getMyinfo() {
       axios({

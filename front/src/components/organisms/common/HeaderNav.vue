@@ -1,6 +1,6 @@
 <template>
   <div class="header-nav main outer">
-    <router-link to="/main">
+    <router-link to="/main" class="header-logo">
       <header-logo />
     </router-link>
 
@@ -24,5 +24,9 @@ import HeaderProfile from '@/components/molecules/common/header/HeaderProfile.vu
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.header-logo {
+  color: var(--black);
+  text-decoration: none;
 }
 </style>
