@@ -62,7 +62,7 @@ const userStore = useUserStore();
 <style scoped>
 .footer-nav {
   position: fixed;
-  bottom: 8px;
+  bottom: 0px;
   z-index: 50;
   width: 100vw;
   height: var(--size-h-footer);
@@ -73,9 +73,7 @@ const userStore = useUserStore();
 
 .footer-nav-wrap {
   height: var(--size-h-footer);
-  width: 100vw;
-  max-width: 280px;
-  border-radius: var(--size-radius);
+  width: 100%;
   justify-content: space-around;
 }
 .footer-nav-wrap a {

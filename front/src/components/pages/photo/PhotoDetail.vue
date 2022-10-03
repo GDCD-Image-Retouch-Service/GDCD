@@ -6,8 +6,11 @@
       alt=""
       class="main-image common-image"
     />
-    <div>
-      <button class="image-toggle-button">클릭</button>
+    <div class="button-wrap">
+      <div class="image-toggle-button">
+        <div class="button-left"></div>
+        <div class="button-right"></div>
+      </div>
     </div>
     <div class="tag-wrap">
       <div
@@ -62,7 +65,32 @@ onMounted(() => {
 .tag {
   padding: 3px 10px;
 }
-.image-toggle-button {
+.button-wrap {
   width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+.image-toggle-button {
+  width: 40px;
+  margin-top: var(--grid-vertical);
+  height: 20px;
+  border-radius: 30px;
+  background-color: var(--instagram-grey);
+  display: flex;
+  overflow: hidden;
+}
+.button-left {
+  width: 50%;
+  background-color: var(--instagram-dark-grey);
+}
+.button-right {
+  width: 50%;
+  border-radius: 0 30px 30px 0;
+}
+.image-toggle-button:active .button-left {
+  background-color: var(--instagram-grey);
+}
+.image-toggle-button:active .button-right {
+  background-color: var(--instagram-dark-grey);
 }
 </style>
