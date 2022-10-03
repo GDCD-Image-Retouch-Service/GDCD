@@ -224,7 +224,7 @@ public class ImageServiceImpl implements ImageService {
                 ArrayList<String> ul = (ArrayList<String>) obj2.get("ul");
                 ArrayList<String> dr = (ArrayList<String>) obj2.get("dr");
                 String str = (String) obj2.get("class");
-                str += ";" + ul.get(0) + "," + ul.get(1) + ";" + dr.get(0) + "," + dr.get(1) + ";";
+                str += ";"+String.valueOf(ul.get(0)) + "," + String.valueOf(ul.get(1)) + ";" + String.valueOf(dr.get(0)) + "," + String.valueOf(dr.get(1)) + ";";
                 objectList.add(str);
             }
 
