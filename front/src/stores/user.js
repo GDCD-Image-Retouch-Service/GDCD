@@ -7,13 +7,7 @@ import { ref } from 'vue';
 export const useUserStore = defineStore('userStore', {
   state: () => ({
     // 로그인한 유저 정보
-    currentUserd: {
-      item: {
-        profile: require('@/assets/sdprofile.png'),
-        nickname: '일이삼사오육',
-      },
-      msg: 'string',
-    },
+    currentUserd: {},
     // 프로필 페이지에서 보이는 게시글
     post: {},
 
@@ -30,7 +24,6 @@ export const useUserStore = defineStore('userStore', {
 
     // 토큰
     token: ref(localStorage.getItem('token')),
-    // token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRlanIzMzdAZ21haWwuY29tIiwiaWF0IjoxNjY0NjQxMDA5LCJleHAiOjE2NjQ2NTkwMDl9.BEYSx7y1aUFcUItPHeB6fACrHvUqY5KIMs839nJ_zBg',
 
     // 로그인한 유저 정보
     profile: {},
@@ -90,21 +83,15 @@ export const useUserStore = defineStore('userStore', {
 
     // 다른 사람 정보 조회
     getOtherinfo(userId) {
-      let data = {
-        userId: userId,
-      };
-
-      if (userId == 0) {
-        data = {};
-      }
-
       axios({
         url: user.myInfo(),
         method: 'GET',
         headers: {
           token: this.token,
         },
-        params: data,
+        params: {
+          userId: userId,
+        },
       })
         .then((res) => {
           this.profile = res.data;
@@ -117,21 +104,18 @@ export const useUserStore = defineStore('userStore', {
 
     // 스크랩 조회
     getMyScrap(userId) {
-      let data = {
-        userId: userId,
-      };
-      if (userId == 0) {
-        data = {};
-      }
       axios({
         url: user.myScrap(),
         method: 'GET',
         headers: {
           token: this.token,
         },
-        params: data,
+        params: {
+          userId: userId,
+        },
       })
         .then((res) => {
+          console.log(res.data);
           this.scrapList = res.data;
         })
         .catch((err) => {
@@ -141,19 +125,15 @@ export const useUserStore = defineStore('userStore', {
 
     // 라이크 조회
     getMyLike(userId) {
-      let data = {
-        userId: userId,
-      };
-      if (userId == 0) {
-        data = {};
-      }
       axios({
         url: user.myLike(),
         method: 'GET',
         headers: {
           token: this.token,
         },
-        params: data,
+        params: {
+          userId: userId,
+        },
       })
         .then((res) => {
           this.likeList = res.data;
@@ -184,19 +164,15 @@ export const useUserStore = defineStore('userStore', {
 
     // 내 팔로워 조회
     getMyFollower(userId) {
-      let data = {};
-      if (userId != 0) {
-        data = {
-          userId: userId,
-        };
-      }
       axios({
         url: user.myFollower(),
         method: 'GET',
         headers: {
           token: this.token,
         },
-        params: data,
+        params: {
+          userId: userId,
+        },
       })
         .then((res) => {
           this.follower = res.data;
@@ -209,20 +185,15 @@ export const useUserStore = defineStore('userStore', {
 
     // 내가 팔로잉 하는 사람 조회
     getMyFollowing(userId) {
-      let data = {};
-      if (userId != 0) {
-        data = {
-          userId: userId,
-        };
-      }
-
       axios({
         url: user.myFollowing(),
         method: 'GET',
         headers: {
           token: this.token,
         },
-        params: data,
+        params: {
+          userId: userId,
+        },
       })
         .then((res) => {
           this.following = res.data;

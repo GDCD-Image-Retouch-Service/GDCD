@@ -13,17 +13,20 @@
           <i class="bi bi-caret-right-fill" style="color: var(--black)"></i>
         </router-link>
       </div>
-      <div
-        @click="router.push({ name: 'ProfileFriend' })"
-        style="text-decoration: none"
-      >
+      <div>
         <btn-add-friednd
           v-if="
             userStore.currentUser.item?.user?.userId ==
             userStore.profile.item?.user?.userId
           "
+          @click="router.push({ name: 'ProfileFriend' })"
+          style="text-decoration: none"
         />
-        <btn-add-follow :userId="userStore.profile.item?.user?.userId" v-else />
+        <btn-add-follow
+          :userId="userStore.profile.item?.user?.userId"
+          v-else
+          @click="userFollow()"
+        />
       </div>
     </div>
     <div class="posts-scraps-likes">
@@ -63,8 +66,16 @@ import BtnAddFollow from '../common/btn/BtnAddFollow.vue';
 import router from '@/router/index.js';
 
 import { useUserStore } from '@/stores/user';
-
 const userStore = useUserStore();
+
+const userFollow = () => {
+  if (
+    userStore.currentUser.item?.user?.userId !=
+    userStore.profile.item?.user?.userId
+  ) {
+    userStore.follow(userStore.currentUser.item?.user?.userId);
+  }
+};
 </script>
 
 <style scoped>

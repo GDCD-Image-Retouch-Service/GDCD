@@ -4,26 +4,64 @@
     <div class="app-container sub flex-grow-1 flex-shrink-1">
       <router-view />
     </div>
-    <footer-nav />
+    <footer-nav :class="{ visible: isVisible }" />
   </div>
 </template>
 
 <script setup>
 import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
+
+import { computed, ref, onBeforeMount } from 'vue';
+
+import { useUserStore } from '@/stores';
+
 import { computed } from 'vue';
 import { useMainStore } from '@/stores';
-// import { useHomeStore, useUserStore } from '@/stores';
+
+
 
 const mainStore = useMainStore();
 
 // 바꿀 예정
-// const userStore = useUserStore();
+const userStore = useUserStore();
 
 if (localStorage.getItem('token')) {
-  // userStore.getMyinfo();
+  userStore.getMyinfo();
 }
-const theme = computed(() => (mainStore.getIsDark ? 'dark' : 'light'));
+
+const theme = computed(() => (homeStore.getIsDark ? 'dark' : 'light'));
+
+onBeforeMount(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+const handleScroll = (e) => {
+  console.log(e);
+};
+
+let isVisible = ref(false);
+document.addEventListener('scroll', (e) => {
+  console.log(e);
+  console.log(
+    e.clientY,
+    e.deltaY,
+    e.layerY,
+    e.offsetY,
+    e.screenY,
+    e.y,
+    e.pageY,
+    e.movementY,
+    e.wheelDeltaY,
+  );
+  if (e.deltaY > 0) {
+    isVisible.value = true;
+    console.log('ㅇㅇ');
+  } else {
+    isVisible.value = false;
+  }
+});
+
 </script>
 
 <style>
@@ -46,6 +84,7 @@ const theme = computed(() => (mainStore.getIsDark ? 'dark' : 'light'));
   /* 테마 색 */
   --theme-color: #ffe49c;
   --color-theme: #ffe49c;
+  --light-main-color: #ffffff;
 
   /* 자주 사용 */
   --black: #3c3c3a;
@@ -209,5 +248,9 @@ body::-webkit-scrollbar {
 a {
   color: #404040;
   text-decoration: none;
+}
+
+.visible {
+  display: none;
 }
 </style>

@@ -42,15 +42,14 @@
 
     <div v-if="communityStore.post.item?.images?.length == 2">
       <img
-        :src="communityStore.post.item?.images[0].imageUrl"
+        :src="targetImage"
+        :ref="targetImage"
         alt=""
         class="main-image common-image"
       />
-      <img
-        :src="communityStore.post.item?.images[1].imageUrl"
-        alt=""
-        class="main-image common-image"
-      />
+    </div>
+    <div>
+      <button class="img-toggle-btn">클릭</button>
     </div>
 
     <btn-image-toggle />
@@ -79,25 +78,47 @@ import { useCommunityStore } from '@/stores/community.js';
 import { useUserStore } from '@/stores/user.js';
 import { watch } from '@vue/runtime-core';
 import { useRoute, useRouter } from 'vue-router';
+import { ref, onBeforeMount, onMounted, onUnmounted } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
-const communityStore = useCommunityStore();
-const userStore = useUserStore();
-
-communityStore.getPost(route.params.postId);
-
 const postId = route.params.postId;
+const userStore = useUserStore();
+const communityStore = useCommunityStore();
+
 const clickComment = () => {
   communityStore.isOpenComment = !communityStore.isOpenComment;
-  // document.getElementById('app').scrollTop =
-  //   document.getElementById('app').scrollHeight;
-  // document.getElementById('app').scrollTop = 1200;
+
   watch(communityStore.isOpenComment, (newValues) => {
     window.scrollTo(0, document.body.scrollHeight);
     console.log(newValues);
   });
 };
+const targetImage = ref(communityStore.post.item?.images[0].imageUrl);
+
+onBeforeMount(() => {
+  communityStore.getPost(route.params.postId);
+});
+
+onMounted(() => {
+  document
+    .getElementsByClassName('img-toggle-btn')[0]
+    .addEventListener('touchstart', function () {
+      targetImage.value = communityStore.post.item?.images[1].imageUrl;
+      console.log(targetImage);
+    });
+
+  document
+    .getElementsByClassName('img-toggle-btn')[0]
+    .addEventListener('touchend', function () {
+      targetImage.value = communityStore.post.item?.images[0].imageUrl;
+      console.log(targetImage);
+    });
+});
+
+onUnmounted(() => {
+  targetImage.value = communityStore.post.item?.images[0].imageUrl;
+});
 </script>
 
 <style scoped>

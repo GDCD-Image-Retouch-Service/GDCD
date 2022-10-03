@@ -22,6 +22,7 @@
             (userStore.urlList = [])
         "
       >
+        <div class="image-content">이미지를 올려주세요</div>
       </a>
     </div>
     <div class="wrap" v-if="userStore.urlPhotoList.length === 1">
@@ -101,6 +102,7 @@
         class="content-area"
         maxlength="100"
         v-model="data.content"
+        placeholder="욕설,비방, 광고 등의 내용은 통보없이 삭제될 수 있습니다."
       ></textarea>
     </div>
 
@@ -269,8 +271,9 @@ import { useUserStore } from '@/stores/user.js';
 import { ref } from 'vue';
 // import router from '@/router';
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
 
-const myRouter = useRouter();
+const router = useRouter();
 const communityStore = useCommunityStore();
 const userStore = useUserStore();
 
@@ -285,7 +288,12 @@ const data = ref({
 const firstCheck = ref(false);
 const secondCheck = ref(false);
 const selectTags = ref([]);
-
+async function createMyPost(context) {
+  await communityStore.createPost(context);
+  router.push({
+    name: 'CommunityList',
+  });
+}
 const createPost = (data) => {
   console.log(userStore.photoSelect);
 
@@ -296,11 +304,33 @@ const createPost = (data) => {
     images: userStore.selectedPhotoList,
     representative: 0,
   };
-  console.log(context, userStore.photoSelect);
-  communityStore.createPost(context);
+  Swal.fire({
+    title: '작성하시겠습니까?',
+    showCancelButton: true,
+    confirmButtonColor: '#ffe49c',
+    cancelButtonColor: '#3D4C53',
+    confirmButtonText: '네, 작성할게요',
+    cancelButtonText: '아니오',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      if (
+        (context.title != '') &
+        (context.images != []) &
+        (context.content != '')
+      ) {
+        // router.push({
+        //   name: 'ProfilePost',
+        //   params: { userId: userStore.currentUser.item?.user?.userId },
+        // });
 
-  myRouter.push({ name: 'main' });
+        createMyPost(context);
+      } else {
+        Swal.fire('잘못된 양식입니다.', '제목, 이미지, 내용은 필수 값입니다.');
+      }
+    }
+  });
 };
+console.log(userStore.currentUser.item?.user?.userId);
 
 const selectPhoto = () => {
   userStore.urlPhotoList = userStore.urlList;
@@ -389,15 +419,15 @@ userStore.selectTag = [];
 }
 .write-input {
   width: 100%;
-  height: 37px;
+  height: 45px;
   border: 1px solid var(--instagram-grey);
   border-radius: 5px;
   background-color: var(--light-main-color);
   margin: 0 auto;
-  padding: 5px;
+  padding: 10px;
 }
 .content-area {
-  padding: 5px;
+  padding: 10px;
   width: 100%;
   border: 1px solid var(--instagram-grey);
   resize: none;
@@ -497,5 +527,10 @@ userStore.selectTag = [];
 }
 .tag {
   padding: 3px 10px;
+}
+.image-content {
+  position: absolute;
+  top: calc(50% - 12px);
+  left: calc(50% - 75px);
 }
 </style>
