@@ -21,10 +21,6 @@ import java.util.Map;
 @RequestMapping("/image")
 public class ImageController extends Controller {
     private final ImageService imageService;
-//    @PostMapping("")
-//    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestPart MultipartFile image,  @RequestPart(required = false) ImageCreateRequestDto requestDto) throws Exception {
-//        return getResponseEntity(imageService.addImage(token, image, requestDto));
-//    }
 
     @PostMapping("")
     public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestPart MultipartFile image,  @RequestPart(required = false) int aesthetic, @RequestPart(required = false) int quality) throws Exception {
@@ -43,16 +39,8 @@ public class ImageController extends Controller {
     public ResponseEntity<Map<String,Object>> imageDetailInfo(@RequestParam Long imageId){
         return getResponseEntity(imageService.findImageInfoById(imageId));
     }
-//    @GetMapping(path = "")
-//    public String setImageFileById(@RequestParam Long imageId, HttpServletResponse response)
-//            throws IOException {
-//
-//        return "file:///C:/test/images/Test/1.jpg";
-//
-//    }
 
     @GetMapping(value="/list")
-//    @ResponseBody
     public ResponseEntity<Map<String, Object>> imageList(@RequestHeader String token, Pageable pageable) throws Exception {
         return getResponseEntity(imageService.findImageList(token, pageable));
     }
@@ -71,11 +59,6 @@ public class ImageController extends Controller {
     public ResponseEntity<Map<String, Object>> imageOptimizationOld(@RequestHeader String token, @RequestPart MultipartFile image) {
         return getResponseEntity(imageService.requestOptimizationOld(token, image));
     }
-
-//    @PostMapping("/optimization")
-//    public ResponseEntity<Map<String, Object>> imageOptimization(@RequestHeader String token, @RequestPart MultipartFile image) {
-//        return getResponseEntity(imageService.requestOptimization(token, image));
-//    }
 
     @GetMapping("/optimization")
     public ResponseEntity<Map<String, Object>> imageOptimization(@RequestHeader String token, @RequestParam Long imageId) {

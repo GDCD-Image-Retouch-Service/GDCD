@@ -1,6 +1,7 @@
 package com.gdcd.back.domain.user.block;
 
 import com.gdcd.back.domain.user.User;
+import com.gdcd.back.domain.user.UserSimple;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -19,14 +20,14 @@ public class Block {
     @Id
     @Field(name = "_id")
     private Long id;
-    private User blocker;
-    private User blocking;
+    private UserSimple blocker;
+    private UserSimple blocking;
 
-    public void modifyBlocker(User blocker) {
+    public void modifyBlocker(UserSimple blocker) {
         this.blocker = blocker;
     }
 
-    public void modifyBlocking(User blocking) {
+    public void modifyBlocking(UserSimple blocking) {
         this.blocking = blocking;
     }
 }

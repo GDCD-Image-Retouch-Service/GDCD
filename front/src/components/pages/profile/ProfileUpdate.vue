@@ -34,8 +34,8 @@
       닉네임은 몇 자
     </div>
     <button
-      class="button"
-      @click="profileUpdate(userStore.updateNickname, userStore.updateProfile)"
+      class="button active"
+      @click="updateProfile(userStore.updateNickname, userStore.updateProfile)"
     >
       제출
     </button>
@@ -48,7 +48,7 @@ import { useUserStore } from '@/stores/user.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const myRouter = useRouter();
+const router = useRouter();
 const userStore = useUserStore();
 
 const fileInput = ref(null);
@@ -71,11 +71,17 @@ const checkOoverlap = (nickname) => {
 };
 
 //  회원 정보 수정 요청
-const profileUpdate = (name, file) => {
-  userStore.updateMyInfo(name, file);
+async function updateProfile(name, file) {
+  const userId = userStore.currentUser.item?.user?.userId;
+  await userStore.updateUserNickname(name);
+  await userStore.updateUserProfile(file);
+  await userStore.getOtherinfo(userId);
 
-  myRouter.push({ name: 'profile', params: { userId: 0 } });
-};
+  router.push({
+    name: 'ProfilePost',
+    params: { userId: userStore.currentUser.item?.user?.userId },
+  });
+}
 </script>
 
 <style scoped>
@@ -103,7 +109,6 @@ const profileUpdate = (name, file) => {
   background-size: cover;
   object-fit: cover;
 }
-
 .profile-nickname {
   font-size: 18px;
   width: 100%;

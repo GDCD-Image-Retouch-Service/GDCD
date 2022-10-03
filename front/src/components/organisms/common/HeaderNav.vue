@@ -16,11 +16,11 @@ import HeaderProfile from '@/components/molecules/common/header/HeaderProfile.vu
 <style scoped>
 .header-nav {
   position: fixed;
-  z-index: 5001;
+  z-index: 5;
   width: 100vw;
   height: var(--size-h-header);
   min-height: var(--size-h-header);
-
+  background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;

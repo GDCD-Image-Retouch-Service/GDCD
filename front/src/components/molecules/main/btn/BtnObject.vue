@@ -1,15 +1,17 @@
 <template>
-  <div class="btn-object" ref="btnObject">{{ props.objectData }}</div>
+  <div class="btn-object blur outer" ref="btnObject">
+    {{ props.objectData }}
+  </div>
 </template>
 
 <script setup>
 import { ref, defineProps, onMounted } from 'vue';
 
-// props
+props;
 const props = defineProps({
   objectData: String,
-  natureHeigth: Number,
-  natureWidth: Number,
+  naturalHeight: Number,
+  naturalWidth: Number,
 });
 
 // data
@@ -25,16 +27,50 @@ const btnObject = ref(null);
 
 onMounted(() => {
   console.log('props1', props.objectData);
+
+  let fixedHeight = 0;
+  let fixedWidth = 0;
+
+  const isHeightBigger = props.naturalHeight > props.naturalWidth;
+
+  if (isHeightBigger) {
+    fixedHeight = (props.naturalHeight * 380) / props.naturalWidth;
+    fixedWidth = 380;
+  } else {
+    fixedHeight = 380;
+    fixedWidth = (props.naturalWidth * 380) / props.naturalHeight;
+  }
+
+  console.log('FH : ', fixedHeight);
+  console.log('FW : ', fixedWidth);
+
   const objectData = props.objectData.split(';');
   const objectName = objectData[0];
-  const objectUL = objectData[1].split(',');
-  const objectDR = objectData[2].split(',');
+  const objectLU = objectData[1].split(',');
+  const objectRD = objectData[2].split(',');
 
   console.log('name', objectName);
-  console.log('L', objectUL[0]);
-  console.log('U', objectUL[1]);
-  console.log('R', objectDR[0]);
-  console.log('D', objectDR[1]);
+  console.log('L', objectLU[0]);
+  console.log('U', objectLU[1]);
+  console.log('R', objectRD[0]);
+  console.log('D', objectRD[1]);
+
+  console.log('NH', `${props.naturalHeight}px`);
+  console.log('NW', `${props.naturalWidth}px`);
+
+  console.log('NH', `${(objectLU[0] * 380) / props.naturalHeight}px`);
+  console.log('NW', `${(objectLU[1] * 380) / props.naturalWidth}px`);
+
+  btnObject.value.style.top = `${(objectLU[1] * 380) / props.naturalWidth}px`;
+  btnObject.value.style.left = `${(objectLU[0] * 380) / props.naturalHeight}px`;
+
+  btnObject.value.style.width = `${
+    ((objectRD[0] - objectLU[0]) * 380) / props.naturalWidth
+  }px`;
+
+  btnObject.value.style.height = `${
+    ((objectRD[1] - objectLU[1]) * 380) / props.naturalWidth
+  }px`;
 });
 </script>
 
@@ -43,7 +79,8 @@ onMounted(() => {
   position: absolute;
   top: 0;
   left: 0;
+  width: 0px;
+  height: 0px;
   background: red;
-  opacity: 0.5;
 }
 </style>

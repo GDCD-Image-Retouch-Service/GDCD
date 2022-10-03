@@ -33,13 +33,8 @@ public class UserController extends Controller {
     }
 
     @GetMapping("")
-    public ResponseEntity<Map<String, Object>> userDetails(@RequestHeader(required = false) String token, @RequestParam(required = false) Long userId) throws Exception {
+    public ResponseEntity<Map<String, Object>> userDetails(@RequestHeader(required = false) String token, @RequestParam(required = false) Long userId) {
         return getResponseEntity(userService.findUser(token, userId));
-    }
-
-    @PutMapping("")
-    public ResponseEntity<Map<String, Object>> userModify(@RequestHeader String token, @RequestPart(required = false) MultipartFile profile, @RequestPart(required = false) String nickname) throws Exception{
-        return getResponseEntity(userService.modifyUser(token, profile, nickname));
     }
 
     @PutMapping("/profile")
@@ -53,7 +48,7 @@ public class UserController extends Controller {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Map<String, Object>> userRemove(@RequestHeader String token) throws Exception{
+    public ResponseEntity<Map<String, Object>> userRemove(@RequestHeader String token) {
         return getResponseEntity(userService.removeUser(token));
     }
 
@@ -61,11 +56,6 @@ public class UserController extends Controller {
     public ResponseEntity<Map<String, Object>> userBlockSave(@RequestHeader String token, @RequestParam Long userId) {
         return getResponseEntity(userService.blockUser(token, userId));
     }
-
-//    @DeleteMapping("/block")
-//    public ResponseEntity<Map<String, Object>> userBlockRemove(@RequestParam Long blockId) {
-//        return getResponseEntity(userService.cancleBlock(blockId));
-//    }
 
     @GetMapping("/scrap-list")
     public ResponseEntity<Map<String, Object>> userScrapList(@RequestHeader String token, Pageable pageable) {

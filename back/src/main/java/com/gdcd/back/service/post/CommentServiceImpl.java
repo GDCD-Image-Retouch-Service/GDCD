@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -31,11 +30,9 @@ public class CommentServiceImpl implements CommentService {
             List<CommentUpperResponseDto> list = new ArrayList<>();
             List<CommentKidResponseDto> kidList;
 
-//            List<Comment> UpperDocumentList = commentRepository.findAllByPostIdAndUpperAndValidation(postId, 0L, true);
             List<Comment> UpperDocumentList = commentRepository.findAllByPostIdAndUpperAndValidationOrderByRegistDateDesc(postId, 0L, true, pageable);
             for (Comment comment : UpperDocumentList) {
                 kidList = new ArrayList<>();
-//                List<Comment> KidDocumentList = commentRepository.findAllByUpperAndValidation(comment.getId(), true);
                 List<Comment> KidDocumentList = commentRepository.findAllByUpperAndValidationOrderByRegistDateDesc(comment.getId(), true, pageable);
 
                 for (Comment kid : KidDocumentList) {

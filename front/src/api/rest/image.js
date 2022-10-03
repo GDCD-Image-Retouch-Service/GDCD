@@ -90,16 +90,16 @@ export default {
   },
 
   // 최적화 사진 저장
-  optimizingSave: function () {
-    // return new Promise((resolve, reject) => {
-    //   axiosApi
-    //     .get(REST_PATH + '/optimization?imageId=' + payload)
-    //     .then((response) => {
-    //       resolve(response.data);
-    //     })
-    //     .catch((error) => {
-    //       reject(error);
-    //     });
-    // });
+  optimizingSave: function (payload) {
+    return new Promise((resolve, reject) => {
+      axiosApi
+        .post(REST_PATH + '/storage', payload)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
   },
 };

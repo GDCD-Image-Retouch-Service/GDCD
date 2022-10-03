@@ -18,7 +18,6 @@ public class ImageDetailResponseDto {
     private int imageAesthetic;
     private int imageQuality;
 
-
     public ImageDetailResponseDto(Image img) {
         this.imageId = img.getId();
         this.imageTag = img.getObjects();
