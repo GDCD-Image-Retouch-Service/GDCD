@@ -14,6 +14,7 @@ export const useMainStore = defineStore('main', () => {
   const tempQScore = ref(0);
   const tempScore = ref(0);
   const requestId = ref(0);
+  const tempOptiList = ref([]);
 
   // action
   const setIsDarkToggle = () => {
@@ -88,6 +89,15 @@ export const useMainStore = defineStore('main', () => {
   const setRequestId = (id) => {
     requestId.value = id;
   };
+  const setTempOptiList = (newOtiList) => {
+    tempOptiList.value = newOtiList;
+  };
+  const pushTempOptiList = (opti) => {
+    tempOptiList.value.push(opti);
+  };
+  const deleteTempOptiList = () => {
+    tempOptiList.value = [];
+  };
 
   // getter
   const getIsDark = computed(() => isDark.value);
@@ -112,6 +122,7 @@ export const useMainStore = defineStore('main', () => {
   const getTempScore = computed(() => tempScore.value);
   const getTempId = computed(() => tempId.value);
   const getRequestId = computed(() => requestId.value);
+  const getTempOptiList = computed(() => tempOptiList.value);
 
   return {
     // state
@@ -132,6 +143,9 @@ export const useMainStore = defineStore('main', () => {
     setScore,
     setTempId,
     setRequestId,
+    setTempOptiList,
+    pushTempOptiList,
+    deleteTempOptiList,
 
     // getter
     getIsDark,
@@ -143,5 +157,6 @@ export const useMainStore = defineStore('main', () => {
     getTempScore,
     getTempId,
     getRequestId,
+    getTempOptiList,
   };
 });

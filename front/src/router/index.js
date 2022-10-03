@@ -1,28 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import store from '@/stores/account';
+import { useAccountStore } from '@/stores';
 import swal from 'sweetalert2';
 
 // true : 로그인을 해야 이동 가능
 // false : 로그인을 하면 이동 불가능
 const beforeAuth = (needAuth) => async (from, to, next) => {
-  // 로그인 기능 구현시 이 코드를 변경할 것
-  const isLogined = false;
-  if (needAuth && !isLogined) {
-    if (from.path.includes('studyroom')) {
-      // save last room info for using after login
-      store.commit('SET_NEXT_ROOM', from.path);
-    }
-
+  const accountStore = useAccountStore();
+  if (needAuth && !accountStore.getIsLogined) {
     // 로그인 필요한 서비스
     await swal.fire({
       icon: 'warning',
       title: '로그인이 필요한 서비스 입니다',
       timer: 3000,
     });
-    next('/account/login');
+
     // 로그인 필요하지 않은 서비스
-  } else if (!needAuth && isLogined) {
-    next('/main');
   } else {
     next();
   }
@@ -112,6 +104,7 @@ const routes = [
   {
     path: '/community',
     name: 'community',
+    beforeEnter: beforeAuth(true),
     component: CommunityView,
     children: [
       {
@@ -136,6 +129,7 @@ const routes = [
   {
     path: '/community/:postId/update',
     name: 'CommunityUpdate',
+    beforeEnter: beforeAuth(true),
     component: CommunityUpdateView,
     children: [
       {
@@ -148,6 +142,7 @@ const routes = [
   {
     path: '/profile/:userId',
     name: 'profile',
+    beforeEnter: beforeAuth(true),
     component: ProfileView,
     children: [
       {
@@ -176,6 +171,7 @@ const routes = [
   {
     path: '/profile/update/',
     name: 'profileU',
+    beforeEnter: beforeAuth(true),
     component: ProfileUpdateView,
     children: [
       {
@@ -188,6 +184,7 @@ const routes = [
   {
     path: '/photo',
     name: 'photo',
+    beforeEnter: beforeAuth(true),
     component: PhotoView,
     children: [
       {
