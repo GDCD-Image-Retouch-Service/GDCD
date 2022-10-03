@@ -4,6 +4,7 @@ import com.gdcd.back.controller.Controller;
 import com.gdcd.back.dto.image.request.*;
 import com.gdcd.back.service.image.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,17 @@ import java.util.Map;
 @RequestMapping("/image")
 public class ImageController extends Controller {
     private final ImageService imageService;
+//    @PostMapping("")
+//    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestPart MultipartFile image,  @RequestPart(required = false) ImageCreateRequestDto requestDto) throws Exception {
+//        return getResponseEntity(imageService.addImage(token, image, requestDto));
+//    }
+
     @PostMapping("")
-    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestPart MultipartFile image,  @RequestPart(required = false) ImageCreateRequestDto requestDto) throws Exception {
-        return getResponseEntity(imageService.addImage(token, image, requestDto));
+    public ResponseEntity<Map<String, Object>> imageSave(@RequestHeader String token, @RequestPart MultipartFile image,  @RequestPart(required = false) int aesthetic, @RequestPart(required = false) int quality) throws Exception {
+        return getResponseEntity(imageService.addImage(token, image, ImageCreateRequestDto.builder()
+                        .aesthetic(aesthetic).quality(quality)
+                .build()
+        ));
     }
 
     @GetMapping(value="", produces = MediaType.IMAGE_JPEG_VALUE)
@@ -44,8 +53,8 @@ public class ImageController extends Controller {
 
     @GetMapping(value="/list")
 //    @ResponseBody
-    public ResponseEntity<Map<String, Object>> imageList(@RequestHeader String token) throws Exception {
-        return getResponseEntity(imageService.findImageList(token));
+    public ResponseEntity<Map<String, Object>> imageList(@RequestHeader String token, Pageable pageable) throws Exception {
+        return getResponseEntity(imageService.findImageList(token, pageable));
     }
 
     @PostMapping("/scoring")

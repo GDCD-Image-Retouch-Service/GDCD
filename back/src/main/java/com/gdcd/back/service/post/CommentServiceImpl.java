@@ -10,6 +10,7 @@ import com.gdcd.back.dto.post.request.CommentUpdateRequestDto;
 import com.gdcd.back.dto.post.response.CommentKidResponseDto;
 import com.gdcd.back.dto.post.response.CommentUpperResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,18 +25,18 @@ public class CommentServiceImpl implements CommentService {
     private Map<String, Object> RESULT_OBJECT;
 
     @Override
-    public Map<String, Object> findComments(String token, Long postId) {
+    public Map<String, Object> findComments(String token, Long postId, Pageable pageable) {
         RESULT_OBJECT = new HashMap<>();
         try {
             List<CommentUpperResponseDto> list = new ArrayList<>();
             List<CommentKidResponseDto> kidList;
 
 //            List<Comment> UpperDocumentList = commentRepository.findAllByPostIdAndUpperAndValidation(postId, 0L, true);
-            List<Comment> UpperDocumentList = commentRepository.findAllByPostIdAndUpperAndValidationOrderByRegistDateDesc(postId, 0L, true);
+            List<Comment> UpperDocumentList = commentRepository.findAllByPostIdAndUpperAndValidationOrderByRegistDateDesc(postId, 0L, true, pageable);
             for (Comment comment : UpperDocumentList) {
                 kidList = new ArrayList<>();
 //                List<Comment> KidDocumentList = commentRepository.findAllByUpperAndValidation(comment.getId(), true);
-                List<Comment> KidDocumentList = commentRepository.findAllByUpperAndValidationOrderByRegistDateDesc(comment.getId(), true);
+                List<Comment> KidDocumentList = commentRepository.findAllByUpperAndValidationOrderByRegistDateDesc(comment.getId(), true, pageable);
 
                 for (Comment kid : KidDocumentList) {
                     kidList.add(new CommentKidResponseDto(kid));

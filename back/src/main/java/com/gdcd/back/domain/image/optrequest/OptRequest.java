@@ -23,6 +23,6 @@ public class OptRequest {
     private int done;
 
     public void update(int done) {
-        this.done = done;
+        this.done += done;
     }
 }

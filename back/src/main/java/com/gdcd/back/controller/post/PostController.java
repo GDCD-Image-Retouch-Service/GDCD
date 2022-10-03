@@ -5,6 +5,7 @@ import com.gdcd.back.dto.post.request.*;
 import com.gdcd.back.service.post.CommentService;
 import com.gdcd.back.service.post.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,13 +21,13 @@ public class PostController extends Controller {
     private final PostService postService;
     private final CommentService commentService;
     @GetMapping("/list")
-    public ResponseEntity<Map<String, Object>> postList(@RequestHeader String token) throws Exception {
-        return getResponseEntity(postService.findPosts(token));
+    public ResponseEntity<Map<String, Object>> postList(@RequestHeader String token, Pageable pageable) throws Exception {
+        return getResponseEntity(postService.findPosts(token, pageable));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Map<String, Object>> postListByUser(@RequestHeader String token, @RequestParam(required = false) Long userId) throws Exception{
-        return getResponseEntity(postService.findPostsByUser(token, userId));
+    public ResponseEntity<Map<String, Object>> postListByUser(@RequestHeader String token, @RequestParam(required = false) Long userId, Pageable pageable) throws Exception{
+        return getResponseEntity(postService.findPostsByUser(token, userId, pageable));
     }
 
     @GetMapping("")
@@ -78,8 +79,8 @@ public class PostController extends Controller {
     }
 
     @GetMapping("/comment")
-    public ResponseEntity<Map<String, Object>> commentList(@RequestHeader String token, @RequestParam Long postId) {
-        return getResponseEntity(commentService.findComments(token, postId));
+    public ResponseEntity<Map<String, Object>> commentList(@RequestHeader String token, @RequestParam Long postId, Pageable pageable) {
+        return getResponseEntity(commentService.findComments(token, postId, pageable));
     }
 
     @PostMapping("/comment")

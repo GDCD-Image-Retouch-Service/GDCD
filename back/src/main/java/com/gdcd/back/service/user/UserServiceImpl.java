@@ -21,6 +21,7 @@ import com.gdcd.back.dto.user.response.FollowListResponseDto;
 import com.gdcd.back.dto.user.response.UserDetailResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -107,8 +108,8 @@ public class UserServiceImpl implements UserService {
             }
             user.update(PROFILE_REQUEST_URI, filePath, nickname);
 
-            modifyFollower(target, user);
-            modifyFollowing(target, user);
+            modifyFollower(target.simplify(), user.simplify());
+            modifyFollowing(target.simplify(), user.simplify());
             modifyBlocker(target, user);
             modifyBlocking(target, user);
             modifyReporter(target, user);
@@ -163,7 +164,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> findScraps(String token) {
+    public Map<String, Object> findScraps(String token, Pageable pageable) {
         RESULT_OBJECT = new HashMap<>();
         try {
             if (userRepository.findByEmail(decodeToken(token)).isPresent()) {
@@ -179,7 +180,9 @@ public class UserServiceImpl implements UserService {
                             ));
                 }
                 Collections.reverse(list);
-                RESULT_OBJECT.put("posts", list);
+                int from = pageable.getPageNumber() * pageable.getPageSize();
+                int to = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(), list.size());
+                RESULT_OBJECT.put("posts", list.subList(from, to));
                 // return scrap list : postId, image, writer nickname, profile, likeCount, (scrap = true)
             }
         } catch (Exception e) {
@@ -190,7 +193,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> findLikes(String token) {
+    public Map<String, Object> findLikes(String token, Pageable pageable) {
         RESULT_OBJECT = new HashMap<>();
         try {
             if (userRepository.findByEmail(decodeToken(token)).isPresent()) {
@@ -206,7 +209,9 @@ public class UserServiceImpl implements UserService {
                     ));
                 }
                 Collections.reverse(list);
-                RESULT_OBJECT.put("posts", list);
+                int from = pageable.getPageNumber() * pageable.getPageSize();
+                int to = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(), list.size());
+                RESULT_OBJECT.put("posts", list.subList(from, to));
                 // return scrap list : postId, image, writer nickname, profile, likeCount, (scrap = true)
             }
         } catch (Exception e) {
@@ -220,14 +225,30 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> followUser(String token, Long userId) {
         RESULT_OBJECT = new HashMap<>();
         try {
-            User follower = findUserByEmail(decodeToken(token));
-            User following = findUserById(userId);
+            UserSimple follower = findUserByEmail(decodeToken(token)).simplify();
+            UserSimple following = findUserById(userId).simplify();
+
+            if (follower.getId().equals(userId))
+                throw new Exception("SELF-FOLLOW NOT ALLOWED");
+
             Follow follow;
             if (followRepository.findByFollowerAndFollowing(follower, following).isPresent()) {
+                User followerUser = findUserByEmail(decodeToken(token));
+                followerUser.subFollowingCount();
+                userRepository.save(followerUser);
+                User followingUser = findUserById(userId);
+                followingUser.subFollowerCount();
+                userRepository.save(followingUser);
                 followRepository.deleteByFollowerAndFollowing(follower, following);
                 RESULT_OBJECT.put("unfollow", userId);
                 // fix) unFollow할 때는, user의 followCount--
             } else {
+                User followerUser = findUserByEmail(decodeToken(token));
+                followerUser.addFollowingCount();
+                userRepository.save(followerUser);
+                User followingUser = findUserById(userId);
+                followingUser.addFollowerCount();
+                userRepository.save(followingUser);
                 follow = Follow.builder()
                         .follower(follower)
                         .following(following)
@@ -243,7 +264,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> findFollowers(String token, Long userId) {
+    public Map<String, Object> findFollowers(String token, Long userId, Pageable pageable) {
         RESULT_OBJECT = new HashMap<>();
         try {
             User following;
@@ -251,7 +272,7 @@ public class UserServiceImpl implements UserService {
                 following = findUserByEmail(decodeToken(token));
             else
                 following = findUserById(userId);
-            List<Follow> documentList = followRepository.findAllByFollowing(following);
+            List<Follow> documentList = followRepository.findAllByFollowingOrderById(following.simplify(), pageable);
             List<FollowListResponseDto> list = new ArrayList<>();
             for (Follow follow : documentList) {
                 list.add(new FollowListResponseDto(follow.getFollower()));
@@ -266,7 +287,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> findFollowings(String token, Long userId) {
+    public Map<String, Object> findFollowings(String token, Long userId, Pageable pageable) {
         RESULT_OBJECT = new HashMap<>();
         try {
             User follower;
@@ -274,7 +295,7 @@ public class UserServiceImpl implements UserService {
                 follower = findUserByEmail(decodeToken(token));
             else
                 follower = findUserById(userId);
-            List<Follow> documentList = followRepository.findAllByFollower(follower);
+            List<Follow> documentList = followRepository.findAllByFollowerOrderById(follower.simplify(), pageable);
             List<FollowListResponseDto> list = new ArrayList<>();
             for (Follow follow : documentList) {
                 list.add(new FollowListResponseDto(follow.getFollowing()));
@@ -312,14 +333,14 @@ public class UserServiceImpl implements UserService {
             throw new Exception("User Not Found");
     }
 
-    private void modifyFollower(User target, User user) {
+    private void modifyFollower(UserSimple target, UserSimple user) {
         List<Follow> followerList = followRepository.findAllByFollower(target);
         for (Follow follow : followerList) {
             follow.modifyFollower(user);
             followRepository.save(follow);
         }
     }
-    private void modifyFollowing(User target, User user) {
+    private void modifyFollowing(UserSimple target, UserSimple user) {
         List<Follow> followingList = followRepository.findAllByFollowing(target);
         for (Follow follow : followingList) {
             follow.modifyFollowing(user);
