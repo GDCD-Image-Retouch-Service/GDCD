@@ -59,6 +59,15 @@ public class User {
             this.nickname = nickname;
     }
 
+    public void updateProfile(String requestURI, String profile) {
+        this.profile = requestURI + profile;
+        this.storagePath = profile;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public UserSimple simplify() {
         return UserSimple.builder()
                 .id(id)
