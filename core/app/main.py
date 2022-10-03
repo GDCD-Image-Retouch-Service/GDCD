@@ -1,12 +1,13 @@
 from fastapi import FastAPI, UploadFile, File, Form, Request
+from fastapi.responses import FileResponse
 from starlette.responses import StreamingResponse
 
 from PIL import Image
 import io
 import os
-from glob import glob
 import numpy as np
 import cv2
+import json
 
 from typing import List, Dict
 
@@ -35,7 +36,7 @@ try:
                 tec_path="models/technical_InceptionV3_0841.pt")
     yolo = Yolo(det_path="models/yolov7-d6.pt")
     optimizer = Optimizer(low_light_threshold=42)
-    inpainter = Inpainter()
+    inpainter = Inpainter(model_path="models/best.ckpt")
 except Exception as e:
     logger.error(f"Core Server Failed!!! - {e}")
     exit()
@@ -51,7 +52,7 @@ def get_score(request: Request, image: UploadFile = File(...)):
         logger.info(f"Response Image Scoring to {request.client.host}:{request.client.port}")
         return results
     except Exception as e:
-        logger.error(f"Image Scoring failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
+        logger.error(f"Image Scoring failed from {request.client.host}:{request.client.port} - {e} : {traceback.format_exc()}")
 
 @app.get("/score-image-by-user-id")
 def get_score(request: Request, userId: str):
@@ -65,7 +66,7 @@ def get_score(request: Request, userId: str):
         path_prefix = f"https://j7b301.p.ssafy.io/api/image?from=/app/data/buffer/{userId}/"
         return [{path_prefix + filename: result} for filename, result in zip(files, results)]
     except Exception as e:
-        logger.error(f"Image Scoring by Paths failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
+        logger.error(f"Image Scoring by Paths failed from {request.client.host}:{request.client.port} - {e} : {traceback.format_exc()}")
 
 @app.post("/detect-object")
 def get_detect(request: Request, image: UploadFile = File(...)):
@@ -77,7 +78,7 @@ def get_detect(request: Request, image: UploadFile = File(...)):
         logger.info(f"Response Object Detection to {request.client.host}:{request.client.port}")
         return results
     except Exception as e:
-        logger.error(f"Image Scoring failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
+        logger.error(f"Image Scoring failed from {request.client.host}:{request.client.port} - {e} : {traceback.format_exc()}")
 
 @app.post("/optimize-request")
 def get_optimize_request(request: Request, image: UploadFile = File(...), userId: int = Form(), requestId: int = Form()):
@@ -93,18 +94,18 @@ def get_optimize_request(request: Request, image: UploadFile = File(...), userId
         logger.info(f"Response Image Optimization to {request.client.host}:{request.client.port}")
         return requestId
     except Exception as e:
-        logger.error(f"Image Optimization failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
+        logger.error(f"Image Optimization failed from {request.client.host}:{request.client.port} - {e} : {traceback.format_exc()}")
 
-@app.post("/image-inpainting", response_model=UploadFile)
-def get_score(request: Request, image: UploadFile):
+@app.post("/image-inpainting", response_class=FileResponse)
+def get_score(request: Request, image: UploadFile = File(), points = Form()):
     try:
         logger.info(f"Request Image Inpainting from {request.client.host}:{request.client.port}")
-
-        filename, ext = os.path.splitext(image.filename)
-        result: np.ndarray = inpainter.process(Image.open(io.BytesIO(image.file.read())).convert("RGB"))
-        res, im_png = cv2.imencode(ext, cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
+        
+        _, ext = os.path.splitext(image.filename)
+        result: np.ndarray = inpainter.process(Image.open(io.BytesIO(image.file.read())).convert("RGB"), json.loads(points))
+        _, im_png = cv2.imencode(ext, cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
 
         logger.info(f"Response Image Inpainting to {request.client.host}:{request.client.port}")
-        return StreamingResponse(io.BytesIO(im_png.tobytes()), media_type="image/png")
+        return StreamingResponse(io.BytesIO(im_png.tobytes()), media_type=f"image/png")
     except Exception as e:
-        logger.error(f"Image Inpainting Failed from {request.client.host}:{request.client.port} - {traceback.format_exc()}")
+        logger.error(f"Image Inpainting Failed from {request.client.host}:{request.client.port} - {e} : {traceback.format_exc()}")
