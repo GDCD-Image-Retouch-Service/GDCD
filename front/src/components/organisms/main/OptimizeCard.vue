@@ -24,6 +24,7 @@
       <!-- carousel bottom button -->
       <div class="carousel-indicators">
         <button
+          @click="setSelectNo(0)"
           type="button"
           data-bs-target="#carouselExampleCaptions"
           data-bs-slide-to="0"
@@ -32,6 +33,7 @@
           aria-label="Slide 1"
         ></button>
         <button
+          @click="setSelectNo(index + 1)"
           v-for="(opti, index) in mainStore.getTempOptiList"
           :key="index"
           type="button"
@@ -94,6 +96,7 @@
       <!-- carousel side button -->
       <button
         class="carousel-control-prev"
+        @click="setSelectNoDown"
         type="button"
         data-bs-target="#carouselExampleCaptions"
         data-bs-slide="prev"
@@ -103,6 +106,7 @@
         <span class="visually-hidden">Previous</span>
       </button>
       <button
+        @click="setSelectNoUp"
         class="carousel-control-next"
         type="button"
         data-bs-target="#carouselExampleCaptions"
@@ -122,6 +126,12 @@
       >
         <i class="bi bi-arrow-counterclockwise"></i>
       </router-link>
+      <div
+        class="btn-set-button inner d-flex align-items-center justify-content-center"
+        style="margin-left: 8px"
+      >
+        <i class="bi bi-check-all"></i>
+      </div>
     </div>
     <div class="spacer" />
   </div>
@@ -144,19 +154,52 @@ const isLoading = ref(true);
 const picBox = ref(null);
 const progress = ref(0);
 const optiList = ref([]);
+const selectNo = ref(0);
 
 // method
+const setSelectNo = (no) => {
+  selectNo.value = no;
+  console.log('변화', selectNo.value);
+};
+
+const setSelectNoUp = () => {
+  selectNo.value = (selectNo.value + 1) % 8;
+  console.log('업', selectNo.value);
+};
+
+const setSelectNoDown = () => {
+  selectNo.value = selectNo.value == 0 ? 6 : selectNo.value - 1;
+  console.log('다운', selectNo.value);
+};
+
 const init = async () => {
   picBox.value.src = mainStore.getTempImg;
+  console.log('최적화 시작');
+  optimize();
 
-  if (mainStore.getTempOptiList.length == 0) {
-    console.log('최적화 시작');
-    optimize();
-  } else {
-    console.log('이미 최적화되어있음', mainStore.getTempOptiList);
-    isLoading.value = false;
-  }
+  // if (mainStore.getTempOptiList.length == 0) {
+  //   console.log('최적화 시작');
+  //   optimize();
+  // } else {
+  //   console.log('이미 최적화되어있음', mainStore.getTempOptiList);
+  //   optimize();
+  //   isLoading.value = false;
+  // }
 };
+
+// const optimizeSave = async (photoNo) => {
+//   const payload = {
+//     imageId: mainStore.getTempId,
+//     imageUrl: mainStore.getTempOptiList[photoNo].url,
+//     aesthetic: mainStore.getTempOptiList[photoNo].e,
+//     quality: mainStore.getTempOptiList[photoNo].q,
+//   };
+
+//   console.log('저장값', payload);
+
+//   const data = await image.optimizingSave(payload);
+//   console.log('데이터', data);
+// };
 
 const optimize = async () => {
   const data = await image.optimization(mainStore.getTempId);

@@ -108,14 +108,6 @@
       >
         <i class="bi bi-eraser-fill"></i>
       </router-link>
-
-      <div
-        @click="save"
-        class="btn-set-button inner d-flex align-items-center justify-content-center"
-        style="margin-left: 8px"
-      >
-        <i class="bi bi-cloud-arrow-up-fill"></i>
-      </div>
     </div>
     <div class="spacer" />
   </div>
@@ -124,12 +116,13 @@
 <script setup>
 import LoadingDots from '@/components/atoms/LoadingDots.vue';
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { image } from '@/api/rest';
-import { useMainStore } from '@/stores/main';
+import { useMainStore, useAccountStore } from '@/stores/';
 
 // init
 const mainStore = useMainStore();
+const accountStore = useAccountStore();
 
 // data
 const isLoading = ref(true);
@@ -139,6 +132,10 @@ const score = ref(0);
 
 // method
 const save = async () => {
+  if (!accountStore.getIsLogined) {
+    console.log('비로그인');
+    return;
+  }
   console.log('저장시작');
   const data = await image.save({
     image: mainStore.getTempFile,
@@ -160,6 +157,17 @@ const init = async () => {
   // score.value = 0;
   isLoading.value = false;
 };
+
+// Watch
+watch(
+  () => accountStore.getIsLogined,
+  () => {
+    save();
+  },
+);
+
+// Life Cycle
+save();
 
 onMounted(() => {
   init();
