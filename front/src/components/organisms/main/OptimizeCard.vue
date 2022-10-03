@@ -7,20 +7,14 @@
       class="d-flex align-items-center"
       style="height: 48px; font-size: 12pt"
     >
-      <!-- <img
-        :src="require('@/assets/grade/1.png')"
-        style="width: 48px; height: 48px; object-fit: cover"
-        alt="your image"
-      /> -->
       <div v-if="isLoading">사진을 최적화하는 중입니다 {{ progress }}/7</div>
-      <!-- <div>iId:{{ mainStore.getTempId }}</div>
-      <div style="margin-left: 8px">rId:{{ mainStore.getRequestId }}</div> -->
     </div>
     <div class="spacer" />
 
-    <loading-dots v-if="!isLoading" />
+    <loading-dots v-if="isLoading" />
 
     <div
+      v-show="!isLoading"
       id="carouselExampleCaptions"
       class="carousel slide"
       :class="[$root.theme ? '' : 'carousel-dark']"
@@ -38,63 +32,59 @@
           aria-label="Slide 1"
         ></button>
         <button
+          v-for="(opti, index) in mainStore.getTempOptiList"
+          :key="index"
           type="button"
           data-bs-target="#carouselExampleCaptions"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
+          :data-bs-slide-to="`${index + 1}`"
+          :aria-label="`Slide ${index + 2}`"
         ></button>
       </div>
 
       <!-- carousel contents -->
-      <div class="carousel-inner" style="height: 100%">
+      <div
+        class="carousel-inner"
+        style="height: 100%; width: 100%; overflow: hidden"
+      >
         <div class="carousel-item active" style="height: 100%">
           <div class="carousel-item-1 itemBox d-flex" style="height: 100%">
             <div
               class="d-flex flex-column align-items-center justify-content-center"
-              style="height: 100%; width: 400px"
             >
               <div class="textBox">
                 <img
                   ref="picBox"
                   src=""
                   style="width: 380px; height: 380px; object-fit: cover"
-                  alt="your image"
                 />
-                <h2>원본</h2>
-                <h2>점수</h2>
+                <div>에스테</div>
+                <div>퀄리티</div>
               </div>
             </div>
-            <div class="carousel-item-1-img flex-grow-1"></div>
           </div>
         </div>
 
-        <div class="carousel-item" style="height: 100%">
-          <div class="carousel-item-2 itemBox d-flex" style="height: 100%">
-            <div class="container-fluid" style="height: 100%; width: 100%">
-              <div class="row" style="height: 100%; width: 100%">
-                <div
-                  class="textBox col-12 col-sm-4"
-                  style="padding-top: 24vh; padding-left: 8%"
-                >
-                  <h2>
-                    <span>사진</span>
-                  </h2>
-                  <div class="spacer"></div>
-                  <p>optimize 점수 내역:</p>
-                  <p>tag</p>
-                </div>
-
-                <div
-                  class="carousel-item-2-img col-12 col-sm-8"
-                  :style="{
-                    'min-height': '50%',
-                    'background-image':
-                      'url(' + require('@/assets/grade/1.png') + ')',
-                    'background-size': 'contain',
-                    'background-repeat': 'no-repeat',
-                    'background-position': 'center',
-                  }"
-                ></div>
+        <div
+          v-for="(opti, index) in mainStore.getTempOptiList"
+          :key="index"
+          class="carousel-item"
+          style="height: 100%; width: 100%; overflow: hidden"
+        >
+          <div
+            :class="`carousel-item-${index + 2} itemBox d-flex`"
+            style="height: 100%"
+          >
+            <div
+              class="d-flex flex-column align-items-center justify-content-center"
+            >
+              <div class="textBox">
+                <img
+                  :src="opti.url"
+                  style="width: 380px; height: 380px; object-fit: cover"
+                  alt="your image"
+                />
+                <div>에스테{{ opti.e }}</div>
+                <div>퀄리티{{ opti.q }}</div>
               </div>
             </div>
           </div>
@@ -126,21 +116,12 @@
 
     <div class="spacer" />
     <div class="btn-set d-flex justify-content-center">
-      <div
-        @click="optimize"
+      <router-link
+        to="/main/score"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
-        style="margin-left: 8px"
       >
-        <i class="bi bi-stars"></i>
-      </div>
-
-      <div
-        @click="process"
-        class="btn-set-button inner d-flex align-items-center justify-content-center"
-        style="margin-left: 8px"
-      >
-        <i class="bi bi-cloud-check-fill"></i>
-      </div>
+        <i class="bi bi-arrow-counterclockwise"></i>
+      </router-link>
     </div>
     <div class="spacer" />
   </div>
@@ -152,9 +133,11 @@ import LoadingDots from '@/components/atoms/LoadingDots.vue';
 import { ref, onMounted } from 'vue';
 import { image } from '@/api/rest';
 import { useMainStore } from '@/stores/main';
+import { useRoute } from 'vue-router';
 
 // init
 const mainStore = useMainStore();
+const route = useRoute();
 
 // data
 const isLoading = ref(true);
@@ -165,24 +148,54 @@ const optiList = ref([]);
 // method
 const init = async () => {
   picBox.value.src = mainStore.getTempImg;
-  // isLoading.value = false;
+
+  if (mainStore.getTempOptiList.length == 0) {
+    console.log('최적화 시작');
+    optimize();
+  } else {
+    console.log('이미 최적화되어있음', mainStore.getTempOptiList);
+    isLoading.value = false;
+  }
 };
 
 const optimize = async () => {
   const data = await image.optimization(mainStore.getTempId);
-  console.log(data);
+  console.log('최적화 요청 전달', data);
   mainStore.setRequestId(data.item.requestId);
+  process();
 };
 
 const process = async () => {
+  if (route.fullPath != '/main/optimize') {
+    console.log('최적화 통신 에러');
+    return;
+  }
   const data = await image.optimizingProcess(mainStore.getRequestId);
-  console.log(data);
-  progress.value = data.item.progress;
-  if (progress.value != 7) {
-    setTimeout(process, 10000);
+  if (data) {
+    console.log('최적화 통신중', data.item.progress);
+    progress.value = data.item.progress;
+
+    if (progress.value != 7 && isLoading.value) {
+      setTimeout(process, 10000);
+    } else {
+      optiList.value = data.item.dict;
+
+      for (var i = 0; i < 7; i++) {
+        let url = Object.keys(optiList.value[i])[0];
+
+        mainStore.pushTempOptiList({
+          url: url,
+          e: optiList.value[i][url]['aesthetic'],
+          q: optiList.value[i][url]['quality'],
+        });
+      }
+
+      console.log('최적화 통신 종료', mainStore.getTempOptiList);
+      isLoading.value = false;
+    }
   } else {
-    optiList.value = data.item.dict;
-    console.log(optiList.value);
+    console.log('최적화 통신 에러');
+    isLoading.value = false;
   }
 };
 
