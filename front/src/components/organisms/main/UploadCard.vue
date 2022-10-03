@@ -65,7 +65,7 @@
         <!-- Btn Score -->
         <router-link
           v-if="isInput"
-          to="main/score"
+          to="/main/score"
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
         >
@@ -127,7 +127,7 @@
         <!-- Btn Score -->
         <router-link
           v-if="isInput"
-          to="main/score"
+          to="/main/score"
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
         >

@@ -12,7 +12,10 @@ import OptimizeCard from '@/components/organisms/main/OptimizeCard.vue';
 
 <style scoped>
 .main-optimize {
-  padding-top: 20px;
   width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 96px);
+  padding: 4px;
+  overflow-y: auto;
 }
 </style>

@@ -12,10 +12,10 @@
 import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
 import { computed } from 'vue';
-import { useHomeStore } from '@/stores';
+import { useMainStore } from '@/stores';
 // import { useHomeStore, useUserStore } from '@/stores';
 
-const homeStore = useHomeStore();
+const mainStore = useMainStore();
 
 // 바꿀 예정
 // const userStore = useUserStore();
@@ -23,7 +23,7 @@ const homeStore = useHomeStore();
 if (localStorage.getItem('token')) {
   // userStore.getMyinfo();
 }
-const theme = computed(() => (homeStore.getIsDark ? 'dark' : 'light'));
+const theme = computed(() => (mainStore.getIsDark ? 'dark' : 'light'));
 </script>
 
 <style>

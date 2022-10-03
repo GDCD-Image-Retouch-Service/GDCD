@@ -69,4 +69,9 @@ export default {
         });
     });
   },
+
+  logout: () => {
+    const accountStore = useAccountStore();
+    accountStore.setIsLogined(false);
+  },
 };

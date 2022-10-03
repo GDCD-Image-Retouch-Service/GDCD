@@ -108,6 +108,14 @@
       >
         <i class="bi bi-eraser-fill"></i>
       </router-link>
+
+      <div
+        @click="save"
+        class="btn-set-button inner d-flex align-items-center justify-content-center"
+        style="margin-left: 8px"
+      >
+        <i class="bi bi-cloud-arrow-up-fill"></i>
+      </div>
     </div>
     <div class="spacer" />
   </div>
@@ -120,18 +128,36 @@ import { ref, onMounted } from 'vue';
 import { image } from '@/api/rest';
 import { useMainStore } from '@/stores/main';
 
+// init
 const mainStore = useMainStore();
 
+// data
 const isLoading = ref(true);
 const picBox = ref(null);
-const data = ref(null);
+// const data = ref(null);
 const score = ref(0);
+
+// method
+const save = async () => {
+  console.log('저장시작');
+  const data = await image.save({
+    image: mainStore.getTempFile,
+    aesthetic: mainStore.getTempEScore,
+    quality: mainStore.getTempQScore,
+  });
+  console.log('저장상태', data);
+
+  mainStore.setTempId(data.item);
+};
 
 const init = async () => {
   picBox.value.src = mainStore.getTempImg;
 
-  data.value = await image.scoring(mainStore.getTempFile);
-  score.value = mainStore.getScore(data.value.item);
+  const data = await image.scoring(mainStore.getTempFile);
+  // console.log(data.value);
+  score.value = mainStore.setScore(data.item);
+  // console.log(score.value);
+  // score.value = 0;
   isLoading.value = false;
 };
 
