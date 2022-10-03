@@ -42,6 +42,7 @@ export const useMainStore = defineStore('main', () => {
     tempScore.value = score;
   };
   const setScore = (item) => {
+    console.log('점수 계산 :');
     if (item) {
       if (item.error) {
         console.log('서버 에러');
@@ -73,7 +74,7 @@ export const useMainStore = defineStore('main', () => {
         else if (score < 0) score = 0;
 
         setTempScore(score);
-        console.log('S: ', getTempScore.value);
+        console.log('점수 반환 S: ', getTempScore.value);
 
         return getTempScore.value;
       }

@@ -152,9 +152,11 @@ import LoadingDots from '@/components/atoms/LoadingDots.vue';
 import { ref, onMounted } from 'vue';
 import { image } from '@/api/rest';
 import { useMainStore } from '@/stores/main';
+import { useRoute } from 'vue-router';
 
 // init
 const mainStore = useMainStore();
+const route = useRoute();
 
 // data
 const isLoading = ref(true);
@@ -170,19 +172,30 @@ const init = async () => {
 
 const optimize = async () => {
   const data = await image.optimization(mainStore.getTempId);
-  console.log(data);
+  console.log('최적화 요청 전달', data);
   mainStore.setRequestId(data.item.requestId);
 };
 
 const process = async () => {
+  if (route.fullPath != '/main/optimize') {
+    console.log('최적화 통신 에러');
+    return;
+  }
   const data = await image.optimizingProcess(mainStore.getRequestId);
-  console.log(data);
-  progress.value = data.item.progress;
-  if (progress.value != 7) {
-    setTimeout(process, 10000);
+  if (data) {
+    console.log('최적화 통신중', data.item.progress);
+    progress.value = data.item.progress;
+    if (progress.value != 7 && isLoading.value) {
+      setTimeout(process, 10000);
+    } else {
+      optiList.value = data.item.dict;
+      console.log(optiList.value);
+      console.log('최적화 통신 종료');
+      isLoading.value = false;
+    }
   } else {
-    optiList.value = data.item.dict;
-    console.log(optiList.value);
+    console.log('최적화 통신 에러');
+    isLoading.value = false;
   }
 };
 
