@@ -1,25 +1,27 @@
 <template>
   <div
-    class="landing-view position-fixed d-flex flex-column align-items-center justify-content-center"
+    class="landing-view blur position-fixed d-flex flex-column align-items-center justify-content-center"
     ref="something"
   >
-    <anim-chaltteogi />
-    <anim-logo />
+    <game-container />
   </div>
 </template>
 
 <script setup>
-import AnimChaltteogi from '@/components/atoms/anim/AnimChaltteogi.vue';
-import AnimLogo from '@/components/atoms/anim/AnimLogo.vue';
+import GameContainer from '@/components/atoms/game/GameContainer.vue';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+// Init
+const router = useRouter();
 
 // Data
 const something = ref(null);
 
 onMounted(() => {
   setTimeout(function () {
-    something.value.style.background = 'red';
-  }, 2000);
+    router.push('main');
+  }, 5000);
 });
 </script>
 
@@ -29,6 +31,5 @@ onMounted(() => {
   top: 0px;
   width: 100vw;
   height: 100vh;
-  background: var(--color-main);
 }
 </style>
