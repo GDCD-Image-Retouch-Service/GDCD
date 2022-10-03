@@ -96,7 +96,7 @@ def get_optimize_request(request: Request, image: UploadFile = File(...), userId
     except Exception as e:
         logger.error(f"Image Optimization failed from {request.client.host}:{request.client.port} - {e} : {traceback.format_exc()}")
 
-@app.post("/image-inpainting", response_class=FileResponse)
+@app.post("/inpaint-image", response_class=FileResponse)
 def get_score(request: Request, image: UploadFile = File(), points = Form()):
     try:
         logger.info(f"Request Image Inpainting from {request.client.host}:{request.client.port}")
