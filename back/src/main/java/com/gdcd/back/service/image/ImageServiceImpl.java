@@ -42,8 +42,8 @@ public class ImageServiceImpl implements ImageService {
     private final JwtTokenProvider jwtTokenProvider;
     private final OptRequestRepository optRequestRepository;
     private final DataRepository dataRepository;
-    private final String ROOT = "/app/data/images/";
-    private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
+//    private final String ROOT = "/app/data/images/";
+//    private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
     private final String CORE = "https://j7b301.p.ssafy.io/core/";
     private final String SCORE_IMAGE = "score-image";
     private final String DETECT_OBJECT = "detect-object";
@@ -55,12 +55,12 @@ public class ImageServiceImpl implements ImageService {
 
     private final String BEFORE = "/before";
     private final String AFTER = "/after";
-    private final String BUFFER = "/app/data/buffer/";
+//    private final String BUFFER = "/app/data/buffer/";
 
     //    Local에서 진행할 폴더
-//        String ROOT = "C:/test/images/";
-//        String BUFFER = "C:/test/buffer/";
-//        String ADDRESS = "http://localhost:8081/api/image?imageId=";
+        String ROOT = "C:/test/images/";
+        String BUFFER = "C:/test/buffer/";
+        String ADDRESS = "http://localhost:8081/api/image?imageId=";
     public Long addImage(String token, MultipartFile image, ImageCreateRequestDto requestDto) throws Exception {
         User user = findUserByEmail(decodeToken(token));
         Long urlCount = imageRepository.findAllByUserId(user.getId()).stream().count() + 1;
@@ -176,49 +176,20 @@ public class ImageServiceImpl implements ImageService {
         RESULT_OBJECT = new HashMap<>();
         try {
             RestTemplate restTemplate = new RestTemplate();
-
             HttpHeaders httpHeaders = new HttpHeaders();
-//            System.out.println("image type : " + image.getContentType());
-//            System.out.println(MediaType.MULTIPART_FORM_DATA);
-//            httpHeaders.setContentType(MediaType.parseMediaType(image.getContentType()));
-//            httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
             httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
-            System.out.println(image.getInputStream());
 
-//            MultiValueMap<String, MultipartFile> body = new LinkedMultiValueMap<>();
             MultiValueMap<String, Resource> body = new LinkedMultiValueMap<>();
-            //List<MultipartFile> image 의 경우
-//            for (MultipartFile img : image){
-//                body.add("images", img.getResource());
-//            }
-
             body.add("image", image.getResource());
 
             HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
-
-//            System.out.println("여긴가?1");
-            System.out.println(CORE + SCORE_IMAGE);
-
             HttpEntity<String> response = restTemplate.postForEntity(CORE + SCORE_IMAGE, requestMessage, String.class);
 
-//            System.out.println("여긴가?2");
-
             ObjectMapper objectMapper = new ObjectMapper();
-
-//            System.out.println("여긴가?3");
             objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
 
-//            System.out.println("여긴가?4");
-//            CoreScoreResponseDto responseDto = objectMapper.readValue(response.getBody(), CoreScoreResponseDto.class);
-
-            // list가 아닌 단일 객체를 보내주기로 했음. 될지는 모르겠고.
-//            Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
             Object object = objectMapper.readValue(response.getBody(), Object.class);
-
-//            System.out.println("여긴가?5");
-//            RESULT_OBJECT.put("dict",responseDto);
             RESULT_OBJECT.put("dict", object);
-//            System.out.println("여긴가?6");
         } catch (Exception e) {
             e.printStackTrace();
             RESULT_OBJECT.put("error", "IMAGE NOT SCORED");
@@ -226,10 +197,7 @@ public class ImageServiceImpl implements ImageService {
         return RESULT_OBJECT;
     }
 
-    //    public Map<String, Object> requestObjectDetection(MultipartFile image, Long imageId) {
     public List<String> requestObjectDetection(Long imageId) {
-//        Image image = findImage(imageId);
-//    RESULT_OBJECT = new HashMap<>();
         try {
             Image img = findImage(imageId);
             RestTemplate restTemplate = new RestTemplate();
@@ -293,58 +261,6 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-//    public List<Object> requestObjectDetection(MultipartFile image) {
-//        RESULT_OBJECT = new HashMap<>();
-//        try {
-//            RestTemplate restTemplate = new RestTemplate();
-//
-//            HttpHeaders httpHeaders = new HttpHeaders();
-//            httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
-//            System.out.println(image.getInputStream());
-//
-//            MultiValueMap<String, Resource> body = new LinkedMultiValueMap<>();
-//
-//
-//            body.add("image", image.getResource());
-//
-//            HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
-//
-//
-//            HttpEntity<String> response = restTemplate.postForEntity(CORE+DETECT_OBJECT,requestMessage,String.class);
-//
-//
-//            ObjectMapper objectMapper = new ObjectMapper();
-//
-//            objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-//
-//            Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
-//
-//            RESULT_OBJECT.put("dict",objects);
-//            List<Object> objectList = new ArrayList<>();
-//            System.out.println(RESULT_OBJECT.keySet());
-//            for (Object obj : objects){
-//                Map<String, Object> object = objectMapper.convertValue(obj, Map.class);
-//                Map<String, Object> res = new HashMap<String, Object>();
-//                for (String str : object.keySet()){
-//
-//                }
-//                // obj를 map으로 convert
-//                // map<String, Object>
-//                // map = new Map(String, Object)
-//                // map.keySet -> for (String str : map.KeySet) //
-//                // str =
-//                // map.put(newkey, map.get(str))
-//                objectList.add(obj);
-//                System.out.println(obj.toString());
-//            }
-//            return objectList;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            RESULT_OBJECT.put("error", "IMAGE NOT SCORED");
-//        }
-//        return null;
-//    }
-
     public Map<String, Object> requestOptimizationOld(String token, MultipartFile image) {
         RESULT_OBJECT = new HashMap<>();
         try {
@@ -380,28 +296,30 @@ public class ImageServiceImpl implements ImageService {
         return RESULT_OBJECT;
     }
 
-//    public Map<String, Object> requestOptimizationImage(String token, MultipartFile image) {
-//        RESULT_OBJECT = new HashMap<>();
-//        // OptRequest 객체 생성해서 repository.save
-//        // Core로 request 생성해서 전달 return type은 Long
-//        // RESUTL_OBJECT에 put해서 프론트로 response 전달
-//        return RESULT_OBJECT;
-//    }
-
     public Map<String, Object> requestOptimization(String token, Long imageId) {
         RESULT_OBJECT = new HashMap<>();
         try {
             User user = findUserByEmail(decodeToken(token));
-            // 1. OptRequest 객체 저장
+//             1. OptRequest 객체 저장
             OptRequest request = optRequestRepository.save(OptRequest.builder()
                     .user(user.getId())
                     .done(0)
                     .build());
-            // 2. MultiPartFile 재구성
+//             2. MultiPartFile 재구성
             Image img = findImage(imageId);
             File file = new File(ROOT + img.getFilePath());
             FileItem fileItem = new DiskFileItem("originFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
             IOUtils.copy(Files.newInputStream(file.toPath()), fileItem.getOutputStream());
+
+            //2-1 /app/data/buffer/userId 폴더가 있으면, 폴더 삭제
+            File rootDir = new File(BUFFER + user.getId());
+            if (rootDir.isDirectory()){
+                try {
+                    FileUtils.deleteDirectory(rootDir);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
             // 3. Core로 optimization request 전달
 
@@ -419,7 +337,7 @@ public class ImageServiceImpl implements ImageService {
             HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
             HttpEntity<String> response = restTemplate.postForEntity(CORE + OPTIMIZE_REQUEST, requestMessage, String.class);
 
-            // 4. return 값을 reponse로 전달
+//             4. return 값을 reponse로 전달
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
             Long requestId = objectMapper.readValue(response.getBody(), Long.class);
