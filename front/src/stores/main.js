@@ -9,9 +9,11 @@ export const useMainStore = defineStore('main', () => {
   );
   const isCamMode = ref(false);
   const tempImg = ref(null);
+  const tempId = ref(0);
   const tempEScore = ref(0);
   const tempQScore = ref(0);
   const tempScore = ref(0);
+  const requestId = ref(0);
 
   // action
   const setIsDarkToggle = () => {
@@ -79,6 +81,12 @@ export const useMainStore = defineStore('main', () => {
       console.log('서버 에러');
     }
   };
+  const setTempId = (id) => {
+    tempId.value = id;
+  };
+  const setRequestId = (id) => {
+    requestId.value = id;
+  };
 
   // getter
   const getIsDark = computed(() => isDark.value);
@@ -101,6 +109,8 @@ export const useMainStore = defineStore('main', () => {
   const getTempEScore = computed(() => tempEScore.value);
   const getTempQScore = computed(() => tempQScore.value);
   const getTempScore = computed(() => tempScore.value);
+  const getTempId = computed(() => tempId.value);
+  const getRequestId = computed(() => requestId.value);
 
   return {
     // state
@@ -119,6 +129,8 @@ export const useMainStore = defineStore('main', () => {
     setTempQScore,
     setTempScore,
     setScore,
+    setTempId,
+    setRequestId,
 
     // getter
     getIsDark,
@@ -128,5 +140,7 @@ export const useMainStore = defineStore('main', () => {
     getTempEScore,
     getTempQScore,
     getTempScore,
+    getTempId,
+    getRequestId,
   };
 });

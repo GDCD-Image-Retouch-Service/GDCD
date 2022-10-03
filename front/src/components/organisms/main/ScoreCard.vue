@@ -140,11 +140,14 @@ const score = ref(0);
 // method
 const save = async () => {
   console.log('저장시작');
-  await image.save({
+  const data = await image.save({
     image: mainStore.getTempFile,
     aesthetic: mainStore.getTempEScore,
     quality: mainStore.getTempQScore,
   });
+  console.log('저장상태', data);
+
+  mainStore.setTempId(data.item);
 };
 
 const init = async () => {

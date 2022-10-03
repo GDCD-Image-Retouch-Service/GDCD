@@ -3,8 +3,16 @@
     class="inpaint-card main outer d-flex flex-column align-items-center justify-content-center"
   >
     <div class="spacer" />
-    <div class="d-flex align-items-center" style="height: 48px">
-      <div>지울 대상을 골라주세요</div>
+    <div>지울 대상을 골라주세요</div>
+    <div
+      class="d-flex align-items-center"
+      style="height: 48px; font-size: 24pt"
+    >
+      <div v-for="(item, index) in objectList" :key="index">
+        <div>{{ item.split(';')[0] }} ,</div>
+      </div>
+      <!-- <div>iId:{{ mainStore.getTempId }}</div>
+      <div style="margin-left: 8px">rId:{{ mainStore.getRequestId }}</div> -->
     </div>
     <div class="spacer" />
 
@@ -14,6 +22,7 @@
       <div
         class="pic-container d-flex flex-column align-items-center justify-content-center"
         style="
+          position: relative;
           background: lightgray;
           width: 380px;
           max-width: 380px;
@@ -27,6 +36,14 @@
           style="width: 380px; height: 380px; object-fit: cover"
           alt="your image"
         />
+
+        <div v-for="(item, index) in objectList" :key="index">
+          <btn-object
+            :objectData="item"
+            :naturalWidth="naturalWidth"
+            :naturalHeight="naturalHeight"
+          ></btn-object>
+        </div>
       </div>
     </div>
     <div class="spacer" />
@@ -45,41 +62,36 @@
       >
         <i class="bi bi-stars"></i>
       </router-link>
-
-      <router-link
-        to="inpaint"
-        class="btn-set-button inner d-flex align-items-center justify-content-center"
-        style="margin-left: 8px"
-      >
-        <i class="bi bi-eraser-fill"></i>
-      </router-link>
-
-      <router-link
-        to="inpaint"
-        class="btn-set-button inner d-flex align-items-center justify-content-center"
-        style="margin-left: 8px"
-      >
-        <i class="bi bi-cloud-arrow-up-fill"></i>
-      </router-link>
     </div>
     <div class="spacer" />
   </div>
 </template>
 
 <script setup>
+import LoadingDots from '@/components/atoms/LoadingDots.vue';
+import BtnObject from '@/components/molecules/main/btn/BtnObject';
+
 import { ref, onMounted } from 'vue';
 import { image } from '@/api/rest';
 import { useMainStore } from '@/stores';
 
+const isLoading = ref(true);
 const mainStore = useMainStore();
 const picBox = ref(null);
-const data = ref(null);
+const objectList = ref(null);
+const naturalWidth = ref(0);
+const naturalHeight = ref(0);
 
 const init = async () => {
   picBox.value.src = mainStore.getTempImg;
 
-  data.value = await image.objectDetection(2);
-  console.log(data.value);
+  naturalWidth.value = picBox.value.naturalWidth;
+  naturalHeight.value = picBox.value.naturalHeight;
+
+  const data = await image.objectDetection(mainStore.getTempId);
+  console.log(data);
+  objectList.value = data.item.slice(0, 6);
+  isLoading.value = false;
 };
 
 onMounted(() => {
