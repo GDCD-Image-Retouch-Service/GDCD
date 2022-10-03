@@ -65,6 +65,7 @@
                   font-size: 12pt;
                 "
               >
+                <div>저장할 사진을 골라주세요</div>
                 <div class="d-flex flex-column align-items-center">
                   <icon-rank
                     :rank="Math.ceil(9 - (mainStore.getTempScore * 8) / 100)"
@@ -138,6 +139,7 @@
 
               <img
                 :src="opti.url"
+                class="optimizedImg"
                 style="width: 380px; height: 380px; object-fit: cover"
               />
             </div>
@@ -172,19 +174,35 @@
 
     <div class="spacer" />
     <div class="btn-set d-flex justify-content-center">
+      <!-- Btn Back -->
       <router-link
         to="/main/score"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
       >
         <i class="bi bi-arrow-counterclockwise"></i>
       </router-link>
+
+      <!-- Btn Download -->
+      <a
+        v-if="isInput"
+        class="btn-set-button inner d-flex align-items-center justify-content-center"
+        style="margin-left: 8px"
+        id="downloadPhoto"
+        download="photo.jpg"
+        role="button"
+        @click="downloadImage"
+      >
+        <i class="bi bi-download"></i>
+      </a>
+
+      <!-- Btn Server Upload -->
       <div
         v-if="!isLoading"
         @click="optimizeSave"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
         style="margin-left: 8px"
       >
-        <i class="bi bi-check-all"></i>
+        <i class="bi bi-cloud-arrow-up-fill"></i>
       </div>
     </div>
     <div class="spacer" />
@@ -231,15 +249,16 @@ const init = async () => {
   picBox.value.src = mainStore.getTempImg;
   console.log('최적화 시작');
   optimize();
+};
 
-  // if (mainStore.getTempOptiList.length == 0) {
-  //   console.log('최적화 시작');
-  //   optimize();
-  // } else {
-  //   console.log('이미 최적화되어있음', mainStore.getTempOptiList);
-  //   optimize();
-  //   isLoading.value = false;
-  // }
+const downloadImage = () => {
+  console.log(document.getElementsByClassName('optimizedImg')[1].src);
+  // document
+  //   .getElementById('downloadPhoto')
+  //   .setAttribute(
+  //     'href',
+  //     mainStore.getTempImg.replace('image/png', 'image/octet-stream'),
+  //   );
 };
 
 const optimizeSave = async () => {
