@@ -11,10 +11,8 @@ import java.util.List;
 @Setter
 public class ImageListResponseDto {
     ImageDetailResponseDto beforeImage;
-
     @Nullable
     ImageDetailResponseDto afterImage;
-
 
     public ImageListResponseDto(ImageDetailResponseDto img, ImageDetailResponseDto img2) {
         this.beforeImage = img;
