@@ -7,7 +7,7 @@
 <script setup>
 import { ref, defineProps, onMounted } from 'vue';
 
-// props
+props;
 const props = defineProps({
   objectData: String,
   naturalHeight: Number,
@@ -17,32 +17,32 @@ const props = defineProps({
 // data
 const btnObject = ref(null);
 
+// const objectData = props.objectData.split(';');
+// const objectName = objectData.value[0];
+// const objectCoord = objectData.value[1].split(',');
 
-
-const objectData = props.objectData.split(';');
-const objectName = objectData.value[0];
-const objectCoord = objectData.value[1].split(',');
-
-console.log('name', objectName);
-console.log('x', objectCoord[0]);
-console.log('y', objectCoord[1]);
+// console.log('name', objectName);
+// console.log('x', objectCoord[0]);
+// console.log('y', objectCoord[1]);
 
 onMounted(() => {
   console.log('props1', props.objectData);
 
-  const fixedHeight;
-const fixedWidth;
-
+  let fixedHeight = 0;
+  let fixedWidth = 0;
 
   const isHeightBigger = props.naturalHeight > props.naturalWidth;
 
-  if (isHeightBigger.value) {
-    fixedHeight.value = (props.naturalHeight * 380) / props.naturalWidth;
-    fixedWidth.value = 380;
+  if (isHeightBigger) {
+    fixedHeight = (props.naturalHeight * 380) / props.naturalWidth;
+    fixedWidth = 380;
   } else {
-    fixedHeight.value = 380;
-    fixedWidth.value = (props.naturalWidth * 380) / props.naturalHeight;
+    fixedHeight = 380;
+    fixedWidth = (props.naturalWidth * 380) / props.naturalHeight;
   }
+
+  console.log('FH : ', fixedHeight);
+  console.log('FW : ', fixedWidth);
 
   const objectData = props.objectData.split(';');
   const objectName = objectData[0];
