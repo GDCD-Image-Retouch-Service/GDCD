@@ -20,7 +20,7 @@
 
     <loading-dots v-if="isLoading" />
 
-    <div class="pic-mode" v-show="!isLoading">
+    <div class="pic-mode" v-show="!isLoading && !isDone">
       <div
         class="pic-container d-flex flex-column align-items-center justify-content-center"
         style="
@@ -49,6 +49,28 @@
             :naturalHeight="naturalHeight"
           ></btn-object>
         </div>
+      </div>
+    </div>
+    <!-- 바뀐 화면 -->
+    <div class="inpaint-mode" v-show="isDone && !isLoading">
+      <div
+        class="inpaint-container d-flex flex-column align-items-center justify-content-center"
+        style="
+          position: relative;
+          background: lightgray;
+          width: 380px;
+          max-width: 380px;
+          height: 380px;W
+          max-height: 380px;
+          over-flow: hidden;
+        "
+      >
+        <img
+          ref="inpaintBox"
+          src=""
+          style="width: 380px; height: 380px; object-fit: cover"
+          alt="your image"
+        />
       </div>
     </div>
     <div class="spacer" />
@@ -80,10 +102,14 @@ import { ref, onMounted } from 'vue';
 import { image } from '@/api/rest';
 import { useMainStore } from '@/stores';
 
+const isDone = ref(false);
+
 const isLoading = ref(true);
 const mainStore = useMainStore();
 const picBox = ref(null);
+const inpaintBox = ref(null);
 const objectList = ref(null);
+
 const naturalWidth = ref(0);
 const naturalHeight = ref(0);
 
@@ -110,8 +136,8 @@ const BtnActive = (index) => {
 };
 
 const inpainting = async () => {
+  isLoading.value = true;
   let output = [];
-  console.log('삭제하기', objectList.value);
   const btnElList = document.getElementsByClassName('btn-object-badge');
   for (let i = 0; i < objectList.value.length; i++) {
     if (btnElList[i].classList.contains('btn-active')) {
@@ -122,19 +148,22 @@ const inpainting = async () => {
       temp.push((splitData[1].split(',')[1] *= 1));
       temp.push((splitData[2].split(',')[0] *= 1));
       temp.push((splitData[2].split(',')[1] *= 1));
-      output.push([temp]);
+      output.push(temp);
     }
   }
-
-  console.log(output);
+  console.log('삭제하기', output);
 
   let payload = {
     imageId: mainStore.getTempId,
-    objects: output,
+    objects: JSON.stringify(output),
   };
 
   const data = await image.inpainting(payload);
   console.log('after inpainting: ', data);
+  console.log('after inpainting: ', data.item.image.imageUrl);
+  inpaintBox.value.src = data.item.image.imageUrl;
+  isDone.value = true;
+  isLoading.value = false;
 };
 
 onMounted(() => {

@@ -8,7 +8,6 @@ export default class scene1 extends Scene {
   gameState = {};
 
   create() {
-    this.gameState.notice = this.add.text(150, 300, 'Press Any Key to Start');
     this.gameState.chaltteogi = this.physics.add.sprite(200, 0, 'chaltteogi');
     this.gameState.chaltteogi.setScale(1);
     this.gameState.chaltteogi.setInteractive();
