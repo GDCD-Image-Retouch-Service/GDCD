@@ -118,10 +118,10 @@ const testFunc = () => {
       let splitData = objectList.value[i].split(';');
       let temp = [];
 
-      temp.push(splitData[1].split(',')[0]);
-      temp.push(splitData[1].split(',')[1]);
-      temp.push(splitData[2].split(',')[0]);
-      temp.push(splitData[2].split(',')[1]);
+      temp.push((splitData[1].split(',')[0] *= 1));
+      temp.push((splitData[1].split(',')[1] *= 1));
+      temp.push((splitData[2].split(',')[0] *= 1));
+      temp.push((splitData[2].split(',')[1] *= 1));
       output.push([temp]);
     }
   }
