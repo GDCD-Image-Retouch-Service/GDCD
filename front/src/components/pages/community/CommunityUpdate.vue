@@ -289,7 +289,7 @@ const selectTags = ref([communityStore.post.item?.images[0]?.imageTag]);
 
 console.log(route.params.postId);
 
-const updatePost = (data) => {
+async function updatePost(data) {
   const context = {
     postId: route.params.postId,
     title: data.title,
@@ -298,10 +298,11 @@ const updatePost = (data) => {
     images: userStore.selectedPhotoList,
     representative: 0,
   };
-  communityStore.updatePost(context);
+
+  await communityStore.updatePost(context);
 
   myRouter.push({ name: 'CommunityList' });
-};
+}
 
 const selectPhoto = () => {
   userStore.urlPhotoList = userStore.urlList;
