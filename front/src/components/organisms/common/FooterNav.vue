@@ -4,21 +4,21 @@
       <!--  홈 -->
       <router-link
         to="/main"
-        class="list d-flex flex-column align-items-center"
+        class="list d-flex flex-column align-items-center a-link"
       >
         <div
           class="icon-circle d-flex justify-content-center align-items-center"
         >
-          <span class="icon"><i class="bi bi-house-door"></i></span>
+          <span class="material-icons-outlined"> home </span>
         </div>
       </router-link>
 
       <!-- 커뮤니티 -->
-      <router-link to="/community">
+      <router-link to="/community" class="a-link">
         <div
           class="icon-circle d-flex justify-content-center align-items-center"
         >
-          <span class="icon"><i class="bi bi-people"></i></span>
+          <span class="material-icons-outlined icons"> groups </span>
         </div>
       </router-link>
 
@@ -35,15 +35,15 @@
         <div
           class="icon-circle d-flex justify-content-center align-items-center"
         >
-          <span class="icon"><i class="bi bi-person"></i></span>
+          <span class="material-icons-outlined"> person </span>
         </div>
       </div>
 
-      <router-link to="/photo" class="list d-flex flex-column">
+      <router-link to="/photo" class="list d-flex flex-column a-link">
         <div
           class="icon-circle d-flex justify-content-center align-items-center"
         >
-          <span class="icon"><i class="bi bi-image"></i> </span>
+          <span class="material-icons-outlined"> collections </span>
         </div>
       </router-link>
     </div>
@@ -77,7 +77,6 @@ const userStore = useUserStore();
   justify-content: center;
   background-color: #ffffff;
 }
-
 .footer-nav-wrap {
   height: var(--size-h-footer);
   width: 100%;
@@ -92,7 +91,6 @@ const userStore = useUserStore();
   align-items: center;
   color: var(--color-reverse);
 }
-
 .icon-circle {
   height: calc(var(--size-h-footer) - 8px);
   width: calc(var(--size-h-footer) - 8px);
@@ -100,5 +98,12 @@ const userStore = useUserStore();
   overflow: hidden;
   font-size: 16pt;
   /* border: solid 4px var(--color-theme); */
+}
+.a-link {
+  text-decoration: none;
+  color: var();
+}
+.icons {
+  font-size: 32px;
 }
 </style>

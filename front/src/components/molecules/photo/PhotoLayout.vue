@@ -56,6 +56,8 @@ const clickImage = (img) => {
 }
 .photo-date {
   margin-top: 30px;
+  height: 20px;
+  line-height: 24px;
 }
 .photo-date:first-child {
   margin-top: 0px;
