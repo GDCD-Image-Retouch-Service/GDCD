@@ -267,7 +267,9 @@ const downloadImage = () => {
 .pic-container {
   background: lightgray;
   width: 100%;
-  padding-bottom: 100%;
+  height: 380px;
+  max-height: 380px;
+  overflow: hidden;
   position: relative;
 }
 .pic-comment {
@@ -278,6 +280,7 @@ const downloadImage = () => {
 .camera-box {
   width: 380px;
   height: 380px;
+  overflow: hidden;
   background-color: #000000;
 }
 

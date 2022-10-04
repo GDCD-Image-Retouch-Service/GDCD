@@ -92,6 +92,9 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> modifyProfile(String token, MultipartFile profile) {
         RESULT_OBJECT = new HashMap<>();
         try {
+            if (profile == null)
+                throw new Exception("PROFILE NOT UPDATED");
+
             User target = findUserByEmail(decodeToken(token));
             User user = findUserByEmail(decodeToken(token));
             String type = profile.getContentType();
@@ -112,6 +115,9 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> modifyNickname(String token, String nickname) {
         RESULT_OBJECT = new HashMap<>();
         try {
+            if (nickname == null)
+                throw new Exception("NICKNAME NOT UPDATED");
+
             User target = findUserByEmail(decodeToken(token));
             User user = findUserByEmail(decodeToken(token));
             user.updateNickname(nickname);

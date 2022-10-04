@@ -1,5 +1,5 @@
 <template>
-  <div class="main-manual">
+  <div class="main-manual main">
     <article class="main-manual-title">
       <span>개떡찰떡 사용법</span>
       <div class="toggle-button" :class="{ active: isShowDescription }">
@@ -48,7 +48,6 @@ const toggleShowDescription = () => {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  background-color: #ffffff;
   justify-content: space-between;
   padding: 14px 20px;
   font-size: 16px;

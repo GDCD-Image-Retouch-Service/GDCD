@@ -22,7 +22,7 @@ public interface ImageService {
     public Map<String, Object> requestOptimization(String token, Long imageId);
     public Map<String, Object> optimizationProgress(Long requestId);
     public Map<String, Object> requestProcess(ImageOptProcessingRequestDto requestDto);
-    public Map<String, Object> inpaintImage(InpaintingRequestDto requestDto);
+    public Map<String, Object> inpaintImage(String token, InpaintingRequestDto requestDto);
     public Long addAfterImage(String token, AfterImageSaveRequestDto requestDto) throws Exception;
     public Long addCsvData(ImageSaveRequestDto requestDto);
 }

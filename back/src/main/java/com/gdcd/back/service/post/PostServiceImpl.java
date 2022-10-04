@@ -36,7 +36,7 @@ public class PostServiceImpl implements PostService{
 
     public List<PostListResponseDto> findPosts(String token, Pageable pageable) throws Exception{
         User user = findUserByEmail(decodeToken(token));
-        List<Post> documentList = postRepository.findAllByOrderByRegistTimeDesc(pageable);
+        List<Post> documentList = postRepository.findAllByValidationOrderByRegistTimeDesc(true, pageable);
         List<PostListResponseDto> list = new ArrayList<>();
         for (Post post : documentList) {
             if (validPost(post)){
@@ -52,7 +52,7 @@ public class PostServiceImpl implements PostService{
     public List<PostListResponseDto> findPostsByUser(String token, Long userId, Pageable pageable) throws Exception{
         User user = findUserByEmail(decodeToken(token));
         if (userId == null){
-            List<Post> documentList = postRepository.findAllByWriterNoOrderByRegistTimeDesc(user.getId(), pageable);
+            List<Post> documentList = postRepository.findAllByWriterNoAndValidationOrderByRegistTimeDesc(user.getId(), true, pageable);
             List<PostListResponseDto> list = new ArrayList<>();
             for (Post post : documentList) {
                 if (validPost(post)){
@@ -64,7 +64,7 @@ public class PostServiceImpl implements PostService{
             }
             return list;
         }else {
-            List<Post> documentList = postRepository.findAllByWriterNoOrderByRegistTimeDesc(userId, pageable);
+            List<Post> documentList = postRepository.findAllByWriterNoAndValidationOrderByRegistTimeDesc(userId, true, pageable);
             List<PostListResponseDto> list = new ArrayList<>();
             for (Post post : documentList){
                 if (validPost(post)){
