@@ -1,5 +1,5 @@
 <template>
-  <div class="main-manual-desc">
+  <div class="main-manual-desc main">
     <p>
       1. 최상단의 토글버튼으로 앨범과 카메라를 선택하고 이미지를 업로드 합니다.
     </p>
@@ -30,6 +30,5 @@
   flex-direction: column;
   gap: 10px;
   padding-top: var(--grid-vertical);
-  background-color: #ffffff;
 }
 </style>

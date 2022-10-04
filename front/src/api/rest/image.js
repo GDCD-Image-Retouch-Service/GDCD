@@ -23,10 +23,6 @@ export default {
     });
   },
   save: function (payload) {
-    console.log(payload.image);
-    console.log(payload.aesthetic);
-    console.log(payload.quality);
-
     const form = new FormData();
     form.append('image', payload.image);
     form.append('aesthetic', payload.aesthetic);
