@@ -91,7 +91,6 @@ public class ImageServiceImpl implements ImageService {
             Long count = imageSequenceRepository.findById("image_sequences").get().getSeq()+1;
             requestDto.setImgUrl(ADDRESS + count);
             requestDto.setUserId(user.getId());
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -99,18 +98,14 @@ public class ImageServiceImpl implements ImageService {
     }
 
     public byte[] findImageById(Long imageId, String from) throws IOException {
-        if (from == null) {
-            Image img = findImage(imageId);
-            InputStream imageStream = Files.newInputStream(Paths.get(ROOT + img.getFilePath()));
-            byte[] imageByteArray = IOUtils.toByteArray(imageStream);
-            imageStream.close();
-            return imageByteArray;
-        } else {
-            InputStream imageStream = Files.newInputStream(Paths.get(from));
-            byte[] imageByteArray = IOUtils.toByteArray(imageStream);
-            imageStream.close();
-            return imageByteArray;
-        }
+        InputStream imageStream;
+        if (from == null)
+            imageStream = Files.newInputStream(Paths.get(ROOT + findImage(imageId).getFilePath()));
+        else
+            imageStream = Files.newInputStream(Paths.get(from));
+        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+        imageStream.close();
+        return imageByteArray;
     }
 
     public ImageDetailResponseDto findImageInfoById(Long imageId) {
@@ -187,10 +182,10 @@ public class ImageServiceImpl implements ImageService {
 
             MultiValueMap<String, Resource> body = new LinkedMultiValueMap<>();
 
-            //받아온 imageId로 file 객체 만들기
+            // 받아온 imageId로 file 객체 만들기
             File file = new File(ROOT + img.getFilePath());
 
-            //받아온 파일로 FileItem 만들기 (org.apache.commons.fileupload.FileItem)
+            // 받아온 파일로 FileItem 만들기 (org.apache.commons.fileupload.FileItem)
             // DistFileItem : org.apache.commons.fileupload.disk.DiskFileItem
             FileItem fileItem = new DiskFileItem("originFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
@@ -373,16 +368,17 @@ public class ImageServiceImpl implements ImageService {
         return RESULT_OBJECT;
     }
 
-    public Map<String, Object> inpaintImage(InpaintingRequestDto requestDto) {
+    public Map<String, Object> inpaintImage(String token, InpaintingRequestDto requestDto) {
         RESULT_OBJECT = new HashMap<>();
         try {
-            // 2. MultiPartFile 재구성
+            // 1. front2api : request
+            User user = findUserByEmail(decodeToken(token));
             Image img = findImage(requestDto.getImageId());
             File file = new File(ROOT + img.getFilePath());
             FileItem fileItem = new DiskFileItem("originFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
             IOUtils.copy(Files.newInputStream(file.toPath()), fileItem.getOutputStream());
 
-            // 3. Core로 optimization request 전달
+            // 2. api2core : inpaint request
             RestTemplate restTemplate = new RestTemplate();
 
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -391,17 +387,52 @@ public class ImageServiceImpl implements ImageService {
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             MultipartFile mFile = new CommonsMultipartFile(fileItem);
             body.add("image", mFile.getResource());
-            body.add("points", requestDto.getObjects());
+            body.add("points", requestDto.getObjects().toString());
+            body.add("userId", user.getId());
 
             HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
             HttpEntity<String> response = restTemplate.postForEntity(CORE + INPAINT_IMAGE, requestMessage, String.class);
 
+            // 3. core2api : inpaint response
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-            Object[] objects = objectMapper.readValue(response.getBody(), Object[].class);
+            String inpaintedImageRequestSrc = objectMapper.readValue(response.getBody(), String.class);
+            // "https://j7b301.p.ssafy.io/api/image?from=/app/data/buffer/1/inpainting.png"
 
-            RESULT_OBJECT.put("dict", objects);
+            String inpaintedImagePath = inpaintedImageRequestSrc.substring(inpaintedImageRequestSrc.lastIndexOf("=") + 1);
+            // "/app/data/buffer/1/inpainting.png"
+            File inpaintedImagefile = new File(inpaintedImagePath);
+            FileItem inpaintedImagefileItem = new DiskFileItem("originFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
+            IOUtils.copy(Files.newInputStream(inpaintedImagefile.toPath()), inpaintedImagefileItem.getOutputStream());
+
+            // 4. api2core : image score request
+            // path > multipartfile 생성
+            mFile = new CommonsMultipartFile(inpaintedImagefileItem);
+            Map<String, Object> scoreResponse = requestInitialScore(mFile);
+
+            // 5. core2api : image score response
+            String temp = scoreResponse.get("dict").toString();
+            float aes = Float.parseFloat(temp.substring(temp.indexOf("aesthetic\": ") + 12, temp.indexOf(",")));
+            float qua = Float.parseFloat(temp.substring(temp.indexOf("quality\": ") + 10, temp.indexOf("]")));
+            int aesRank = Math.max(Math.min((int) Math.ceil((5.8 - aes) * 14 + 1), 9), 1);
+            int quaRank = Math.max(Math.min((int) Math.ceil((6.8 - qua) * 14 + 1), 9), 1);
+
+            // 6. api2db&server : imageSave
+            Long afterImageId = addAfterImage(token, AfterImageSaveRequestDto.builder()
+                    .imageId(requestDto.getImageId()) // original image id
+                    .imageUrl(inpaintedImageRequestSrc) // new image url rule ...
+                    .aesthetic(aesRank)
+                    .quality(quaRank)
+                    .build());
+
+            // 7. api2core : object detect request
+            // 8. core2api : object detect response
+            // 9. api2db : image tag update
+            requestObjectDetection(afterImageId);
+
+            // 10. api2front : response
+            RESULT_OBJECT.put("image", new ImageDetailResponseDto(findImage(afterImageId)));
         } catch (Exception e) {
             RESULT_OBJECT.put("error", e.getMessage());
         }
@@ -461,7 +492,7 @@ public class ImageServiceImpl implements ImageService {
             throw new Exception("User Not Found");
     }
 
-    public String decodeToken(String token) {
+    private String decodeToken(String token) {
         return jwtTokenProvider.decodeToken(token);
     }
 }
