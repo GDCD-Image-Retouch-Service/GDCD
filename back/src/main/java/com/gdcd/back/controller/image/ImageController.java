@@ -78,9 +78,9 @@ public class ImageController extends Controller {
                 .build()));
     }
 
-    @GetMapping("/inpainting")
-    public ResponseEntity<Map<String, Object>> inpainting(@RequestBody InpaintingRequestDto requestDto) {
-        return getResponseEntity(imageService.inpaintImage(requestDto));
+    @PostMapping("/inpainting")
+    public ResponseEntity<Map<String, Object>> inpainting(@RequestHeader String token, @RequestBody InpaintingRequestDto requestDto) {
+        return getResponseEntity(imageService.inpaintImage(token, requestDto));
     }
 
     @PostMapping("/storage")
