@@ -252,7 +252,7 @@ export const useUserStore = defineStore('userStore', {
       })
         .then((res) => {
           this.getMyinfo();
-          console.log(res.data);
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);

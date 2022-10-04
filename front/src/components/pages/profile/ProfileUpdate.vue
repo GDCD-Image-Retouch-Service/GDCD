@@ -74,8 +74,10 @@ const checkOoverlap = (nickname) => {
 async function updateProfile(name, file) {
   const userId = userStore.currentUser.item?.user?.userId;
   await userStore.updateUserNickname(name);
-  await userStore.updateUserProfile(file);
+  const resp = await userStore.updateUserProfile(file);
   await userStore.getOtherinfo(userId);
+
+  console.log('resp: ', resp);
 
   router.push({
     name: 'ProfilePost',
