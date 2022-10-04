@@ -2,6 +2,7 @@
 app/models/*.ckpt
 app/models/*.pt
 app/models/*.pth
+app/models/saved/*
 
 # json files
 train/labels/*

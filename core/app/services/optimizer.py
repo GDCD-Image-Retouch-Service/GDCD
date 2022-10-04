@@ -1,12 +1,11 @@
-from ast import Raise
-from cmath import log
-import multiprocessing as mp
+import traceback
 import os
-import cv2
-import numpy as np
-import requests
-import time
+
 import multiprocessing as mp
+import requests
+import numpy as np
+import time
+import cv2
 
 from services.low_light_enhancer import LowLightEnhancer
 
@@ -14,18 +13,8 @@ from dto import OptimizeRequest
 
 from utils.histogram import dynamic_hist_equal, hist_equal_ycrcb, hist_stretch_ycrcb, hist_equal_hsv
 from utils.contrast import Ying_2017_CAIP
-
-import traceback
-import logging
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(formatter)
-logger.addHandler(stream_handler)
-file_handler = logging.FileHandler('data/logs/core/optimization/optimizer.log')
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
+from utils.utils import get_logger
+logger = get_logger(__name__, 'data/logs/core/optimization')
 
 
 def dynamic_work(queue: mp.Queue):
@@ -79,12 +68,19 @@ class Optimizer():
             logger.info("Exposure Enhancer Successfully Build")
             logger.info("Optimizer Successfully Build")
         except Exception as e:
-            logger.error(f"Building Optimizer Failed !!! - {e}")
+            logger.error(f"Building Optimizer Failed !!! - {e} : {traceback.format_exc()}")
+            raise e
             
 
     def _check_brightness(self, image: np.ndarray) -> bool:
         hsv = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2HSV)
         return hsv[..., 2].mean() < self._threshold
+
+    def _preprocess(self):
+        return
+
+    def _postprocess(self):
+        return
 
     def process(self, optimize_request: OptimizeRequest) -> None:
         try:

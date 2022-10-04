@@ -1,17 +1,9 @@
-
-## Learning Enriched Features for Fast Image Restoration and Enhancement
-## Syed Waqas Zamir, Aditya Arora, Salman Khan, Munawar Hayat, Fahad Shahbaz Khan, Ming-Hsuan Yang, and Ling Shao
-## IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI)
-## https://www.waqaszamir.com/publication/zamir-2022-mirnetv2/
-
-# --- Imports --- #
-import torch
-import torch.nn as nn
 import numpy as np
 
+import torch
+import torch.nn as nn
 
-##########################################################################
-##---------- Selective Kernel Feature Fusion (SKFF) ----------
+
 class SKFF(nn.Module):
     def __init__(self, in_channels, height=3,reduction=8,bias=False):
         super(SKFF, self).__init__()
@@ -51,9 +43,7 @@ class SKFF(nn.Module):
         return feats_V        
 
 
-
 class ContextBlock(nn.Module):
-
     def __init__(self, n_feat, bias=False):
         super(ContextBlock, self).__init__()
 
@@ -98,8 +88,7 @@ class ContextBlock(nn.Module):
 
         return x
 
-##########################################################################
-### --------- Residual Context Block (RCB) ----------
+
 class RCB(nn.Module):
     def __init__(self, n_feat, kernel_size=3, reduction=8, bias=False, groups=1):
         super(RCB, self).__init__()
@@ -123,8 +112,6 @@ class RCB(nn.Module):
         return res
 
 
-##########################################################################
-##---------- Resizing Modules ----------    
 class Down(nn.Module):
     def __init__(self, in_channels, chan_factor, bias=False):
         super(Down, self).__init__()
@@ -152,6 +139,7 @@ class DownSample(nn.Module):
     def forward(self, x):
         x = self.body(x)
         return x
+
 
 class Up(nn.Module):
     def __init__(self, in_channels, chan_factor, bias=False):
@@ -182,8 +170,6 @@ class UpSample(nn.Module):
         return x
 
 
-##########################################################################
-##---------- Multi-Scale Resiudal Block (MRB) ----------
 class MRB(nn.Module):
     def __init__(self, n_feat, height, width, chan_factor, bias,groups):
         super(MRB, self).__init__()
@@ -235,8 +221,7 @@ class MRB(nn.Module):
 
         return out
 
-##########################################################################
-##---------- Recursive Residual Group (RRG) ----------
+
 class RRG(nn.Module):
     def __init__(self, n_feat, n_MRB, height, width, chan_factor, bias=False, groups=1):
         super(RRG, self).__init__()
@@ -250,8 +235,6 @@ class RRG(nn.Module):
         return res
 
 
-##########################################################################
-##---------- MIRNet  -----------------------
 class MIRNet_v2(nn.Module):
     def __init__(self,
         inp_channels=3,

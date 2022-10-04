@@ -1,8 +1,24 @@
+import os
+import logging
+
 import numpy as np
-import io
 import base64
+import io
 from PIL import Image
-import random
+
+
+def get_logger(name, save):
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
+    os.makedirs(save, exist_ok=True)
+    file_handler = logging.FileHandler(os.path.join(save, f"{name}.log"))
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    return logger
 
 
 def bytes_to_image(byte: str) -> Image.Image:
