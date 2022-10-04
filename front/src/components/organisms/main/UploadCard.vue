@@ -280,6 +280,7 @@ const downloadImage = () => {
 .camera-box {
   width: 380px;
   height: 380px;
+  overflow: hidden;
   background-color: #000000;
 }
 
