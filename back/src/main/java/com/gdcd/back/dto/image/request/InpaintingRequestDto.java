@@ -9,5 +9,5 @@ import java.util.List;
 @Builder
 public class InpaintingRequestDto {
     private Long imageId;
-    private List<Integer> objects;
+    private String objects;
 }
