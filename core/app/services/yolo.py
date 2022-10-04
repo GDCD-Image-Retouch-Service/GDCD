@@ -1,12 +1,12 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+import traceback
 
-import torch
 import numpy as np
 from numpy import random
 
 from PIL.Image import Image
+
+import torch
+
 from typing import List, Dict
 
 from utils.plots import plot_one_box
@@ -16,17 +16,8 @@ from utils.general import check_img_size, check_requirements, check_imshow, non_
 from utils.datasets import letterbox
 from models.experimental import attempt_load
 
-import traceback
-import logging
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(formatter)
-logger.addHandler(stream_handler)
-file_handler = logging.FileHandler('data/logs/core/detection/yolo.log')
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
+from utils.utils import get_logger
+logger = get_logger(__name__, 'data/logs/core/detection')
 
 
 class Yolo():
@@ -41,6 +32,11 @@ class Yolo():
         except Exception as e:
             logger.error(f"Building Yolo Failed !!! - {traceback.format_exc()}")
     
+    def _preprocess(self):
+        return
+
+    def _postprocess(self):
+        return
 
     def predict(self, image: Image):
         try:
