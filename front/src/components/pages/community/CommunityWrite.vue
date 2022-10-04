@@ -136,14 +136,14 @@
                     @click="
                       (userStore.photoSelect = [
                         {
-                          id: value.beforeImage.imageId,
-                          url: value.beforeImage.imageUrl,
-                          tag: value.beforeImage.imageTag,
+                          id: value.beforeImage?.imageId,
+                          url: value.beforeImage?.imageUrl,
+                          tag: value.beforeImage?.imageTag,
                         },
                         {
-                          id: value.afterImage.imageId,
-                          url: value.afterImage.imageUrl,
-                          tag: value.afterImage.imageTag,
+                          id: value.afterImage?.imageId,
+                          url: value.afterImage?.imageUrl,
+                          tag: value.afterImage?.imageTag,
                         },
                       ]),
                         (userStore.daePyoImage = value.beforeImage.imageUrl);
@@ -206,7 +206,7 @@
                   "
                 ></i>
               </div>
-              <div class="sub-wrap">
+              <div class="sub-wrap" v-if="userStore.photoSelect[1]?.url">
                 <div
                   :style="{
                     backgroundImage:
@@ -318,11 +318,6 @@ const createPost = (data) => {
         (context.images != []) &
         (context.content != '')
       ) {
-        // router.push({
-        //   name: 'ProfilePost',
-        //   params: { userId: userStore.currentUser.item?.user?.userId },
-        // });
-
         createMyPost(context);
       } else {
         Swal.fire('잘못된 양식입니다.', '제목, 이미지, 내용은 필수 값입니다.');
@@ -330,14 +325,11 @@ const createPost = (data) => {
     }
   });
 };
-console.log(userStore.currentUser.item?.user?.userId);
 
 const selectPhoto = () => {
   userStore.urlPhotoList = userStore.urlList;
   userStore.urlList = [];
   userStore.selectedPhotoList = userStore.selectedPhoto;
-
-  console.log(userStore.selectedPhoto);
 };
 
 const pushSelectedNumber = (num, url, tag) => {
@@ -376,9 +368,6 @@ const pushSelectedNumber = (num, url, tag) => {
   if (checked) {
     selectTags.value.push(tag);
   }
-
-  console.log(userStore.selectedPhoto);
-  console.log(userStore.urlList);
 };
 
 userStore.getMyPhoto();

@@ -72,10 +72,11 @@ const checkOoverlap = (nickname) => {
 
 //  회원 정보 수정 요청
 async function updateProfile(name, file) {
-  const userId = userStore.currentUser.item?.user?.userId;
+  // const userId = userStore.currentUser.item?.user?.userId;
+
   await userStore.updateUserNickname(name);
-  const resp = await userStore.updateUserProfile(file);
-  await userStore.getOtherinfo(userId);
+
+  await userStore.updateUserProfile(file);
 
   console.log('resp: ', resp);
 
