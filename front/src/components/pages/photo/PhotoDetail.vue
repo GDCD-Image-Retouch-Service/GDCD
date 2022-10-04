@@ -49,8 +49,16 @@ onMounted(() => {
 </script>
 
 <style scoped>
+@media (min-width: 1024px) {
+  .photo-detail {
+    min-width: 600px;
+    max-width: 600px;
+  }
+}
+
 .photo-detail {
   padding: var(--grid-vertical) var(--grid-side);
+  margin: 0 auto;
 }
 .main-image {
   width: 100%;

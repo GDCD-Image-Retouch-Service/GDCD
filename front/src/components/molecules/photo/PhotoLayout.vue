@@ -1,7 +1,7 @@
 <template>
   <div class="photo-layout">
     <div v-for="(values, key) in userStore.myPhoto.item" :key="values">
-      <date-format :updateInfo="key" style="margin-top: 30px" />
+      <date-format :updateInfo="key" class="photo-date" />
       <div class="image-wrap">
         <div
           v-for="value in values"
@@ -46,8 +46,6 @@ const clickImage = (img) => {
   flex-wrap: wrap;
   gap: 10px;
   width: 100%;
-
-  /* justify-content: space-between; */
 }
 .photo-items {
   width: calc((100% - 20px) / 3);
@@ -56,14 +54,20 @@ const clickImage = (img) => {
   width: 100%;
   object-fit: cover;
 }
+.photo-date {
+  margin-top: 30px;
+}
+.photo-date:first-child {
+  margin-top: 0px;
+}
 .image-wrap {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
+  margin-bottom: var(--grid-vertical);
   width: 100%;
 }
-
 .photo-image {
   width: calc((100% - 20px) / 3);
   padding-bottom: calc((100% - 20px) / 3);

@@ -78,8 +78,6 @@ async function updateProfile(name, file) {
 
   await userStore.updateUserProfile(file);
 
-  console.log('resp: ', resp);
-
   router.push({
     name: 'ProfilePost',
     params: { userId: userStore.currentUser.item?.user?.userId },
@@ -88,9 +86,16 @@ async function updateProfile(name, file) {
 </script>
 
 <style scoped>
+@media (min-width: 1024px) {
+  .profile-update {
+    min-width: 935px;
+    max-width: 935px;
+  }
+}
+
 .profile-update {
   width: calc(100% - 2 * var(--grid-side));
-  margin-left: var(--grid-side);
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: var(--grid-vertical);

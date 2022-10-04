@@ -13,6 +13,7 @@
       class="comment-input"
       placeholder="댓글 달기..."
       v-model="communityStore.thisContent"
+      @keyup.enter="createComment()"
     />
 
     <!-- 버튼 -->
@@ -42,16 +43,14 @@ const createComment = () => {
 
 <style scoped>
 .comment-input-wrap {
-  position: fixed;
-  bottom: var(--size-h-footer);
   width: 100%;
-  left: 0;
   height: 50px;
-
+  border: 1px solid var(--instagram-grey);
   display: flex;
   gap: 10px;
   align-items: center;
-  background-color: var(--light-sub-color);
+  background-color: var(--color-main);
+  border-radius: 10px 10px 0 0;
 }
 .profile-image {
   width: 30px;

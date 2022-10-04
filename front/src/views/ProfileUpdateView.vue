@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="profile-update">
     <router-view />
   </div>
 </template>
@@ -18,4 +18,9 @@ basicStore.isActiveFooter = 2;
 userStore.getOtherinfo(userId);
 </script>
 
-<style scoped></style>
+<style scoped>
+.profile-update {
+  margin-top: var(--size-h-header);
+  margin-bottom: var(--size-h-footer);
+}
+</style>

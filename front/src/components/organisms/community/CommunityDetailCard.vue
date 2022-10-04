@@ -66,7 +66,6 @@
         />
       </div>
     </div>
-
     <div
       class="button-wrap"
       v-show="communityStore.post.item?.images?.length == 2"
@@ -194,6 +193,7 @@ onMounted(() => {
   background-color: var(--light-main-color);
   margin-bottom: 30px;
   position: relative;
+  margin-top: var(--grid-vertical);
 }
 .edit-icon {
   position: absolute;

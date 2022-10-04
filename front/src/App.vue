@@ -1,9 +1,7 @@
 <template>
   <div class="app d-flex flex-column" :class="theme">
     <header-nav />
-    <div class="app-container sub flex-grow-1 flex-shrink-1">
-      <router-view :key="$route.fullPath" />
-    </div>
+    <router-view :key="$route.fullPath" />
     <footer-nav :class="{ visible: isVisible }" />
   </div>
 </template>

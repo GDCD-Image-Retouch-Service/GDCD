@@ -2,13 +2,13 @@
   <div class="community-write">
     <!-- 제목 -->
     <div class="wrap">
-      <div>제목</div>
+      <div class="wrap-title">제목</div>
       <input type="text" class="write-input" v-model="data.title" />
     </div>
 
     <!-- 이미지 -->
     <div class="wrap" v-if="userStore.urlPhotoList.length === 0">
-      <div>이미지</div>
+      <div class="wrap-title">이미지</div>
       <a
         class="btn image-input"
         data-bs-toggle="modal"
@@ -26,7 +26,7 @@
       </a>
     </div>
     <div class="wrap" v-if="userStore.urlPhotoList.length === 1">
-      <div>이미지</div>
+      <div class="wrap-title">이미지</div>
       <a
         data-bs-toggle="modal"
         href="#exampleModalToggle"
@@ -57,7 +57,7 @@
       </div>
     </div>
     <div class="wrap" v-if="userStore.urlPhotoList.length === 2">
-      <div>이미지</div>
+      <div class="wrap-title">이미지</div>
       <a
         data-bs-toggle="modal"
         href="#exampleModalToggle"
@@ -97,7 +97,7 @@
 
     <!-- 내용 -->
     <div class="wrap">
-      <div>내용</div>
+      <div class="wrap-title">내용</div>
       <textarea
         class="content-area"
         maxlength="100"
@@ -388,6 +388,14 @@ userStore.selectTag = [];
     bottom: -98px;
   }
 }
+
+@media (min-width: 1024px) {
+  .community-write {
+    min-width: 935px;
+    max-width: 935px;
+  }
+}
+
 .firstCheck,
 .secondCheck {
   opacity: 0.5;
@@ -395,8 +403,9 @@ userStore.selectTag = [];
 
 .community-write {
   width: calc(100% - 2 * var(--grid-side));
-  margin: var(--grid-vertical) var(--grid-side);
+  margin: var(--grid-vertical) auto;
 
+  overflow: scroll;
   display: flex;
   flex-direction: column;
   gap: var(--grid-vertical);
@@ -404,7 +413,11 @@ userStore.selectTag = [];
 .wrap {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+}
+.wrap-title {
+  height: 24px;
+  line-height: 24px;
 }
 .write-input {
   width: 100%;

@@ -76,6 +76,9 @@ communityStore.updateCommentContent = '';
   line-height: 30px;
   position: relative;
 }
+.profile-nickname {
+  font-size: 14px;
+}
 .comment-header {
   width: 100%;
   display: flex;
@@ -102,6 +105,9 @@ communityStore.updateCommentContent = '';
 .comment-message {
   word-break: break-all;
   text-align: start;
+  padding: 0 0 0 5px;
+  margin-top: 10px;
+  line-height: 22px;
 }
 .update-input {
   width: 100%;

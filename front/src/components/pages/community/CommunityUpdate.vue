@@ -383,6 +383,7 @@ userStore.selectedPhotoList = userStore.selectedPhoto;
     bottom: -98px;
   }
 }
+
 .firstCheck,
 .secondCheck {
   opacity: 0.5;
@@ -395,6 +396,7 @@ userStore.selectedPhotoList = userStore.selectedPhoto;
   display: flex;
   flex-direction: column;
   gap: var(--grid-vertical);
+  overflow: scroll;
 }
 .wrap {
   display: flex;
