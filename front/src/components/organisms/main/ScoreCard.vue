@@ -83,16 +83,16 @@ const save = async () => {
     console.log('비로그인');
     return;
   }
-  const payload = {
-    image: mainStore.getTempFile,
-    aesthetic: mainStore.getTempEScore,
-    quality: mainStore.getTempQScore,
-  };
-  console.log('저장시작', payload);
-  const data = await image.save(payload);
-  console.log('저장상태', data);
+  // const payload = {
+  //   image: mainStore.getTempFile,
+  //   aesthetic: mainStore.getTempEScore,
+  //   quality: mainStore.getTempQScore,
+  // };
+  // console.log('저장시작', payload);
+  // const data = await image.save(payload);
+  // console.log('저장상태', data);
 
-  mainStore.setTempId(data.item);
+  // mainStore.setTempId(data.item);
 };
 
 const init = async () => {

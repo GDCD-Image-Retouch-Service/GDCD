@@ -20,7 +20,6 @@ import HeaderProfile from '@/components/molecules/common/header/HeaderProfile.vu
   width: 100vw;
   height: var(--size-h-header);
   min-height: var(--size-h-header);
-  background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;

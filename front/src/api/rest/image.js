@@ -45,9 +45,10 @@ export default {
   },
 
   objectDetection: function (payload) {
+    console.log('페이로드 변환', payload);
     return new Promise((resolve, reject) => {
       axiosApi
-        .get(REST_PATH + '/object?imageId=' + payload)
+        .get(REST_PATH + '/object?imageId=' + 166)
         .then((response) => {
           resolve(response.data);
         })

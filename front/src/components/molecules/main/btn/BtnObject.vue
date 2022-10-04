@@ -1,6 +1,6 @@
 <template>
-  <div class="btn-object blur outer" ref="btnObject">
-    {{ props.objectData }}
+  <div class="btn-object outer" ref="btnObject">
+    <!-- {{ props.objectData }} -->
   </div>
 </template>
 
@@ -17,16 +17,7 @@ const props = defineProps({
 // data
 const btnObject = ref(null);
 
-// const objectData = props.objectData.split(';');
-// const objectName = objectData.value[0];
-// const objectCoord = objectData.value[1].split(',');
-
-// console.log('name', objectName);
-// console.log('x', objectCoord[0]);
-// console.log('y', objectCoord[1]);
-
 onMounted(() => {
-  console.log('props1', props.objectData);
   if (props.objectData == 'IMAGE NOT SCORED') {
     console.log('이미지 점수 계산이 되지 않았습니다');
     return;
@@ -35,60 +26,56 @@ onMounted(() => {
   let fixedHeight = 0;
   let fixedWidth = 0;
 
+  let dy = 0;
+  let dx = 0;
+  let scale = 1;
+
   const isHeightBigger = props.naturalHeight > props.naturalWidth;
 
   if (isHeightBigger) {
-    fixedHeight = (props.naturalHeight * 380) / props.naturalWidth;
+    scale = 380 / props.naturalWidth;
+
+    fixedHeight = props.naturalHeight * scale;
     fixedWidth = 380;
 
-    const dy = (fixedHeight - 380) / 2;
-    const dx = 0;
-
-    console.log('-dy', dy);
-    console.log('-dx', dx);
+    dy = (fixedHeight - 380) / 2;
+    dx = 0;
   } else {
+    scale = 380 / props.naturalHeight;
+
     fixedHeight = 380;
-    fixedWidth = (props.naturalWidth * 380) / props.naturalHeight;
-    console.log('-dx', (fixedWidth - 380) / 2);
+    fixedWidth = props.naturalWidth * scale;
 
-    const dy = 0;
-    const dx = (fixedWidth - 380) / 2;
-
-    console.log('-dy', dy);
-    console.log('-dx', dx);
+    dy = 0;
+    dx = (fixedWidth - 380) / 2;
   }
-
-  console.log('FH : ', fixedHeight);
-  console.log('FW : ', fixedWidth);
+  // console.log('dy', dy);
+  // console.log('dx', dx);
+  // console.log('scale', scale);
+  // console.log('FH : ', fixedHeight);
+  // console.log('FW : ', fixedWidth);
 
   const objectData = props.objectData.split(';');
-  console.log('디텍션:', objectData);
-  const objectName = objectData[0];
+  // console.log('디텍션:', objectData);
+  // const objectName = objectData[0];
   const objectLU = objectData[1].split(',');
   const objectRD = objectData[2].split(',');
 
-  console.log('name', objectName);
-  console.log('L', objectLU[0]);
-  console.log('U', objectLU[1]);
-  console.log('R', objectRD[0]);
-  console.log('D', objectRD[1]);
+  // console.log('name', objectName);
+  // console.log('L', objectLU[0]);
+  // console.log('U', objectLU[1]);
+  // console.log('R', objectRD[0]);
+  // console.log('D', objectRD[1]);
 
-  console.log('NH', `${props.naturalHeight}px`);
-  console.log('NW', `${props.naturalWidth}px`);
+  // console.log('NH', `${props.naturalHeight}px`);
+  // console.log('NW', `${props.naturalWidth}px`);
 
-  console.log('NH', `${(objectLU[0] * 380) / props.naturalHeight}px`);
-  console.log('NW', `${(objectLU[1] * 380) / props.naturalWidth}px`);
+  btnObject.value.style.top = `${objectLU[1] * scale - dy}px`;
+  btnObject.value.style.left = `${objectLU[0] * scale - dx}px`;
 
-  btnObject.value.style.top = `${(objectLU[1] * 380) / props.naturalWidth}px`;
-  btnObject.value.style.left = `${(objectLU[0] * 380) / props.naturalHeight}px`;
+  btnObject.value.style.width = `${(objectRD[0] - objectLU[0]) * scale}px`;
 
-  btnObject.value.style.width = `${
-    ((objectRD[0] - objectLU[0]) * 380) / props.naturalWidth
-  }px`;
-
-  btnObject.value.style.height = `${
-    ((objectRD[1] - objectLU[1]) * 380) / props.naturalWidth
-  }px`;
+  btnObject.value.style.height = `${(objectRD[1] - objectLU[1]) * scale}px`;
 });
 </script>
 
@@ -99,6 +86,11 @@ onMounted(() => {
   left: 0;
   width: 0px;
   height: 0px;
-  background: red;
+  border: solid 4px lightgray;
+  border-radius: var(--size-radius);
+}
+
+.blur.btn-object {
+  border: solid 4px var(--color-theme);
 }
 </style>
