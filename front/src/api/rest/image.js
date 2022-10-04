@@ -23,10 +23,6 @@ export default {
     });
   },
   save: function (payload) {
-    console.log(payload.image);
-    console.log(payload.aesthetic);
-    console.log(payload.quality);
-
     const form = new FormData();
     form.append('image', payload.image);
     form.append('aesthetic', payload.aesthetic);
@@ -49,9 +45,10 @@ export default {
   },
 
   objectDetection: function (payload) {
+    console.log('페이로드 변환', payload);
     return new Promise((resolve, reject) => {
       axiosApi
-        .get(REST_PATH + '/object?imageId=' + payload)
+        .get(REST_PATH + '/object?imageId=' + 166)
         .then((response) => {
           resolve(response.data);
         })
