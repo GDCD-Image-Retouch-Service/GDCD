@@ -6,13 +6,16 @@
     <div>지울 대상을 골라주세요</div>
     <div
       class="d-flex align-items-center"
-      style="height: 48px; font-size: 24pt"
+      style="height: 48px; font-size: 18pt"
     >
       <div v-for="(item, index) in objectList" :key="index">
-        <div>{{ item.split(';')[0] }} ,</div>
+        <span
+          class="btn-object-badge badge rounded-pill"
+          @click="BtnActive(index)"
+          >{{ item.split(';')[0] }}</span
+        >
+        <!-- <div>{{ item.split(';')[0] }} ,</div> -->
       </div>
-      <!-- <div>iId:{{ mainStore.getTempId }}</div>
-      <div style="margin-left: 8px">rId:{{ mainStore.getRequestId }}</div> -->
     </div>
     <div class="spacer" />
 
@@ -39,6 +42,8 @@
 
         <div v-for="(item, index) in objectList" :key="index">
           <btn-object
+            class="btn-object"
+            @click="BtnActive(index)"
             :objectData="item"
             :naturalWidth="naturalWidth"
             :naturalHeight="naturalHeight"
@@ -55,13 +60,13 @@
         <i class="bi bi-arrow-counterclockwise"></i>
       </router-link>
 
-      <router-link
-        to="optimize"
+      <div
+        @click="testFunc"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
         style="margin-left: 8px"
       >
-        <i class="bi bi-stars"></i>
-      </router-link>
+        <i class="bi bi-arrow-right"></i>
+      </div>
     </div>
     <div class="spacer" />
   </div>
@@ -92,6 +97,36 @@ const init = async () => {
   console.log(data);
   objectList.value = data.item.slice(0, 6);
   isLoading.value = false;
+
+  console.log(document.getElementsByClassName('btn-object-badge'));
+  console.log(document.getElementsByClassName('btn-object'));
+};
+
+const BtnActive = (index) => {
+  document
+    .getElementsByClassName('btn-object-badge')
+    [index].classList.toggle('btn-active');
+  document.getElementsByClassName('btn-object')[index].classList.toggle('blur');
+};
+
+const testFunc = () => {
+  let output = [];
+  console.log('삭제하기', objectList.value);
+  const btnElList = document.getElementsByClassName('btn-object-badge');
+  for (let i = 0; i < objectList.value.length; i++) {
+    if (btnElList[i].classList.contains('btn-active')) {
+      let splitData = objectList.value[i].split(';');
+      let temp = [];
+
+      temp.push((splitData[1].split(',')[0] *= 1));
+      temp.push((splitData[1].split(',')[1] *= 1));
+      temp.push((splitData[2].split(',')[0] *= 1));
+      temp.push((splitData[2].split(',')[1] *= 1));
+      output.push([temp]);
+    }
+  }
+
+  console.log(output);
 };
 
 onMounted(() => {
@@ -115,5 +150,12 @@ onMounted(() => {
   font-size: 14pt;
   color: #000000;
   text-decoration: none;
+}
+
+.btn-object-badge {
+  background: lightgray;
+}
+.btn-active {
+  background: var(--color-theme);
 }
 </style>
