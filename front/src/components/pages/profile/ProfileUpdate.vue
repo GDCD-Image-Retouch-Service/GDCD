@@ -78,6 +78,8 @@ async function updateProfile(name, file) {
 
   await userStore.updateUserProfile(file);
 
+  console.log('resp: ', resp);
+
   router.push({
     name: 'ProfilePost',
     params: { userId: userStore.currentUser.item?.user?.userId },

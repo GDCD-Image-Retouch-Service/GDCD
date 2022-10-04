@@ -14,7 +14,6 @@
           @click="BtnActive(index)"
           >{{ item.split(';')[0] }}</span
         >
-        <!-- <div>{{ item.split(';')[0] }} ,</div> -->
       </div>
     </div>
     <div class="spacer" />
@@ -31,7 +30,7 @@
           max-width: 380px;
           height: 380px;W
           max-height: 380px;
-          overfit: hidden;
+          over-flow: hidden;
         "
       >
         <img
@@ -62,7 +61,7 @@
       </router-link>
 
       <div
-        @click="testFunc"
+        @click="inpainting"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
         style="margin-left: 8px"
       >
@@ -110,7 +109,7 @@ const BtnActive = (index) => {
   document.getElementsByClassName('btn-object')[index].classList.toggle('blur');
 };
 
-const testFunc = () => {
+const inpainting = async () => {
   let output = [];
   console.log('삭제하기', objectList.value);
   const btnElList = document.getElementsByClassName('btn-object-badge');
@@ -128,6 +127,14 @@ const testFunc = () => {
   }
 
   console.log(output);
+
+  let payload = {
+    imageId: mainStore.getTempId,
+    objects: output,
+  };
+
+  const data = await image.inpainting(payload);
+  console.log('after inpainting: ', data);
 };
 
 onMounted(() => {
@@ -154,8 +161,11 @@ onMounted(() => {
 }
 
 .btn-object-badge {
+  margin-left: 8px;
+  margin-right: 8px;
   background: lightgray;
 }
+
 .btn-active {
   background: var(--color-theme);
 }
