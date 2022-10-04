@@ -103,7 +103,8 @@ def get_score(request: Request, image: UploadFile = File(), points = Form(), use
         
         _, ext = os.path.splitext(image.filename)
         result: np.ndarray = inpainter.process(Image.open(io.BytesIO(image.file.read())).convert("RGB"), json.loads(points))
-        cv2.imwrite(f"/app/data/buffer{user_id}/inpainting{ext}", cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
+        os.makedirs(f"/app/data/buffer/{user_id}", exist_ok=True)
+        cv2.imwrite(f"/app/data/buffer/{user_id}/inpainting{ext}", cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
 
         logger.info(f"Response Image Inpainting to {request.client.host}:{request.client.port}")
         # _, im_png = cv2.imencode(ext, cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
