@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface PostRepository extends MongoRepository<Post, Long> {
     List<Post> findAllByWriterNo(Long userId);
-    List<Post> findAllByWriterNoOrderByRegistTimeDesc(Long userId, Pageable pageable);
-
-    List<Post> findAllByOrderByRegistTimeDesc(Pageable pageable);
-
+    List<Post> findAllByWriterNoAndValidationOrderByRegistTimeDesc(Long userId, boolean validation, Pageable pageable);
+    List<Post> findAllByValidationOrderByRegistTimeDesc(boolean validation, Pageable pageable);
 }

@@ -1,12 +1,14 @@
 package com.gdcd.back.dto.image.request;
 
 import com.gdcd.back.domain.image.Image;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Builder
 public class AfterImageSaveRequestDto {
     private Long imageId;
 
