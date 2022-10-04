@@ -96,16 +96,18 @@ def get_optimize_request(request: Request, image: UploadFile = File(...), userId
     except Exception as e:
         logger.error(f"Image Optimization failed from {request.client.host}:{request.client.port} - {e} : {traceback.format_exc()}")
 
-@app.post("/inpaint-image", response_class=FileResponse)
-def get_score(request: Request, image: UploadFile = File(), points = Form()):
+@app.post("/inpaint-image")
+def get_score(request: Request, image: UploadFile = File(), points = Form(), user_id = Form()):
     try:
         logger.info(f"Request Image Inpainting from {request.client.host}:{request.client.port}")
         
         _, ext = os.path.splitext(image.filename)
         result: np.ndarray = inpainter.process(Image.open(io.BytesIO(image.file.read())).convert("RGB"), json.loads(points))
-        _, im_png = cv2.imencode(ext, cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
+        cv2.imwrite(f"/app/data/buffer{user_id}/inpainting{ext}", cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
 
         logger.info(f"Response Image Inpainting to {request.client.host}:{request.client.port}")
-        return StreamingResponse(io.BytesIO(im_png.tobytes()), media_type=f"image/png")
+        # _, im_png = cv2.imencode(ext, cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
+        # return StreamingResponse(io.BytesIO(im_png.tobytes()), media_type=f"image/png")
+        return f"https://j7b301.p.ssafy.io/api/image?from=/app/data/buffer/{user_id}/inpainting{ext}"
     except Exception as e:
         logger.error(f"Image Inpainting Failed from {request.client.host}:{request.client.port} - {e} : {traceback.format_exc()}")
