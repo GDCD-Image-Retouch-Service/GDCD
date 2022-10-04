@@ -154,8 +154,8 @@ const isInput = ref(false);
 const setPicBox = () => {
   const file = picInputButton.value.files[0];
 
-  if (file && file.size > 2 * 1024 * 1024) {
-    alert('파일 사이즈가 2mb 를 넘습니다.');
+  if (file && file.size > 1024 * 1024) {
+    alert('파일 사이즈가 mb 를 넘습니다.');
     picInputButton.value.files[0] = null;
     isInput.value = false;
     return;
