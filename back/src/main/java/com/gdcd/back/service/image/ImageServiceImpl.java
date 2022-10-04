@@ -58,6 +58,8 @@ public class ImageServiceImpl implements ImageService {
     private final String AFTER = "/after";
     private final String BUFFER = "/app/data/buffer/";
     private Map<String, Object> RESULT_OBJECT;
+    private final float[] AESTHETIC_STANDARD = {3.5236737f, 4.7591897f, 4.9708054f, 5.1132074f, 5.2307573f, 5.3364713f, 5.4399255f, 5.5490340f, 5.6771072f, 5.8493036f};
+    private final float[] QUALITY_STANDARD = {3.9448474f, 6.4792895f, 6.7779994f, 6.8344460f, 6.8756410f, 6.9097216f, 6.9412602f, 6.9728014f, 7.0068225f, 7.0490238f};
 
 //        Local Path
 //        private final String ROOT = "C:/test/images/";
@@ -305,10 +307,19 @@ public class ImageServiceImpl implements ImageService {
             // 3-3. requestMessage
             HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
-            // 3-4. request
+            //3-4 buffer/{user_Id} 있다면 , 폴더 삭제
+            String path = String.valueOf(user.getId());
+            try {
+                File BufferDir = new File(BUFFER + path);
+                FileUtils.deleteDirectory(BufferDir);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // 3-5. request
             HttpEntity<String> response = restTemplate.postForEntity(CORE + OPTIMIZE_REQUEST, requestMessage, String.class);
 
-            // 3-5. parse response
+            // 3-6. parse response
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
             Long requestId = objectMapper.readValue(response.getBody(), Long.class);
@@ -369,7 +380,6 @@ public class ImageServiceImpl implements ImageService {
     }
 
     public Map<String, Object> inpaintImage(String token, InpaintingRequestDto requestDto) {
-        RESULT_OBJECT = new HashMap<>();
         try {
             // 1. front2api : request
             User user = findUserByEmail(decodeToken(token));
@@ -413,10 +423,23 @@ public class ImageServiceImpl implements ImageService {
 
             // 5. core2api : image score response
             String temp = scoreResponse.get("dict").toString();
-            float aes = Float.parseFloat(temp.substring(temp.indexOf("aesthetic\": ") + 12, temp.indexOf(",")));
-            float qua = Float.parseFloat(temp.substring(temp.indexOf("quality\": ") + 10, temp.indexOf("]")));
-            int aesRank = Math.max(Math.min((int) Math.ceil((5.8 - aes) * 14 + 1), 9), 1);
-            int quaRank = Math.max(Math.min((int) Math.ceil((6.8 - qua) * 14 + 1), 9), 1);
+            float aes = Float.parseFloat(temp.substring(temp.indexOf("aesthetic=") + 10, temp.indexOf(",")));
+            float qua = Float.parseFloat(temp.substring(temp.indexOf("quality=") + 8, temp.indexOf("}")));
+            int aesRank = 1;
+            int quaRank = 1;
+
+            for (int i = 0; i < AESTHETIC_STANDARD.length; i++) {
+                if (aes < AESTHETIC_STANDARD[i]) {
+                    aesRank = 9 - i;
+                    break;
+                }
+            }
+            for (int i = 0; i < QUALITY_STANDARD.length; i++) {
+                if (qua < QUALITY_STANDARD[i]) {
+                    quaRank = 9 - i;
+                    break;
+                }
+            }
 
             // 6. api2db&server : imageSave
             Long afterImageId = addAfterImage(token, AfterImageSaveRequestDto.builder()
@@ -432,8 +455,10 @@ public class ImageServiceImpl implements ImageService {
             requestObjectDetection(afterImageId);
 
             // 10. api2front : response
+            RESULT_OBJECT = new HashMap<>();
             RESULT_OBJECT.put("image", new ImageDetailResponseDto(findImage(afterImageId)));
         } catch (Exception e) {
+            RESULT_OBJECT = new HashMap<>();
             RESULT_OBJECT.put("error", e.getMessage());
         }
         return RESULT_OBJECT;
@@ -447,6 +472,9 @@ public class ImageServiceImpl implements ImageService {
         String filePath = url.substring(url.lastIndexOf("=") + 1);
         String originPath = originImage.getFilePath();
         String afterPath = originPath.replace("before", "after");
+        if (imageRepository.findByFilePath(afterPath).isPresent()){
+            imageRepository.delete(imageRepository.findByFilePath(afterPath).get());
+        }
         String path = String.valueOf(user.getId());
         File folder = new File(ROOT + path + "/" + AFTER);
 
