@@ -8,6 +8,8 @@ import com.gdcd.back.domain.image.ImageRepository;
 import com.gdcd.back.domain.image.data.DataRepository;
 import com.gdcd.back.domain.image.optrequest.OptRequest;
 import com.gdcd.back.domain.image.optrequest.OptRequestRepository;
+import com.gdcd.back.domain.sequence.ImageSequence;
+import com.gdcd.back.domain.sequence.ImageSequenceRepository;
 import com.gdcd.back.domain.user.User;
 import com.gdcd.back.domain.user.UserRepository;
 import com.gdcd.back.dto.image.request.*;
@@ -41,6 +43,7 @@ public class ImageServiceImpl implements ImageService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final OptRequestRepository optRequestRepository;
+    private final ImageSequenceRepository imageSequenceRepository;
     private final DataRepository dataRepository;
     private final String ROOT = "/app/data/images/";
     private final String ADDRESS = "https://j7b301.p.ssafy.io/api/image?imageId=";
@@ -85,7 +88,7 @@ public class ImageServiceImpl implements ImageService {
             image.transferTo(new File(ROOT + FilePath));
             requestDto.setObjects(new ArrayList<>());
             requestDto.setFilePath(FilePath);
-            Long count = imageRepository.findAll().stream().count() + 1;
+            Long count = imageSequenceRepository.findById("image_sequences").get().getSeq()+1;
             requestDto.setImgUrl(ADDRESS + count);
             requestDto.setUserId(user.getId());
 
@@ -224,7 +227,7 @@ public class ImageServiceImpl implements ImageService {
                 ArrayList<String> ul = (ArrayList<String>) obj2.get("ul");
                 ArrayList<String> dr = (ArrayList<String>) obj2.get("dr");
                 String str = (String) obj2.get("class");
-                str += ";" + ul.get(0) + "," + ul.get(1) + ";" + dr.get(0) + "," + dr.get(1) + ";";
+                str += ";"+String.valueOf(ul.get(0)) + "," + String.valueOf(ul.get(1)) + ";" + String.valueOf(dr.get(0)) + "," + String.valueOf(dr.get(1)) + ";";
                 objectList.add(str);
             }
 
@@ -407,7 +410,7 @@ public class ImageServiceImpl implements ImageService {
 
     public Long addAfterImage(String token, AfterImageSaveRequestDto requestDto) throws Exception {
         User user = findUserByEmail(decodeToken(token));
-        Long count = imageRepository.findAll().stream().count() + 1;
+        Long count = imageSequenceRepository.findById("image_sequences").get().getSeq()+1;
         Image originImage = findImage(requestDto.getImageId());
         String url = requestDto.getImageUrl();
         String filePath = url.substring(url.lastIndexOf("=") + 1);

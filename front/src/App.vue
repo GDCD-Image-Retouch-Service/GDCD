@@ -12,7 +12,8 @@
 import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
 
-import { computed, ref, onBeforeMount } from 'vue';
+// import { computed, ref, onBeforeMount } from 'vue';
+import { computed } from 'vue';
 // import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores';
 
@@ -29,35 +30,35 @@ if (localStorage.getItem('token')) {
 
 const theme = computed(() => (mainStore.getIsDark ? 'dark' : 'light'));
 
-onBeforeMount(() => {
-  window.addEventListener('scroll', handleScroll);
-});
+// onBeforeMount(() => {
+//   window.addEventListener('scroll', handleScroll);
+// });
 
-const handleScroll = (e) => {
-  console.log(e);
-};
+// const handleScroll = (e) => {
+//   console.log(e);
+// };
 
-let isVisible = ref(false);
-document.addEventListener('scroll', (e) => {
-  console.log(e);
-  console.log(
-    e.clientY,
-    e.deltaY,
-    e.layerY,
-    e.offsetY,
-    e.screenY,
-    e.y,
-    e.pageY,
-    e.movementY,
-    e.wheelDeltaY,
-  );
-  if (e.deltaY > 0) {
-    isVisible.value = true;
-    console.log('ㅇㅇ');
-  } else {
-    isVisible.value = false;
-  }
-});
+// let isVisible = ref(false);
+// document.addEventListener('scroll', (e) => {
+//   console.log(e);
+//   console.log(
+//     e.clientY,
+//     e.deltaY,
+//     e.layerY,
+//     e.offsetY,
+//     e.screenY,
+//     e.y,
+//     e.pageY,
+//     e.movementY,
+//     e.wheelDeltaY,
+//   );
+//   if (e.deltaY > 0) {
+//     isVisible.value = true;
+//     console.log('ㅇㅇ');
+//   } else {
+//     isVisible.value = false;
+//   }
+// });
 </script>
 
 <style>

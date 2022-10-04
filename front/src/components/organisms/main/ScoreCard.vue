@@ -83,25 +83,24 @@ const save = async () => {
     console.log('비로그인');
     return;
   }
-  console.log('저장시작');
-  const data = await image.save({
-    image: mainStore.getTempFile,
-    aesthetic: mainStore.getTempEScore,
-    quality: mainStore.getTempQScore,
-  });
-  console.log('저장상태', data);
+  // const payload = {
+  //   image: mainStore.getTempFile,
+  //   aesthetic: mainStore.getTempEScore,
+  //   quality: mainStore.getTempQScore,
+  // };
+  // console.log('저장시작', payload);
+  // const data = await image.save(payload);
+  // console.log('저장상태', data);
 
-  mainStore.setTempId(data.item);
+  // mainStore.setTempId(data.item);
 };
 
 const init = async () => {
   picBox.value.src = mainStore.getTempImg;
 
   const data = await image.scoring(mainStore.getTempFile);
-  // console.log(data.value);
-  score.value = mainStore.setScore(data.item);
-  // console.log(score.value);
-  // score.value = 0;
+  score.value = await mainStore.setScore(data.item);
+  save();
   isLoading.value = false;
 };
 
@@ -109,13 +108,11 @@ const init = async () => {
 watch(
   () => accountStore.getIsLogined,
   () => {
-    save();
+    if (mainStore.getTempEScore != 0) save();
   },
 );
 
 // Life Cycle
-save();
-
 onMounted(() => {
   init();
 });
