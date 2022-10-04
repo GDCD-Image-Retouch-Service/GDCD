@@ -14,13 +14,17 @@
 <script setup>
 import ProfileHeaderInfo from '@/components/molecules/profile/ProfileHeaderInfo';
 import { useUserStore } from '@/stores/user';
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
 const userStore = useUserStore();
 onBeforeMount(() => {
+  userStore.resetVariable();
+});
+
+onMounted(() => {
   userStore.getOtherinfo(route.params.userId);
 });
 </script>
