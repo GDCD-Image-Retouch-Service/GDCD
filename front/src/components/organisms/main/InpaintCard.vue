@@ -29,8 +29,9 @@
           background: lightgray;
           width: 380px;
           max-width: 380px;
-          height: 380px;
+          height: 380px;W
           max-height: 380px;
+          overfit: hidden;
         "
       >
         <img
