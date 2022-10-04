@@ -60,6 +60,34 @@ export const useUserStore = defineStore('userStore', {
     selectTag: [],
   }),
   actions: {
+    resetVariable() {
+      // 프로필 페이지에서 보이는 게시글
+      (this.post = {}),
+        // 프로필 친구
+        (this.isFriendActive = true),
+        // 로그인한 유저 정보
+        (this.profile = {}),
+        // 스크랩 리스트
+        (this.scrapList = {}),
+        // 좋아요 리스트
+        (this.likeList = {}),
+        // 팔로워 리스트
+        (this.follower = {}),
+        // 팔로잉 리스트
+        (this.following = {}),
+        // (this.updateProfile = ''),
+        // (this.updateNickname = ''),
+        // 유저별 사진 리스트
+        (this.myPhoto = {}),
+        (this.daePyoImage = ''),
+        (this.photoSelec = []),
+        (this.selectedPhoto = []),
+        (this.selectedPhotoList = []),
+        (this.urlList = []),
+        (this.urlPhotoList = []),
+        (this.selectTag = []);
+    },
+
     setToken(token) {
       this.token = token;
       this.getMyinfo();
@@ -212,51 +240,58 @@ export const useUserStore = defineStore('userStore', {
 
     // 회원 이미지 수정
     updateUserProfile(profile) {
-      const formdata = new FormData();
+      return new Promise((resolve, reject) => {
+        const formdata = new FormData();
 
-      if (profile.type) {
-        console.log('?');
-        formdata.append('profile', profile);
-      }
+        if (profile.type) {
+          console.log('?');
+          formdata.append('profile', profile);
+        }
 
-      axios({
-        url: user.updateProfile(),
-        method: 'PUT',
-        headers: {
-          token: this.token,
-          'Content-Type': 'multipart/form-data',
-        },
-        data: formdata,
-      })
-        .then((res) => {
-          this.getMyinfo();
-
-          console.log(res.data);
+        axios({
+          url: user.updateProfile(),
+          method: 'PUT',
+          headers: {
+            token: this.token,
+            'Content-Type': 'multipart/form-data',
+          },
+          data: formdata,
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((res) => {
+            this.getMyinfo();
+            console.log(res.data);
+            resolve(res);
+          })
+          .catch((err) => {
+            console.log(err);
+            reject(err);
+          });
+      });
     },
 
     // 회원 닉네임 수정
     updateUserNickname(nickname) {
-      axios({
-        url: user.updateNickname(),
-        method: 'PUT',
-        headers: {
-          token: this.token,
-        },
-        params: {
-          nickname: nickname,
-        },
-      })
-        .then((res) => {
-          this.getMyinfo();
-          console.log(res.data);
+      return new Promise((resolve, reject) => {
+        axios({
+          url: user.updateNickname(),
+          method: 'PUT',
+          headers: {
+            token: this.token,
+          },
+          params: {
+            nickname: nickname,
+          },
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((res) => {
+            this.getMyinfo();
+            console.log(res.data);
+            resolve(res);
+          })
+          .catch((err) => {
+            console.log(err);
+            reject(err);
+          });
+      });
     },
 
     // 회원 탈퇴

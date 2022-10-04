@@ -17,8 +17,6 @@ const props = defineProps({
 // data
 const btnObject = ref(null);
 
-
-
 const objectData = props.objectData.split(';');
 const objectName = objectData.value[0];
 const objectCoord = objectData.value[1].split(',');
@@ -30,9 +28,8 @@ console.log('y', objectCoord[1]);
 onMounted(() => {
   console.log('props1', props.objectData);
 
-  const fixedHeight;
-const fixedWidth;
-
+  const fixedHeight = 0;
+  const fixedWidth = 0;
 
   const isHeightBigger = props.naturalHeight > props.naturalWidth;
 

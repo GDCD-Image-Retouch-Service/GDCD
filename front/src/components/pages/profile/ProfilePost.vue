@@ -18,13 +18,20 @@ import MyPostCard from '@/components/molecules/MyPostCard.vue';
 import { useCommunityStore } from '@/stores/community';
 import { useUserStore } from '@/stores/user';
 import { useRoute } from 'vue-router';
-
+import { onBeforeMount, onUnmounted } from 'vue';
 const route = useRoute();
 const communityStore = useCommunityStore();
 const userStore = useUserStore();
 
 userStore.isItemActive = 0;
-communityStore.getMyPostsAll(route.params.userId);
+
+userStore.resetVariable();
+onBeforeMount(() => {
+  userStore.getOtherinfo(route.params.userId);
+  communityStore.getMyPostsAll(route.params.userId);
+});
+
+onUnmounted(() => {});
 </script>
 
 <style>
