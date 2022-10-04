@@ -38,12 +38,12 @@ public class UserController extends Controller {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<Map<String, Object>> profileModify(@RequestHeader String token, @RequestPart MultipartFile profile) {
+    public ResponseEntity<Map<String, Object>> profileModify(@RequestHeader String token, @RequestPart(required = false) MultipartFile profile) {
         return getResponseEntity(userService.modifyProfile(token, profile));
     }
 
     @PutMapping("/nickname")
-    public ResponseEntity<Map<String, Object>> nicknameModify(@RequestHeader String token, @RequestParam String nickname) {
+    public ResponseEntity<Map<String, Object>> nicknameModify(@RequestHeader String token, @RequestParam(required = false) String nickname) {
         return getResponseEntity(userService.modifyNickname(token, nickname));
     }
 
