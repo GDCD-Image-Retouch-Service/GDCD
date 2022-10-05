@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 public class PostListResponseDto {
     private Long postId;
+    private Long writerNo;
     private String writerNickname;
     private String writerProfile;
     private Integer likeCount;
@@ -22,6 +23,7 @@ public class PostListResponseDto {
 
     public PostListResponseDto(Post post, ImageDetailResponseDto img, Boolean scrap, Boolean like) {
         this.postId =post.getId();
+        this.writerNo = post.getWriterNo();
         this.writerNickname = post.getWriterNickname();
         this.writerProfile = post.getWriterProfile();
         this.title = post.getTitle();
