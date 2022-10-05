@@ -186,6 +186,7 @@ watch(
 
 // > Life Cycle
 {
+  console.log('그냥 테스트');
   if (localStorage.prev) {
     localStore.loadPrev();
     [path.value, url.value, score.value, eRank.value, qRank.value] =
