@@ -1,6 +1,12 @@
 <template>
   <div class="wrapper">
     <div
+      v-if="communityStore.commentAll.item?.comments.length == 0"
+      class="none-comment"
+    >
+      등록된 댓글이 없습니다.
+    </div>
+    <div
       v-for="comment in communityStore.commentAll.item?.comments"
       :key="comment?.commentId"
       class="comment-wrap"
@@ -32,5 +38,10 @@ const communityStore = useCommunityStore();
   width: 100%;
   align-items: start;
   line-height: 30px;
+}
+.spacer {
+  width: 100%;
+  height: var(--grid-vertical);
+  background-color: pink;
 }
 </style>
