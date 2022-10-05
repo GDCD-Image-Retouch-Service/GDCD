@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService {
         RESULT_OBJECT = new HashMap<>();
         try {
             User user;
-            if (userId == null)
+            if (userId != null)
                 user = findUserById(userId);
             else
                 user = findUserByEmail(decodeToken(token));
@@ -204,7 +204,7 @@ public class UserServiceImpl implements UserService {
         RESULT_OBJECT = new HashMap<>();
         try {
             User user;
-            if (userId == null)
+            if (userId != null)
                 user = findUserById(userId);
             else
                 user = findUserByEmail(decodeToken(token));
