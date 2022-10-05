@@ -13,14 +13,18 @@
       <div
         class="pic-container d-flex flex-column align-items-center justify-content-center"
       >
-        <div v-show="!isInput" class="pic-comment" style="color: black">
-          사진을 올려주세요
+        <div
+          v-if="!isInput"
+          class="pic-comment sub inner d-flex align-items-center justify-content-center"
+          style="font-size: 12pt; color: black"
+        >
+          <div>사진을 업로드 해주세요</div>
         </div>
         <img
           v-show="isInput"
           ref="picBox"
           src=""
-          style="width: 380px; height: 380px; object-fit: cover"
+          style="width: 380px"
           alt="your image"
         />
       </div>
@@ -68,6 +72,7 @@
       <div class="spacer" />
     </div>
 
+    <!-- Cam Mode -->
     <div class="cam-mode" v-else>
       <div
         class="camera-box"
@@ -157,14 +162,22 @@ const route = useRoute();
 const mainStore = useMainStore();
 const localStore = useLocalStore();
 
-// created
-mainStore.isCamModeOff();
-
 // Pic Mode
 const picInputButton = ref(null);
 const picBox = ref(null);
 const isInput = ref(false);
 
+// Cam Mode
+const camera = ref(null);
+const canvas = ref(null);
+const isPhotoTaken = ref(false);
+const isShotPhoto = ref(false);
+const isLoading = ref(false);
+const isBack = ref(false);
+
+const photoName = ref('');
+
+// > method
 const setPicBox = () => {
   const file = picInputButton.value.files[0];
 
@@ -212,18 +225,6 @@ const setPicBox = () => {
   //   alert('이미지 업로드에 문제가 발생하였습니다.');
   // }
 };
-
-// Cam Mode
-const camera = ref(null);
-const canvas = ref(null);
-const isPhotoTaken = ref(false);
-const isShotPhoto = ref(false);
-const isLoading = ref(false);
-const isBack = ref(false);
-
-const photoName = ref('');
-
-// > method
 const isBacktoggle = () => {
   isBack.value = !isBack.value;
 };
@@ -313,6 +314,7 @@ const stopCameraStreame = () => {
   }
 };
 
+// > method
 const takePhoto = () => {
   if (!isPhotoTaken.value) {
     isShotPhoto.value = true;
@@ -334,7 +336,6 @@ const takePhoto = () => {
   // canvas to url
   mainStore.setTempImg(canvas.value.toDataURL('image/png'));
 };
-
 const downloadImage = () => {
   let today = new Date();
 
@@ -349,8 +350,6 @@ const downloadImage = () => {
       mainStore.getTempImg.replace('image/png', 'image/octet-stream'),
     );
 };
-
-// > method
 const scoring = async () => {
   localStore.loadPrev();
   isLoading.value = true;
@@ -424,6 +423,11 @@ const scoring = async () => {
 
   router.push('/main/result');
 };
+
+// > Life Cycle
+{
+  mainStore.isCamModeOff();
+}
 </script>
 
 <style scoped>
@@ -436,17 +440,14 @@ const scoring = async () => {
   width: 100%;
 }
 .pic-container {
-  background: lightgray;
+  /* background: lightgray; */
   width: 100%;
-  height: 380px;
-  max-height: 380px;
   overflow: hidden;
   position: relative;
 }
 .pic-comment {
-  position: absolute;
-  left: calc(50% - 66px);
-  top: calc(50% - 8px);
+  width: 100%;
+  height: 380px;
 }
 .cam-mode {
   width: 100%;

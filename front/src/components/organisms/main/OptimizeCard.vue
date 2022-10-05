@@ -15,17 +15,18 @@
     <loading-dots v-if="isLoading" />
 
     <div v-if="!isLoading">저장할 사진을 골라주세요</div>
+    <div v-if="!isLoading" class="spacer" />
 
     <div
       v-show="!isLoading"
       id="carouselExampleCaptions"
       class="carousel slide"
-      :class="[$root.theme == 'light' ? '' : 'carousel-dark']"
+      :class="[mainStore.getIsDark ? 'carousel-dark' : '']"
       data-bs-ride="false"
       style="width: 100%"
     >
       <!-- carousel bottom button -->
-      <div class="carousel-indicators">
+      <!-- <div class="carousel-indicators">
         <button
           @click="setSelectNo(0)"
           type="button"
@@ -44,7 +45,7 @@
           :data-bs-slide-to="`${index + 1}`"
           :aria-label="`Slide ${index + 2}`"
         ></button>
-      </div>
+      </div> -->
 
       <!-- carousel contents -->
       <div class="carousel-inner" style="height: 100%; width: 100%">
@@ -60,40 +61,62 @@
               <div class="spacer" />
               <div
                 class="d-flex align-items-center justify-content-evenly"
-                style="
-                  height: 48px;
-                  width: 100%;
-                  max-width: 100%;
-                  font-size: 12pt;
-                "
+                style="height: 80px; width: 100%; font-size: 12pt"
               >
                 <div class="d-flex flex-column align-items-center">
-                  <icon-rank
-                    :rank="Math.ceil(9 - (mainStore.getTempScore * 8) / 100)"
-                  />
+                  <icon-rank :rank="Math.ceil(9 - (score * 8) / 100)" />
                   <div style="height: 8px" />
                   <div>총점</div>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                  <icon-rank :rank="mainStore.getTempEScore" />
+                  <icon-rank :rank="eRank" />
                   <div style="height: 8px" />
                   <div>심미성</div>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                  <icon-rank :rank="mainStore.getTempQScore" />
+                  <icon-rank :rank="qRank" />
                   <div style="height: 8px" />
                   <div>선명도</div>
                 </div>
               </div>
               <div class="spacer" />
 
-              <img ref="picBox" src="" style="width: 380px" />
+              <img ref="picBox" src="" style="width: 100%" />
+
+              <div class="spacer" />
+              <div class="btn-set d-flex justify-content-center">
+                <!-- Btn Back -->
+                <router-link
+                  to="/main/result"
+                  class="btn-set-button inner d-flex align-items-center justify-content-center"
+                >
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                </router-link>
+
+                <!-- Btn Download -->
+                <div
+                  class="btn-set-button inner d-flex align-items-center justify-content-center"
+                  style="margin-left: 8px"
+                  @click="downloadImage()"
+                >
+                  <i class="bi bi-download"></i>
+                </div>
+
+                <!-- Btn Server Upload -->
+                <div
+                  @click="optimizeSave"
+                  class="btn-set-button inner d-flex align-items-center justify-content-center"
+                  style="margin-left: 8px"
+                >
+                  <i class="bi bi-cloud-arrow-up-fill"></i>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <div
-          v-for="(opti, index) in mainStore.getTempOptiList"
+          v-for="(opti, index) in convertList"
           :key="index"
           class="carousel-item"
           style="height: 100%; width: 100%; overflow: hidden"
@@ -133,6 +156,36 @@
               <div class="spacer" />
 
               <img :src="opti.url" class="optimizedImg" style="width: 100%" />
+
+              <div class="spacer" />
+              <div class="btn-set d-flex justify-content-center">
+                <!-- Btn Back -->
+                <router-link
+                  to="/main/result"
+                  class="btn-set-button inner d-flex align-items-center justify-content-center"
+                >
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                </router-link>
+
+                <!-- Btn Download -->
+                <div
+                  class="btn-set-button inner d-flex align-items-center justify-content-center"
+                  style="margin-left: 8px"
+                  @click="downloadImage(2)"
+                >
+                  <!-- 여기코드 기반 저장로직 변경 필요 -->
+                  <i class="bi bi-download"></i>
+                </div>
+
+                <!-- Btn Server Upload -->
+                <div
+                  @click="optimizeSave"
+                  class="btn-set-button inner d-flex align-items-center justify-content-center"
+                  style="margin-left: 8px"
+                >
+                  <i class="bi bi-cloud-arrow-up-fill"></i>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -174,17 +227,14 @@
       </router-link>
 
       <!-- Btn Download -->
-      <a
+      <div
         v-if="!isLoading"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
         style="margin-left: 8px"
-        id="downloadPhoto"
-        :download="`${photoName}.jpg`"
-        role="button"
         @click="downloadImage"
       >
         <i class="bi bi-download"></i>
-      </a>
+      </div>
 
       <!-- Btn Server Upload -->
       <div
@@ -227,13 +277,15 @@ const isLoading = ref(true);
 const picBox = ref(null);
 const progress = ref(0);
 const optiList = ref([]);
+const convertList = ref([]);
+const requestId = ref(0);
 const selectNo = ref(0);
 
 // method
-const setSelectNo = (no) => {
-  selectNo.value = no;
-  console.log('변화', selectNo.value);
-};
+// const setSelectNo = (no) => {
+//   selectNo.value = no;
+//   console.log('변화', selectNo.value);
+// };
 
 const setSelectNoUp = () => {
   selectNo.value = (selectNo.value + 1) % 8;
@@ -245,28 +297,32 @@ const setSelectNoDown = () => {
   console.log('다운', selectNo.value);
 };
 
-const downloadImage = () => {
-  console.log(
-    '타겟',
-    document.getElementsByClassName('optimizedImg')[selectNo.value].src,
-  );
-  document
-    .getElementById('downloadPhoto')
-    .setAttribute(
-      'href',
-      document
-        .getElementsByClassName('optimizedImg')
-        [selectNo.value].src.replace('image/png', 'image/octet-stream'),
-    );
+const downloadImage = async (imageQuery) => {
+  let today = new Date();
+  let fileName = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}-${today.getDay()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}.jpg`;
+
+  // const payload = {
+  //   imageId: url.value,
+  //   fileName,
+  // };
+  const payload = {
+    imageQuery,
+    fileName,
+  };
+
+  const data = await image.get(payload);
+  console.log(' * 이미지 다운로드: ', data);
 };
 
 const optimizeSave = async () => {
   const photoNo = selectNo.value;
   const payload = {
     imageId: url.value,
-    imageUrl: mainStore.getTempOptiList[photoNo].url,
-    aesthetic: mainStore.getTempOptiList[photoNo].e,
-    quality: mainStore.getTempOptiList[photoNo].q,
+    imageUrl: convertList.value[photoNo].url,
+    aesthetic: convertList.value[photoNo].e,
+    quality: convertList.value[photoNo].q,
   };
 
   console.log(' * 최적화 저장값', payload);
@@ -280,11 +336,13 @@ const optimizeSave = async () => {
 };
 
 const optimize = async () => {
-  mainStore.resetTempOptiList();
+  // mainStore.resetTempOptiList();
+  convertList.value = [];
   console.log(' * 최적화 요청 전달 사진번호 : ', url.value);
   const data = await image.optimization(url.value);
   console.log(' * 최적화 요청 전달 성공 : ', data);
-  mainStore.setRequestId(data.item.requestId);
+  // mainStore.setRequestId(data.item.requestId);
+  requestId.value = data.item.requestId;
   process();
 };
 
@@ -293,7 +351,7 @@ const process = async () => {
     console.log('최적화 통신 에러');
     return;
   }
-  const data = await image.optimizingProcess(mainStore.getRequestId);
+  const data = await image.optimizingProcess(requestId.value);
   if (data) {
     console.log('최적화 통신중', data.item.progress);
     progress.value = data.item.progress;
@@ -301,6 +359,7 @@ const process = async () => {
     if (progress.value != 7 && isLoading.value) {
       setTimeout(process, 10000);
     } else {
+      console.log(' * 최적화 결과 data: ', data);
       optiList.value = data.item.dict;
 
       for (var i = 0; i < 7; i++) {
@@ -352,7 +411,7 @@ const process = async () => {
         if (score > 100) score = 100;
         else if (score < 0) score = 0;
 
-        mainStore.pushTempOptiList({
+        convertList.value.push({
           url: url,
           e: e,
           q: q,
@@ -360,7 +419,7 @@ const process = async () => {
         });
       }
 
-      console.log('최적화 통신 종료', mainStore.getTempOptiList);
+      console.log('최적화 통신 종료', convertList);
       isLoading.value = false;
     }
   } else {
