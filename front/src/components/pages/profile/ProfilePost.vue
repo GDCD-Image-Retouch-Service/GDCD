@@ -34,10 +34,23 @@ onBeforeMount(() => {
 onUnmounted(() => {});
 </script>
 
-<style>
+<style scoped>
+@media (min-width: 1024px) {
+  .profile-post {
+    min-width: 935px;
+    max-width: 935px;
+  }
+  .posts-wrap {
+    gap: 28px !important;
+  }
+  .my-post-card {
+    max-width: calc(25% - 21px);
+  }
+}
+
 .profile-post {
   width: calc(100% - 40px);
-  margin-left: 20px;
+  margin: 0 auto;
   margin-top: 30px;
   display: flex;
   gap: 10px;
@@ -51,45 +64,5 @@ onUnmounted(() => {});
 }
 .my-post-card {
   width: calc(50% - 5px);
-}
-
-@media screen and (min-width: 1500px) {
-  .profile-post {
-    width: calc(100% - 500px);
-    margin-left: 250px;
-    margin-top: 30px;
-    display: flex;
-    gap: 50px;
-    margin-bottom: 30px;
-  }
-  .posts-wrap {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-  }
-  .my-post-card {
-    width: calc(25% - 25px);
-  }
-}
-
-@media screen and (min-width: 1024px) and (max-width: 1500px) {
-  .profile-post {
-    width: calc(100% - 300px);
-    margin-left: 150px;
-    margin-top: 30px;
-
-    gap: 30px;
-    margin-bottom: 30px;
-  }
-  .posts-wrap {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-  }
-  .my-post-card {
-    width: calc(25% - 22.5px);
-  }
 }
 </style>

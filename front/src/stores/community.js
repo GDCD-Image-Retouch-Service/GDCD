@@ -25,6 +25,8 @@ export const useCommunityStore = defineStore('communityStore', {
 
     updateCommentContent: '',
     targetImage: '',
+
+    writeFirstModal: true,
   }),
   actions: {
     resetVariable() {
@@ -128,7 +130,6 @@ export const useCommunityStore = defineStore('communityStore', {
           },
         })
           .then((res) => {
-            this.getPostsAll();
             resolve(res);
           })
           .catch((err) => {

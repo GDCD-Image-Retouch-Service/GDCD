@@ -1,55 +1,53 @@
 <template>
-  <div>
-    <nav class="footer-nav">
-      <div class="footer-nav-wrap main outer d-flex justify-content-around">
-        <!--  홈 -->
-        <router-link
-          to="/main"
-          class="list d-flex flex-column align-items-center"
-        >
-          <div
-            class="icon-circle d-flex justify-content-center align-items-center"
-          >
-            <span class="icon"><i class="bi bi-house-door"></i></span>
-          </div>
-        </router-link>
-
-        <!-- 커뮤니티 -->
-        <router-link to="/community">
-          <div
-            class="icon-circle d-flex justify-content-center align-items-center"
-          >
-            <span class="icon"><i class="bi bi-people"></i></span>
-          </div>
-        </router-link>
-
-        <!-- 프로필 -->
+  <nav class="footer-nav">
+    <div class="footer-nav-wrap">
+      <!--  홈 -->
+      <router-link
+        to="/main"
+        class="list d-flex flex-column align-items-center a-link"
+      >
         <div
-          @click="
-            router.push({
-              name: 'ProfilePost',
-              params: { userId: userStore.currentUser.item?.user?.userId },
-            })
-          "
-          class="d-flex justify-content-center align-items-center"
+          class="icon-circle d-flex justify-content-center align-items-center"
         >
-          <div
-            class="icon-circle d-flex justify-content-center align-items-center"
-          >
-            <span class="icon"><i class="bi bi-person"></i></span>
-          </div>
+          <span class="material-icons-outlined"> home </span>
         </div>
+      </router-link>
 
-        <router-link to="/photo" class="list d-flex flex-column">
-          <div
-            class="icon-circle d-flex justify-content-center align-items-center"
-          >
-            <span class="icon"><i class="bi bi-image"></i> </span>
-          </div>
-        </router-link>
+      <!-- 커뮤니티 -->
+      <router-link to="/community" class="a-link">
+        <div
+          class="icon-circle d-flex justify-content-center align-items-center"
+        >
+          <span class="material-icons-outlined icons"> groups </span>
+        </div>
+      </router-link>
+
+      <!-- 프로필 -->
+      <div
+        @click="
+          router.push({
+            name: 'ProfilePost',
+            params: { userId: userStore.currentUser.item?.user?.userId },
+          })
+        "
+        class="d-flex justify-content-center align-items-center"
+      >
+        <div
+          class="icon-circle d-flex justify-content-center align-items-center"
+        >
+          <span class="material-icons-outlined"> person </span>
+        </div>
       </div>
-    </nav>
-  </div>
+
+      <router-link to="/photo" class="list d-flex flex-column a-link">
+        <div
+          class="icon-circle d-flex justify-content-center align-items-center"
+        >
+          <span class="material-icons-outlined"> collections </span>
+        </div>
+      </router-link>
+    </div>
+  </nav>
 </template>
 
 <script setup>
@@ -60,20 +58,30 @@ const userStore = useUserStore();
 </script>
 
 <style scoped>
+@media (min-width: 1024px) {
+  .footer-nav-wrap {
+    min-width: 975px;
+    max-width: 975px;
+    margin: 0 auto;
+  }
+}
+
 .footer-nav {
   position: fixed;
   bottom: 0px;
   z-index: 50;
-  width: 100vw;
+  width: 100%;
   height: var(--size-h-footer);
   min-height: var(--size-h-footer);
   display: flex;
   justify-content: center;
+  background-color: #ffffff;
 }
-
 .footer-nav-wrap {
   height: var(--size-h-footer);
   width: 100%;
+  justify-content: space-around;
+  display: flex;
   justify-content: space-around;
 }
 .footer-nav-wrap a {
@@ -83,7 +91,6 @@ const userStore = useUserStore();
   align-items: center;
   color: var(--color-reverse);
 }
-
 .icon-circle {
   height: calc(var(--size-h-footer) - 8px);
   width: calc(var(--size-h-footer) - 8px);
@@ -91,5 +98,12 @@ const userStore = useUserStore();
   overflow: hidden;
   font-size: 16pt;
   /* border: solid 4px var(--color-theme); */
+}
+.a-link {
+  text-decoration: none;
+  color: var();
+}
+.icons {
+  font-size: 32px;
 }
 </style>

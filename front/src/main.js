@@ -13,11 +13,17 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 // pinia
 import { createPinia } from 'pinia';
 
+import vuetify from './plugins/vuetify';
+import { loadFonts } from './plugins/webfontloader';
+
+loadFonts();
+
 createApp(App)
   .use(createPinia())
   .use(router)
   .use(BootstrapVue3)
   .use(BToastPlugin)
+  .use(vuetify)
   .use(vue3GoogleLogin, {
     clientId: '736357393555-9a6a7qk74dngs5ovcmvfa6pnhdl0m8th',
   })

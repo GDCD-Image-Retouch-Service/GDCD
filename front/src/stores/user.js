@@ -58,6 +58,9 @@ export const useUserStore = defineStore('userStore', {
     urlPhotoList: [],
 
     selectTag: [],
+
+    loginModal: false,
+    logoutModal: false,
   }),
   actions: {
     resetVariable() {

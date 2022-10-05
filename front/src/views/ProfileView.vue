@@ -20,4 +20,11 @@ basicStore.isActiveFooter = 2;
 userStore.getOtherinfo(userId);
 </script>
 
-<style scoped></style>
+<style scoped>
+.profile-view {
+  height: 100vh;
+  overflow: scroll;
+  margin-top: var(--size-h-header);
+  margin-bottom: var(--size-h-footer);
+}
+</style>

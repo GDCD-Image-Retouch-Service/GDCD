@@ -383,6 +383,12 @@ userStore.selectedPhotoList = userStore.selectedPhoto;
     bottom: -98px;
   }
 }
+@media (min-width: 1024px) {
+  .community-write {
+    min-width: 935px;
+    max-width: 935px;
+  }
+}
 .firstCheck,
 .secondCheck {
   opacity: 0.5;
@@ -390,11 +396,14 @@ userStore.selectedPhotoList = userStore.selectedPhoto;
 
 .community-write {
   width: calc(100% - 2 * var(--grid-side));
-  margin: var(--grid-vertical) var(--grid-side);
+  margin: 0 auto;
+  margin-top: var(--grid-vertical);
+  margin-bottom: var(--grid-vertical);
 
   display: flex;
   flex-direction: column;
   gap: var(--grid-vertical);
+  overflow: scroll;
 }
 .wrap {
   display: flex;
