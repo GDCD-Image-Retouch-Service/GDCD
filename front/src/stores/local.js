@@ -5,11 +5,11 @@ export const useLocalStore = defineStore('local', () => {
   // init
   // state
   const prev = ref(localStorage.prev);
-  const path = ref(prev.value.split(';')[0]);
-  const url = ref(prev.value.split(';')[1]);
-  const score = ref(prev.value.split(';')[2]);
-  const eRank = ref(prev.value.split(';')[3]);
-  const qRank = ref(prev.value.split(';')[4]);
+  const path = ref(prev.value ? prev.value.split(';')[0] : '-');
+  const url = ref(prev.value ? prev.value.split(';')[1] : '-');
+  const score = ref(prev.value ? prev.value.split(';')[2] : '-');
+  const eRank = ref(prev.value ? prev.value.split(';')[3] : '-');
+  const qRank = ref(prev.value ? prev.value.split(';')[4] : '-');
 
   // action
   const resetPrev = () => {
