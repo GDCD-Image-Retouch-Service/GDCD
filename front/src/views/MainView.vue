@@ -7,6 +7,13 @@
 
 <script setup>
 import MainManual from '@/components/organisms/main/MainManual.vue';
+
+import { useUserStore } from '@/stores/user.js';
+const userStore = useUserStore();
+
+userStore.headerSetDropdown = false;
+userStore.loginModal = false;
+userStore.logoutModal = false;
 </script>
 
 <style scoped>

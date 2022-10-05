@@ -5,16 +5,30 @@
         :src="userStore.currentUser.item?.user.profile"
         alt=""
         class="profile-image"
-        @click="userStore.logoutModal = !userStore.logoutModal"
+        @click="userStore.headerSetDropdown = !userStore.headerSetDropdown"
       />
+      <!-- @click="userStore.logoutModal = !userStore.logoutModal" -->
     </div>
     <div v-else>
       <span
         class="material-icons-outlined icons"
-        @click="userStore.loginModal = !userStore.loginModal"
+        @click="userStore.headerSetDropdown = !userStore.headerSetDropdown"
       >
         account_circle
       </span>
+    </div>
+    <div class="header-dropdown" v-if="userStore.headerSetDropdown">
+      <div
+        v-if="accountStore.getIsLogined"
+        @click="userStore.logoutModal = !userStore.logoutModal"
+      >
+        로그아웃
+      </div>
+      <div v-else @click="userStore.loginModal = !userStore.loginModal">
+        로그인
+      </div>
+
+      <div @click="mainStore.setIsDarkToggle">색바꾸기</div>
     </div>
 
     <template>
@@ -44,20 +58,16 @@
         </v-dialog>
       </div></template
     >
-    <!-- <template #content="{ close }">
-        <div @click="close"><i class="bi bi-x-circle"></i></div>
-        <div @click="mainStore.setIsDarkToggle">색바꾸기</div>
-      </template> -->
   </div>
 </template>
 
 <script setup>
-import { useAccountStore, useUserStore } from '@/stores';
+import { useAccountStore, useMainStore, useUserStore } from '@/stores';
 import { decodeCredential } from 'vue3-google-login';
 import { user } from '@/api/rest';
 
 const accountStore = useAccountStore();
-
+const mainStore = useMainStore();
 const userStore = useUserStore();
 
 const callback = async (response) => {
@@ -80,15 +90,32 @@ const callback = async (response) => {
   object-fit: cover;
   border-radius: 30px;
 }
+.header-dropdown {
+  width: 110px;
+  height: 70px;
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  z-index: 40;
+  background-color: var(--color-main);
+  border-radius: 5px;
+  border: 1px solid var(--instagram-grey);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
 .create-post-modal {
   width: 100%;
   max-width: 400px;
   height: 170px;
   background-color: #ffffff;
+
   border-radius: 5px;
   text-align: center;
   position: relative;
   margin: 0 auto;
+  z-index: 5;
 }
 .modal-title {
   width: 100%;

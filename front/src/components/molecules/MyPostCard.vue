@@ -55,6 +55,7 @@ const { post } = toRefs(props);
   background-color: var(--light-main-color);
   font-size: 14px;
   overflow: hidden;
+  background-color: var(--color-main);
 }
 .post-card-title {
   text-align: start;

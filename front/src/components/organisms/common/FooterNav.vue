@@ -75,7 +75,7 @@ const userStore = useUserStore();
   min-height: var(--size-h-footer);
   display: flex;
   justify-content: center;
-  background-color: #ffffff;
+  background-color: var(--color-main);
 }
 .footer-nav-wrap {
   height: var(--size-h-footer);
