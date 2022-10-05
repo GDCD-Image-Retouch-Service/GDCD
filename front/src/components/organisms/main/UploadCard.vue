@@ -127,15 +127,6 @@
           <i class="bi bi-download"></i>
         </a>
 
-        <!-- Btn Score -->
-        <!-- <router-link
-          v-if="isInput"
-          to="/main/score"
-          class="btn-set-button inner d-flex align-items-center justify-content-center"
-          style="margin-left: 8px"
-        >
-          <i class="bi bi-check-lg"></i>
-        </router-link> -->
         <div
           v-if="isInput"
           @click="scoring"

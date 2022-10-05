@@ -30,7 +30,7 @@
           max-width: 380px;
           height: 380px;W
           max-height: 380px;
-          over-flow: hidden;
+          overflow: hidden;
         "
       >
         <img
@@ -63,7 +63,7 @@
           max-width: 380px;
           height: 380px;
           max-height: 380px;
-          over-flow: hidden;
+          overflow: hidden;
         "
       >
         <img
@@ -75,7 +75,7 @@
       </div>
     </div>
     <div class="spacer" />
-    <div class="btn-set d-flex justify-content-center">
+    <div v-if="!isLoading" class="btn-set d-flex justify-content-center">
       <router-link
         to="/main/result"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
@@ -258,6 +258,7 @@ const inpainting = async () => {
 
   isDone.value = true;
   isLoading.value = false;
+  router.push('/main/result');
 };
 
 const objectDetection = async () => {
