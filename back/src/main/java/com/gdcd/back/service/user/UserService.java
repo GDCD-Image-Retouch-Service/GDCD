@@ -14,8 +14,8 @@ public interface UserService {
     public Map<String, Object> modifyNickname(String token, String nickname);
     public Map<String, Object> removeUser(String token);
     public Map<String, Object> blockUser(String token, Long userId);
-    public Map<String, Object> findScraps(String token, Pageable pageable);
-    public Map<String, Object> findLikes(String token, Pageable pageable);
+    public Map<String, Object> findScraps(String token, Long userId, Pageable pageable);
+    public Map<String, Object> findLikes(String token, Long userId, Pageable pageable);
     public Map<String, Object> followUser(String token, Long userId);
     public Map<String, Object> findFollowers(String token, Long userId, Pageable pageable);
     public Map<String, Object> findFollowings(String token, Long userId, Pageable pageable);
