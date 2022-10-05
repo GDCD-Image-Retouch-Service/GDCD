@@ -1,6 +1,6 @@
 <template>
   <div class="main-view sub d-flex flex-column align-items-center main">
-    <router-view />
+    <router-view class="flex-grow-1" />
     <main-manual />
   </div>
 </template>
@@ -18,7 +18,10 @@ userStore.logoutModal = false;
 
 <style scoped>
 .main-view {
+  padding-top: 70px;
+  padding-bottom: 60px;
+  height: 100vh;
   width: 100vw;
-  min-height: 100%;
+  overflow-y: scroll;
 }
 </style>

@@ -1,9 +1,7 @@
 <template>
   <div
-    class="main-upload d-flex flex-column align-items-center justify-content-center"
+    class="main-upload d-flex flex-wrap align-items-center justify-content-center"
   >
-    <div class="spacer"></div>
-    <div class="spacer"></div>
     <upload-card />
   </div>
 </template>
@@ -14,10 +12,8 @@ import uploadCard from '@/components/organisms/main/UploadCard.vue';
 
 <style scoped>
 .main-upload {
-  height: 100%;
-  min-height: calc(100vh - 140px);
   width: 100%;
-  padding: 4px;
-  overflow-y: hidden;
+  padding: 8px;
+  overflow-y: auto;
 }
 </style>
