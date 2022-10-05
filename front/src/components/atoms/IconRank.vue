@@ -1,11 +1,13 @@
 <template>
   <div class="icon-rank">
-    <img
-      v-if="props.rank == 1"
-      :src="require('@/assets/grade/1.png')"
-      style="width: 48px; height: 48px; object-fit: cover"
-      alt="your image"
-    />
+    <div v-if="props.rank == 1">
+      <img
+        :src="require('@/assets/grade/1.png')"
+        style="width: 48px; height: 48px; object-fit: cover"
+        alt="your image"
+      />
+      <div>1등급</div>
+    </div>
     <img
       v-else-if="props.rank == 2"
       :src="require('@/assets/grade/2.png')"

@@ -3,10 +3,7 @@
     <community-comment-input v-if="communityStore.isOpenComment" />
     <div
       class="community-review common-image"
-      v-if="
-        communityStore.isOpenComment &
-        (communityStore.commentAll.item?.comments.length !== 0)
-      "
+      v-if="communityStore.isOpenComment"
     >
       <div class="review-wrap">
         <div class="review-item">
@@ -32,7 +29,6 @@ const postId = route.params.postId;
 // 데이터 초기화
 communityStore.isOpenComment = false;
 communityStore.getComment(postId);
-console.log(postId);
 </script>
 
 <style scoped>

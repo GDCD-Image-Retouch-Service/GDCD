@@ -78,3 +78,4 @@ class Inpainter():
             return result_img
         except Exception as e:
             logger.error(f"Inpainting Failed !!! - {id(image)} - {e} : {traceback.format_exc()}")
+            raise e

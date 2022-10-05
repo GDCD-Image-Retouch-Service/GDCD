@@ -23,7 +23,6 @@ const logoSrc = require('@/assets/logo.png');
 }
 .nav-logo-title {
   font-weight: 700;
-  display: flex;
 }
 .nav-logo-title-gd {
   color: var(--theme-color);

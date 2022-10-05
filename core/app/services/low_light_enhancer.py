@@ -82,3 +82,4 @@ class LowLightEnhancer():
             return result
         except Exception as e:
             logger.error(f"Enhancing Low Light Failed !!! - {e} : {traceback.format_exc()}")
+            raise e

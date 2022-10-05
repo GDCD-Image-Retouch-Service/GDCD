@@ -83,6 +83,7 @@ const callback = async (response) => {
 <style scoped>
 .header-profile {
   margin-right: var(--grid-side);
+  position: relative;
 }
 .profile-image {
   width: 30px;
@@ -94,8 +95,8 @@ const callback = async (response) => {
   width: 110px;
   height: 70px;
   position: absolute;
-  top: 50px;
-  right: 20px;
+  top: 30px;
+  right: 0;
   z-index: 40;
   background-color: var(--color-main);
   border-radius: 5px;

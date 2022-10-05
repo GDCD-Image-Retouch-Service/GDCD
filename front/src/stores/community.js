@@ -292,7 +292,7 @@ export const useCommunityStore = defineStore('communityStore', {
     },
 
     // 댓글 삭제
-    deleteComment(data) {
+    deleteComment(postId, commentId) {
       axios({
         url: post.comment(),
         method: 'DELETE',
@@ -300,10 +300,11 @@ export const useCommunityStore = defineStore('communityStore', {
           token: useUserStore().token,
         },
         params: {
-          commentId: data.commentId,
+          commentId: commentId,
         },
       })
         .then((res) => {
+          this.getComment(postId);
           console.log(res.data);
         })
         .catch((err) => {
