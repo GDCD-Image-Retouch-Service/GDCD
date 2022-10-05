@@ -185,15 +185,16 @@ watch(
 );
 
 // > Life Cycle
-if (localStorage.prev) {
-  localStore.loadPrev();
-  [path.value, url.value, score.value, eRank.value, qRank.value] =
-    localStore.getPrev.split(';');
-  // console.log(route.fullPath);
-} else {
-  router.replace('error');
+{
+  if (localStorage.prev) {
+    localStore.loadPrev();
+    [path.value, url.value, score.value, eRank.value, qRank.value] =
+      localStore.getPrev.split(';');
+    // console.log(route.fullPath);
+  } else {
+    router.replace('error');
+  }
 }
-
 onMounted(async () => {
   if (url.value == '-') {
     if (mainStore.getTempImg) {
