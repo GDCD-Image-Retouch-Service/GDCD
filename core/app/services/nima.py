@@ -63,3 +63,4 @@ class Nima():
             return result
         except Exception as e:
             logger.error(f"Predicting Failed!!! - {id(images)} - {e} : {traceback.format_exc()}")
+            raise e

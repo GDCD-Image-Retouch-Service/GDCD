@@ -32,6 +32,7 @@ def dynamic_work(queue: mp.Queue):
                 logger.info(f"Dynamic Worker {id(data)} Complete")
             except Exception as e:
                 logger.error(f"Dynamic Worker Failed !!! - {id(data)} - {traceback.format_exc()}")
+                raise e
 
 
 def exposure_work(queue: mp.Queue):
@@ -49,6 +50,7 @@ def exposure_work(queue: mp.Queue):
                 logger.info(f"Exposure Worker {id(data)} Complete")
             except Exception as e:
                 logger.error(f"Exposure Worker Failed !!! - {id(data)} - {e}")
+                raise e
 
 
 class Optimizer():
@@ -117,3 +119,4 @@ class Optimizer():
             return
         except Exception as e:
             logger.error(f"Enhancing Failed !!! - {id(optimize_request)} - {traceback.format_exc()}")
+            raise e
