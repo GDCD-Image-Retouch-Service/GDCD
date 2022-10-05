@@ -216,14 +216,22 @@ import IconRank from '@/components/atoms/IconRank.vue';
 
 import { ref, onMounted } from 'vue';
 import { image } from '@/api/rest';
-import { useMainStore } from '@/stores/main';
-import { useRoute } from 'vue-router';
+import { useMainStore, useLocalStore } from '@/stores';
+import { useRouter, useRoute } from 'vue-router';
 
 // init
 const mainStore = useMainStore();
+const localStore = useLocalStore();
+const router = useRouter();
 const route = useRoute();
 
 // data
+const path = ref('');
+const url = ref('');
+const score = ref('');
+const eRank = ref('');
+const qRank = ref('');
+
 const isLoading = ref(true);
 const picBox = ref(null);
 const progress = ref(0);
@@ -244,12 +252,6 @@ const setSelectNoUp = () => {
 const setSelectNoDown = () => {
   selectNo.value = selectNo.value == 0 ? 7 : selectNo.value - 1;
   console.log('다운', selectNo.value);
-};
-
-const init = async () => {
-  picBox.value.src = mainStore.getTempImg;
-  console.log('최적화 시작');
-  optimize();
 };
 
 const downloadImage = () => {
@@ -342,8 +344,19 @@ const process = async () => {
 };
 
 // Life Cycle
-onMounted(() => {
-  init();
+if (localStorage.prev) {
+  localStore.loadPrev();
+  [path.value, url.value, score.value, eRank.value, qRank.value] =
+    localStore.getPrev.split(';');
+  console.log(route.fullPath);
+} else {
+  router.replace('error');
+}
+
+onMounted(async () => {
+  picBox.value.src = `https://j7b301.p.ssafy.io/api/image?imageId=${url.value}`;
+  console.log(' * 최적화 시작');
+  optimize();
 });
 </script>
 

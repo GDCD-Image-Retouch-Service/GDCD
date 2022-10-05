@@ -10,11 +10,13 @@
     <loading-dots v-if="isLoading" />
 
     <!-- Pic Mode -->
-    <div class="pic-mode" v-if="!mainStore.isCamMode">
+    <div class="pic-mode" v-if="!mainStore.isCamMode" v-show="!isLoading">
       <div
         class="pic-container d-flex flex-column align-items-center justify-content-center"
       >
-        <div v-show="!isInput" class="pic-comment">사진을 올려주세요</div>
+        <div v-show="!isInput" class="pic-comment" style="color: black">
+          사진을 올려주세요
+        </div>
         <img
           v-show="isInput"
           ref="picBox"

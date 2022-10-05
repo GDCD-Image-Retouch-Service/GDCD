@@ -33,7 +33,6 @@ import LandingView from '@/views/LandingView.vue';
 import MainView from '@/views/MainView.vue';
 import MainUpload from '@/components/pages/main/MainUpload';
 import MainResult from '@/components/pages/main/MainResult';
-import MainScore from '@/components/pages/main/MainScore';
 import MainOptimize from '@/components/pages/main/MainOptimize';
 import MainInpaint from '@/components/pages/main/MainInpaint';
 
@@ -89,11 +88,6 @@ const routes = [
         path: 'result',
         name: 'MainResult',
         component: MainResult,
-      },
-      {
-        path: 'score',
-        name: 'MainScore',
-        component: MainScore,
       },
       {
         path: 'optimize',

@@ -64,7 +64,7 @@ import LoadingDots from '@/components/atoms/LoadingDots.vue';
 import IconRank from '@/components/atoms/IconRank.vue';
 
 import { ref, onMounted, watch } from 'vue';
-import { image } from '@/api/rest';
+// import { image } from '@/api/rest';
 import { useMainStore, useAccountStore, useLocalStore } from '@/stores/';
 import { useRouter, useRoute } from 'vue-router';
 
@@ -87,28 +87,35 @@ const picBox = ref(null);
 // const data = ref(null);
 
 // method
-const save = async () => {
-  if (!accountStore.getIsLogined) {
-    console.log('비로그인');
-    return;
-  }
-  const payload = {
-    image: mainStore.getTempFile,
-    aesthetic: mainStore.getTempEScore,
-    quality: mainStore.getTempQScore,
-  };
-  console.log('저장시작', payload);
-  const data = await image.save(payload);
-  console.log('저장상태', data);
+// const save = async () => {
+//   if (!accountStore.getIsLogined) {
+//     console.log('비로그인');
+//     return;
+//   }
+//   const payload = {
+//     image: mainStore.getTempFile,
+//     aesthetic: mainStore.getTempEScore,
+//     quality: mainStore.getTempQScore,
+//   };
+//   console.log('저장시작', payload);
+//   const data = await image.save(payload);
+//   console.log('저장상태', data);
 
-  mainStore.setTempId(data.item);
-};
+//   mainStore.setTempId(data.item);
+// };
 
 // Watch
 watch(
   () => accountStore.getIsLogined,
   () => {
-    if (mainStore.getTempEScore != 0) save();
+    console.log('기동함');
+    if (accountStore.getIsLogined) {
+      console.log('로그인 Pk');
+    } else {
+      console.log('로그인 No');
+    }
+
+    // if (mainStore.getTempEScore != 0) save();
   },
 );
 
@@ -125,14 +132,14 @@ if (localStorage.prev) {
 onMounted(async () => {
   if (url.value == '-') {
     if (mainStore.getTempImg) {
-      console.log('사진 있');
+      console.log('임시사진');
       picBox.value.src = mainStore.getTempImg;
     } else {
-      console.log('사진 없');
       localStore.resetPrev();
       router.push('/main');
     }
   } else {
+    console.log('기존사진');
     picBox.value.src = `https://j7b301.p.ssafy.io/api/image?imageId=${url.value}`;
   }
 });
