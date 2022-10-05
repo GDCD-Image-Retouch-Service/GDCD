@@ -6,7 +6,7 @@
     <div>지울 대상을 골라주세요</div>
     <div
       class="d-flex align-items-center"
-      style="height: 48px; font-size: 18pt"
+      style="width: 100%; height: 48px; font-size: 18pt; overflow-x: scroll"
     >
       <div v-for="(item, index) in objectList" :key="index">
         <span
