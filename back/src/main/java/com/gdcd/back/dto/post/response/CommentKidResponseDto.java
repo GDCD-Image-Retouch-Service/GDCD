@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class CommentKidResponseDto {
     private Long commentId;
     private String content;
+    private Long writerNo;
     private String writerNickname;
     private String writerProfile;
     private LocalDateTime registTime;
@@ -23,6 +24,7 @@ public class CommentKidResponseDto {
     public CommentKidResponseDto(Comment comment) {
         this.commentId = comment.getId();
         this.content = comment.getContent();
+        this.writerNo = comment.getWriter().getId();
         this.writerNickname = comment.getWriter().getNickname();
         this.writerProfile = comment.getWriter().getProfile();
         this.registTime = comment.getRegistDate().plusHours(9);

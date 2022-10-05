@@ -16,6 +16,7 @@ import java.util.List;
 public class CommentUpperResponseDto {
     private Long commentId;
     private String content;
+    private Long writerNo;
     private String writerNickname;
     private String writerProfile;
     private LocalDateTime registTime;
@@ -25,6 +26,7 @@ public class CommentUpperResponseDto {
     public CommentUpperResponseDto(Comment comment, List<CommentKidResponseDto> kids) {
         this.commentId = comment.getId();
         this.content = comment.getContent();
+        this.writerNo = comment.getWriter().getId();
         this.writerNickname = comment.getWriter().getNickname();
         this.writerProfile = comment.getWriter().getProfile();
         this.registTime = comment.getRegistDate().plusHours(9);
