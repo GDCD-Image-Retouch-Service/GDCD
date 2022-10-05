@@ -301,7 +301,10 @@ async function updatePost(data) {
 
   await communityStore.updatePost(context);
 
-  myRouter.push({ name: 'CommunityList' });
+  myRouter.push({
+    name: 'CommunityDetail',
+    params: { postId: route.params.postId },
+  });
 }
 
 const selectPhoto = () => {

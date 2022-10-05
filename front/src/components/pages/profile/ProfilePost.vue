@@ -32,6 +32,8 @@ onBeforeMount(() => {
 });
 
 onUnmounted(() => {});
+
+console.log(route);
 </script>
 
 <style scoped>

@@ -1,25 +1,5 @@
 <template>
   <div class="community-detail-card common-image">
-    <!-- 제목 -->
-    <div class="card-title">
-      {{ communityStore.post.item?.title }}
-    </div>
-    <div class="date-wrap" v-if="communityStore.post.item?.registTime">
-      <div
-        class="date"
-        v-if="
-          communityStore.post.item?.registTime !=
-          communityStore.post.item?.updateTime
-        "
-      >
-        &nbsp;
-        <date-format :updateInfo="communityStore.post.item?.registTime" />
-      </div>
-      <div class="date" v-else>
-        &nbsp;
-        <date-format :updateInfo="communityStore.post.item?.updateTime" />
-      </div>
-    </div>
     <!-- 이미지 -->
     <div v-if="communityStore.post.item?.images?.length == 1">
       <img
@@ -42,6 +22,7 @@
       </div>
     </div>
 
+    <!-- 버튼 -->
     <div
       class="button-wrap"
       v-show="communityStore.post.item?.images?.length == 2"
@@ -51,6 +32,38 @@
         <div class="button-right"></div>
       </div>
     </div>
+
+    <div class="tag-wrap">
+      <div
+        v-for="(tag, index) in communityStore.post.item?.images[0]?.imageTag"
+        :key="index"
+        class="tag common-image"
+      >
+        {{ tag }}
+      </div>
+    </div>
+
+    <!-- 제목 -->
+    <div class="card-title">
+      {{ communityStore.post.item?.title }}
+    </div>
+    <div class="date-wrap" v-if="communityStore.post.item?.registTime">
+      <div
+        class="date"
+        v-if="
+          communityStore.post.item?.registTime ==
+          communityStore.post.item?.updateTime
+        "
+      >
+        <date-format :updateInfo="communityStore.post.item?.registTime" />
+      </div>
+      <div class="date" v-else>
+        <div class="update-info">수정됨</div>
+        <date-format :updateInfo="communityStore.post.item?.updateTime" />
+      </div>
+    </div>
+
+    <!--  -->
     <div class="profile-update-delete">
       <!-- 프로필 -->
       <div
@@ -239,7 +252,7 @@ onMounted(() => {
 .community-detail-card {
   display: flex;
   align-items: flex-start;
-  gap: 30px;
+  gap: 20px;
   flex-direction: column;
   border: 1px solid var(--instagram-grey);
   border-radius: 10px;
@@ -248,6 +261,7 @@ onMounted(() => {
   position: relative;
   margin-top: var(--grid-vertical);
   background-color: var(--color-main);
+  overflow: hidden;
 }
 .edit-icon {
   position: absolute;
@@ -267,7 +281,7 @@ onMounted(() => {
   font-weight: 600;
   height: fit-content;
   padding: 0 var(--grid-side);
-  margin-top: var(--grid-vertical);
+  color: var(--instagram-dark-grey);
 }
 /* 프로필 수정 삭제 */
 .profile-update-delete {
@@ -294,6 +308,17 @@ onMounted(() => {
   margin-right: var(--grid-side);
 }
 
+.tag-wrap {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0 10px;
+}
+.tag {
+  padding: 3px 10px;
+}
+
 /* 데이트 */
 .date-wrap {
   width: 100%;
@@ -304,9 +329,17 @@ onMounted(() => {
 .date {
   display: flex;
   flex-direction: row-reverse;
-  font-size: 12px;
+  font-size: 14px;
   padding-right: var(--grid-side);
+  color: var(--instagram-dark-grey);
 }
+.update-info {
+  font-size: 10px;
+
+  color: var(--instagram-dark-grey);
+  margin-left: 5px;
+}
+
 /*  */
 .card-image {
   width: 100%;
