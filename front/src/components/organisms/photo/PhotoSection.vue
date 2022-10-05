@@ -9,9 +9,15 @@ import PhotoLayout from '@/components/molecules/photo/PhotoLayout.vue';
 </script>
 
 <style scoped>
+@media (min-width: 1024px) {
+  .photo-section {
+    min-width: 935px;
+    max-width: 935px;
+  }
+}
+
 .photo-section {
-  /* background-color: blue; */
+  margin: 0 auto;
   width: 100%;
-  margin-bottom: var(--size-h-footer);
 }
 </style>

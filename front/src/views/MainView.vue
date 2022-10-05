@@ -1,12 +1,12 @@
 <template>
   <div class="main-view sub d-flex flex-column align-items-center main">
     <router-view />
-    <main-manual-vue />
+    <main-manual />
   </div>
 </template>
 
 <script setup>
-import MainManualVue from '@/components/organisms/main/MainManual.vue';
+import MainManual from '@/components/organisms/main/MainManual.vue';
 </script>
 
 <style scoped>

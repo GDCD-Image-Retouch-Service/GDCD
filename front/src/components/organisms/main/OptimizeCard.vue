@@ -14,6 +14,8 @@
 
     <loading-dots v-if="isLoading" />
 
+    <div v-if="!isLoading">저장할 사진을 골라주세요</div>
+
     <div
       v-show="!isLoading"
       id="carouselExampleCaptions"
@@ -65,7 +67,6 @@
                   font-size: 12pt;
                 "
               >
-                <div>저장할 사진을 골라주세요</div>
                 <div class="d-flex flex-column align-items-center">
                   <icon-rank
                     :rank="Math.ceil(9 - (mainStore.getTempScore * 8) / 100)"
@@ -184,11 +185,11 @@
 
       <!-- Btn Download -->
       <a
-        v-if="isInput"
+        v-if="!isLoading"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
         style="margin-left: 8px"
         id="downloadPhoto"
-        download="photo.jpg"
+        :download="`${photoName}.jpg`"
         role="button"
         @click="downloadImage"
       >
@@ -252,13 +253,18 @@ const init = async () => {
 };
 
 const downloadImage = () => {
-  console.log(document.getElementsByClassName('optimizedImg')[1].src);
-  // document
-  //   .getElementById('downloadPhoto')
-  //   .setAttribute(
-  //     'href',
-  //     mainStore.getTempImg.replace('image/png', 'image/octet-stream'),
-  //   );
+  console.log(
+    '타겟',
+    document.getElementsByClassName('optimizedImg')[selectNo.value].src,
+  );
+  document
+    .getElementById('downloadPhoto')
+    .setAttribute(
+      'href',
+      document
+        .getElementsByClassName('optimizedImg')
+        [selectNo.value].src.replace('image/png', 'image/octet-stream'),
+    );
 };
 
 const optimizeSave = async () => {

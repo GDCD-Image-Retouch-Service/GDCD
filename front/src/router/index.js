@@ -24,7 +24,7 @@ const beforeAuth = (needAuth) => async (from, to, next) => {
 // import LandingView from '@/views/LandingView.vue';
 
 // Error Handling
-// import LoadingView from '@/views/LoadingView.vue';
+import ErrorView from '@/views/ErrorView.vue';
 
 // Landing
 import LandingView from '@/views/LandingView.vue';
@@ -32,6 +32,7 @@ import LandingView from '@/views/LandingView.vue';
 // Main
 import MainView from '@/views/MainView.vue';
 import MainUpload from '@/components/pages/main/MainUpload';
+import MainResult from '@/components/pages/main/MainResult';
 import MainScore from '@/components/pages/main/MainScore';
 import MainOptimize from '@/components/pages/main/MainOptimize';
 import MainInpaint from '@/components/pages/main/MainInpaint';
@@ -69,6 +70,12 @@ const routes = [
     component: LandingView,
   },
   {
+    path: '/error',
+    name: 'Error',
+    // beforeEnter: beforeAuth(false),
+    component: ErrorView,
+  },
+  {
     path: '/main',
     name: 'main',
     component: MainView,
@@ -77,6 +84,11 @@ const routes = [
         path: '', // default page
         name: 'MainUpload',
         component: MainUpload,
+      },
+      {
+        path: 'result',
+        name: 'MainResult',
+        component: MainResult,
       },
       {
         path: 'score',
@@ -192,6 +204,15 @@ const routes = [
         component: PhotoDetail,
       },
     ],
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/error',
+  },
+  {
+    path: '/error',
+    name: 'ErrorView',
+    component: ErrorView,
   },
 ];
 

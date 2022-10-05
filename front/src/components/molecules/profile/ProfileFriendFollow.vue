@@ -1,14 +1,16 @@
 <template>
-  <div
-    v-for="follower in userStore.follower.item?.followers"
-    :key="follower.userId"
-    class="follow-wrap"
-  >
-    <div class="user-wrap">
-      <img :src="follower.profile" alt="" class="profile-image" />
-      {{ follower.nickname }}
+  <div class="profile-follow">
+    <div
+      v-for="follower in userStore.follower.item?.followers"
+      :key="follower.userId"
+      class="follow-wrap"
+    >
+      <div class="user-wrap">
+        <img :src="follower.profile" alt="" class="profile-image" />
+        {{ follower.nickname }}
+      </div>
+      <delete-button @click="deleteFollow" />
     </div>
-    <delete-button @click="deleteFollow" />
   </div>
 </template>
 
@@ -29,6 +31,19 @@ const deleteFollow = () => {
 </script>
 
 <style scoped>
+@media (min-width: 1024px) {
+  .profile-follow {
+    min-width: 400px;
+    max-width: 400px;
+  }
+  .scrap-wrap {
+    max-width: calc(25% - 21px);
+  }
+}
+.profile-follow {
+  width: 100%;
+  margin: 0 auto;
+}
 .follow-wrap {
   display: flex;
   justify-content: space-between;
@@ -38,6 +53,8 @@ const deleteFollow = () => {
   display: flex;
   gap: 20px;
   align-items: center;
+  font-size: 15px;
+  font-weight: 700;
 }
 .profile-image {
   width: 50px;

@@ -1,7 +1,15 @@
 <template>
-  <router-view />
+  <div class="community-view">
+    <router-view />
+  </div>
 </template>
 
 <script></script>
 
-<style scoped></style>
+<style scoped>
+.community-view {
+  margin-top: var(--size-h-header);
+  margin-bottom: var(--size-h-footer);
+  overflow: scroll;
+}
+</style>

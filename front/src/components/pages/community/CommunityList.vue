@@ -1,11 +1,11 @@
 <template>
   <div class="community-list">
-    <div
-      v-for="(post, index) in communityStore.postsAll.item"
-      :key="index"
-      class="post-wrap"
-    >
-      <div class="masonry-item">
+    <div class="community-wrap">
+      <div
+        v-for="(post, index) in communityStore.postsAll.item"
+        :key="index"
+        class="post-wrap"
+      >
         <post-card :post="post" :likeCount="post.likeCount" />
       </div>
     </div>
@@ -24,15 +24,33 @@ const communityStore = useCommunityStore();
 communityStore.getPostsAll();
 </script>
 
-<style>
+<style scoped>
+@media (min-width: 1024px) {
+  .community-list {
+    min-width: 935px;
+    max-width: 935px;
+    margin: 0 auto;
+  }
+  .community-wrap {
+    gap: 28px !important;
+  }
+  .post-wrap {
+    max-width: calc(25% - 21px);
+  }
+}
+
 .community-list {
   width: calc(100% - 2 * var(--grid-side));
+  margin: 0 auto;
+  overflow: scroll;
+}
+.community-wrap {
+  width: 100%;
   margin-top: var(--grid-vertical);
   margin-bottom: var(--grid-vertical);
-  margin-left: var(--grid-side);
   display: flex;
-  flex-wrap: wrap;
   gap: 10px;
+  flex-wrap: wrap;
 }
 .post-wrap {
   width: calc(50% - 5px);

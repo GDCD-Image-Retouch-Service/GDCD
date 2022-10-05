@@ -1,6 +1,7 @@
 <template>
   <div
     class="upload-card main outer d-flex flex-column align-items-center justify-content-center"
+    style="overflow: hidden"
   >
     <div class="spacer" />
     <btn-change-mode />
@@ -47,7 +48,7 @@
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
           id="downloadPhoto"
-          download="photo.jpg"
+          :download="`${photoName}.jpg`"
           role="button"
           @click="downloadImage"
         >
@@ -109,7 +110,7 @@
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
           id="downloadPhoto"
-          download="photo.jpg"
+          :download="`${photoName}.jpg`"
           role="button"
           @click="downloadImage"
         >
@@ -136,7 +137,7 @@ import BtnChangeMode from '@/components/molecules/main/btn/BtnChangeMode.vue';
 import LoadingDots from '@/components/atoms/LoadingDots.vue';
 
 import { ref, watch } from 'vue';
-import { useMainStore } from '@/stores/main';
+import { useMainStore } from '@/stores';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -152,6 +153,19 @@ const isInput = ref(false);
 
 const setPicBox = () => {
   const file = picInputButton.value.files[0];
+
+  if (file && file.size > 1024 * 1024) {
+    alert('파일 사이즈가 mb 를 넘습니다.');
+    picInputButton.value.files[0] = null;
+    isInput.value = false;
+    return;
+  } else if (file && file.size < 360 * 360) {
+    alert('파일 사이즈가 지나치게 작습니다.');
+    picInputButton.value.files[0] = null;
+    isInput.value = false;
+    return;
+  }
+
   if (FileReader && file) {
     const reader = new FileReader();
     reader.onload = () => {
@@ -174,6 +188,9 @@ const canvas = ref(null);
 const isPhotoTaken = ref(false);
 const isShotPhoto = ref(false);
 const isLoading = ref(false);
+const isBack = ref(false);
+
+const photoName = ref('');
 
 watch(
   () => mainStore.isCamMode,
@@ -187,6 +204,17 @@ watch(
     } else {
       createCameraElement();
     }
+  },
+);
+
+watch(
+  () => isBack.value,
+  () => {
+    console.log(isBack.value ? '후면' : '전면');
+    // if (isBack.value) {
+    // } else {
+    //   createBackCameraElement();
+    // }
   },
 );
 
@@ -213,6 +241,30 @@ const createCameraElement = () => {
       router.go();
     });
 };
+
+// const createBackCameraElement = () => {
+//   isLoading.value = true;
+//   const constraints = (window.constraints = {
+//     audio: false,
+//     video: {
+//       width: { min: 240, ideal: 720, max: 1080 },
+//       height: { min: 240, ideal: 720, max: 1080 },
+//       facingMode: { exact: 'environment' },
+//     },
+//   });
+
+//   navigator.mediaDevices
+//     .getUserMedia(constraints)
+//     .then((stream) => {
+//       isLoading.value = false;
+//       camera.value.srcObject = stream;
+//     })
+//     .catch((e) => {
+//       isLoading.value = false;
+//       console.log(e);
+//       router.go();
+//     });
+// };
 
 const stopCameraStreame = () => {
   if (camera.value != null) {
@@ -246,6 +298,15 @@ const takePhoto = () => {
 };
 
 const downloadImage = () => {
+  let today = new Date();
+
+  let year = today.getFullYear();
+  let month = today.getMonth() + 1;
+  let date = today.getDate();
+  let day = today.getDay();
+
+  photoName.value = year + '_' + month + '_' + date + '_' + day;
+
   document
     .getElementById('downloadPhoto')
     .setAttribute(

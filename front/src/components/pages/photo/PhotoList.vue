@@ -13,5 +13,6 @@ import PhotoSection from '@/components/organisms/photo/PhotoSection.vue';
   width: calc(100% - 2 * var(--grid-side));
   margin-left: var(--grid-side);
   margin-top: var(--grid-vertical);
+  overflow: scroll;
 }
 </style>
