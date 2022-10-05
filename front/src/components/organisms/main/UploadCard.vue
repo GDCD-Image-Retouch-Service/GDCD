@@ -282,29 +282,29 @@ const createCameraElement = () => {
     });
 };
 
-// const createBackCameraElement = () => {
-//   isLoading.value = true;
-//   const constraints = (window.constraints = {
-//     audio: false,
-//     video: {
-//       width: { min: 240, ideal: 720, max: 1080 },
-//       height: { min: 240, ideal: 720, max: 1080 },
-//       facingMode: { exact: 'environment' },
-//     },
-//   });
+const createBackCameraElement = () => {
+  isLoading.value = true;
+  const constraints = (window.constraints = {
+    audio: false,
+    video: {
+      width: { min: 240, ideal: 720, max: 1080 },
+      height: { min: 240, ideal: 720, max: 1080 },
+      facingMode: { exact: 'environment' },
+    },
+  });
 
-//   navigator.mediaDevices
-//     .getUserMedia(constraints)
-//     .then((stream) => {
-//       isLoading.value = false;
-//       camera.value.srcObject = stream;
-//     })
-//     .catch((e) => {
-//       isLoading.value = false;
-//       console.log(e);
-//       router.go();
-//     });
-// };
+  navigator.mediaDevices
+    .getUserMedia(constraints)
+    .then((stream) => {
+      isLoading.value = false;
+      camera.value.srcObject = stream;
+    })
+    .catch((e) => {
+      isLoading.value = false;
+      console.log(' * 카메라 전환 불가', e);
+      router.go();
+    });
+};
 
 const stopCameraStreame = () => {
   if (camera.value != null) {
@@ -340,12 +340,9 @@ const takePhoto = () => {
 const downloadImage = () => {
   let today = new Date();
 
-  let year = today.getFullYear();
-  let month = today.getMonth() + 1;
-  let date = today.getDate();
-  let day = today.getDay();
-
-  photoName.value = year + '_' + month + '_' + date + '_' + day;
+  photoName.value = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}-${today.getDay()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}.jpg`;
 
   document
     .getElementById('downloadPhoto')

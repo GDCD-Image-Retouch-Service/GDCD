@@ -4,12 +4,12 @@ import { ref, computed } from 'vue';
 export const useLocalStore = defineStore('local', () => {
   // init
   // state
-  const prev = ref('-;-;-;-;-');
-  const path = ref('-');
-  const url = ref('-');
-  const score = ref('-');
-  const eRank = ref('-');
-  const qRank = ref('-');
+  const prev = ref(localStorage.prev);
+  const path = ref(prev.value.split(';')[0]);
+  const url = ref(prev.value.split(';')[1]);
+  const score = ref(prev.value.split(';')[2]);
+  const eRank = ref(prev.value.split(';')[3]);
+  const qRank = ref(prev.value.split(';')[4]);
 
   // action
   const resetPrev = () => {
@@ -35,7 +35,6 @@ export const useLocalStore = defineStore('local', () => {
   };
   const setPrev = () => {
     prev.value = `${path.value};${url.value};${score.value};${eRank.value};${qRank.value}`;
-
     localStorage.prev = prev.value;
   };
   const setPath = (data) => {

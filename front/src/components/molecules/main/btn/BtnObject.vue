@@ -49,14 +49,9 @@ onMounted(() => {
     dy = 0;
     dx = (fixedWidth - 380) / 2;
   }
-  // console.log('dy', dy);
-  // console.log('dx', dx);
-  // console.log('scale', scale);
-  // console.log('FH : ', fixedHeight);
-  // console.log('FW : ', fixedWidth);
 
   const objectData = props.objectData.split(';');
-  // console.log('디텍션:', objectData);
+  console.log('디텍션:', objectData);
   // const objectName = objectData[0];
   const objectLU = objectData[1].split(',');
   const objectRD = objectData[2].split(',');
@@ -67,15 +62,19 @@ onMounted(() => {
   // console.log('R', objectRD[0]);
   // console.log('D', objectRD[1]);
 
-  // console.log('NH', `${props.naturalHeight}px`);
-  // console.log('NW', `${props.naturalWidth}px`);
+  console.log('NH', `${props.naturalHeight}px`);
+  console.log('NW', `${props.naturalWidth}px`);
 
   btnObject.value.style.top = `${objectLU[1] * scale - dy}px`;
   btnObject.value.style.left = `${objectLU[0] * scale - dx}px`;
 
   btnObject.value.style.width = `${(objectRD[0] - objectLU[0]) * scale}px`;
 
+  console.log(`${(objectRD[0] - objectLU[0]) * scale}px`);
+
   btnObject.value.style.height = `${(objectRD[1] - objectLU[1]) * scale}px`;
+
+  console.log(`${(objectRD[1] - objectLU[1]) * scale}px`);
 });
 </script>
 

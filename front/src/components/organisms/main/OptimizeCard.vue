@@ -177,7 +177,7 @@
     <div class="btn-set d-flex justify-content-center">
       <!-- Btn Back -->
       <router-link
-        to="/main/score"
+        to="/main/result"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
       >
         <i class="bi bi-arrow-counterclockwise"></i>
@@ -213,6 +213,7 @@
 <script setup>
 import LoadingDots from '@/components/atoms/LoadingDots.vue';
 import IconRank from '@/components/atoms/IconRank.vue';
+// import swal from 'sweetalert2';
 
 import { ref, onMounted } from 'vue';
 import { image } from '@/api/rest';
@@ -272,22 +273,27 @@ const downloadImage = () => {
 const optimizeSave = async () => {
   const photoNo = selectNo.value;
   const payload = {
-    imageId: mainStore.getTempId,
+    imageId: url.value,
     imageUrl: mainStore.getTempOptiList[photoNo].url,
     aesthetic: mainStore.getTempOptiList[photoNo].e,
     quality: mainStore.getTempOptiList[photoNo].q,
   };
 
-  console.log('저장값', payload);
+  console.log(' * 최적화 저장값', payload);
 
   const data = await image.optimizingSave(payload);
-  console.log('데이터', data);
+  console.log(' * 최적화 사진ID', data);
+  localStore.setUrl(data.item);
+  localStore.setPrev();
+
+  router.push('/main/result');
 };
 
 const optimize = async () => {
   mainStore.resetTempOptiList();
-  const data = await image.optimization(mainStore.getTempId);
-  console.log('최적화 요청 전달', data);
+  console.log(' * 최적화 요청 전달 사진번호 : ', url.value);
+  const data = await image.optimization(url.value);
+  console.log(' * 최적화 요청 전달 성공 : ', data);
   mainStore.setRequestId(data.item.requestId);
   process();
 };
@@ -309,19 +315,49 @@ const process = async () => {
 
       for (var i = 0; i < 7; i++) {
         let url = Object.keys(optiList.value[i])[0];
-        let aesthetic = optiList.value[i][url]['aesthetic'];
-        let quality = optiList.value[i][url]['quality'];
+        let eScore = optiList.value[i][url]['aesthetic'];
+        let qScore = optiList.value[i][url]['quality'];
 
-        let e = Math.ceil((5.8 - aesthetic) * 14 + 1);
-        if (e > 9) e = 9;
-        else if (e < 1) e = 1;
+        let e =
+          eScore < 4.7
+            ? 9
+            : eScore < 4.9
+            ? 8
+            : eScore < 5.1
+            ? 7
+            : eScore < 5.2
+            ? 6
+            : eScore < 5.3
+            ? 5
+            : eScore < 5.4
+            ? 4
+            : eScore < 5.5
+            ? 3
+            : eScore < 5.7
+            ? 2
+            : 1;
 
-        let q = Math.ceil((6.8 - quality) * 14 + 1);
-        if (q > 9) q = 9;
-        else if (q < 1) q = 1;
+        let q =
+          qScore < 4.7
+            ? 9
+            : qScore < 6.6
+            ? 8
+            : qScore < 6.7
+            ? 7
+            : qScore < 6.8
+            ? 6
+            : qScore < 6.85
+            ? 5
+            : qScore < 6.9
+            ? 4
+            : qScore < 6.95
+            ? 3
+            : qScore < 7.0
+            ? 2
+            : 1;
 
         let score = Math.ceil(
-          (((aesthetic - 5.5) * 10 + (quality - 6.5) * 10) / 2) * 10 + 50,
+          (((eScore - 5.3) * 10 + (qScore - 6.8) * 10) / 2) * 10 + 50,
         );
         if (score > 100) score = 100;
         else if (score < 0) score = 0;
@@ -354,9 +390,16 @@ if (localStorage.prev) {
 }
 
 onMounted(async () => {
-  picBox.value.src = `https://j7b301.p.ssafy.io/api/image?imageId=${url.value}`;
-  console.log(' * 최적화 시작');
-  optimize();
+  if (url.value == '-') {
+    alert('최적화 중 문제가 발생했습니다');
+    localStore.resetPrev();
+    router.replace('error');
+  } else {
+    picBox.value.src = `https://j7b301.p.ssafy.io/api/image?imageId=${url.value}`;
+
+    console.log(' * 최적화 시작');
+    optimize();
+  }
 });
 </script>
 
