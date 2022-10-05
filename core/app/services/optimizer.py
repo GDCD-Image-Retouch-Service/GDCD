@@ -74,9 +74,9 @@ class Optimizer():
             raise e
             
 
-    def _check_brightness(self, image: np.ndarray) -> bool:
+    def _get_brightness(self, image: np.ndarray) -> int:
         hsv = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2HSV)
-        return hsv[..., 2].mean() < self._threshold
+        return hsv[..., 2].mean()
 
     def _preprocess(self):
         return
@@ -88,7 +88,9 @@ class Optimizer():
         try:
             logger.info(f"Preprocessing {id(optimize_request)} ...")
             optimize_request.image = np.array(optimize_request.image)
-            if self._check_brightness(optimize_request.image):
+            brightness = self._get_brightness(optimize_request.image)
+            logger.info(f"Brightness {id(optimize_request)} is {brightness}")
+            if brightness < self._threshold:
                 logger.info(f"Enhance Brightness {id(optimize_request)} ...")
                 optimize_request.image = self._low_enhancer.process(optimize_request.image)
                 optimize_request.image = cv2.normalize(optimize_request.image, None, 0, 255,
