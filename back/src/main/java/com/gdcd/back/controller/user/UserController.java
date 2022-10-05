@@ -58,13 +58,13 @@ public class UserController extends Controller {
     }
 
     @GetMapping("/scrap-list")
-    public ResponseEntity<Map<String, Object>> userScrapList(@RequestHeader String token, Pageable pageable) {
-        return getResponseEntity(userService.findScraps(token, pageable));
+    public ResponseEntity<Map<String, Object>> userScrapList(@RequestHeader String token, @RequestParam Long userId, Pageable pageable) {
+        return getResponseEntity(userService.findScraps(token, userId, pageable));
     }
 
     @GetMapping("/like-list")
-    public ResponseEntity<Map<String, Object>> userLikeList(@RequestHeader String token, Pageable pageable) {
-        return getResponseEntity(userService.findLikes(token, pageable));
+    public ResponseEntity<Map<String, Object>> userLikeList(@RequestHeader String token, @RequestParam Long userId, Pageable pageable) {
+        return getResponseEntity(userService.findLikes(token, userId, pageable));
     }
 
     @GetMapping("/follow")

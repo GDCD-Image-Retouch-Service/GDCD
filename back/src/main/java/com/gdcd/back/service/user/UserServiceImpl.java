@@ -169,27 +169,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> findScraps(String token, Pageable pageable) {
+    public Map<String, Object> findScraps(String token, Long userId, Pageable pageable) {
         RESULT_OBJECT = new HashMap<>();
         try {
-            if (userRepository.findByEmail(decodeToken(token)).isPresent()) {
-                List<Long> scrapList = userRepository.findByEmail(decodeToken(token)).get().getScrapPosts();
-                List<PostListResponseDto> list = new ArrayList<>();
-                for (Long id : scrapList) {
-                    Post post = postRepository.findById(id).get();
-                    list.add(new PostListResponseDto(
-                            post,
-                            post.getImages().get(post.getRepresentative()),
-                            scrapPost(post, findUserByEmail(decodeToken(token))),
-                            likePost(post, findUserByEmail(decodeToken(token)))
-                    ));
-                }
-                Collections.reverse(list);
-                int from = pageable.getPageNumber() * pageable.getPageSize();
-                int to = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(), list.size());
-                RESULT_OBJECT.put("posts", list.subList(from, to));
-                // return scrap list : postId, image, writer nickname, profile, likeCount, (scrap = true)
+            User user;
+            if (userId == null)
+                user = findUserById(userId);
+            else
+                user = findUserByEmail(decodeToken(token));
+            List<Long> scrapList = user.getScrapPosts();
+            List<PostListResponseDto> list = new ArrayList<>();
+            for (Long id : scrapList) {
+                Post post = postRepository.findById(id).get();
+                list.add(new PostListResponseDto(
+                        post,
+                        post.getImages().get(post.getRepresentative()),
+                        scrapPost(post, findUserByEmail(decodeToken(token))),
+                        likePost(post, findUserByEmail(decodeToken(token)))
+                ));
             }
+            Collections.reverse(list);
+            int from = pageable.getPageNumber() * pageable.getPageSize();
+            int to = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(), list.size());
+            RESULT_OBJECT.put("posts", list.subList(from, to));
         } catch (Exception e) {
             e.printStackTrace();
             RESULT_OBJECT.put("error", "SCRAP NOT FOUND");
@@ -198,26 +200,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> findLikes(String token, Pageable pageable) {
+    public Map<String, Object> findLikes(String token, Long userId, Pageable pageable) {
         RESULT_OBJECT = new HashMap<>();
         try {
-            if (userRepository.findByEmail(decodeToken(token)).isPresent()) {
-                List<Long> likeList = userRepository.findByEmail(decodeToken(token)).get().getLikePosts();
-                List<PostListResponseDto> list = new ArrayList<>();
-                for (Long id : likeList) {
-                    Post post = postRepository.findById(id).get();
-                    list.add(new PostListResponseDto(
-                            post,
-                            post.getImages().get(post.getRepresentative()),
-                            scrapPost(post, findUserByEmail(decodeToken(token))),
-                            likePost(post, findUserByEmail(decodeToken(token)))
-                    ));
-                }
-                Collections.reverse(list);
-                int from = pageable.getPageNumber() * pageable.getPageSize();
-                int to = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(), list.size());
-                RESULT_OBJECT.put("posts", list.subList(from, to));
+            User user;
+            if (userId == null)
+                user = findUserById(userId);
+            else
+                user = findUserByEmail(decodeToken(token));
+            List<Long> likeList = user.getLikePosts();
+            List<PostListResponseDto> list = new ArrayList<>();
+            for (Long id : likeList) {
+                Post post = postRepository.findById(id).get();
+                list.add(new PostListResponseDto(
+                        post,
+                        post.getImages().get(post.getRepresentative()),
+                        scrapPost(post, findUserByEmail(decodeToken(token))),
+                        likePost(post, findUserByEmail(decodeToken(token)))
+                ));
             }
+            Collections.reverse(list);
+            int from = pageable.getPageNumber() * pageable.getPageSize();
+            int to = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(), list.size());
+            RESULT_OBJECT.put("posts", list.subList(from, to));
         } catch (Exception e) {
             e.printStackTrace();
             RESULT_OBJECT.put("error", "LIKE NOT FOUND");
