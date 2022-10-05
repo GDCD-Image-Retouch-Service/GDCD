@@ -1,5 +1,5 @@
 <template>
-  <div class="photo-view">
+  <div class="photo-view sub">
     <router-view />
   </div>
 </template>

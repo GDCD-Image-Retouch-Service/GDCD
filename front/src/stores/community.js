@@ -26,7 +26,7 @@ export const useCommunityStore = defineStore('communityStore', {
     updateCommentContent: '',
     targetImage: '',
 
-    writeFirstModal: true,
+    writeFirstModal: false,
   }),
   actions: {
     resetVariable() {
