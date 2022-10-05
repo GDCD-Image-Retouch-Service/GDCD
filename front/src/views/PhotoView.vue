@@ -4,7 +4,14 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useUserStore } from '@/stores/user.js';
+const userStore = useUserStore();
+
+userStore.headerSetDropdown = false;
+userStore.loginModal = false;
+userStore.logoutModal = false;
+</script>
 
 <style scoped>
 .photo-view {
