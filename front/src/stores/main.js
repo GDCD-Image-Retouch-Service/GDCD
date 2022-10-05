@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-
+import { useUserStore } from '@/stores';
 export const useMainStore = defineStore('main', () => {
   // state
   const isDark = ref(
@@ -19,6 +19,8 @@ export const useMainStore = defineStore('main', () => {
   // action
   const setIsDarkToggle = () => {
     isDark.value = !isDark.value;
+    const userStore = useUserStore();
+    userStore.headerSetDropdown = !userStore.headerSetDropdown;
     localStorage.setItem('theme', isDark.value ? 'dark' : 'light');
   };
   const isCamModeOn = () => {

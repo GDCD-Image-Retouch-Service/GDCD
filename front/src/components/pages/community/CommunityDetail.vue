@@ -21,5 +21,6 @@ import CommunityComment from '@/components/organisms/community/CommunityComment.
   width: calc(100% - 2 * var(--grid-side));
   margin: 0 auto;
   overflow: scroll;
+  min-height: calc(100vh - var(--size-h-header) - var(--size-h-footer));
 }
 </style>

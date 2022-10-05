@@ -1,10 +1,17 @@
 <template>
-  <div class="community-view">
+  <div class="community-view sub">
     <router-view />
   </div>
 </template>
 
-<script></script>
+<script setup>
+import { useUserStore } from '@/stores/user.js';
+const userStore = useUserStore();
+
+userStore.headerSetDropdown = false;
+userStore.loginModal = false;
+userStore.logoutModal = false;
+</script>
 
 <style scoped>
 .community-view {

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="landing-view blur position-fixed d-flex flex-column align-items-center justify-content-center"
+    class="landing-view sub blur position-fixed d-flex flex-column align-items-center justify-content-center"
     ref="something"
   >
     <game-container />
@@ -11,7 +11,8 @@
 import GameContainer from '@/components/atoms/game/GameContainer.vue';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+import { useUserStore } from '@/stores/user.js';
+const userStore = useUserStore();
 // Init
 const router = useRouter();
 
@@ -23,6 +24,9 @@ onMounted(() => {
     router.push('main');
   }, 5000);
 });
+userStore.headerSetDropdown = false;
+userStore.loginModal = false;
+userStore.logoutModal = false;
 </script>
 
 <style scoped>

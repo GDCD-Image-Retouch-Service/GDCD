@@ -68,6 +68,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: var(--grid-vertical);
+  min-height: calc(100vh - var(--size-h-header) - var(--size-h-footer));
 }
 .main-image {
   width: 100%;

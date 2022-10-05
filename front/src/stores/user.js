@@ -59,6 +59,7 @@ export const useUserStore = defineStore('userStore', {
 
     selectTag: [],
 
+    headerSetDropdown: false,
     loginModal: false,
     logoutModal: false,
   }),
