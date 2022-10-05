@@ -24,15 +24,32 @@
         />
         <btn-add-follow
           :userId="userStore.profile.item?.user?.userId"
-          v-else
-          @click="userFollow()"
+          v-if="
+            (userStore.currentUser.item?.user?.userId !=
+              userStore.profile.item?.user?.userId) &
+            userStore.isCheckFollow
+          "
+          @click="
+            userFollow(), (userStore.isCheckFollow = !userStore.isCheckFollow)
+          "
+        />
+        <btn-un-follow
+          :userId="userStore.profile.item?.user?.userId"
+          v-if="
+            (userStore.currentUser.item?.user?.userId !=
+              userStore.profile.item?.user?.userId) &
+            !userStore.isCheckFollow
+          "
+          @click="
+            userFollow(), (userStore.isCheckFollow = !userStore.isCheckFollow)
+          "
         />
       </div>
     </div>
     <div class="posts-scraps-likes">
       <!-- 게시물 -->
       <div
-        @click="router.push({ name: 'ProfilePost', params: { name: post } })"
+        @click="router.push({ name: 'ProfilePost', params: { name: 'post' } })"
         class="posts-scraps-likes-item"
       >
         <div :class="{ active: userStore.isItemActive === 0 }">게시물</div>
@@ -63,11 +80,13 @@
 <script setup>
 import BtnAddFriednd from '../common/btn/BtnAddFriednd.vue';
 import BtnAddFollow from '../common/btn/BtnAddFollow.vue';
-import router from '@/router/index.js';
+import BtnUnFollow from '../common/btn/BtnUnFollow.vue';
+import { useRouter, useRoute } from 'vue-router';
 
 import { useUserStore } from '@/stores/user';
 const userStore = useUserStore();
-
+const router = useRouter();
+const route = useRoute();
 const userFollow = () => {
   if (
     userStore.currentUser.item?.user?.userId !=
@@ -76,6 +95,8 @@ const userFollow = () => {
     userStore.follow(userStore.currentUser.item?.user?.userId);
   }
 };
+userStore.checkMyFollow(route.params.userId);
+console.log(userStore.isCheckFollow, '내가 팔로우 하나요?');
 </script>
 
 <style scoped>

@@ -62,6 +62,8 @@ export const useUserStore = defineStore('userStore', {
     headerSetDropdown: false,
     loginModal: false,
     logoutModal: false,
+
+    isCheckFollow: '',
   }),
   actions: {
     resetVariable() {
@@ -347,6 +349,27 @@ export const useUserStore = defineStore('userStore', {
         .then((res) => {
           console.log(res.data.item.usable);
           this.nicknameOverlap = res.data.item.usable;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 나를 팔로우했는지 확인
+    checkMyFollow(userId) {
+      axios({
+        url: user.checkMyFollow(),
+        method: 'GET',
+        headers: {
+          token: this.token,
+        },
+        params: {
+          userId: userId,
+        },
+      })
+        .then((res) => {
+          this.isCheckFollow = res.data.item.result;
+          console.log(res.data, '확인');
         })
         .catch((err) => {
           console.log(err);

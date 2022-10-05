@@ -33,7 +33,7 @@ onBeforeMount(() => {
 
 onUnmounted(() => {});
 
-console.log(route);
+console.log(route.params);
 </script>
 
 <style scoped>

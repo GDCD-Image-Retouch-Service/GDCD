@@ -16,6 +16,7 @@
         @change="testfunc"
         ref="fileInput"
         style="display: none"
+        maxlength="8"
       />
     </div>
 
@@ -29,10 +30,6 @@
 
     <div v-if="userStore.nicknameOverlap">사용할 수 있는 닉네임입니다!</div>
 
-    <div>
-      <img src="@/assets/image/info.png" alt="" />
-      닉네임은 몇 자
-    </div>
     <button
       class="button active"
       @click="updateProfile(userStore.updateNickname, userStore.updateProfile)"

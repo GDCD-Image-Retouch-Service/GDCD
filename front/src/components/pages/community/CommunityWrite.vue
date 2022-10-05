@@ -197,9 +197,9 @@
                   :class="{ firstCheck: firstCheck }"
                   @click="userStore.daePyoImage = userStore.photoSelect[0]?.url"
                 ></div>
-
-                <i
-                  class="bi bi-check-circle-fill check-icon"
+                <span
+                  v-if="!firstCheck"
+                  class="material-icons-outlined check-icon"
                   style="font-size: 20px; background-color: #ffffff"
                   @click="
                     pushSelectedNumber(
@@ -209,8 +209,12 @@
                     ),
                       (firstCheck = !firstCheck)
                   "
-                ></i>
+                >
+                  check_circle
+                </span>
               </div>
+
+              <!--  -->
               <div class="sub-wrap" v-if="userStore.photoSelect[1]?.url">
                 <div
                   :style="{
@@ -222,8 +226,8 @@
                   @click="userStore.daePyoImage = userStore.photoSelect[1]?.url"
                 ></div>
 
-                <i
-                  class="bi bi-check-circle-fill check-icon"
+                <span
+                  class="material-icons-outlined check-icon"
                   style="font-size: 20px; background-color: #ffffff"
                   @click="
                     pushSelectedNumber(
@@ -233,7 +237,9 @@
                     ),
                       (secondCheck = !secondCheck)
                   "
-                ></i>
+                >
+                  check_circle
+                </span>
               </div>
             </div>
 

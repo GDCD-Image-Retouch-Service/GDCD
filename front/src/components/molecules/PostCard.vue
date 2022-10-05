@@ -61,13 +61,7 @@
           @click="(myScrap = !myScrap), communityStore.scrapPost(post.postId)"
         ></i>
       </div>
-      <div v-if="post.registTime == post.updateTime">
-        <date-format :updateInfo="post.registTime" />
-      </div>
-      <div v-else class="update-wrap">
-        <date-format :updateInfo="post.updateTime" />
-        <span class="update-info">수정</span>
-      </div>
+      <date-format :updateInfo="post.registTime" />
     </div>
   </div>
 </template>
