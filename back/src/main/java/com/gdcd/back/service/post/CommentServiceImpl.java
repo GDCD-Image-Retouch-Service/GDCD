@@ -80,7 +80,7 @@ public class CommentServiceImpl implements CommentService {
             List<Comment> kidList = commentRepository.findAllByUpperAndValidation(commentId, true);
             for (Comment kid : kidList) {
                 kid.delete();
-                commentRepository.save(kid);
+                commentRepository.delete(kid);
             }
             comment.delete();
             RESULT_OBJECT.put("commentId", commentRepository.save(comment).getId());
