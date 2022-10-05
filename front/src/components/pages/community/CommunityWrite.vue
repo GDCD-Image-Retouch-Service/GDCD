@@ -385,6 +385,7 @@ userStore.selectedPhoto = [];
 userStore.urlList = [];
 userStore.urlPhotoList = [];
 userStore.selectTag = [];
+communityStore.writeFirstModal = false;
 </script>
 
 <style scoped>
@@ -431,6 +432,7 @@ userStore.selectTag = [];
   background-color: var(--light-main-color);
   margin: 0 auto;
   padding: 10px;
+  background-color: var(--main-color);
 }
 .content-area {
   padding: 10px;
@@ -440,13 +442,14 @@ userStore.selectTag = [];
   line-height: 22px;
   border-radius: 5px;
   height: 150px;
+  background-color: var(--main-color);
 }
 .image-input {
   width: 100%;
   padding: 5px 5px 100% 5px;
   border: 1px solid var(--instagram-grey);
   border-radius: 5px;
-  background-color: var(--light-main-color);
+  background-color: var(--main-color);
 }
 .modal-dialog {
   position: fixed;

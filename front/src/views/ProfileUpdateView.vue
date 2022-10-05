@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-update">
+  <div class="profile-update sub">
     <router-view />
   </div>
 </template>
@@ -16,6 +16,9 @@ const basicStore = useBasicStore();
 
 basicStore.isActiveFooter = 2;
 userStore.getOtherinfo(userId);
+userStore.headerSetDropdown = false;
+userStore.loginModal = false;
+userStore.logoutModal = false;
 </script>
 
 <style scoped>

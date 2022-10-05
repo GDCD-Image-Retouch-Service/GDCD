@@ -28,6 +28,12 @@ if (localStorage.getItem('token')) {
 
 const theme = computed(() => (mainStore.getIsDark ? 'dark' : 'light'));
 
+// 변수 초기화
+
+userStore.loginModal = false;
+userStore.logoutModal = false;
+userStore.headerSetDropdown = false;
+
 // onBeforeMount(() => {
 //   window.addEventListener('scroll', handleScroll);
 // });
