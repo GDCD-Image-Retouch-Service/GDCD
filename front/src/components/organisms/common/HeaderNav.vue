@@ -1,9 +1,7 @@
 <template>
   <div class="header-nav main outer">
     <div class="header-nav-wrap">
-      <router-link to="/main" class="header-logo">
-        <header-logo />
-      </router-link>
+      <header-logo @click="router.push({ name: 'main' })" />
 
       <header-profile />
     </div>
@@ -13,6 +11,9 @@
 <script setup>
 import HeaderLogo from '@/components/molecules/common/header/HeaderLogo.vue';
 import HeaderProfile from '@/components/molecules/common/header/HeaderProfile.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 </script>
 
 <style scoped>
@@ -31,7 +32,7 @@ import HeaderProfile from '@/components/molecules/common/header/HeaderProfile.vu
   min-height: var(--size-h-header);
 }
 .header-nav-wrap {
-  width: 100vw;
+  width: 100%;
   height: var(--size-h-header);
   justify-content: space-between;
   align-items: center;
