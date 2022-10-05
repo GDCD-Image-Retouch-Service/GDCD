@@ -17,6 +17,7 @@ public interface UserService {
     public Map<String, Object> findScraps(String token, Long userId, Pageable pageable);
     public Map<String, Object> findLikes(String token, Long userId, Pageable pageable);
     public Map<String, Object> followUser(String token, Long userId);
+    public Map<String, Object> followCheck(String token, Long userId);
     public Map<String, Object> findFollowers(String token, Long userId, Pageable pageable);
     public Map<String, Object> findFollowings(String token, Long userId, Pageable pageable);
     public byte[] findProfile(String from);

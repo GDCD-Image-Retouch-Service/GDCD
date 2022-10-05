@@ -72,6 +72,11 @@ public class UserController extends Controller {
         return getResponseEntity(userService.followUser(token, userId));
     }
 
+    @GetMapping("follow-check")
+    public ResponseEntity<Map<String, Object>> userFollowCheck(@RequestHeader String token, @RequestParam Long userId) {
+        return getResponseEntity(userService.followCheck(token, userId));
+    }
+
     @GetMapping("/follower")
     public ResponseEntity<Map<String, Object>> userFollowerList(@RequestHeader String token, @RequestParam(required = false) Long userId, Pageable pageable) {
         return getResponseEntity(userService.findFollowers(token, userId, pageable));
