@@ -1,6 +1,6 @@
 <template>
   <div
-    class="landing-view sub blur position-fixed d-flex flex-column align-items-center justify-content-center"
+    class="landing-view blur position-fixed d-flex flex-column align-items-center justify-content-center"
     ref="something"
   >
     <game-container />

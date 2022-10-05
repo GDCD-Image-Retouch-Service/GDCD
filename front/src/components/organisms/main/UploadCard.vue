@@ -10,11 +10,13 @@
     <loading-dots v-if="isLoading" />
 
     <!-- Pic Mode -->
-    <div class="pic-mode" v-if="!mainStore.isCamMode">
+    <div class="pic-mode" v-if="!mainStore.isCamMode" v-show="!isLoading">
       <div
         class="pic-container d-flex flex-column align-items-center justify-content-center"
       >
-        <div v-show="!isInput" class="pic-comment">사진을 올려주세요</div>
+        <div v-show="!isInput" class="pic-comment" style="color: black">
+          사진을 올려주세요
+        </div>
         <img
           v-show="isInput"
           ref="picBox"
@@ -56,14 +58,22 @@
         </a>
 
         <!-- Btn Score -->
-        <router-link
+        <!-- <router-link
           v-if="isInput"
           to="/main/score"
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
         >
           <i class="bi bi-check-lg"></i>
-        </router-link>
+        </router-link> -->
+        <div
+          v-if="isInput"
+          @click="scoring"
+          class="btn-set-button inner d-flex align-items-center justify-content-center"
+          style="margin-left: 8px"
+        >
+          <i class="bi bi-check-lg"></i>
+        </div>
       </div>
       <div class="spacer" />
     </div>
@@ -118,14 +128,22 @@
         </a>
 
         <!-- Btn Score -->
-        <router-link
+        <!-- <router-link
           v-if="isInput"
           to="/main/score"
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
         >
           <i class="bi bi-check-lg"></i>
-        </router-link>
+        </router-link> -->
+        <div
+          v-if="isInput"
+          @click="scoring"
+          class="btn-set-button inner d-flex align-items-center justify-content-center"
+          style="margin-left: 8px"
+        >
+          <i class="bi bi-check-lg"></i>
+        </div>
       </div>
       <div class="spacer" />
     </div>
@@ -136,12 +154,16 @@
 import BtnChangeMode from '@/components/molecules/main/btn/BtnChangeMode.vue';
 import LoadingDots from '@/components/atoms/LoadingDots.vue';
 
+import Compressor from 'compressorjs';
 import { ref, watch } from 'vue';
-import { useMainStore } from '@/stores';
-import { useRouter } from 'vue-router';
+import { useMainStore, useLocalStore } from '@/stores';
+import { useRouter, useRoute } from 'vue-router';
+import { image } from '@/api/rest';
 
 const router = useRouter();
+const route = useRoute();
 const mainStore = useMainStore();
+const localStore = useLocalStore();
 
 // created
 mainStore.isCamModeOff();
@@ -154,32 +176,49 @@ const isInput = ref(false);
 const setPicBox = () => {
   const file = picInputButton.value.files[0];
 
-  if (file && file.size > 1024 * 1024) {
-    alert('파일 사이즈가 mb 를 넘습니다.');
-    picInputButton.value.files[0] = null;
-    isInput.value = false;
-    return;
-  } else if (file && file.size < 360 * 360) {
-    alert('파일 사이즈가 지나치게 작습니다.');
-    picInputButton.value.files[0] = null;
-    isInput.value = false;
-    return;
-  }
+  const options = {
+    maxWidth: 720,
+    maxHeight: 720,
+    success: function (result) {
+      if (result.size > 1024 * 1024) {
+        // 리사이징 했는데도 용량이 큰 경우
+        alert(' * 이미지 압축 실패 : 용량이 초과되었습니다.');
+        return;
+      }
+      console.log(new File([result], result.name, { type: result.type }));
 
-  if (FileReader && file) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const tempUrl = reader.result;
-      picBox.value.src = tempUrl;
-      mainStore.setTempImg(tempUrl);
-      isInput.value = true;
-    };
-    reader.readAsDataURL(file);
-  } else {
-    mainStore.isCamModeOff();
-    isInput.value = false;
-    alert('이미지 업로드에 문제가 발생하였습니다.');
-  }
+      const _URL = window.URL || window.webkitURL;
+      if (_URL) {
+        console.log(' * 이미지 압축 종료');
+        mainStore.setTempFile(
+          new File([result], result.name, { type: result.type }),
+        );
+        mainStore.setTempImg(_URL.createObjectURL(result));
+        picBox.value.src = _URL.createObjectURL(result);
+        isInput.value = true;
+      }
+    },
+    error: function (err) {
+      console.log(err);
+    },
+  };
+  console.log(' * 이미지 압축 시작');
+  new Compressor(file, options);
+
+  // if (FileReader && file) {
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     const tempUrl = reader.result;
+  //     picBox.value.src = tempUrl;
+  //     mainStore.setTempImg(tempUrl);
+  //     isInput.value = true;
+  //   };
+  //   reader.readAsDataURL(file);
+  // } else {
+  //   mainStore.isCamModeOff();
+  //   isInput.value = false;
+  //   alert('이미지 업로드에 문제가 발생하였습니다.');
+  // }
 };
 
 // Cam Mode
@@ -207,6 +246,7 @@ watch(
   },
 );
 
+// 후면카메라 기능
 watch(
   () => isBack.value,
   () => {
@@ -242,29 +282,29 @@ const createCameraElement = () => {
     });
 };
 
-// const createBackCameraElement = () => {
-//   isLoading.value = true;
-//   const constraints = (window.constraints = {
-//     audio: false,
-//     video: {
-//       width: { min: 240, ideal: 720, max: 1080 },
-//       height: { min: 240, ideal: 720, max: 1080 },
-//       facingMode: { exact: 'environment' },
-//     },
-//   });
+const createBackCameraElement = () => {
+  isLoading.value = true;
+  const constraints = (window.constraints = {
+    audio: false,
+    video: {
+      width: { min: 240, ideal: 720, max: 1080 },
+      height: { min: 240, ideal: 720, max: 1080 },
+      facingMode: { exact: 'environment' },
+    },
+  });
 
-//   navigator.mediaDevices
-//     .getUserMedia(constraints)
-//     .then((stream) => {
-//       isLoading.value = false;
-//       camera.value.srcObject = stream;
-//     })
-//     .catch((e) => {
-//       isLoading.value = false;
-//       console.log(e);
-//       router.go();
-//     });
-// };
+  navigator.mediaDevices
+    .getUserMedia(constraints)
+    .then((stream) => {
+      isLoading.value = false;
+      camera.value.srcObject = stream;
+    })
+    .catch((e) => {
+      isLoading.value = false;
+      console.log(' * 카메라 전환 불가', e);
+      router.go();
+    });
+};
 
 const stopCameraStreame = () => {
   if (camera.value != null) {
@@ -300,12 +340,9 @@ const takePhoto = () => {
 const downloadImage = () => {
   let today = new Date();
 
-  let year = today.getFullYear();
-  let month = today.getMonth() + 1;
-  let date = today.getDate();
-  let day = today.getDay();
-
-  photoName.value = year + '_' + month + '_' + date + '_' + day;
+  photoName.value = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}-${today.getDay()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}.jpg`;
 
   document
     .getElementById('downloadPhoto')
@@ -313,6 +350,81 @@ const downloadImage = () => {
       'href',
       mainStore.getTempImg.replace('image/png', 'image/octet-stream'),
     );
+};
+
+// > method
+const scoring = async () => {
+  localStore.loadPrev();
+  isLoading.value = true;
+  const data = await image.scoring(mainStore.getTempFile);
+  if (!data.item) {
+    console.log('점수 반환 실패');
+    return;
+  }
+
+  const eScore = data.item.dict.aesthetic;
+  const qScore = data.item.dict.quality;
+
+  const eRank =
+    eScore < 4.7
+      ? 9
+      : eScore < 4.9
+      ? 8
+      : eScore < 5.1
+      ? 7
+      : eScore < 5.2
+      ? 6
+      : eScore < 5.3
+      ? 5
+      : eScore < 5.4
+      ? 4
+      : eScore < 5.5
+      ? 3
+      : eScore < 5.7
+      ? 2
+      : 1;
+  const qRank =
+    qScore < 4.7
+      ? 9
+      : qScore < 6.6
+      ? 8
+      : qScore < 6.7
+      ? 7
+      : qScore < 6.8
+      ? 6
+      : qScore < 6.85
+      ? 5
+      : qScore < 6.9
+      ? 4
+      : qScore < 6.95
+      ? 3
+      : qScore < 7.0
+      ? 2
+      : 1;
+
+  let score = Math.ceil(
+    (((eScore - 5.3) * 10 + (qScore - 6.8) * 10) / 2) * 10 + 50,
+  );
+  if (score > 100) score = 100;
+  else if (score < 0) score = 0;
+
+  // await mainStore.setScore(data.item);
+  // console.log('img', mainStore.getTempImg);
+  // console.log('id', mainStore.getTempId);
+  console.log('score', score);
+  console.log('e', eScore);
+  console.log('e', eRank);
+  console.log('q', qScore);
+  console.log('q', qRank);
+
+  localStore.setPath(route.fullPath);
+  localStore.setUrl('-');
+  localStore.setScore(score);
+  localStore.setERank(eRank);
+  localStore.setQRank(qRank);
+  localStore.setPrev();
+
+  router.push('/main/result');
 };
 </script>
 
