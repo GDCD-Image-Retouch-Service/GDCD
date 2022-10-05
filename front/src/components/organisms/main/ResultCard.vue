@@ -65,7 +65,7 @@ import IconRank from '@/components/atoms/IconRank.vue';
 
 import { ref, onMounted, watch } from 'vue';
 import { image } from '@/api/rest';
-import { useMainStore, useAccountStore } from '@/stores/';
+import { useMainStore, useAccountStore, useLocalStore } from '@/stores/';
 import { useRouter, useRoute } from 'vue-router';
 
 // init
@@ -73,10 +73,11 @@ const router = useRouter();
 const route = useRoute();
 const mainStore = useMainStore();
 const accountStore = useAccountStore();
+const localStore = useLocalStore();
 
 // data
-const prev = ref('');
-const imageId = ref('');
+const path = ref('');
+const url = ref('');
 const score = ref('');
 const eRank = ref('');
 const qRank = ref('');
@@ -112,31 +113,28 @@ watch(
 );
 
 // > Life Cycle
-// test===========================
-// console.log('테스트 스텝 입력');
-// const testData = '/main;257;89;2;1';
-// localStorage.setItem('prev', testData);
-// ================================
-
 if (localStorage.prev) {
-  const step = localStorage.prev.split(';');
-  console.log(step);
-
-  [prev.value, imageId.value, score.value, eRank.value, qRank.value] =
-    localStorage.prev.split(';');
-  console.log(prev.value);
-  console.log(imageId.value);
-  console.log(score.value);
-  console.log(eRank.value);
-  console.log(qRank.value);
-
+  localStore.loadPrev();
+  [path.value, url.value, score.value, eRank.value, qRank.value] =
+    localStore.getPrev.split(';');
   console.log(route.fullPath);
 } else {
   router.replace('error');
 }
 
 onMounted(async () => {
-  picBox.value.src = `https://j7b301.p.ssafy.io/api/image?imageId=${imageId.value}`;
+  if (url.value == '-') {
+    if (mainStore.getTempImg) {
+      console.log('사진 있');
+      picBox.value.src = mainStore.getTempImg;
+    } else {
+      console.log('사진 없');
+      localStore.resetPrev();
+      router.push('/main');
+    }
+  } else {
+    picBox.value.src = `https://j7b301.p.ssafy.io/api/image?imageId=${url.value}`;
+  }
 });
 </script>
 

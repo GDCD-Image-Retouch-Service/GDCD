@@ -42,6 +42,10 @@
 
 - [Phaser](https://www.npmjs.com/package/phaser)
 
+- [compressor.js](https://fengyuanchen.github.io/compressorjs/)
+
+- [vuetify.js](https://vuetifyjs.com/en/)
+
 &nbsp;
 
 ### Convention Detail

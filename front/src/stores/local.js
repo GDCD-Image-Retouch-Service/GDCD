@@ -12,6 +12,9 @@ export const useLocalStore = defineStore('local', () => {
   const qRank = ref('-');
 
   // action
+  const resetPrev = () => {
+    delete localStorage.prev;
+  };
   const loadPrev = () => {
     if (localStorage.prev) {
       prev.value = localStorage.prev;
@@ -19,7 +22,7 @@ export const useLocalStore = defineStore('local', () => {
       [path.value, url.value, score.value, eRank.value, qRank.value] =
         prev.value.split(';');
 
-      console.log('로드 완료');
+      console.log(' * 로드 완료');
       console.log('prev :', prev.value);
       console.log('path :', path.value);
       console.log('url :', url.value);
@@ -27,7 +30,7 @@ export const useLocalStore = defineStore('local', () => {
       console.log('eRank :', eRank.value);
       console.log('qRank :', qRank.value);
     } else {
-      console.log('로드 실패');
+      console.log(' * 로드 실패');
     }
   };
   const setPrev = () => {
@@ -61,6 +64,7 @@ export const useLocalStore = defineStore('local', () => {
 
   return {
     // action
+    resetPrev,
     loadPrev,
     setPrev,
     setPath,
