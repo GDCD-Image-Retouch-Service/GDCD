@@ -2,7 +2,7 @@
   <div
     class="optimize-card main outer d-flex flex-column align-items-center justify-content-center"
   >
-    <div v-if="isLoading" class="spacer" />
+    <div class="spacer" />
     <div
       v-if="isLoading"
       class="d-flex align-items-center"
@@ -47,12 +47,12 @@
       </div>
 
       <!-- carousel contents -->
-      <div
-        class="carousel-inner"
-        style="height: 100%; width: 100%; overflow: hidden"
-      >
-        <div class="carousel-item active" style="height: 100%">
-          <div class="carousel-item-1 itemBox d-flex" style="height: 100%">
+      <div class="carousel-inner" style="height: 100%; width: 100%">
+        <div class="carousel-item active" style="height: 100%; width: 100%">
+          <div
+            class="carousel-item-1 itemBox d-flex"
+            style="height: 100%; width: 100%"
+          >
             <div
               class="d-flex flex-column align-items-center justify-content-center"
             >
@@ -87,11 +87,7 @@
               </div>
               <div class="spacer" />
 
-              <img
-                ref="picBox"
-                src=""
-                style="width: 380px; height: 380px; object-fit: cover"
-              />
+              <img ref="picBox" src="" style="width: 380px" />
             </div>
           </div>
         </div>
@@ -104,32 +100,30 @@
         >
           <div
             :class="`carousel-item-${index + 2} itemBox d-flex`"
-            style="height: 100%"
+            style="height: 100%; width: 100%"
           >
             <div
               class="d-flex flex-column align-items-center justify-content-center"
             >
-              <!-- score 보여줄 페공간 -->
+              <!-- score 보여줄 공간 -->
               <div class="spacer" />
               <div
-                class="d-flex align-items-center justify-content-evenly"
-                style="
-                  height: 48px;
-                  width: 100%;
-                  max-width: 100%;
-                  font-size: 12pt;
-                "
+                class="d-flex flex-wrap align-items-center"
+                style="width: 100%; font-size: 12pt"
               >
+                <div class="flex-grow-1 flex-shrink-1"></div>
                 <div class="d-flex flex-column align-items-center">
                   <icon-rank :rank="Math.ceil(9 - (opti.score * 8) / 100)" />
                   <div style="height: 8px" />
                   <div>총점</div>
                 </div>
+                <div class="flex-grow-1 flex-shrink-1"></div>
                 <div class="d-flex flex-column align-items-center">
                   <icon-rank :rank="opti.e" />
                   <div style="height: 8px" />
                   <div>심미성</div>
                 </div>
+                <div class="flex-grow-1 flex-shrink-1"></div>
                 <div class="d-flex flex-column align-items-center">
                   <icon-rank :rank="opti.q" />
                   <div style="height: 8px" />
@@ -138,11 +132,7 @@
               </div>
               <div class="spacer" />
 
-              <img
-                :src="opti.url"
-                class="optimizedImg"
-                style="width: 380px; height: 380px; object-fit: cover"
-              />
+              <img :src="opti.url" class="optimizedImg" style="width: 100%" />
             </div>
           </div>
         </div>
@@ -155,7 +145,7 @@
         type="button"
         data-bs-target="#carouselExampleCaptions"
         data-bs-slide="prev"
-        style="width: 10%"
+        style="width: 30%"
       >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -166,7 +156,7 @@
         type="button"
         data-bs-target="#carouselExampleCaptions"
         data-bs-slide="next"
-        style="width: 10%"
+        style="width: 30%"
       >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>

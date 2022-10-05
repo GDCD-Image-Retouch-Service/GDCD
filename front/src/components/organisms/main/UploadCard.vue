@@ -1,7 +1,6 @@
 <template>
   <div
     class="upload-card main outer d-flex flex-column align-items-center justify-content-center"
-    style="overflow: hidden"
   >
     <div class="spacer" />
     <btn-change-mode />
@@ -74,6 +73,7 @@
         class="camera-box"
         :class="{ flash: isShotPhoto }"
         v-show="!isLoading"
+        style="overflow: hidden"
       >
         <div class="camera-shutter" :class="{ flash: isShotPhoto }"></div>
 
@@ -110,7 +110,7 @@
           v-if="!isPhotoTaken"
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
-          @click="changeCam"
+          @click="isBacktoggle"
         >
           <i class="bi bi-arrow-left-right"></i>
         </div>
@@ -223,6 +223,12 @@ const isBack = ref(false);
 
 const photoName = ref('');
 
+// > method
+const isBacktoggle = () => {
+  isBack.value = !isBack.value;
+};
+
+// > watch
 watch(
   () => mainStore.isCamMode,
   () => {
@@ -243,10 +249,11 @@ watch(
   () => isBack.value,
   () => {
     console.log(isBack.value ? '후면' : '전면');
-    // if (isBack.value) {
-    // } else {
-    //   createBackCameraElement();
-    // }
+    if (isBack.value) {
+      createBackCameraElement();
+    } else {
+      createCameraElement();
+    }
   },
 );
 
@@ -274,29 +281,28 @@ const createCameraElement = () => {
     });
 };
 
-// const createBackCameraElement = () => {
-//   isLoading.value = true;
-//   const constraints = (window.constraints = {
-//     audio: false,
-//     video: {
-//       width: { min: 240, ideal: 720, max: 1080 },
-//       height: { min: 240, ideal: 720, max: 1080 },
-//       facingMode: { exact: 'environment' },
-//     },
-//   });
+const createBackCameraElement = () => {
+  isLoading.value = true;
+  const constraints = (window.constraints = {
+    audio: false,
+    video: {
+      width: { min: 240, ideal: 720, max: 1080 },
+      height: { min: 240, ideal: 720, max: 1080 },
+      facingMode: { exact: 'environment' },
+    },
+  });
 
-//   navigator.mediaDevices
-//     .getUserMedia(constraints)
-//     .then((stream) => {
-//       isLoading.value = false;
-//       camera.value.srcObject = stream;
-//     })
-//     .catch((e) => {
-//       isLoading.value = false;
-//       console.log(' * 카메라 전환 불가', e);
-//       router.go();
-//     });
-// };
+  navigator.mediaDevices
+    .getUserMedia(constraints)
+    .then((stream) => {
+      isLoading.value = false;
+      camera.value.srcObject = stream;
+    })
+    .catch((e) => {
+      console.log(' * 카메라 전환 불가', e);
+      createCameraElement();
+    });
+};
 
 const stopCameraStreame = () => {
   if (camera.value != null) {
@@ -442,10 +448,13 @@ const scoring = async () => {
   left: calc(50% - 66px);
   top: calc(50% - 8px);
 }
+.cam-mode {
+  width: 100%;
+  overflow: hidden;
+}
 .camera-box {
   width: 380px;
   height: 380px;
-  overflow: hidden;
   background-color: #000000;
 }
 
