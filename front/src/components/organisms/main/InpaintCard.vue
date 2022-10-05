@@ -121,7 +121,7 @@ const init = async () => {
 
   const data = await image.objectDetection(mainStore.getTempId);
   console.log(data);
-  objectList.value = data.item.slice(0, 6);
+  objectList.value = data.item;
   isLoading.value = false;
 
   console.log(document.getElementsByClassName('btn-object-badge'));
