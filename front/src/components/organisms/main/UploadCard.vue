@@ -57,15 +57,6 @@
           <i class="bi bi-download"></i>
         </a>
 
-        <!-- Btn Score -->
-        <!-- <router-link
-          v-if="isInput"
-          to="/main/score"
-          class="btn-set-button inner d-flex align-items-center justify-content-center"
-          style="margin-left: 8px"
-        >
-          <i class="bi bi-check-lg"></i>
-        </router-link> -->
         <div
           v-if="isInput"
           @click="scoring"
@@ -114,6 +105,16 @@
           <i v-else class="bi bi-arrow-clockwise"></i>
         </div>
 
+        <!-- Btn Back Camera -->
+        <div
+          v-if="!isPhotoTaken"
+          class="btn-set-button inner d-flex align-items-center justify-content-center"
+          style="margin-left: 8px"
+          @click="changeCam"
+        >
+          <i class="bi bi-arrow-left-right"></i>
+        </div>
+
         <!-- Btn Download -->
         <a
           v-if="isPhotoTaken"
@@ -127,15 +128,6 @@
           <i class="bi bi-download"></i>
         </a>
 
-        <!-- Btn Score -->
-        <!-- <router-link
-          v-if="isInput"
-          to="/main/score"
-          class="btn-set-button inner d-flex align-items-center justify-content-center"
-          style="margin-left: 8px"
-        >
-          <i class="bi bi-check-lg"></i>
-        </router-link> -->
         <div
           v-if="isInput"
           @click="scoring"
