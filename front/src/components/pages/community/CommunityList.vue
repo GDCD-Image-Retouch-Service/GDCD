@@ -19,9 +19,14 @@ import BtnGoToWrite from '@/components/molecules/common/btn/BtnGoToWrite';
 import PostCard from '@/components/molecules/PostCard.vue';
 
 import { useCommunityStore } from '@/stores/community.js';
+import { onBeforeMount } from 'vue';
 
 const communityStore = useCommunityStore();
-communityStore.getPostsAll();
+
+onBeforeMount(() => {
+  communityStore.resetVariable();
+  communityStore.getPostsAll();
+});
 </script>
 
 <style scoped>
