@@ -190,7 +190,7 @@ onMounted(() => {
   border-radius: 10px;
   padding: var(--grid-vertical) var(--grid-side);
   width: 100%;
-  background-color: var(--light-main-color);
+  background-color: var(--main-color);
   margin-bottom: 30px;
   position: relative;
   margin-top: var(--grid-vertical);

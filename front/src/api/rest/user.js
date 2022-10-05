@@ -65,6 +65,7 @@ export default {
           const accountStore = useAccountStore();
           const userStore = useUserStore();
           userStore.loginModal = false;
+          userStore.headerSetDropdown = false;
           accountStore.setIsLogined(true);
           accountStore.setToken(res.data.item.token);
           userStore.setToken(res.data.item.token);
@@ -78,6 +79,9 @@ export default {
 
   logout: () => {
     const accountStore = useAccountStore();
+    const userStore = useUserStore();
+
     accountStore.setIsLogined(false);
+    userStore.headerSetDropdown = false;
   },
 };

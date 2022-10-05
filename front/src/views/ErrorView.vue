@@ -1,12 +1,19 @@
 <template>
   <div
-    class="error-view position-fixed d-flex flex-column align-items-center justify-content-center"
+    class="error-view sub position-fixed d-flex flex-column align-items-center justify-content-center"
   >
     에러페이지 지롱ㅋㅋㅋㅋ
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useUserStore } from '@/stores/user.js';
+const userStore = useUserStore();
+
+userStore.headerSetDropdown = false;
+userStore.loginModal = false;
+userStore.logoutModal = false;
+</script>
 
 <style scoped>
 .landing-view {
