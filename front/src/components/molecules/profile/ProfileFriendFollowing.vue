@@ -5,7 +5,15 @@
       :key="following.userId"
       class="follow-wrap"
     >
-      <div class="user-wrap">
+      <div
+        class="user-wrap"
+        @click="
+          router.push({
+            name: 'ProfilePost',
+            params: { userId: following.userId },
+          })
+        "
+      >
         <img :src="following.profile" alt="" class="profile-image" />
         {{ following.nickname }}
       </div>
@@ -17,9 +25,10 @@
 <script setup>
 import DeleteButton from '@/components/molecules/common/btn/BtnDelete.vue';
 import { useUserStore } from '@/stores/user';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 const userStore = useUserStore();
 
 userStore.getMyFollowing(route.params.userId);
@@ -42,6 +51,7 @@ userStore.getMyFollowing(route.params.userId);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: var(--grid-side);
 }
 .user-wrap {
   display: flex;

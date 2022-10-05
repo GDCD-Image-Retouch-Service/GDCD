@@ -150,6 +150,7 @@ const routes = [
         path: '', // default page
         name: 'ProfilePost',
         component: ProfilePost,
+        props: true,
       },
       {
         path: 'scrap',

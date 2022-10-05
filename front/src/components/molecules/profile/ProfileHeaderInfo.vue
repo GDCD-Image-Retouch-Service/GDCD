@@ -32,7 +32,7 @@
     <div class="posts-scraps-likes">
       <!-- 게시물 -->
       <div
-        @click="router.push({ name: 'ProfilePost' })"
+        @click="router.push({ name: 'ProfilePost', params: { name: post } })"
         class="posts-scraps-likes-item"
       >
         <div :class="{ active: userStore.isItemActive === 0 }">게시물</div>
