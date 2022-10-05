@@ -3,18 +3,27 @@
     <div class="comment-header">
       <!-- 유저 정보 -->
       <div class="user-info">
+        <!-- @click=" router.push({ name: 'ProfilePost', params: { userId:
+        comment.writerNo }, }) " -->
         <img :src="comment.writerProfile" class="profile-image" />
         <div>
           <div class="profile-nickname">
             {{ comment.writerNickname }}
           </div>
-          <div class="profile-date">
+          <div
+            v-if="comment.registTime == comment.updateTime"
+            class="update-wrap"
+          >
             <date-format :updateInfo="comment.registTime" />
+          </div>
+          <div v-else class="update-wrap">
+            <date-format :updateInfo="comment.updateTime" />
+            <span class="update-info">수정</span>
           </div>
         </div>
       </div>
-      <!-- 수정 삭제 -->
 
+      <!-- 수정 삭제 -->
       <div
         class="edit-delete-wrap"
         v-if="userStore.currentUser.item?.user?.userId"
@@ -23,7 +32,7 @@
           v-if="!isClickUpdate"
           @click="
             (isClickUpdate = !isClickUpdate),
-              (communityStore.updateCommentContent = '')
+              (myUpdateComment = comment.content)
           "
         >
           수정
@@ -32,7 +41,7 @@
           v-else
           @click="
             (isClickUpdate = !isClickUpdate),
-              (communityStore.updateCommentContent = '')
+              (myUpdateComment = comment.content)
           "
         >
           취소
@@ -55,22 +64,12 @@
       <input
         type="text"
         class="update-input"
-        v-model="communityStore.updateCommentContent"
-        @keyup.enter="
-          enterUpdateComment(
-            comment.commentId,
-            communityStore.updateCommentContent,
-          )
-        "
+        v-model="myUpdateComment"
+        @keyup.enter="enterUpdateComment(comment.commentId, myUpdateComment)"
       />
       <span
         class="material-icons-outlined update-button"
-        @click="
-          enterUpdateComment(
-            comment.commentId,
-            communityStore.updateCommentContent,
-          )
-        "
+        @click="enterUpdateComment(comment.commentId, myUpdateComment)"
       >
         north
       </span>
@@ -81,10 +80,13 @@
 <script setup>
 import { defineProps, ref, toRefs } from 'vue';
 import { useCommunityStore } from '@/stores/community.js';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores';
 import DateFormat from '../common/DateFormat.vue';
+
 const route = useRoute();
+const router = useRouter();
+console.log(router);
 const communityStore = useCommunityStore();
 const userStore = useUserStore();
 const props = defineProps({
@@ -93,6 +95,7 @@ const props = defineProps({
 
 const { comment } = toRefs(props);
 const isClickUpdate = ref(false);
+const myUpdateComment = ref('');
 
 const enterUpdateComment = (commentId, content) => {
   const data = {
@@ -103,11 +106,10 @@ const enterUpdateComment = (commentId, content) => {
   if (content !== '') {
     communityStore.updateComment(data);
   }
-  console.log(content, '무슨 내용이 들어가?');
   isClickUpdate.value = false;
 };
 
-communityStore.updateCommentContent = '';
+myUpdateComment.value = '';
 </script>
 
 <style scoped>
@@ -165,17 +167,27 @@ communityStore.updateCommentContent = '';
   width: calc(100% - 30px);
   position: absolute;
   left: 0;
-  top: 40px;
+  top: 45px;
   border-radius: 1px;
   border: none;
   border-bottom: 1px solid var(--instagram-dark-grey);
   height: 30px;
   background-color: var(--color-main);
+  outline: none;
 }
 .update-button {
   position: absolute;
   right: 0;
   top: 40px;
   color: var(--instagram-dark-grey);
+}
+.update-wrap {
+  display: flex;
+  font-size: 12px;
+  color: var(--instagram-dark-grey);
+}
+.update-info {
+  color: var(--instagram-dark-grey);
+  font-size: 10px;
 }
 </style>

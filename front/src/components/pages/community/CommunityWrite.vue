@@ -3,7 +3,12 @@
     <!-- 제목 -->
     <div class="wrap">
       <div class="wrap-title">제목</div>
-      <input type="text" class="write-input" v-model="data.title" />
+      <input
+        type="text"
+        class="write-input"
+        v-model="data.title"
+        maxlength="30"
+      />
     </div>
 
     <!-- 이미지 -->

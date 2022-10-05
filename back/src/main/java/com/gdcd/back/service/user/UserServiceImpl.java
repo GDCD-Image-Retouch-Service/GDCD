@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     private Map<String, Object> RESULT_OBJECT;
     private final String ROOT = "/app/data/profiles/";
     private final String PROFILE_REQUEST_URI = "https://j7b301.p.ssafy.io/api/user/profile?from=";
-//    private final String ROOT = "C:/SSAFY/AI/profiles/";
+    //    private final String ROOT = "C:/SSAFY/AI/profiles/";
 //    private final String PROFILE_REQUEST_URI = "http://localhost:8081/api/user/profile?from=";
     private final String DEFAULT_PATH = ROOT + "default.jpeg";
 
@@ -266,6 +266,19 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
             RESULT_OBJECT.put("error", "FOLLOW NOT ALLOWED");
+        }
+        return RESULT_OBJECT;
+    }
+
+    @Override
+    public Map<String, Object> followCheck(String token, Long userId) {
+        RESULT_OBJECT = new HashMap<>();
+        try {
+            UserSimple follower = findUserByEmail(decodeToken(token)).simplify();
+            UserSimple following = findUserById(userId).simplify();
+            RESULT_OBJECT.put("result", followRepository.findByFollowerAndFollowing(follower, following).isPresent());
+        } catch (Exception e) {
+            RESULT_OBJECT.put("error", "FOLLOW CHECK FAILED");
         }
         return RESULT_OBJECT;
     }
