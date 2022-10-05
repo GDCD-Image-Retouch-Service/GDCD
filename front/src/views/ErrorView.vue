@@ -2,7 +2,7 @@
   <div
     class="error-view sub d-flex flex-column align-items-center justify-content-center"
   >
-    에러페이지 지롱ㅋㅋㅋㅋ
+    <img :src="`@/assets/sprite/ChaltteogiSad.png`" ref="chalSad" />
     <icon-rank :rank="1" />
     <icon-rank :rank="2" />
     <icon-rank :rank="3" />
@@ -17,12 +17,28 @@
 
 <script setup>
 import { useUserStore } from '@/stores/user.js';
+import { useMainStore } from '@/stores';
+import { ref, onMounted } from 'vue';
 import IconRank from '@/components/atoms/IconRank';
+import swal from 'sweetalert2';
+
+const chalSad = ref(null);
 const userStore = useUserStore();
+const mainStore = useMainStore();
 
 userStore.headerSetDropdown = false;
 userStore.loginModal = false;
 userStore.logoutModal = false;
+
+// > Life Cycle
+onMounted(() => {
+  // chalSad.value.src = require('@/assets/sprite/ChaltteogiSad.png');
+});
+
+swal.fire({
+  icon: 'success',
+  background: mainStore.getIsDark ? '#3c3c3a' : '#ffffff',
+});
 </script>
 
 <style scoped>

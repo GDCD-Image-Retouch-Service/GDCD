@@ -1,7 +1,7 @@
 <template>
   <div class="app sub d-flex flex-column" :class="theme">
     <header-nav />
-    <router-view class="sub" :key="$route.fullPath" />
+    <router-view :key="$route.fullPath" />
     <footer-nav :class="{ visible: isVisible }" />
   </div>
 </template>
