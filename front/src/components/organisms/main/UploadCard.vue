@@ -118,14 +118,22 @@
         </a>
 
         <!-- Btn Score -->
-        <router-link
+        <!-- <router-link
           v-if="isInput"
           to="/main/score"
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
         >
           <i class="bi bi-check-lg"></i>
-        </router-link>
+        </router-link> -->
+        <div
+          v-if="isInput"
+          @click="scoring"
+          class="btn-set-button inner d-flex align-items-center justify-content-center"
+          style="margin-left: 8px"
+        >
+          <i class="bi bi-check-lg"></i>
+        </div>
       </div>
       <div class="spacer" />
     </div>
@@ -137,11 +145,13 @@ import BtnChangeMode from '@/components/molecules/main/btn/BtnChangeMode.vue';
 import LoadingDots from '@/components/atoms/LoadingDots.vue';
 
 import { ref, watch } from 'vue';
-import { useMainStore } from '@/stores';
+import { useMainStore, useLocalStore } from '@/stores';
 import { useRouter } from 'vue-router';
+import { image } from '@/api/rest';
 
 const router = useRouter();
 const mainStore = useMainStore();
+const localStore = useLocalStore();
 
 // created
 mainStore.isCamModeOff();
@@ -207,6 +217,7 @@ watch(
   },
 );
 
+// 후면카메라 기능
 watch(
   () => isBack.value,
   () => {
@@ -313,6 +324,20 @@ const downloadImage = () => {
       'href',
       mainStore.getTempImg.replace('image/png', 'image/octet-stream'),
     );
+};
+
+// > method
+const scoring = async () => {
+  localStore.loadPrev();
+  isLoading.value = true;
+  const data = await image.scoring(mainStore.getTempFile);
+
+  // await mainStore.setScore(data.item);
+  // console.log('img', mainStore.getTempImg);
+  // console.log('id', mainStore.getTempId);
+  // console.log('e', mainStore.getTempEScore);
+  // console.log('q', mainStore.getTempQScore);
+  console.log('점수반환 데이터', data);
 };
 </script>
 

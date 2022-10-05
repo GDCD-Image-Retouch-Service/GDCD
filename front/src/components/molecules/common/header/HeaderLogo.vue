@@ -1,6 +1,6 @@
 <template>
   <div class="nav-logo-wrap">
-    <img src="@/assets/logo.png" class="logo" alt="logo" />
+    <img :src="`require(@/assets/logo.png)`" class="logo" alt="logo" />
     <div class="nav-logo-title">
       <span class="nav-logo-title-gd">개떡</span><span>찰떡</span>
     </div>
