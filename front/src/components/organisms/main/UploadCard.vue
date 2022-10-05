@@ -282,29 +282,29 @@ const createCameraElement = () => {
     });
 };
 
-const createBackCameraElement = () => {
-  isLoading.value = true;
-  const constraints = (window.constraints = {
-    audio: false,
-    video: {
-      width: { min: 240, ideal: 720, max: 1080 },
-      height: { min: 240, ideal: 720, max: 1080 },
-      facingMode: { exact: 'environment' },
-    },
-  });
+// const createBackCameraElement = () => {
+//   isLoading.value = true;
+//   const constraints = (window.constraints = {
+//     audio: false,
+//     video: {
+//       width: { min: 240, ideal: 720, max: 1080 },
+//       height: { min: 240, ideal: 720, max: 1080 },
+//       facingMode: { exact: 'environment' },
+//     },
+//   });
 
-  navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then((stream) => {
-      isLoading.value = false;
-      camera.value.srcObject = stream;
-    })
-    .catch((e) => {
-      isLoading.value = false;
-      console.log(' * 카메라 전환 불가', e);
-      router.go();
-    });
-};
+//   navigator.mediaDevices
+//     .getUserMedia(constraints)
+//     .then((stream) => {
+//       isLoading.value = false;
+//       camera.value.srcObject = stream;
+//     })
+//     .catch((e) => {
+//       isLoading.value = false;
+//       console.log(' * 카메라 전환 불가', e);
+//       router.go();
+//     });
+// };
 
 const stopCameraStreame = () => {
   if (camera.value != null) {
