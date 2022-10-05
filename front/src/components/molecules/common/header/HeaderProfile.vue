@@ -2,7 +2,7 @@
   <div class="header-profile">
     <div v-if="accountStore.getIsLogined">
       <img
-        :src="userStore.currentUser.item?.user.profile"
+        :src="userStore.currentUser.item?.user?.profile"
         alt=""
         class="profile-image"
         @click="userStore.headerSetDropdown = !userStore.headerSetDropdown"

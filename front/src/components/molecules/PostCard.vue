@@ -20,7 +20,12 @@
     </div>
 
     <!-- post card userprofile -->
-    <div class="post-card-userinfo">
+    <div
+      class="post-card-userinfo"
+      @click="
+        router.push({ name: 'ProfilePost', params: { userId: post.writerNo } })
+      "
+    >
       <img :src="post.writerProfile" class="profile-image" alt="" />
       <div class="profile-nickname">{{ post.writerNickname }}</div>
     </div>
@@ -56,7 +61,13 @@
           @click="(myScrap = !myScrap), communityStore.scrapPost(post.postId)"
         ></i>
       </div>
-      <date-format :updateInfo="post.registTime" />
+      <div v-if="post.registTime == post.updateTime">
+        <date-format :updateInfo="post.registTime" />
+      </div>
+      <div v-else class="update-wrap">
+        <date-format :updateInfo="post.updateTime" />
+        <span class="update-info">수정</span>
+      </div>
     </div>
   </div>
 </template>
@@ -65,9 +76,10 @@
 import DateFormat from '@/components/molecules/common/DateFormat.vue';
 import { defineProps, ref } from 'vue';
 import { useCommunityStore } from '@/stores/community';
+import { useRouter } from 'vue-router';
 
 const communityStore = useCommunityStore();
-
+const router = useRouter();
 const props = defineProps({
   post: Object,
   likeCount: Number,
@@ -160,5 +172,13 @@ const clickLike = () => {
 .herat-wrap {
   display: flex;
   gap: 3px;
+}
+.update-wrap {
+  display: flex;
+  font-size: 14px;
+}
+.update-info {
+  color: var(--instagram-dark-grey);
+  font-size: 10px;
 }
 </style>
