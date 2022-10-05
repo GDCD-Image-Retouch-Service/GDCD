@@ -14,6 +14,8 @@
       placeholder="댓글 달기..."
       v-model="communityStore.thisContent"
       @keyup.enter="createComment()"
+      minlength="1"
+      maxlength="20"
     />
 
     <!-- 버튼 -->
@@ -36,7 +38,9 @@ const createComment = () => {
     postId: route.params.postId,
     content: communityStore.thisContent,
   };
-  communityStore.createComment(data);
+  if (data.content != '') {
+    communityStore.createComment(data);
+  }
   communityStore.thisContent = '';
 };
 </script>
