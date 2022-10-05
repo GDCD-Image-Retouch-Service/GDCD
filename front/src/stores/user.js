@@ -109,8 +109,8 @@ export const useUserStore = defineStore('userStore', {
         .then((res) => {
           // console.dir(res);
           this.currentUser = res.data;
-          this.updateProfile = res.data.item.user.profile;
-          this.updateNickname = res.data.item.user.nickname;
+          this.updateProfile = res.data.item?.user?.profile;
+          this.updateNickname = res.data.item?.user?.nickname;
           // console.log(res.data);
         })
         .catch((err) => {

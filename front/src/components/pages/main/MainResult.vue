@@ -2,6 +2,8 @@
   <div
     class="main-result d-flex flex-column align-items-center justify-content-center"
   >
+    <div class="spacer"></div>
+    <div class="spacer"></div>
     <result-card />
   </div>
 </template>
