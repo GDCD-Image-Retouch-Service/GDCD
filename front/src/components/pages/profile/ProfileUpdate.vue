@@ -50,7 +50,6 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const userStore = useUserStore();
-
 const fileInput = ref(null);
 
 let imgBox = ref(null);
@@ -72,10 +71,11 @@ const checkOoverlap = (nickname) => {
 
 //  회원 정보 수정 요청
 async function updateProfile(name, file) {
-  const userId = userStore.currentUser.item?.user?.userId;
+  // const userId = userStore.currentUser.item?.user?.userId;
+
   await userStore.updateUserNickname(name);
+
   await userStore.updateUserProfile(file);
-  await userStore.getOtherinfo(userId);
 
   router.push({
     name: 'ProfilePost',
@@ -85,9 +85,16 @@ async function updateProfile(name, file) {
 </script>
 
 <style scoped>
+@media (min-width: 1024px) {
+  .profile-update {
+    min-width: 935px;
+    max-width: 935px;
+  }
+}
+
 .profile-update {
   width: calc(100% - 2 * var(--grid-side));
-  margin-left: var(--grid-side);
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: var(--grid-vertical);

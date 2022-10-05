@@ -25,8 +25,28 @@ export const useCommunityStore = defineStore('communityStore', {
 
     updateCommentContent: '',
     targetImage: '',
+
+    writeFirstModal: true,
   }),
   actions: {
+    resetVariable() {
+      // 전체 게시글 조회
+      (this.postsAll = {}),
+        // 게시글 상세
+        (this.post = {}),
+        // 게시물 리스트
+        (this.postList = []),
+        // 전체 댓글 조회
+        (this.commentAll = {}),
+        (this.isToggleButton = true),
+        (this.isOpenComment = false),
+        (this.thisContent = ''),
+        // 이미지 선택
+        (this.selectImage = ''),
+        (this.updateCommentContent = ''),
+        (this.targetImage = '');
+    },
+
     // 전체 게시글 조회
     getPostsAll() {
       axios({
@@ -83,6 +103,7 @@ export const useCommunityStore = defineStore('communityStore', {
         params: data,
       })
         .then((res) => {
+          this.postList = [];
           this.postList = res.data.item;
           console.log(res.data);
         })
@@ -93,53 +114,55 @@ export const useCommunityStore = defineStore('communityStore', {
 
     // 게시글 생성
     createPost: (data) => {
-      axios({
-        url: post.post(),
-        method: 'POST',
-        headers: {
-          token: useUserStore().token,
-        },
-        data: {
-          title: data.title,
-          content: data.content,
-          privacyBound: data.privacyBound,
-          images: data.images,
-          representative: data.representative,
-        },
-      })
-        .then((res) => {
-          this.getPostsAll();
-          console.log(res.data);
+      return new Promise((resolve, reject) => {
+        axios({
+          url: post.post(),
+          method: 'POST',
+          headers: {
+            token: useUserStore().token,
+          },
+          data: {
+            title: data.title,
+            content: data.content,
+            privacyBound: data.privacyBound,
+            images: data.images,
+            representative: data.representative,
+          },
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
     },
 
     // 게시글 수정
     updatePost: (data) => {
-      console.log(data, '데이터 도착');
-      axios({
-        url: post.post(),
-        method: 'PUT',
-        headers: {
-          token: useUserStore().token,
-        },
-        data: {
-          postId: data.postId,
-          title: data.title,
-          content: data.content,
-          privacyBound: data.privacyBound,
-          images: data.images,
-          representative: data.representative,
-        },
-      })
-        .then((res) => {
-          console.log(res.data, '수정완료');
+      return new Promise((resolve, reject) => {
+        axios({
+          url: post.post(),
+          method: 'PUT',
+          headers: {
+            token: useUserStore().token,
+          },
+          data: {
+            postId: data.postId,
+            title: data.title,
+            content: data.content,
+            privacyBound: data.privacyBound,
+            images: data.images,
+            representative: data.representative,
+          },
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
     },
 
     // 게시글 삭제

@@ -23,8 +23,18 @@ communityStore.getMyPostsAll(route.params.userId);
 </script>
 
 <style scoped>
+@media (min-width: 1024px) {
+  .profile-friend {
+    min-width: 935px;
+    max-width: 935px;
+  }
+  .scrap-wrap {
+    max-width: calc(25% - 21px);
+  }
+}
+
 .profile-friend {
   width: calc(100% - 2 * var(--grid-side));
-  margin: var(--grid-side);
+  margin: 0 auto;
 }
 </style>

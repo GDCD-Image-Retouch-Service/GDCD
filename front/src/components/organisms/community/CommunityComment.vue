@@ -1,18 +1,20 @@
 <template>
-  <div
-    class="community-review common-image"
-    v-if="
-      communityStore.isOpenComment &
-      (communityStore.commentAll.item?.comments.length !== 0)
-    "
-  >
-    <div class="review-wrap">
-      <div class="review-item">
-        <community-comment-item />
+  <div>
+    <community-comment-input v-if="communityStore.isOpenComment" />
+    <div
+      class="community-review common-image"
+      v-if="
+        communityStore.isOpenComment &
+        (communityStore.commentAll.item?.comments.length !== 0)
+      "
+    >
+      <div class="review-wrap">
+        <div class="review-item">
+          <community-comment-item />
+        </div>
       </div>
     </div>
   </div>
-  <community-comment-input v-if="communityStore.isOpenComment" />
 </template>
 
 <script setup>
@@ -24,8 +26,6 @@ import { useRoute } from 'vue-router';
 
 const communityStore = useCommunityStore();
 const route = useRoute();
-
-// communityStore.getPost(route.params.postId);
 
 const postId = route.params.postId;
 
@@ -39,20 +39,21 @@ console.log(postId);
 .community-review {
   position: relative;
   border: 1px solid var(--instagram-grey);
-  margin-top: var(--grid-vertical);
+  border-top: none;
   margin-bottom: calc(50px);
-  border-radius: 10px;
+  border-radius: 0 0 10px 10px;
   max-height: calc(
     100vh - var(--size-h-header) - var(--size-h-footer) - 50px -
       var(--grid-vertical) - var(--grid-vertical)
   );
   overflow: hidden;
-  margin-bottom: 70px;
+  margin-bottom: var(--grid-vertical);
+  background-color: var(--light-main-color);
 }
 .review-wrap {
   width: calc(100% - 2 * var(--grid-side));
   margin-top: var(--grid-vertical);
-  margin-bottom: calc(50px);
+  margin-bottom: var(--grid-vertical);
   margin-left: var(--grid-side);
   max-height: calc(
     100vh - var(--size-h-header) - var(--size-h-footer) - 50px -

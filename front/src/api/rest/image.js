@@ -98,4 +98,18 @@ export default {
         });
     });
   },
+
+  // 인페인팅
+  inpainting: function (payload) {
+    return new Promise((resolve, reject) => {
+      axiosApi
+        .post(REST_PATH + '/inpainting', payload)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
 };

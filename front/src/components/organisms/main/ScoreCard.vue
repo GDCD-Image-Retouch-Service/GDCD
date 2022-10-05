@@ -99,8 +99,15 @@ const init = async () => {
   picBox.value.src = mainStore.getTempImg;
 
   const data = await image.scoring(mainStore.getTempFile);
+
+  console.log('점수반환 데이터', data);
+
   score.value = await mainStore.setScore(data.item);
   save();
+  console.log('img', mainStore.getTempImg);
+  console.log('id', mainStore.getTempId);
+  console.log('e', mainStore.getTempEScore);
+  console.log('q', mainStore.getTempQScore);
   isLoading.value = false;
 };
 

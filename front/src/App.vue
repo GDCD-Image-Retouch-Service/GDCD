@@ -1,9 +1,7 @@
 <template>
   <div class="app d-flex flex-column" :class="theme">
     <header-nav />
-    <div class="app-container sub flex-grow-1 flex-shrink-1">
-      <router-view :key="$route.fullPath" />
-    </div>
+    <router-view :key="$route.fullPath" />
     <footer-nav :class="{ visible: isVisible }" />
   </div>
 </template>
@@ -64,10 +62,11 @@ const theme = computed(() => (mainStore.getIsDark ? 'dark' : 'light'));
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap');
 @font-face {
-  font-family: 'SFUI';
-  src: url('@/assets/font/sf-ui-text-2-cufonfonts/SFUIText-Light.ttf')
+  font-family: 'Nanum Gothic';
+  src: url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400')
     format('truetype');
 }
+
 :root {
   /* 비율 */
   --size-h-spacer: 20px;
@@ -212,7 +211,7 @@ body::-webkit-scrollbar {
   font-size: 16px;
 
   /* font-family: 'Noto Sans KR', sans-serif; */
-  font-family: 'SFUI';
+  font-family: 'Nanum Gothic';
   scroll-behavior: smooth;
 }
 
@@ -243,5 +242,11 @@ a {
 
 .visible {
   display: none;
+}
+.nonScroll {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 </style>

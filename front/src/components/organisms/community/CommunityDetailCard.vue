@@ -7,7 +7,15 @@
 
     <div class="profile-update-delete">
       <!-- 프로필 -->
-      <div class="user-profile">
+      <div
+        class="user-profile"
+        @click="
+          router.push({
+            name: 'ProfilePost',
+            params: { userId: communityStore.post.item?.userId },
+          })
+        "
+      >
         <img
           :src="communityStore.post.item?.writerProfile"
           alt=""
@@ -38,7 +46,12 @@
     </div>
 
     <!-- 이미지 -->
-    <div v-if="communityStore.post.item?.images?.length == 1">일</div>
+    <div v-if="communityStore.post.item?.images?.length == 1">
+      <img
+        :src="communityStore.post.item?.images[0].imageUrl"
+        class="main-image common-image"
+      />
+    </div>
 
     <div v-if="communityStore.post.item?.images?.length == 2">
       <div style="position: relative">
@@ -48,20 +61,21 @@
         />
         <img
           :src="communityStore.post.item?.images[1].imageUrl"
-          class="main-image-second common-image"
+          class="main-image-second"
           v-if="isClick"
         />
       </div>
     </div>
-
-    <div class="button-wrap">
+    <div
+      class="button-wrap"
+      v-show="communityStore.post.item?.images?.length == 2"
+    >
       <div class="image-toggle-button">
         <div class="button-left"></div>
         <div class="button-right"></div>
       </div>
     </div>
 
-    <btn-image-toggle />
     <span class="card-content">
       {{ communityStore.post.item?.content }}
     </span>
@@ -109,7 +123,6 @@
 </template>
 
 <script setup>
-import { BtnImageToggle } from '@/components/molecules/common/btn/BtnImageToggle.vue';
 import { useCommunityStore } from '@/stores/community.js';
 import { useUserStore } from '@/stores/user.js';
 import { watch } from '@vue/runtime-core';
@@ -165,6 +178,9 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.oneImage {
+  display: none;
+}
 .community-detail-card {
   display: flex;
   align-items: flex-start;
@@ -177,6 +193,7 @@ onMounted(() => {
   background-color: var(--light-main-color);
   margin-bottom: 30px;
   position: relative;
+  margin-top: var(--grid-vertical);
 }
 .edit-icon {
   position: absolute;
@@ -246,6 +263,7 @@ onMounted(() => {
   position: absolute;
   top: 0;
   left: 0;
+  border-radius: 10px;
 }
 .button-wrap {
   width: 100%;

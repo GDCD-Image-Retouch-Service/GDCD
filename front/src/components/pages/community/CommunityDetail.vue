@@ -8,23 +8,18 @@
 <script setup>
 import CommunityDetailCard from '@/components/organisms/community/CommunityDetailCard.vue';
 import CommunityComment from '@/components/organisms/community/CommunityComment.vue';
-
-// import Swal from 'sweetalert2';
-
-// Swal.fire({
-//   title: 'Error!',
-//   text: 'Do you want to continue',
-//   icon: 'error',
-
-//   confirmButtonText: 'Cool',
-// });
 </script>
 
 <style scoped>
+@media (min-width: 1024px) {
+  .community-detail {
+    min-width: 600px;
+    max-width: 600px;
+  }
+}
 .community-detail {
   width: calc(100% - 2 * var(--grid-side));
-  margin: var(--grid-vertical) var(--grid-side) 0 var(--grid-side);
-
-  overflow: hidden;
+  margin: 0 auto;
+  overflow: scroll;
 }
 </style>

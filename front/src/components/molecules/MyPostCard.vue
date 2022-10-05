@@ -74,7 +74,6 @@ const { post } = toRefs(props);
   font-size: 14px;
   margin-top: 35px;
 }
-
 .dot-icon {
   position: absolute;
   right: 0;
