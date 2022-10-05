@@ -6,33 +6,31 @@ export const useLocalStore = defineStore('local', () => {
   // state
   const prev = ref('');
   const curr = ref('');
-  const next = ref('');
 
   // action
   const setPrev = (step) => {
-    localStorage.prev = step;
     prev.value = step;
   };
-  const setCurr = (newStep) => {
-    curr.value = newStep;
+  const setCurr = (step) => {
+    // 현 url
+    // image id
+    // image url
+    // score e
+    // score q
+    curr.value = step;
   };
-  const setNext = (newStep) => {
-    next.value = newStep;
-  };
+
   // getter
   const getPrev = computed(() => prev.value);
   const getCurr = computed(() => prev.value);
-  const getNext = computed(() => prev.value);
 
   return {
     // action
     setPrev,
     setCurr,
-    setNext,
 
     // getter
     getPrev,
     getCurr,
-    getNext,
   };
 });

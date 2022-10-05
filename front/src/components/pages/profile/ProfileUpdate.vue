@@ -78,7 +78,7 @@ async function updateProfile(name, file) {
 
   await userStore.updateUserProfile(file);
 
-  console.log('resp: ', resp);
+  // console.log('resp: ', resp);
 
   router.push({
     name: 'ProfilePost',
