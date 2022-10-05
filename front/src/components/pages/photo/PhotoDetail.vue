@@ -6,12 +6,16 @@
       alt=""
       class="main-image common-image"
     />
-    <div class="button-wrap">
+    <div
+      class="button-wrap"
+      v-show="communityStore.selectImage.afterImage != null"
+    >
       <div class="image-toggle-button">
         <div class="button-left"></div>
         <div class="button-right"></div>
       </div>
     </div>
+
     <div class="tag-wrap">
       <div
         v-for="(tag, index) in communityStore.selectImage.beforeImage.imageTag"
@@ -55,10 +59,15 @@ onMounted(() => {
     max-width: 600px;
   }
 }
-
+.nullAfterImage {
+  display: none;
+}
 .photo-detail {
   padding: var(--grid-vertical) var(--grid-side);
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-vertical);
 }
 .main-image {
   width: 100%;
@@ -68,7 +77,6 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: var(--grid-vertical);
 }
 .tag {
   padding: 3px 10px;
@@ -80,20 +88,19 @@ onMounted(() => {
 }
 .image-toggle-button {
   width: 40px;
-  margin-top: var(--grid-vertical);
   height: 20px;
-  border-radius: 30px;
-  background-color: var(--instagram-grey);
   display: flex;
   overflow: hidden;
 }
 .button-left {
   width: 50%;
-  background-color: var(--instagram-dark-grey);
+  border-right: none;
+  border: 1px solid var(--instagram-grey);
+  border-radius: 2px;
 }
 .button-right {
   width: 50%;
-  border-radius: 0 30px 30px 0;
+  border: 1px solid var(--instagram-grey);
 }
 .image-toggle-button:active .button-left {
   background-color: var(--instagram-grey);

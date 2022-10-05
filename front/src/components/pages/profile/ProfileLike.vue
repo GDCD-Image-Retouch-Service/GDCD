@@ -15,14 +15,12 @@
           })
         "
       ></div>
-      <btn-image-toggle />
     </div>
   </div>
 </template>
 
 <script setup>
 import { useUserStore } from '@/stores/user.js';
-import { BtnImageToggle } from '@/components/molecules/common/btn/BtnImageToggle.vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -55,7 +53,7 @@ userStore.getMyLike(route.params.userId);
   gap: 10px;
 }
 .scrap-wrap {
-  width: calc(50% - 10px);
+  width: calc(50% - 5px);
 }
 .scrap-image {
   width: 100%;

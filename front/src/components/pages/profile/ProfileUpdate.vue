@@ -50,7 +50,6 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const userStore = useUserStore();
-
 const fileInput = ref(null);
 
 let imgBox = ref(null);

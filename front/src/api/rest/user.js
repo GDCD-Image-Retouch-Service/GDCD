@@ -64,14 +64,13 @@ export default {
         .then((res) => {
           const accountStore = useAccountStore();
           const userStore = useUserStore();
+          userStore.loginModal = false;
           accountStore.setIsLogined(true);
           accountStore.setToken(res.data.item.token);
           userStore.setToken(res.data.item.token);
-          console.log('로그인 성공');
           resolve(res);
         })
         .catch((error) => {
-          console.log('로그인 실패');
           reject(error);
         });
     });

@@ -261,6 +261,29 @@
         </div>
       </div>
     </div>
+    <!-- 첫 번째 모달 -->
+    <template>
+      <div>
+        <v-dialog v-model="communityStore.writeFirstModal" class="dialog">
+          <div class="write-first-modal">
+            <div class="modal-title">제목, 이미지, 내용은 필수 값입니다.</div>
+            <div class="modal-close" @click="dialog = false">확인</div>
+          </div>
+        </v-dialog>
+      </div></template
+    >
+
+    <!-- 제출 실패 모달 -->
+    <template>
+      <div>
+        <v-dialog v-model="dialog">
+          <div class="create-post-modal">
+            <div class="modal-title">제목, 이미지, 내용은 필수 값입니다.</div>
+            <div class="modal-close" @click="dialog = false">확인</div>
+          </div>
+        </v-dialog>
+      </div></template
+    >
   </div>
 </template>
 
@@ -271,11 +294,11 @@ import { useUserStore } from '@/stores/user.js';
 import { ref } from 'vue';
 // import router from '@/router';
 import { useRouter } from 'vue-router';
-import Swal from 'sweetalert2';
 
 const router = useRouter();
 const communityStore = useCommunityStore();
 const userStore = useUserStore();
+let dialog = ref(false);
 
 const data = ref({
   title: '',
@@ -288,15 +311,8 @@ const data = ref({
 const firstCheck = ref(false);
 const secondCheck = ref(false);
 const selectTags = ref([]);
-async function createMyPost(context) {
-  await communityStore.createPost(context);
-  router.push({
-    name: 'CommunityList',
-  });
-}
-const createPost = (data) => {
-  console.log(userStore.photoSelect);
 
+async function createPost(data) {
   const context = {
     title: data.title,
     content: data.content,
@@ -304,27 +320,19 @@ const createPost = (data) => {
     images: userStore.selectedPhotoList,
     representative: 0,
   };
-  Swal.fire({
-    title: '작성하시겠습니까?',
-    showCancelButton: true,
-    confirmButtonColor: '#ffe49c',
-    cancelButtonColor: '#3D4C53',
-    confirmButtonText: '네, 작성할게요',
-    cancelButtonText: '아니오',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      if (
-        (context.title != '') &
-        (context.images != []) &
-        (context.content != '')
-      ) {
-        createMyPost(context);
-      } else {
-        Swal.fire('잘못된 양식입니다.', '제목, 이미지, 내용은 필수 값입니다.');
-      }
-    }
-  });
-};
+  if (
+    (context.title != '') &
+    (context.images != []) &
+    (context.content != '')
+  ) {
+    await communityStore.createPost(context);
+    router.push({
+      name: 'CommunityList',
+    });
+  } else {
+    dialog.value = true;
+  }
+}
 
 const selectPhoto = () => {
   userStore.urlPhotoList = userStore.urlList;
@@ -388,23 +396,19 @@ userStore.selectTag = [];
     bottom: -98px;
   }
 }
-
 @media (min-width: 1024px) {
   .community-write {
     min-width: 935px;
     max-width: 935px;
   }
 }
-
 .firstCheck,
 .secondCheck {
   opacity: 0.5;
 }
-
 .community-write {
   width: calc(100% - 2 * var(--grid-side));
   margin: var(--grid-vertical) auto;
-
   overflow: scroll;
   display: flex;
   flex-direction: column;
@@ -534,5 +538,44 @@ userStore.selectTag = [];
   position: absolute;
   top: calc(50% - 12px);
   left: calc(50% - 75px);
+}
+.write-first-modal {
+  width: 100%;
+  max-width: 400px;
+  height: 170px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+}
+.create-post-modal {
+  width: 100%;
+  max-width: 400px;
+  height: 170px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+}
+.modal-title {
+  width: 100%;
+  font-weight: 700;
+  position: absolute;
+  top: calc(40% - 12px);
+  color: var(--black);
+  font-family: 'Nanum Gothic';
+}
+.modal-close {
+  background-color: var(--theme-color);
+  border-radius: 5px;
+  border: none;
+  color: var(--light-main-color);
+  font-weight: 500;
+  width: 50px;
+  position: absolute;
+  top: calc(75% - 12px);
+  left: calc(50% - 25px);
 }
 </style>

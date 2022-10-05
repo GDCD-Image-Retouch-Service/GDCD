@@ -53,7 +53,7 @@ userStore.getMyScrap(route.params.userId);
   gap: 10px;
 }
 .scrap-wrap {
-  width: calc(50% - 10px);
+  width: calc(50% - 5px);
 }
 .scrap-image {
   width: 100%;
