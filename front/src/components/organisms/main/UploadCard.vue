@@ -137,7 +137,7 @@ import BtnChangeMode from '@/components/molecules/main/btn/BtnChangeMode.vue';
 import LoadingDots from '@/components/atoms/LoadingDots.vue';
 
 import { ref, watch } from 'vue';
-import { useMainStore } from '@/stores/main';
+import { useMainStore } from '@/stores';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -154,8 +154,13 @@ const isInput = ref(false);
 const setPicBox = () => {
   const file = picInputButton.value.files[0];
 
-  if (file && file.size > 2 * 1024 * 1024) {
-    alert('파일 사이즈가 2mb 를 넘습니다.');
+  if (file && file.size > 1024 * 1024) {
+    alert('파일 사이즈가 mb 를 넘습니다.');
+    picInputButton.value.files[0] = null;
+    isInput.value = false;
+    return;
+  } else if (file && file.size < 360 * 360) {
+    alert('파일 사이즈가 지나치게 작습니다.');
     picInputButton.value.files[0] = null;
     isInput.value = false;
     return;

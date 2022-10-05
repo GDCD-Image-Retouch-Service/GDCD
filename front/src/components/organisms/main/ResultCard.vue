@@ -66,16 +66,24 @@ import IconRank from '@/components/atoms/IconRank.vue';
 import { ref, onMounted, watch } from 'vue';
 import { image } from '@/api/rest';
 import { useMainStore, useAccountStore } from '@/stores/';
+import { useRouter, useRoute } from 'vue-router';
 
 // init
+const router = useRouter();
+const route = useRoute();
 const mainStore = useMainStore();
 const accountStore = useAccountStore();
 
 // data
-const isLoading = ref(true);
+const prev = ref('');
+const imageId = ref('');
+const score = ref('');
+const eRank = ref('');
+const qRank = ref('');
+
+const isLoading = ref(false);
 const picBox = ref(null);
 // const data = ref(null);
-const score = ref(0);
 
 // method
 const save = async () => {
@@ -95,22 +103,6 @@ const save = async () => {
   mainStore.setTempId(data.item);
 };
 
-const init = async () => {
-  picBox.value.src = mainStore.getTempImg;
-
-  const data = await image.scoring(mainStore.getTempFile);
-
-  console.log('점수반환 데이터', data);
-
-  score.value = await mainStore.setScore(data.item);
-  save();
-  console.log('img', mainStore.getTempImg);
-  console.log('id', mainStore.getTempId);
-  console.log('e', mainStore.getTempEScore);
-  console.log('q', mainStore.getTempQScore);
-  isLoading.value = false;
-};
-
 // Watch
 watch(
   () => accountStore.getIsLogined,
@@ -119,9 +111,32 @@ watch(
   },
 );
 
-// Life Cycle
-onMounted(() => {
-  init();
+// > Life Cycle
+// test===========================
+// console.log('테스트 스텝 입력');
+// const testData = '/main;257;89;2;1';
+// localStorage.setItem('prev', testData);
+// ================================
+
+if (localStorage.prev) {
+  const step = localStorage.prev.split(';');
+  console.log(step);
+
+  [prev.value, imageId.value, score.value, eRank.value, qRank.value] =
+    localStorage.prev.split(';');
+  console.log(prev.value);
+  console.log(imageId.value);
+  console.log(score.value);
+  console.log(eRank.value);
+  console.log(qRank.value);
+
+  console.log(route.fullPath);
+} else {
+  router.replace('error');
+}
+
+onMounted(async () => {
+  picBox.value.src = `https://j7b301.p.ssafy.io/api/image?imageId=${imageId.value}`;
 });
 </script>
 
