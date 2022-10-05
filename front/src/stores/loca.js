@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 
-export const useLocalStore = defineStore('local', () => {
+export const useLocalStore = defineStore('loca', () => {
   // init
   // state
   const prev = ref(localStorage.prev);
