@@ -104,7 +104,7 @@
     >
       <span
         class="material-icons-outlined"
-        @click="communityStore.deletePost(postId)"
+        @click="deleteAlert = true"
         style="color: var(--instagram-dark-grey)"
       >
         delete
@@ -188,6 +188,23 @@
         }}</span>
       </div>
     </div>
+
+    <template v-if="deleteAlert">
+      <div class="error-alert">
+        <div class="create-post-modal">
+          <div class="modal-title">정말 삭제하시겠습니까?</div>
+          <div class="modal-close" @click="deletePost()">확인</div>
+        </div>
+      </div>
+    </template>
+
+    <template v-if="guideAlert">
+      <div class="error-alert">
+        <div class="create-post-modal">
+          <div class="modal-title">삭제되었습니다.</div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -207,6 +224,8 @@ const userStore = useUserStore();
 const communityStore = useCommunityStore();
 
 const isClick = ref(false);
+const deleteAlert = ref(false);
+const guideAlert = ref(false);
 
 const clickLike = () => {
   if (!communityStore.post.item?.like) {
@@ -249,6 +268,15 @@ onMounted(() => {
       isClick.value = false;
     });
 });
+
+const deletePost = () => {
+  communityStore.deletePost(postId);
+  deleteAlert.value = true;
+  guideAlert.value = true;
+  setTimeout(function () {
+    router.push({ name: 'CommunityList' });
+  }, 2000);
+};
 </script>
 
 <style scoped>
@@ -257,7 +285,7 @@ onMounted(() => {
 }
 .community-detail-card {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   flex-direction: column;
   border: 1px solid var(--instagram-grey);
   border-radius: 10px;
@@ -274,6 +302,16 @@ onMounted(() => {
   right: var(--grid-side);
   font-size: 24px;
   color: var(--black);
+}
+
+.error-alert {
+  width: calc(100% - 2 * var(--grid-side));
+  position: fixed;
+  top: calc(50vh - 135px);
+  background-color: var(--color-main);
+  border: 1px solid var(--instagram-grey);
+  height: 170px;
+  text-align: center;
 }
 
 /* 제목 */
@@ -429,5 +467,26 @@ onMounted(() => {
 .image-toggle-button:active .button-right {
   border: 1px solid var(--instagram-grey);
   background-color: var(--instagram-grey);
+}
+.modal-title {
+  width: 100%;
+  font-weight: 700;
+  position: absolute;
+  top: calc(40% - 12px);
+  color: var(--color-reverse);
+  font-family: 'Nanum Gothic';
+}
+.modal-close {
+  background-color: var(--theme-color);
+  border-radius: 5px;
+  border: none;
+  color: var(--light-main-color);
+  font-weight: 500;
+  width: 50px;
+  height: 38px;
+  line-height: 38px;
+  position: absolute;
+  top: calc(75% - 12px);
+  left: calc(50% - 25px);
 }
 </style>

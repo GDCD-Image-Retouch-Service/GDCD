@@ -259,6 +259,14 @@
         </div>
       </div>
     </div>
+    <template v-if="updateAlert">
+      <div class="error-alert">
+        <div class="create-post-modal">
+          <div class="modal-title">수정되었습니다.</div>
+        </div>
+        <div></div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -274,6 +282,7 @@ const myRouter = useRouter();
 const route = useRoute();
 const communityStore = useCommunityStore();
 const userStore = useUserStore();
+const updateAlert = ref(false);
 
 const data = ref({
   title: communityStore.post.item?.title,
@@ -286,7 +295,6 @@ const data = ref({
 const firstCheck = ref(false);
 const secondCheck = ref(false);
 const selectTags = ref([communityStore.post.item?.images[0]?.imageTag]);
-
 console.log(route.params.postId);
 
 async function updatePost(data) {
@@ -300,11 +308,13 @@ async function updatePost(data) {
   };
 
   await communityStore.updatePost(context);
-
-  myRouter.push({
-    name: 'CommunityDetail',
-    params: { postId: route.params.postId },
-  });
+  updateAlert.value = true;
+  setTimeout(function () {
+    myRouter.push({
+      name: 'CommunityDetail',
+      params: { postId: route.params.postId },
+    });
+  }, 3000);
 }
 
 const selectPhoto = () => {

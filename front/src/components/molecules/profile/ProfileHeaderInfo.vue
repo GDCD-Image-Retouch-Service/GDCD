@@ -10,7 +10,10 @@
             userStore.profile.item?.user?.userId
           "
         >
-          <i class="bi bi-caret-right-fill" style="color: var(--black)"></i>
+          <i
+            class="bi bi-caret-right-fill"
+            style="color: var(--theme-color)"
+          ></i>
         </router-link>
       </div>
       <div>
@@ -73,6 +76,23 @@
         <div :class="{ active: userStore.isItemActive === 2 }">좋아요</div>
         <div>{{ userStore.profile?.item?.user?.likeCount }}</div>
       </div>
+      <template>
+        <div>
+          <v-alert type="success">I'm a success alert.</v-alert>
+
+          <br />
+
+          <v-alert type="info">I'm an info alert.</v-alert>
+
+          <br />
+
+          <v-alert type="warning">I'm a warning alert.</v-alert>
+
+          <br />
+
+          <v-alert type="error">I'm an error alert.</v-alert>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -115,12 +135,14 @@ userStore.checkMyFollow(route.params.userId);
   display: flex;
   justify-content: space-between;
   font-weight: 700;
+  margin-right: 10px;
 }
 .posts-scraps-likes {
   display: flex;
   justify-content: space-between;
   text-align: center;
   padding: 0 2px;
+  padding-right: 10px;
 }
 .posts-scraps-likes-item {
   display: flex;

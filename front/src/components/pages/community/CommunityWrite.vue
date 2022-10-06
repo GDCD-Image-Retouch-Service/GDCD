@@ -314,16 +314,15 @@
       </div></template
     >
     <!-- 제출 실패 모달 -->
-    <template>
-      <div>
-        <v-dialog v-model="dialog">
-          <div class="create-post-modal">
-            <div class="modal-title">제목, 이미지, 내용은 필수 값입니다.</div>
-            <div class="modal-close" @click="dialog = false">확인</div>
-          </div>
-        </v-dialog>
-      </div></template
-    >
+
+    <template v-if="dialog">
+      <div class="error-alert">
+        <div class="create-post-modal">
+          <div class="modal-title">제목, 이미지, 내용은 필수 값입니다.</div>
+          <div class="modal-close" @click="dialog = false">확인</div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -332,7 +331,6 @@ import DateFormat from '@/components/molecules/common/DateFormat.vue';
 import { useCommunityStore } from '@/stores/community.js';
 import { useUserStore } from '@/stores/user.js';
 import { ref } from 'vue';
-// import router from '@/router';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -362,7 +360,7 @@ async function createPost(data) {
   };
   if (
     (context.title != '') &
-    (context.images != []) &
+    (context.images.length != 0) &
     (context.content != '')
   ) {
     await communityStore.createPost(context);
@@ -371,6 +369,9 @@ async function createPost(data) {
     });
   } else {
     dialog.value = true;
+    setTimeout(function () {
+      dialog.value = false;
+    }, 2000);
   }
 }
 
@@ -446,6 +447,14 @@ communityStore.writeSecondModal = false;
     max-width: 935px;
   }
 }
+.error-alert {
+  width: calc(100% - 2 * var(--grid-side));
+  position: fixed;
+  top: calc(50vh - 135px);
+  background-color: var(--color-main);
+  border: 1px solid var(--instagram-grey);
+}
+
 .firstCheck,
 .secondCheck {
   opacity: 0.5;
@@ -472,10 +481,10 @@ communityStore.writeSecondModal = false;
   height: 45px;
   border: 1px solid var(--instagram-grey);
   border-radius: 5px;
-  background-color: var(--light-main-color);
+  background-color: var(--main-color);
   margin: 0 auto;
   padding: 10px;
-  background-color: var(--main-color);
+  background-color: var(--color-main);
 }
 .content-area {
   padding: 10px;
@@ -485,14 +494,14 @@ communityStore.writeSecondModal = false;
   line-height: 22px;
   border-radius: 5px;
   height: 150px;
-  background-color: var(--main-color);
+  background-color: var(--color-main);
 }
 .image-input {
   width: 100%;
   padding: 5px 5px 100% 5px;
   border: 1px solid var(--instagram-grey);
   border-radius: 5px;
-  background-color: var(--main-color);
+  background-color: var(--color-main);
 }
 .modal-dialog {
   position: absolute;
@@ -503,12 +512,12 @@ communityStore.writeSecondModal = false;
   animation-duration: 0.3s;
   margin: 0;
   border-radius: 10px 10px 0 0;
-  height: 500px;
-  background-color: #ffffff;
+  height: 700px;
+  background-color: var(--instagram-dark-grey);
   overflow: hidden;
 }
 .modal-content {
-  max-height: 500px;
+  max-height: 700px;
 }
 .image-wrap > label {
   width: 100%;
@@ -525,7 +534,7 @@ communityStore.writeSecondModal = false;
 }
 .modal-body {
   width: 100%;
-  height: 500px;
+  height: 700px;
   overflow: scroll;
 }
 .main-image {
@@ -597,7 +606,7 @@ communityStore.writeSecondModal = false;
   width: 100%;
   max-width: 400px;
   height: 170px;
-  background-color: #ffffff;
+  background-color: var(--color-main);
   border-radius: 5px;
   text-align: center;
   position: relative;
@@ -607,7 +616,7 @@ communityStore.writeSecondModal = false;
   width: 100%;
   max-width: 400px;
   height: 170px;
-  background-color: #ffffff;
+  background-color: var(--color-main);
   border-radius: 5px;
   text-align: center;
   position: relative;
@@ -618,7 +627,7 @@ communityStore.writeSecondModal = false;
   font-weight: 700;
   position: absolute;
   top: calc(40% - 12px);
-  color: var(--black);
+  color: var(--color-reverse);
   font-family: 'Nanum Gothic';
 }
 .modal-close {
@@ -628,6 +637,8 @@ communityStore.writeSecondModal = false;
   color: var(--light-main-color);
   font-weight: 500;
   width: 50px;
+  height: 38px;
+  line-height: 38px;
   position: absolute;
   top: calc(75% - 12px);
   left: calc(50% - 25px);
