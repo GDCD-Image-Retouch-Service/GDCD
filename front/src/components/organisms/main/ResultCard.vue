@@ -30,15 +30,26 @@
 
       <!-- Btn Download -->
       <a
+        v-if="url.value == '-'"
         class="btn-set-button inner d-flex align-items-center justify-content-center"
         style="margin-left: 8px"
         id="downloadPhoto"
         :download="`${photoName}`"
         role="button"
-        @click="downloadImage"
+        @click="downloadTempImage"
       >
         <i class="bi bi-download"></i>
       </a>
+
+      <!-- Btn Download -->
+      <div
+        v-else
+        class="btn-set-button inner d-flex align-items-center justify-content-center"
+        style="margin-left: 8px"
+        @click="downloadImage"
+      >
+        <i class="bi bi-download"></i>
+      </div>
 
       <router-link
         to="optimize"
@@ -111,29 +122,35 @@ const save = async () => {
   }
 };
 
+const downloadTempImage = async () => {
+  let today = new Date();
+
+  photoName.value = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}-${today.getDay()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}`;
+
+  document
+    .getElementById('downloadPhoto')
+    .setAttribute(
+      'href',
+      mainStore.getTempImg.replace('image/png', 'image/octet-stream'),
+    );
+};
+
 const downloadImage = async () => {
   let today = new Date();
 
   photoName.value = `${today.getFullYear()}-${
     today.getMonth() + 1
-  }-${today.getDate()}-${today.getDay()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}.png`;
+  }-${today.getDate()}-${today.getDay()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}`;
 
-  if (localStore.getUrl == '-') {
-    document
-      .getElementById('downloadPhoto')
-      .setAttribute(
-        'href',
-        mainStore.getTempImg.replace('image/png', 'image/octet-stream'),
-      );
-  } else {
-    const payload = {
-      imageQuery: localStore.getUrl,
-      fileName: photoName,
-    };
+  const payload = {
+    imageQuery: localStore.getUrl,
+    fileName: photoName,
+  };
 
-    const data = await image.get(payload);
-    console.log(' * 이미지 다운로드: ', data);
-  }
+  const data = await image.get(payload);
+  console.log(' * 이미지 다운로드: ', data);
 };
 
 // Watch
@@ -154,7 +171,6 @@ watch(
 
 // > Life Cycle
 {
-  console.log('그냥 테스트');
   if (localStorage.prev) {
     localStore.loadPrev();
     [path.value, url.value, score.value, eRank.value, qRank.value] =
@@ -176,9 +192,6 @@ onMounted(async () => {
   } else {
     console.log('기존사진');
     picBox.value.src = `https://j7b301.p.ssafy.io/api/image?imageId=${url.value}`;
-
-    // const data = await image.get(url.value);
-    // console.log(' * 이미지 얻어지는 지, 테스트', data);
   }
 });
 </script>

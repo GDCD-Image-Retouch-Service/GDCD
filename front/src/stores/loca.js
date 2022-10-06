@@ -15,6 +15,8 @@ export const useLocalStore = defineStore('loca', () => {
   // action
   const resetPrev = () => {
     delete localStorage.prev;
+    localStorage.prev = '-;-;-;-;-;-';
+    loadPrev();
   };
   const loadPrev = () => {
     if (localStorage.prev) {
@@ -29,7 +31,7 @@ export const useLocalStore = defineStore('loca', () => {
         requestId.value,
       ] = prev.value.split(';');
 
-      console.log(' * 로드 완료');
+      console.log(' * 스텝 로드 완료');
       console.log('prev :', prev.value);
       console.log('path :', path.value);
       console.log('url :', url.value);
@@ -38,11 +40,11 @@ export const useLocalStore = defineStore('loca', () => {
       console.log('qRank :', qRank.value);
       console.log('requestId :', requestId.value);
     } else {
-      console.log(' * 로드 실패');
+      console.log(' * 스텝 로드 실패');
     }
   };
   const setPrev = () => {
-    console.log(' * 로드 완료');
+    console.log(' * 스텝 저장 완료');
     console.log('prev :', prev.value);
     console.log('path :', path.value);
     console.log('url :', url.value);

@@ -1,5 +1,5 @@
 <template>
-  <div class="main-view sub d-flex flex-column align-items-center main">
+  <div class="main-view sub d-flex flex-column align-items-center 녀">
     <router-view class="flex-grow-1" />
     <main-manual />
   </div>

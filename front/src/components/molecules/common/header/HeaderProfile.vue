@@ -7,7 +7,6 @@
         class="profile-image"
         @click="userStore.headerSetDropdown = !userStore.headerSetDropdown"
       />
-      <!-- @click="userStore.logoutModal = !userStore.logoutModal" -->
     </div>
     <div v-else>
       <span
@@ -28,7 +27,10 @@
         로그인
       </div>
 
-      <div @click="mainStore.setIsDarkToggle">색바꾸기</div>
+      <div v-if="mainStore.getIsDark" @click="mainStore.setIsDarkToggle">
+        라이트모드
+      </div>
+      <div v-else @click="mainStore.setIsDarkToggle">다크모드</div>
     </div>
 
     <template>
@@ -46,7 +48,7 @@
     <template>
       <div>
         <v-dialog v-model="userStore.logoutModal">
-          <div class="create-post-modal">
+          <div class="create-post-modal" ref="postModal">
             <div class="modal-title-logout">정말 로그아웃하시겠습니까?</div>
             <div
               class="modal-logout"
@@ -65,11 +67,16 @@
 import { useAccountStore, useMainStore, useUserStore } from '@/stores';
 import { decodeCredential } from 'vue3-google-login';
 import { user } from '@/api/rest';
+import { ref, onMounted, watch } from 'vue';
 
+// > Init
 const accountStore = useAccountStore();
 const mainStore = useMainStore();
 const userStore = useUserStore();
 
+const postModal = ref(null);
+
+// > Method
 const callback = async (response) => {
   const userData = await decodeCredential(response.credential);
   console.log(userData);
@@ -78,6 +85,35 @@ const callback = async (response) => {
     nickname: userData.name,
   });
 };
+
+// > Watch
+watch(
+  () => mainStore.getIsDark,
+  () => {
+    if (mainStore.getIsDark) {
+      document
+        .getElementsByClassName('v-overlay-container')[0]
+        .classList.add('dark');
+    } else {
+      document
+        .getElementsByClassName('v-overlay-container')[0]
+        .classList.remove('dark');
+    }
+  },
+);
+
+// > Life Cycle
+onMounted(() => {
+  if (mainStore.getIsDark) {
+    document
+      .getElementsByClassName('v-overlay-container')[0]
+      .classList.add('dark');
+  } else {
+    document
+      .getElementsByClassName('v-overlay-container')[0]
+      .classList.remove('dark');
+  }
+});
 </script>
 
 <style scoped>
@@ -111,7 +147,8 @@ const callback = async (response) => {
   width: 100%;
   max-width: 400px;
   height: 170px;
-  background-color: #ffffff;
+  color: #3c3c3a;
+  background: white;
 
   border-radius: 5px;
   text-align: center;
@@ -119,6 +156,20 @@ const callback = async (response) => {
   margin: 0 auto;
   z-index: 5;
 }
+
+.dark .create-post-modal {
+  background: #3c3c3a;
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+  z-index: 5;
+}
+
+.dark .create-post-modal * {
+  color: white;
+}
+
 .modal-title {
   width: 100%;
   font-weight: 700;
