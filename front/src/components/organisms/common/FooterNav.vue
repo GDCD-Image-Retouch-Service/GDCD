@@ -28,6 +28,7 @@
           router.push({
             name: 'ProfilePost',
             params: { userId: userStore.currentUser.item?.user?.userId },
+            props: { id: 0 },
           })
         "
         class="d-flex justify-content-center align-items-center"

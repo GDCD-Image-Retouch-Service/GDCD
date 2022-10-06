@@ -40,6 +40,9 @@ export default {
   // PUT: 닉네임 수정
   updateNickname: () => HOST + REST_PATH + '/nickname',
 
+  // 내가 상대방을 팔로우 했는지 확인
+  checkMyFollow: () => HOST + REST_PATH + '/follow-check',
+
   testConnection: (payload) => {
     let params = {
       data: payload.data,

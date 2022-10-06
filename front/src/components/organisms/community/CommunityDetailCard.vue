@@ -1,7 +1,11 @@
 <template>
   <div class="community-detail-card common-image">
     <!-- 이미지 -->
-    <div v-if="communityStore.post.item?.images?.length == 1">
+
+    <div
+      v-if="communityStore.post.item?.images?.length == 1"
+      class="image-wrap"
+    >
       <img
         :src="communityStore.post.item?.images[0].imageUrl"
         class="main-image"
@@ -9,7 +13,7 @@
     </div>
 
     <div v-if="communityStore.post.item?.images?.length == 2">
-      <div style="position: relative">
+      <div style="position: relative" class="image-wrap">
         <img
           :src="communityStore.post.item?.images[0].imageUrl"
           class="main-image"
@@ -37,85 +41,87 @@
       <div
         v-for="(tag, index) in communityStore.post.item?.images[0]?.imageTag"
         :key="index"
-        class="tag common-image"
+        class="tag"
       >
         {{ tag }}
       </div>
     </div>
 
-    <!-- 제목 -->
-    <div class="card-title">
-      {{ communityStore.post.item?.title }}
-    </div>
-    <div class="date-wrap" v-if="communityStore.post.item?.registTime">
-      <div
-        class="date"
-        v-if="
-          communityStore.post.item?.registTime ==
-          communityStore.post.item?.updateTime
-        "
-      >
-        <date-format :updateInfo="communityStore.post.item?.registTime" />
-      </div>
-      <div class="date" v-else>
-        <div class="update-info">수정됨</div>
-        <date-format :updateInfo="communityStore.post.item?.updateTime" />
-      </div>
-    </div>
-
     <!--  -->
-    <div class="profile-update-delete">
-      <!-- 프로필 -->
-      <div
-        class="user-profile"
-        @click="
-          router.push({
-            name: 'ProfilePost',
-            params: { userId: communityStore.post.item?.userId },
-          })
-        "
-      >
-        <img
-          :src="communityStore.post.item?.writerProfile"
-          alt=""
-          class="profile-image"
-        />
-        {{ communityStore.post.item?.writerNickname }}
-      </div>
-
-      <div
-        v-if="
-          userStore.currentUser.item?.user?.userId ==
-          communityStore.post.item?.userId
-        "
-        class="update-delete"
-      >
-        <span
-          class="material-icons-outlined"
-          style="margin-right: 10px; color: var(--instagram-dark-grey)"
+    <div class="profile-date-wrap">
+      <div class="profile-update-delete">
+        <!-- 프로필 -->
+        <div
+          class="user-profile"
           @click="
             router.push({
-              name: 'CommunityUpdateList',
-              params: { postId: route.params.postId },
+              name: 'ProfilePost',
+              params: { userId: communityStore.post.item?.userId },
             })
           "
         >
-          edit
-        </span>
-        <span
-          class="material-icons-outlined"
-          @click="communityStore.deletePost(postId)"
-          style="color: var(--instagram-dark-grey)"
-        >
-          delete
-        </span>
+          <img
+            :src="communityStore.post.item?.writerProfile"
+            alt=""
+            class="profile-image"
+          />
+          <div>
+            {{ communityStore.post.item?.writerNickname }}
+          </div>
+        </div>
+        <!-- 데이트 -->
       </div>
+      <div class="date-wrap" v-if="communityStore.post.item?.registTime">
+        <div
+          class="date"
+          v-if="
+            communityStore.post.item?.registTime ==
+            communityStore.post.item?.updateTime
+          "
+        >
+          <date-format :updateInfo="communityStore.post.item?.registTime" />
+        </div>
+        <div class="date" v-else>
+          <div class="update-info">수정됨</div>
+          <date-format :updateInfo="communityStore.post.item?.updateTime" />
+        </div>
+      </div>
+    </div>
+    <!-- 제목 -->
+    <div class="card-title">
+      {{ communityStore.post.item?.title }}
     </div>
 
     <span class="card-content">
       {{ communityStore.post.item?.content }}
     </span>
-
+    <div
+      v-if="
+        userStore.currentUser.item?.user?.userId ==
+        communityStore.post.item?.userId
+      "
+      class="update-delete"
+    >
+      <span
+        class="material-icons-outlined"
+        @click="communityStore.deletePost(postId)"
+        style="color: var(--instagram-dark-grey)"
+      >
+        delete
+      </span>
+      <span
+        class="material-icons-outlined"
+        style="margin-right: 10px; color: var(--instagram-dark-grey)"
+        @click="
+          router.push({
+            name: 'CommunityUpdateList',
+            params: { postId: route.params.postId },
+          })
+        "
+      >
+        edit
+      </span>
+    </div>
     <!-- 채팅 좋아요 북마크 -->
     <div class="like-bookmark-chat">
       <div class="like-bookmark">
@@ -251,7 +257,6 @@ onMounted(() => {
 }
 .community-detail-card {
   display: flex;
-  align-items: flex-start;
   gap: 20px;
   flex-direction: column;
   border: 1px solid var(--instagram-grey);
@@ -262,6 +267,7 @@ onMounted(() => {
   margin-top: var(--grid-vertical);
   background-color: var(--color-main);
   overflow: hidden;
+  align-items: normal;
 }
 .edit-icon {
   position: absolute;
@@ -273,7 +279,7 @@ onMounted(() => {
 /* 제목 */
 .card-title {
   width: 100%;
-  font-size: 18px;
+  font-size: 24px;
   word-break: break-all;
   white-space: normal;
   line-height: 25px;
@@ -297,6 +303,8 @@ onMounted(() => {
   align-items: center;
   gap: 10px;
   margin-left: var(--grid-side);
+  color: var(--instagram-dark-grey);
+  font-weight: 600;
 }
 .profile-image {
   width: 35px;
@@ -305,6 +313,8 @@ onMounted(() => {
   border-radius: 35px;
 }
 .update-delete {
+  display: flex;
+  flex-direction: row-reverse;
   margin-right: var(--grid-side);
 }
 
@@ -316,7 +326,10 @@ onMounted(() => {
   padding: 0 10px;
 }
 .tag {
-  padding: 3px 10px;
+  background-color: var(--theme-color);
+  padding: 5px 15px;
+  border-radius: 20px;
+  line-height: 20px;
 }
 
 /* 데이트 */
@@ -325,6 +338,8 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   text-align: end;
+  height: 35px;
+  line-height: 35px;
 }
 .date {
   display: flex;
@@ -339,7 +354,12 @@ onMounted(() => {
   color: var(--instagram-dark-grey);
   margin-left: 5px;
 }
-
+.image-wrap {
+  padding: 0 auto;
+}
+.profile-date-wrap {
+  display: flex;
+}
 /*  */
 .card-image {
   width: 100%;
@@ -395,6 +415,7 @@ onMounted(() => {
   border-right: none;
   border: 1px solid var(--instagram-grey);
   border-radius: 2px;
+  background-color: var(--instagram-grey);
 }
 .button-right {
   width: 50%;
@@ -403,6 +424,7 @@ onMounted(() => {
 .image-toggle-button:active .button-left {
   border: 1px solid var(--instagram-grey);
   background-color: #ffffff;
+  background-color: none;
 }
 .image-toggle-button:active .button-right {
   border: 1px solid var(--instagram-grey);

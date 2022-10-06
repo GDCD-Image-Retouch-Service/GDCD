@@ -1,7 +1,7 @@
 <template>
   <div class="header-nav main outer">
     <div class="header-nav-wrap">
-      <header-logo @click="router.push({ name: 'main' })" />
+      <header-logo @click="router.push('/main')" />
 
       <header-profile />
     </div>
@@ -41,5 +41,6 @@ const router = useRouter();
 .header-logo {
   color: var(--black);
   text-decoration: none;
+  min-width: 70px;
 }
 </style>

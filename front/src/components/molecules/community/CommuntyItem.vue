@@ -26,7 +26,7 @@
       <!-- 수정 삭제 -->
       <div
         class="edit-delete-wrap"
-        v-if="userStore.currentUser.item?.user?.userId"
+        v-if="userStore.currentUser.item?.user?.userId === comment.writerNo"
       >
         <div
           v-if="!isClickUpdate"
@@ -167,7 +167,7 @@ myUpdateComment.value = '';
   width: calc(100% - 30px);
   position: absolute;
   left: 0;
-  top: 45px;
+  top: 67px;
   border-radius: 1px;
   border: none;
   border-bottom: 1px solid var(--instagram-dark-grey);

@@ -3,7 +3,7 @@
     class="inpaint-card main outer d-flex flex-column align-items-center justify-content-center"
   >
     <div class="spacer" />
-    <div v-if="isLoading">사진을 분석 중 입니다...</div>
+    <div v-if="isLoading && !isWork">사진을 분석 중 입니다...</div>
     <div v-if="!isLoading && !isWork">지울 대상을 골라주세요</div>
     <div v-if="isWork">지우고 있는 중 입니다...</div>
     <div
@@ -11,6 +11,7 @@
       class="d-flex align-items-center"
       style="width: 100%; height: 48px; font-size: 18pt; overflow-x: scroll"
     >
+      <!-- object dectection tag -->
       <div v-for="(item, index) in objectList" :key="index">
         <span
           class="btn-object-badge badge rounded-pill"
@@ -31,15 +32,13 @@
           background: lightgray;
           width: 380px;
           max-width: 380px;
-          height: 380px;W
-          max-height: 380px;
           overflow: hidden;
         "
       >
         <img
           ref="picBox"
           src=""
-          style="width: 380px; height: 380px; object-fit: cover"
+          style="width: 380px"
           alt="your image"
           @load="objectDetection"
         />
@@ -140,32 +139,14 @@ const inpainting = async () => {
 
   const data = await image.inpainting(payload);
   console.log('* after inpainting: ', data);
-  console.log('after inpainting: ', data.item.image.imageId);
-  console.log('after inpainting: ', data.item.image.imageAesthetic);
-  console.log('after inpainting: ', data.item.image.imageQuality);
+  console.log('after inpainting id: ', data.item.image.imageId);
+  console.log('after inpainting eRank: ', data.item.image.imageAesthetic);
+  console.log('after inpainting qRank: ', data.item.image.imageQuality);
 
   let id = data.item.image.imageId;
   let e = data.item.image.imageAesthetic;
   let q = data.item.image.imageQuality;
 
-  // let e =
-  //   eScore < 4.7
-  //     ? 9
-  //     : eScore < 4.9
-  //     ? 8
-  //     : eScore < 5.1
-  //     ? 7
-  //     : eScore < 5.2
-  //     ? 6
-  //     : eScore < 5.3
-  //     ? 5
-  //     : eScore < 5.4
-  //     ? 4
-  //     : eScore < 5.5
-  //     ? 3
-  //     : eScore < 5.7
-  //     ? 2
-  //     : 1;
   let eScore =
     e == 9
       ? 4.7
@@ -184,25 +165,6 @@ const inpainting = async () => {
       : e == 2
       ? 5.7
       : 5.9;
-
-  // let q =
-  //   qScore < 4.7
-  //     ? 9
-  //     : qScore < 6.6
-  //     ? 8
-  //     : qScore < 6.7
-  //     ? 7
-  //     : qScore < 6.8
-  //     ? 6
-  //     : qScore < 6.85
-  //     ? 5
-  //     : qScore < 6.9
-  //     ? 4
-  //     : qScore < 6.95
-  //     ? 3
-  //     : qScore < 7.0
-  //     ? 2
-  //     : 1;
 
   let qScore =
     q == 9
@@ -229,10 +191,12 @@ const inpainting = async () => {
   if (s > 100) s = 100;
   else if (s < 0) s = 0;
 
+  localStore.setPath(route.fullPath);
   localStore.setUrl(id);
   localStore.setScore(s);
   localStore.setERank(e);
   localStore.setQRank(q);
+  localStore.setRequestId('-');
 
   console.log(' * 인페인팅 전', localStore.getPrev);
   localStore.setPrev();
