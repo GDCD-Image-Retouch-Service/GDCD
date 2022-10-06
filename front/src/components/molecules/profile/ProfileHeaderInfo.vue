@@ -76,23 +76,6 @@
         <div :class="{ active: userStore.isItemActive === 2 }">좋아요</div>
         <div>{{ userStore.profile?.item?.user?.likeCount }}</div>
       </div>
-      <template>
-        <div>
-          <v-alert type="success">I'm a success alert.</v-alert>
-
-          <br />
-
-          <v-alert type="info">I'm an info alert.</v-alert>
-
-          <br />
-
-          <v-alert type="warning">I'm a warning alert.</v-alert>
-
-          <br />
-
-          <v-alert type="error">I'm an error alert.</v-alert>
-        </div>
-      </template>
     </div>
   </div>
 </template>
@@ -130,6 +113,7 @@ userStore.checkMyFollow(route.params.userId);
   flex-direction: column;
   justify-content: space-between;
   padding: 3px 0;
+  gap: 20px;
 }
 .nickname-follow-button {
   display: flex;
@@ -148,7 +132,7 @@ userStore.checkMyFollow(route.params.userId);
   display: flex;
   flex-direction: column;
   gap: 5px;
-  font-size: 12px;
+  font-size: 16px;
   color: var(--instagram-dark-grey);
   font-weight: 700;
   text-decoration: none;

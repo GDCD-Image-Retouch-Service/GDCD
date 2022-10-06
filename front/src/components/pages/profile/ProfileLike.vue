@@ -37,10 +37,9 @@ userStore.getMyLike(route.params.userId);
   .scrap {
     min-width: 935px;
     max-width: 935px;
-    gap: 28px !important;
   }
   .scrap-wrap {
-    max-width: calc(25% - 21px);
+    max-width: calc(25% - 7.5px);
   }
 }
 .scrap {

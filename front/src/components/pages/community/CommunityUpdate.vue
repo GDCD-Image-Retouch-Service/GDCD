@@ -259,14 +259,14 @@
         </div>
       </div>
     </div>
-    <template v-if="updateAlert">
+
+    <v-dialog v-model="updateAlert">
       <div class="error-alert">
         <div class="create-post-modal">
           <div class="modal-title">수정되었습니다.</div>
         </div>
-        <div></div>
       </div>
-    </template>
+    </v-dialog>
   </div>
 </template>
 
@@ -314,7 +314,7 @@ async function updatePost(data) {
       name: 'CommunityDetail',
       params: { postId: route.params.postId },
     });
-  }, 3000);
+  }, 1500);
 }
 
 const selectPhoto = () => {
@@ -528,9 +528,53 @@ userStore.selectedPhotoList = userStore.selectedPhoto;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: var(--grid-vertical);
+  margin-top: 20px;
 }
 .tag {
-  padding: 3px 10px;
+  background-color: var(--theme-color);
+  padding: 8px 20px;
+  border-radius: 20px;
+  line-height: 20px;
+  font-size: 16px;
+}
+.error-alert {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  border: 1px solid var(--instagram-grey);
+  border-radius: 5px;
+  text-align: center;
+}
+.create-post-modal {
+  width: 100%;
+  max-width: 400px;
+  height: 170px;
+  background-color: var(--color-main);
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+}
+.modal-title {
+  width: 100%;
+  position: absolute;
+  top: calc(40% - 12px);
+  color: var(--color-reverse);
+  font-family: 'Pretendard-Regular';
+}
+.modal-close {
+  background-color: var(--theme-color);
+  border-radius: 5px;
+  border: none;
+  color: var(--light-main-color);
+  font-weight: 500;
+  width: 259px;
+  height: 38px;
+  line-height: 38px;
+  position: absolute;
+  top: calc(75% - 12px);
+  left: calc(50% - 130px);
 }
 </style>

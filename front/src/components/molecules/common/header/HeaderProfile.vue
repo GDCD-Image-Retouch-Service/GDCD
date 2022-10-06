@@ -86,10 +86,11 @@ const callback = async (response) => {
   position: relative;
 }
 .profile-image {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   object-fit: cover;
-  border-radius: 30px;
+  border-radius: 40px;
+  border: 1px solid var(--instagram-dark-grey);
 }
 .header-dropdown {
   width: 110px;
@@ -168,11 +169,5 @@ const callback = async (response) => {
 .icons {
   font-size: 28px;
   color: var(--instagram-dark-grey);
-}
-.profile-image {
-  width: 28px;
-  height: 28px;
-  border-radius: 28px;
-  border: 1px solid var(--instagram-dark-grey);
 }
 </style>

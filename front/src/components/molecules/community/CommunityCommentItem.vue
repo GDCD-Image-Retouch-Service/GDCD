@@ -25,7 +25,7 @@ const communityStore = useCommunityStore();
 
 <style scoped>
 .wrapper {
-  max-height: 600px;
+  max-height: 400px;
   overflow: scroll;
 }
 .comment-wrap {
@@ -45,7 +45,9 @@ const communityStore = useCommunityStore();
   background-color: pink;
 }
 .none-comment {
-  height: 50px;
-  line-height: 50px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 16px;
 }
 </style>

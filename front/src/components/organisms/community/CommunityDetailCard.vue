@@ -26,6 +26,16 @@
       </div>
     </div>
 
+    <div class="tag-wrap">
+      <div
+        v-for="(tag, index) in communityStore.post.item?.images[0]?.imageTag"
+        :key="index"
+        class="tag"
+      >
+        {{ tag }}
+      </div>
+    </div>
+
     <!-- 버튼 -->
     <div
       class="button-wrap"
@@ -34,16 +44,6 @@
       <div class="image-toggle-button">
         <div class="button-left"></div>
         <div class="button-right"></div>
-      </div>
-    </div>
-
-    <div class="tag-wrap">
-      <div
-        v-for="(tag, index) in communityStore.post.item?.images[0]?.imageTag"
-        :key="index"
-        class="tag"
-      >
-        {{ tag }}
       </div>
     </div>
 
@@ -188,23 +188,21 @@
         }}</span>
       </div>
     </div>
-
-    <template v-if="deleteAlert">
+    <v-dialog v-model="deleteAlert">
       <div class="error-alert">
         <div class="create-post-modal">
           <div class="modal-title">정말 삭제하시겠습니까?</div>
           <div class="modal-close" @click="deletePost()">확인</div>
         </div>
       </div>
-    </template>
-
-    <template v-if="guideAlert">
+    </v-dialog>
+    <v-dialog v-model="guideAlert">
       <div class="error-alert">
         <div class="create-post-modal">
           <div class="modal-title">삭제되었습니다.</div>
         </div>
       </div>
-    </template>
+    </v-dialog>
   </div>
 </template>
 
@@ -275,7 +273,7 @@ const deletePost = () => {
   guideAlert.value = true;
   setTimeout(function () {
     router.push({ name: 'CommunityList' });
-  }, 2000);
+  }, 1500);
 };
 </script>
 
@@ -290,7 +288,7 @@ const deletePost = () => {
   border: 1px solid var(--instagram-grey);
   border-radius: 10px;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   position: relative;
   margin-top: var(--grid-vertical);
   background-color: var(--color-main);
@@ -305,19 +303,20 @@ const deletePost = () => {
 }
 
 .error-alert {
-  width: calc(100% - 2 * var(--grid-side));
+  width: 100%;
   position: fixed;
-  top: calc(50vh - 135px);
-  background-color: var(--color-main);
+  left: 0;
+  bottom: 0;
+  background-color: #ffffff;
   border: 1px solid var(--instagram-grey);
-  height: 170px;
+  border-radius: 5px;
   text-align: center;
 }
 
 /* 제목 */
 .card-title {
   width: 100%;
-  font-size: 24px;
+  font-size: 20px;
   word-break: break-all;
   white-space: normal;
   line-height: 25px;
@@ -325,7 +324,7 @@ const deletePost = () => {
   font-weight: 600;
   height: fit-content;
   padding: 0 var(--grid-side);
-  color: var(--instagram-dark-grey);
+  color: var(--popper-theme-text-color);
 }
 /* 프로필 수정 삭제 */
 .profile-update-delete {
@@ -341,7 +340,8 @@ const deletePost = () => {
   align-items: center;
   gap: 10px;
   margin-left: var(--grid-side);
-  color: var(--instagram-dark-grey);
+  color: var(--popper-theme-text-color);
+
   font-weight: 600;
 }
 .profile-image {
@@ -365,9 +365,10 @@ const deletePost = () => {
 }
 .tag {
   background-color: var(--theme-color);
-  padding: 5px 15px;
+  padding: 8px 20px;
   border-radius: 20px;
   line-height: 20px;
+  font-size: 16px;
 }
 
 /* 데이트 */
@@ -468,13 +469,22 @@ const deletePost = () => {
   border: 1px solid var(--instagram-grey);
   background-color: var(--instagram-grey);
 }
+.create-post-modal {
+  width: 100%;
+  max-width: 400px;
+  height: 170px;
+  background-color: var(--color-main);
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+}
 .modal-title {
   width: 100%;
-  font-weight: 700;
   position: absolute;
   top: calc(40% - 12px);
   color: var(--color-reverse);
-  font-family: 'Nanum Gothic';
+  font-family: 'Pretendard-Regular';
 }
 .modal-close {
   background-color: var(--theme-color);
@@ -482,11 +492,11 @@ const deletePost = () => {
   border: none;
   color: var(--light-main-color);
   font-weight: 500;
-  width: 50px;
+  width: 259px;
   height: 38px;
   line-height: 38px;
   position: absolute;
   top: calc(75% - 12px);
-  left: calc(50% - 25px);
+  left: calc(50% - 130px);
 }
 </style>

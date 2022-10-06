@@ -66,11 +66,20 @@ userStore.headerSetDropdown = false;
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap');
 @font-face {
-  font-family: 'Nanum Gothic';
-  src: url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400')
-    format('truetype');
+  font-family: 'NanumSquareRound';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Jal_Haru';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/Jal_Haru.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 :root {
@@ -96,6 +105,13 @@ userStore.headerSetDropdown = false;
   --grid-header: 30px;
   --grid-vertical: 30px;
   --grid-side: 20px;
+
+  /* 폰트 */
+  --sub-font-size: 12px;
+}
+
+#app {
+  font-size: 16px;
 }
 
 /* 라이트 & 다크 모드 */
@@ -119,7 +135,7 @@ userStore.headerSetDropdown = false;
 .light {
   --color-main: #ffffff;
   --color-sub: #f4f4f4;
-  --color-reverse: #404040;
+  --color-reverse: #3c3c3a;
   --popper-theme-background-color: #ffffff;
   --popper-theme-background-color-hover: #ffffff;
   --popper-theme-text-color: #333333;
@@ -214,10 +230,9 @@ body::-webkit-scrollbar {
   /* 폰트 */
   color: var(--black);
   line-height: 16px;
-  font-size: 16px;
+  font-family: 'Jal_Haru';
+  /* font-family: 'NanumSquareRound'; */
 
-  /* font-family: 'Noto Sans KR', sans-serif; */
-  font-family: 'Nanum Gothic';
   scroll-behavior: smooth;
 }
 

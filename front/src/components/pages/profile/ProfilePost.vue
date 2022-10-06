@@ -42,11 +42,9 @@ console.log(route.params);
     min-width: 935px;
     max-width: 935px;
   }
-  .posts-wrap {
-    gap: 28px !important;
-  }
+
   .my-post-card {
-    max-width: calc(25% - 21px);
+    max-width: calc(25% - 7.5px);
   }
 }
 

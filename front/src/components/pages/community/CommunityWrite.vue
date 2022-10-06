@@ -107,11 +107,11 @@
       </div>
     </div>
 
-    <!-- 대표 이미지 선택 -->
+    <!-- 대표 이미지 선택
     <div class="wrap">
       <div class="wrap-title">대표이미지를 선택해주세요.</div>
       <div>대표 이미지는 게시글의 표지에 사용됩니다.</div>
-    </div>
+    </div> -->
     <!-- 내용 -->
     <div class="wrap">
       <div class="wrap-title">내용</div>
@@ -192,7 +192,18 @@
                 <img :src="userStore.daePyoImage" alt="" class="main-image" />
 
                 <div style="display: flex; gap: 10px">
-                  <div class="sub-wrap">
+                  <div
+                    class="sub-wrap"
+                    @click="
+                      pushSelectedNumber(
+                        userStore.photoSelect[0]?.id,
+                        userStore.photoSelect[0]?.url,
+                        userStore.photoSelect[0]?.tag,
+                      ),
+                        (firstCheck = !firstCheck);
+                      userStore.daePyoImage = userStore.photoSelect[0]?.url;
+                    "
+                  >
                     <div
                       :style="{
                         backgroundImage:
@@ -200,22 +211,11 @@
                       }"
                       class="sub-image"
                       :class="{ firstCheck: firstCheck }"
-                      @click="
-                        userStore.daePyoImage = userStore.photoSelect[0]?.url
-                      "
                     ></div>
                     <span
                       v-if="!firstCheck"
                       class="material-icons-outlined check-icon"
                       style="font-size: 20px; background-color: #ffffff"
-                      @click="
-                        pushSelectedNumber(
-                          userStore.photoSelect[0]?.id,
-                          userStore.photoSelect[0]?.url,
-                          userStore.photoSelect[0]?.tag,
-                        ),
-                          (firstCheck = !firstCheck)
-                      "
                     >
                       check_circle
                     </span>
@@ -237,7 +237,19 @@
                     </span>
                   </div>
                   <!--  -->
-                  <div class="sub-wrap" v-if="userStore.photoSelect[1]?.url">
+                  <div
+                    class="sub-wrap"
+                    v-if="userStore.photoSelect[1]?.url"
+                    @click="
+                      pushSelectedNumber(
+                        userStore.photoSelect[1]?.id,
+                        userStore.photoSelect[1]?.url,
+                        userStore.photoSelect[1]?.tag,
+                      ),
+                        (secondCheck = !secondCheck);
+                      userStore.daePyoImage = userStore.photoSelect[1]?.url;
+                    "
+                  >
                     <div
                       :style="{
                         backgroundImage:
@@ -245,23 +257,12 @@
                       }"
                       class="sub-image"
                       :class="{ secondCheck: secondCheck }"
-                      @click="
-                        userStore.daePyoImage = userStore.photoSelect[1]?.url
-                      "
                     ></div>
 
                     <span
                       v-if="!secondCheck"
                       class="material-icons-outlined check-icon"
                       style="font-size: 20px; background-color: #ffffff"
-                      @click="
-                        pushSelectedNumber(
-                          userStore.photoSelect[1]?.id,
-                          userStore.photoSelect[1]?.url,
-                          userStore.photoSelect[1]?.tag,
-                        ),
-                          (secondCheck = !secondCheck)
-                      "
                     >
                       check_circle
                     </span>
@@ -315,14 +316,14 @@
     >
     <!-- 제출 실패 모달 -->
 
-    <template v-if="dialog">
+    <v-dialog v-model="dialog">
       <div class="error-alert">
         <div class="create-post-modal">
           <div class="modal-title">제목, 이미지, 내용은 필수 값입니다.</div>
           <div class="modal-close" @click="dialog = false">확인</div>
         </div>
       </div>
-    </template>
+    </v-dialog>
   </div>
 </template>
 
@@ -371,7 +372,7 @@ async function createPost(data) {
     dialog.value = true;
     setTimeout(function () {
       dialog.value = false;
-    }, 2000);
+    }, 1000);
   }
 }
 
@@ -447,14 +448,6 @@ communityStore.writeSecondModal = false;
     max-width: 935px;
   }
 }
-.error-alert {
-  width: calc(100% - 2 * var(--grid-side));
-  position: fixed;
-  top: calc(50vh - 135px);
-  background-color: var(--color-main);
-  border: 1px solid var(--instagram-grey);
-}
-
 .firstCheck,
 .secondCheck {
   opacity: 0.5;
@@ -485,6 +478,7 @@ communityStore.writeSecondModal = false;
   margin: 0 auto;
   padding: 10px;
   background-color: var(--color-main);
+  font-size: 16px;
 }
 .content-area {
   padding: 10px;
@@ -495,6 +489,7 @@ communityStore.writeSecondModal = false;
   border-radius: 5px;
   height: 150px;
   background-color: var(--color-main);
+  font-size: 16px;
 }
 .image-input {
   width: 100%;
@@ -503,18 +498,22 @@ communityStore.writeSecondModal = false;
   border-radius: 5px;
   background-color: var(--color-main);
 }
+
 .modal-dialog {
   position: absolute;
-  width: 100%;
+  width: 100vw;
   min-width: 100%;
+  max-width: 400px;
   bottom: calc(-50vh);
   animation-name: openDialog;
   animation-duration: 0.3s;
   margin: 0;
   border-radius: 10px 10px 0 0;
   height: 700px;
-  background-color: var(--instagram-dark-grey);
+  background-color: #e8eaed;
   overflow: hidden;
+  transform: translateX(-24px);
+  padding: 10px;
 }
 .modal-content {
   max-height: 700px;
@@ -583,19 +582,21 @@ communityStore.writeSecondModal = false;
   position: absolute;
   top: 0;
   left: 0;
+  background: none;
 }
 .tag-wrap {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 0 10px;
+  margin-top: 20px;
 }
 .tag {
   background-color: var(--theme-color);
-  padding: 5px 15px;
+  padding: 8px 20px;
   border-radius: 20px;
   line-height: 20px;
+  font-size: 16px;
 }
 .image-content {
   position: absolute;
@@ -612,6 +613,16 @@ communityStore.writeSecondModal = false;
   position: relative;
   margin: 0 auto;
 }
+.error-alert {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  border: 1px solid var(--instagram-grey);
+  border-radius: 5px;
+  text-align: center;
+}
 .create-post-modal {
   width: 100%;
   max-width: 400px;
@@ -624,11 +635,10 @@ communityStore.writeSecondModal = false;
 }
 .modal-title {
   width: 100%;
-  font-weight: 700;
   position: absolute;
   top: calc(40% - 12px);
   color: var(--color-reverse);
-  font-family: 'Nanum Gothic';
+  font-family: 'Pretendard-Regular';
 }
 .modal-close {
   background-color: var(--theme-color);
@@ -636,11 +646,11 @@ communityStore.writeSecondModal = false;
   border: none;
   color: var(--light-main-color);
   font-weight: 500;
-  width: 50px;
+  width: 259px;
   height: 38px;
   line-height: 38px;
   position: absolute;
   top: calc(75% - 12px);
-  left: calc(50% - 25px);
+  left: calc(50% - 130px);
 }
 </style>

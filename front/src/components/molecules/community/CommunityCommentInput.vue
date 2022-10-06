@@ -48,7 +48,7 @@ const createComment = () => {
 <style scoped>
 .comment-input-wrap {
   width: 100%;
-  height: 50px;
+  height: 70px;
   border: 1px solid var(--instagram-grey);
   display: flex;
   gap: 10px;
@@ -65,17 +65,17 @@ const createComment = () => {
 }
 .comment-input {
   width: calc(100% - 120px);
-  height: 35px;
+  height: 50px;
   border: none;
   padding: 0 7px;
+  outline: none;
   border-radius: 10px;
-  font-size: 12px;
-
+  font-size: 16px;
   line-height: 35px;
 }
 .comment-button {
   width: 30px;
   color: var(--instagram-dark-grey);
-  font-size: 12px;
+  font-size: 16px;
 }
 </style>
