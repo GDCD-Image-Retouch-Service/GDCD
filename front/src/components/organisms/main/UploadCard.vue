@@ -7,7 +7,6 @@
     <div class="spacer" />
 
     <loading-dots v-if="isLoading" />
-
     <!-- Pic Mode -->
     <div class="pic-mode" v-if="!mainStore.isCamMode" v-show="!isLoading">
       <div
@@ -15,10 +14,10 @@
       >
         <div
           v-if="!isInput"
-          class="pic-comment sub inner d-flex align-items-center justify-content-center"
+          class="pic-comment sub inner-shadow d-flex align-items-center justify-content-center"
           style="font-size: 12pt; color: black"
         >
-          <div>사진을 업로드 해주세요</div>
+          <div class="pic-message">사진을 업로드 해주세요</div>
         </div>
         <img
           v-show="isInput"
@@ -436,9 +435,10 @@ const scoring = async () => {
 
 <style scoped>
 .upload-card {
+  margin-top: var(--grid-vertical);
   border-radius: 20px;
-  width: 90%;
-  max-width: 380px;
+  width: calc(100% - 2 * var(--grid-side));
+  max-width: 400px;
 }
 .pic-mode {
   width: 100%;
@@ -451,7 +451,12 @@ const scoring = async () => {
 }
 .pic-comment {
   width: 100%;
-  height: 380px;
+  padding-bottom: 100%;
+  position: relative;
+}
+.pic-message {
+  position: absolute;
+  top: 50%;
 }
 .cam-mode {
   width: 100%;

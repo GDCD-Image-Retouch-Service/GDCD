@@ -125,14 +125,15 @@ const callback = async (response) => {
   position: absolute;
   top: calc(17% - 12px);
   color: var(--black);
-  font-family: 'Nanum Gothic';
+  font-family: 'NanumSquareRound';
 }
 .modal-title2 {
   width: 100%;
   font-weight: 700;
   position: absolute;
   top: calc(33% - 12px);
-  font-family: 'Nanum Gothic';
+  font-family: 'NanumSquareRound';
+
   color: var(--black);
 }
 .modal-title-logout {
@@ -141,7 +142,7 @@ const callback = async (response) => {
   position: absolute;
   top: calc(30% - 12px);
   color: var(--black);
-  font-family: 'Nanum Gothic';
+  font-family: 'NanumSquareRound';
 }
 .modal-close {
   border-radius: 5px;

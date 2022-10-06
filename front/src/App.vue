@@ -191,6 +191,10 @@ userStore.headerSetDropdown = false;
     inset -4px -4px 10px -1px rgba(255, 255, 255, 0.25);
 }
 
+.inner-shadow {
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 /* 간격 */
 .spacer {
   height: var(--size-h-spacer);

@@ -135,9 +135,10 @@ import DeleteButton from '@/components/molecules/common/btn/BtnDelete.vue';
 
 import { useCommunityStore } from '@/stores/community';
 import { useUserStore } from '@/stores/user';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { onBeforeMount, onUnmounted } from 'vue';
 const route = useRoute();
+const router = useRouter();
 const communityStore = useCommunityStore();
 const userStore = useUserStore();
 

@@ -99,7 +99,7 @@
             alt=""
             class="profile-image"
           />
-          <div>
+          <div style="min-width: 120px">
             {{ communityStore.post.item?.writerNickname }}
           </div>
         </div>
