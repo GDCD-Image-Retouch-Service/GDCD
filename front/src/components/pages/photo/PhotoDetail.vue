@@ -78,9 +78,13 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  padding: 0 10px;
 }
 .tag {
-  padding: 3px 10px;
+  background-color: var(--theme-color);
+  padding: 5px 15px;
+  border-radius: 20px;
+  line-height: 20px;
 }
 .button-wrap {
   width: 100%;
@@ -97,6 +101,7 @@ onMounted(() => {
   width: 50%;
   border-right: none;
   border: 1px solid var(--instagram-grey);
+  background-color: var(--instagram-grey);
   border-radius: 2px;
 }
 .button-right {
@@ -105,8 +110,9 @@ onMounted(() => {
 }
 .image-toggle-button:active .button-left {
   background-color: var(--instagram-grey);
+  background-color: none;
 }
 .image-toggle-button:active .button-right {
-  background-color: var(--instagram-dark-grey);
+  background-color: var(--instagram-grey);
 }
 </style>
