@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 
-export const useLocalStore = defineStore('local', () => {
+export const useLocalStore = defineStore('loca', () => {
   // init
   // state
   const prev = ref(localStorage.prev);
@@ -10,6 +10,7 @@ export const useLocalStore = defineStore('local', () => {
   const score = ref(prev.value ? prev.value.split(';')[2] : '-');
   const eRank = ref(prev.value ? prev.value.split(';')[3] : '-');
   const qRank = ref(prev.value ? prev.value.split(';')[4] : '-');
+  const requestId = ref(prev.value ? prev.value.split(';')[5] : '-');
 
   // action
   const resetPrev = () => {
@@ -19,8 +20,14 @@ export const useLocalStore = defineStore('local', () => {
     if (localStorage.prev) {
       prev.value = localStorage.prev;
 
-      [path.value, url.value, score.value, eRank.value, qRank.value] =
-        prev.value.split(';');
+      [
+        path.value,
+        url.value,
+        score.value,
+        eRank.value,
+        qRank.value,
+        requestId.value,
+      ] = prev.value.split(';');
 
       console.log(' * 로드 완료');
       console.log('prev :', prev.value);
@@ -29,12 +36,22 @@ export const useLocalStore = defineStore('local', () => {
       console.log('score :', score.value);
       console.log('eRank :', eRank.value);
       console.log('qRank :', qRank.value);
+      console.log('requestId :', requestId.value);
     } else {
       console.log(' * 로드 실패');
     }
   };
   const setPrev = () => {
-    prev.value = `${path.value};${url.value};${score.value};${eRank.value};${qRank.value}`;
+    console.log(' * 로드 완료');
+    console.log('prev :', prev.value);
+    console.log('path :', path.value);
+    console.log('url :', url.value);
+    console.log('score :', score.value);
+    console.log('eRank :', eRank.value);
+    console.log('qRank :', qRank.value);
+    console.log('requestId :', requestId.value);
+
+    prev.value = `${path.value};${url.value};${score.value};${eRank.value};${qRank.value};${requestId.value}`;
     localStorage.prev = prev.value;
   };
   const setPath = (data) => {
@@ -52,6 +69,9 @@ export const useLocalStore = defineStore('local', () => {
   const setQRank = (data) => {
     qRank.value = data;
   };
+  const setRequestId = (data) => {
+    requestId.value = data;
+  };
 
   // getter
   const getPrev = computed(() => prev.value);
@@ -60,6 +80,7 @@ export const useLocalStore = defineStore('local', () => {
   const getScore = computed(() => score.value);
   const getERank = computed(() => eRank.value);
   const getQRank = computed(() => qRank.value);
+  const getRequestId = computed(() => requestId.value);
 
   return {
     // action
@@ -71,6 +92,7 @@ export const useLocalStore = defineStore('local', () => {
     setScore,
     setERank,
     setQRank,
+    setRequestId,
 
     // getter
     getPrev,
@@ -79,5 +101,6 @@ export const useLocalStore = defineStore('local', () => {
     getScore,
     getERank,
     getQRank,
+    getRequestId,
   };
 });

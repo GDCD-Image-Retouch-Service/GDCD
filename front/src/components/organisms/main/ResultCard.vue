@@ -14,20 +14,9 @@
     <div class="pic-mode" v-show="!isLoading">
       <div
         class="pic-container d-flex flex-column align-items-center justify-content-center"
-        style="
-          background: lightgray;
-          width: 380px;
-          max-width: 380px;
-          height: 380px;
-          max-height: 380px;
-        "
+        style="background: lightgray; width: 380px; max-width: 380px"
       >
-        <img
-          ref="picBox"
-          src=""
-          style="width: 380px; height: 380px; object-fit: cover"
-          alt="your image"
-        />
+        <img ref="picBox" src="" style="width: 380px" alt="your image" />
       </div>
     </div>
     <div class="spacer" />
@@ -44,7 +33,7 @@
         class="btn-set-button inner d-flex align-items-center justify-content-center"
         style="margin-left: 8px"
         id="downloadPhoto"
-        :download="`${photoName}.jpg`"
+        :download="`${photoName}`"
         role="button"
         @click="downloadImage"
       >
@@ -122,49 +111,28 @@ const save = async () => {
   }
 };
 
-const downloadImage = () => {
+const downloadImage = async () => {
   let today = new Date();
 
-  let year = today.getFullYear();
-  let month = today.getMonth() + 1;
-  let date = today.getDate();
-  let day = today.getDay();
+  photoName.value = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}-${today.getDay()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}.png`;
 
-  photoName.value = year + '_' + month + '_' + date + '_' + day + '.jpg';
+  if (localStore.getUrl == '-') {
+    document
+      .getElementById('downloadPhoto')
+      .setAttribute(
+        'href',
+        mainStore.getTempImg.replace('image/png', 'image/octet-stream'),
+      );
+  } else {
+    const payload = {
+      imageQuery: localStore.getUrl,
+      fileName: photoName,
+    };
 
-  console.log(' * 픽박스 src', picBox.value.src);
-
-  // document
-  //   .getElementById('downloadPhoto')
-  //   .setAttribute(
-  //     'href',
-  //     picBox.value.src.replace('image/png', 'image/octet-stream'),
-  //   );
-  if (!(window.ActiveXObject || 'ActiveXObject' in window)) {
-    var save = document.createElement('a');
-    save.href = picBox.value.src;
-    save.target = '_blank';
-    save.download = photoName.value || picBox.value.src;
-    var evt = document.createEvent('MouseEvents');
-    evt.initMouseEvent(
-      'click',
-      true,
-      true,
-      window,
-      1,
-      0,
-      0,
-      0,
-      0,
-      false,
-      false,
-      false,
-      false,
-      0,
-      null,
-    );
-    save.dispatchEvent(evt);
-    (window.URL || window.webkitURL).revokeObjectURL(save.href);
+    const data = await image.get(payload);
+    console.log(' * 이미지 다운로드: ', data);
   }
 };
 
@@ -185,15 +153,17 @@ watch(
 );
 
 // > Life Cycle
-if (localStorage.prev) {
-  localStore.loadPrev();
-  [path.value, url.value, score.value, eRank.value, qRank.value] =
-    localStore.getPrev.split(';');
-  // console.log(route.fullPath);
-} else {
-  router.replace('error');
+{
+  console.log('그냥 테스트');
+  if (localStorage.prev) {
+    localStore.loadPrev();
+    [path.value, url.value, score.value, eRank.value, qRank.value] =
+      localStore.getPrev.split(';');
+    // console.log(route.fullPath);
+  } else {
+    router.replace('error');
+  }
 }
-
 onMounted(async () => {
   if (url.value == '-') {
     if (mainStore.getTempImg) {
@@ -206,6 +176,9 @@ onMounted(async () => {
   } else {
     console.log('기존사진');
     picBox.value.src = `https://j7b301.p.ssafy.io/api/image?imageId=${url.value}`;
+
+    // const data = await image.get(url.value);
+    // console.log(' * 이미지 얻어지는 지, 테스트', data);
   }
 });
 </script>

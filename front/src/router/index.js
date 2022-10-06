@@ -1,17 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAccountStore } from '@/stores';
+import { useAccountStore, useMainStore } from '@/stores';
 import swal from 'sweetalert2';
 
 // true : 로그인을 해야 이동 가능
 // false : 로그인을 하면 이동 불가능
 const beforeAuth = (needAuth) => async (from, to, next) => {
   const accountStore = useAccountStore();
+  const mainStore = useMainStore();
   if (needAuth && !accountStore.getIsLogined) {
     // 로그인 필요한 서비스
     await swal.fire({
       icon: 'warning',
       title: '로그인이 필요한 서비스 입니다',
       timer: 3000,
+      color: mainStore.getIsDark ? '#ffffff' : '#3c3c3a',
+      background: mainStore.getIsDark ? '#3c3c3a' : '#ffffff',
     });
 
     // 로그인 필요하지 않은 서비스
