@@ -28,7 +28,10 @@
         로그인
       </div>
 
-      <div @click="mainStore.setIsDarkToggle">색바꾸기</div>
+      <div v-if="mainStore.getIsDark" @click="mainStore.setIsDarkToggle">
+        라이트모드
+      </div>
+      <div v-else @click="mainStore.setIsDarkToggle">다크모드</div>
     </div>
 
     <template>
@@ -46,7 +49,7 @@
     <template>
       <div>
         <v-dialog v-model="userStore.logoutModal">
-          <div class="create-post-modal">
+          <div class="create-post-modal" ref="postModal">
             <div class="modal-title-logout">정말 로그아웃하시겠습니까?</div>
             <div
               class="modal-logout"
@@ -65,11 +68,16 @@
 import { useAccountStore, useMainStore, useUserStore } from '@/stores';
 import { decodeCredential } from 'vue3-google-login';
 import { user } from '@/api/rest';
+import { ref, onMounted } from 'vue';
 
+// > Init
 const accountStore = useAccountStore();
 const mainStore = useMainStore();
 const userStore = useUserStore();
 
+const postModal = ref(null);
+
+// > Method
 const callback = async (response) => {
   const userData = await decodeCredential(response.credential);
   console.log(userData);
@@ -78,6 +86,15 @@ const callback = async (response) => {
     nickname: userData.name,
   });
 };
+
+// > Life Cycle
+onMounted(() => {
+  // if (mainStore.getIsDark) {
+  //   postModal.value.body.style.backgroundColor = 'red';
+  // } else {
+  //   postModal.value.body.style.background = 'blue';
+  // }
+});
 </script>
 
 <style scoped>
@@ -110,7 +127,7 @@ const callback = async (response) => {
   width: 100%;
   max-width: 400px;
   height: 170px;
-  background-color: #ffffff;
+  background: red;
 
   border-radius: 5px;
   text-align: center;
@@ -118,6 +135,7 @@ const callback = async (response) => {
   margin: 0 auto;
   z-index: 5;
 }
+
 .modal-title {
   width: 100%;
   font-weight: 700;

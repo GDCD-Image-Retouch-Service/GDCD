@@ -154,7 +154,6 @@ watch(
 
 // > Life Cycle
 {
-  console.log('그냥 테스트');
   if (localStorage.prev) {
     localStore.loadPrev();
     [path.value, url.value, score.value, eRank.value, qRank.value] =
@@ -176,9 +175,6 @@ onMounted(async () => {
   } else {
     console.log('기존사진');
     picBox.value.src = `https://j7b301.p.ssafy.io/api/image?imageId=${url.value}`;
-
-    // const data = await image.get(url.value);
-    // console.log(' * 이미지 얻어지는 지, 테스트', data);
   }
 });
 </script>

@@ -6,7 +6,7 @@
     <div
       v-if="isLoading"
       class="d-flex align-items-center"
-      style="height: 48px; font-size: 12pt"
+      style="height: 48px; font-size: 20pt"
     >
       <div>사진을 최적화하는 중입니다 {{ progress }}/7</div>
     </div>
