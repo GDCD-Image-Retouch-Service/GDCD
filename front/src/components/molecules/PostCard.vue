@@ -129,7 +129,7 @@ const clickLike = () => {
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  font-size: 14px;
+  font-size: 16px;
 }
 .post-card-userinfo {
   display: flex;

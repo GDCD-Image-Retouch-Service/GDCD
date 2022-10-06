@@ -415,6 +415,7 @@ onMounted(() => {
   border-right: none;
   border: 1px solid var(--instagram-grey);
   border-radius: 2px;
+  background-color: var(--instagram-grey);
 }
 .button-right {
   width: 50%;
@@ -423,6 +424,7 @@ onMounted(() => {
 .image-toggle-button:active .button-left {
   border: 1px solid var(--instagram-grey);
   background-color: #ffffff;
+  background-color: none;
 }
 .image-toggle-button:active .button-right {
   border: 1px solid var(--instagram-grey);

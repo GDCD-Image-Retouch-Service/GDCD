@@ -418,7 +418,6 @@ userStore.selectedPhotoList = userStore.selectedPhoto;
   height: 37px;
   border: 1px solid var(--instagram-grey);
   border-radius: 5px;
-  background-color: var(--light-main-color);
   margin: 0 auto;
   padding: 5px;
 }

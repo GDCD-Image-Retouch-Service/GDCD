@@ -44,4 +44,8 @@ const communityStore = useCommunityStore();
   height: var(--grid-vertical);
   background-color: pink;
 }
+.none-comment {
+  height: 50px;
+  line-height: 50px;
+}
 </style>

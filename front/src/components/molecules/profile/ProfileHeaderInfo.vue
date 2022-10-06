@@ -96,13 +96,12 @@ const userFollow = () => {
   }
 };
 userStore.checkMyFollow(route.params.userId);
-console.log(userStore.isCheckFollow, '내가 팔로우 하나요?');
 </script>
 
 <style scoped>
 .active {
   font-weight: 700;
-  color: var(--black);
+  color: var(--color-reverse);
 }
 .profile-header-info {
   width: calc(100% - 100px);
