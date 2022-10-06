@@ -27,6 +27,7 @@ export const useCommunityStore = defineStore('communityStore', {
     targetImage: '',
 
     writeFirstModal: false,
+    writeSecondModal: false,
   }),
   actions: {
     resetVariable() {
@@ -54,6 +55,9 @@ export const useCommunityStore = defineStore('communityStore', {
         method: 'GET',
         headers: {
           token: useUserStore().token,
+        },
+        params: {
+          size: 100,
         },
       })
         .then((res) => {

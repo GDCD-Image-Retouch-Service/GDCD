@@ -41,5 +41,6 @@ const router = useRouter();
 .header-logo {
   color: var(--black);
   text-decoration: none;
+  min-width: 70px;
 }
 </style>
