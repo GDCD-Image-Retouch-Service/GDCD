@@ -45,17 +45,25 @@
         </div>
         <div
           v-else
+          @click="enterUpdateComment(comment.commentId, myUpdateComment)"
+        >
+          확인
+        </div>
+
+        <div
+          v-if="!isClickUpdate"
+          @click="clickDeleteComment(route.params.postId, comment.commentId)"
+        >
+          삭제
+        </div>
+        <div
+          v-else
           @click="
             (isClickUpdate = !isClickUpdate),
               (myUpdateComment = comment.content)
           "
         >
           취소
-        </div>
-        <div
-          @click="clickDeleteComment(route.params.postId, comment.commentId)"
-        >
-          삭제
         </div>
       </div>
     </div>
@@ -85,12 +93,6 @@
         v-model="myUpdateComment"
         @keyup.enter="enterUpdateComment(comment.commentId, myUpdateComment)"
       />
-      <span
-        class="material-icons-outlined update-button"
-        @click="enterUpdateComment(comment.commentId, myUpdateComment)"
-      >
-        north
-      </span>
     </div>
   </div>
 </template>
@@ -180,35 +182,35 @@ const postDeleteCommet = (postId, commentId) => {
   font-weight: 700;
 }
 .profile-image {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   object-fit: cover;
-  border-radius: 50px;
+  border-radius: 30px;
 }
 .comment-message {
+  display: flex;
   width: 100%;
   word-break: break-all;
-  text-align: start;
   padding: 0 0 0 5px;
   margin-top: 10px;
   line-height: 22px;
   font-size: 16px;
   height: 30px;
+  align-content: center;
 }
 
 .update-input {
-  width: calc(100% - 30px);
+  width: 100%;
 
   border-radius: 1px;
   border: none;
   border-bottom: 1px solid var(--instagram-dark-grey);
   height: 30px;
   word-break: break-all;
-  text-align: start;
   outline: none;
   font-size: 16px;
-  line-height: 22px;
-
+  line-height: 37px;
+  margin-top: 10px;
   padding: 0 0 0 5px;
   background-color: var(--color-main);
 }

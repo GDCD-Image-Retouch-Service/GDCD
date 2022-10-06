@@ -430,6 +430,7 @@ userStore.selectedPhotoList = userStore.selectedPhoto;
   border-radius: 5px;
   margin: 0 auto;
   padding: 5px;
+  background-color: var(--color-main);
 }
 .content-area {
   padding: 5px;
@@ -438,6 +439,7 @@ userStore.selectedPhotoList = userStore.selectedPhoto;
   resize: none;
   line-height: 22px;
   border-radius: 5px;
+  background-color: var(--color-main);
   height: 150px;
 }
 .image-input {

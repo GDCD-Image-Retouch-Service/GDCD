@@ -86,10 +86,10 @@ const callback = async (response) => {
   position: relative;
 }
 .profile-image {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   object-fit: cover;
-  border-radius: 40px;
+  border-radius: 35px;
   border: 1px solid var(--instagram-dark-grey);
 }
 .header-dropdown {

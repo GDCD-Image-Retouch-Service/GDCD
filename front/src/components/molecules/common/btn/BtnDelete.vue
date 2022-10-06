@@ -21,6 +21,7 @@ const isClick = ref(true);
   color: var(--color-main);
   background-color: var(--theme-color);
   border-radius: 20px;
+  font-size: 16px;
 }
 .follow-button {
   width: 90px;
@@ -32,5 +33,6 @@ const isClick = ref(true);
   color: var(--theme-color);
   background-color: var(--color-main);
   border-radius: 20px;
+  font-size: 16px;
 }
 </style>

@@ -230,8 +230,8 @@ body::-webkit-scrollbar {
   /* 폰트 */
   color: var(--black);
   line-height: 16px;
-  font-family: 'Jal_Haru';
-  /* font-family: 'NanumSquareRound'; */
+  /* font-family: 'Jal_Haru'; */
+  font-family: 'NanumSquareRound';
 
   scroll-behavior: smooth;
 }

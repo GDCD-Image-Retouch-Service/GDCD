@@ -127,10 +127,11 @@ const clickLike = () => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  height: 20px;
-  line-height: 20px;
+  height: 16px;
+  line-height: 16px;
   font-weight: 700;
   color: var(--color-reverse);
+  font-size: 16px;
 }
 .post-card-userinfo {
   display: flex;
@@ -139,7 +140,7 @@ const clickLike = () => {
   justify-content: flex-end;
   font-size: var(--sub-font-size);
   align-items: center;
-  margin-top: 35px;
+  margin-top: 20px;
 }
 .profile-image {
   width: 30px;
