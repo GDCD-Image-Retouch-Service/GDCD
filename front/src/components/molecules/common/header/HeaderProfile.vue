@@ -7,7 +7,6 @@
         class="profile-image"
         @click="userStore.headerSetDropdown = !userStore.headerSetDropdown"
       />
-      <!-- @click="userStore.logoutModal = !userStore.logoutModal" -->
     </div>
     <div v-else>
       <span
@@ -68,7 +67,7 @@
 import { useAccountStore, useMainStore, useUserStore } from '@/stores';
 import { decodeCredential } from 'vue3-google-login';
 import { user } from '@/api/rest';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 
 // > Init
 const accountStore = useAccountStore();
@@ -87,13 +86,33 @@ const callback = async (response) => {
   });
 };
 
+// > Watch
+watch(
+  () => mainStore.getIsDark,
+  () => {
+    if (mainStore.getIsDark) {
+      document
+        .getElementsByClassName('v-overlay-container')[0]
+        .classList.add('dark');
+    } else {
+      document
+        .getElementsByClassName('v-overlay-container')[0]
+        .classList.remove('dark');
+    }
+  },
+);
+
 // > Life Cycle
 onMounted(() => {
-  // if (mainStore.getIsDark) {
-  //   postModal.value.body.style.backgroundColor = 'red';
-  // } else {
-  //   postModal.value.body.style.background = 'blue';
-  // }
+  if (mainStore.getIsDark) {
+    document
+      .getElementsByClassName('v-overlay-container')[0]
+      .classList.add('dark');
+  } else {
+    document
+      .getElementsByClassName('v-overlay-container')[0]
+      .classList.remove('dark');
+  }
 });
 </script>
 
@@ -127,13 +146,27 @@ onMounted(() => {
   width: 100%;
   max-width: 400px;
   height: 170px;
-  background: red;
+  color: #3c3c3a;
+  background: white;
 
   border-radius: 5px;
   text-align: center;
   position: relative;
   margin: 0 auto;
   z-index: 5;
+}
+
+.dark .create-post-modal {
+  background: #3c3c3a;
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+  z-index: 5;
+}
+
+.dark .create-post-modal * {
+  color: white;
 }
 
 .modal-title {

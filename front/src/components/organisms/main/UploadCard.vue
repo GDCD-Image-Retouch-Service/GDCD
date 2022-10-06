@@ -110,16 +110,6 @@
           <i v-else class="bi bi-arrow-clockwise"></i>
         </div>
 
-        <!-- Btn Back Camera -->
-        <div
-          v-if="!isPhotoTaken"
-          class="btn-set-button inner d-flex align-items-center justify-content-center"
-          style="margin-left: 8px"
-          @click="isBacktoggle"
-        >
-          <i class="bi bi-arrow-left-right"></i>
-        </div>
-
         <!-- Btn Download -->
         <a
           v-if="isPhotoTaken"
@@ -173,7 +163,6 @@ const canvas = ref(null);
 const isPhotoTaken = ref(false);
 const isShotPhoto = ref(false);
 const isLoading = ref(false);
-const isBack = ref(false);
 
 const photoName = ref('');
 
@@ -229,9 +218,6 @@ const setPicBox = () => {
   //   alert('이미지 업로드에 문제가 발생하였습니다.');
   // }
 };
-const isBacktoggle = () => {
-  isBack.value = !isBack.value;
-};
 
 // > watch
 watch(
@@ -243,19 +229,6 @@ watch(
       isPhotoTaken.value = false;
       isShotPhoto.value = false;
       stopCameraStreame();
-    } else {
-      createCameraElement();
-    }
-  },
-);
-
-// 후면카메라 기능
-watch(
-  () => isBack.value,
-  () => {
-    console.log(isBack.value ? '후면' : '전면');
-    if (isBack.value) {
-      createBackCameraElement();
     } else {
       createCameraElement();
     }
@@ -283,29 +256,6 @@ const createCameraElement = () => {
       console.log('카메라 장치에 문제가 있거나 호환되지 않습니다.');
       console.log(e);
       router.go();
-    });
-};
-
-const createBackCameraElement = () => {
-  isLoading.value = true;
-  const constraints = (window.constraints = {
-    audio: false,
-    video: {
-      width: { min: 240, ideal: 720, max: 1080 },
-      height: { min: 240, ideal: 720, max: 1080 },
-      facingMode: { exact: 'environment' },
-    },
-  });
-
-  navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then((stream) => {
-      isLoading.value = false;
-      camera.value.srcObject = stream;
-    })
-    .catch((e) => {
-      console.log(' * 카메라 전환 불가', e);
-      createCameraElement();
     });
 };
 

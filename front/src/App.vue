@@ -10,16 +10,10 @@
 import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
 
-// import { computed, ref, onBeforeMount } from 'vue';
 import { computed } from 'vue';
-// import { useRoute } from 'vue-router';
-import { useUserStore } from '@/stores';
-
-import { useMainStore } from '@/stores';
+import { useUserStore, useMainStore } from '@/stores';
 
 const mainStore = useMainStore();
-// const route = useRoute();
-// 바꿀 예정
 const userStore = useUserStore();
 
 if (localStorage.getItem('token')) {
@@ -33,36 +27,6 @@ const theme = computed(() => (mainStore.getIsDark ? 'dark' : 'light'));
 userStore.loginModal = false;
 userStore.logoutModal = false;
 userStore.headerSetDropdown = false;
-
-// onBeforeMount(() => {
-//   window.addEventListener('scroll', handleScroll);
-// });
-
-// const handleScroll = (e) => {
-//   console.log(e);
-// };
-
-// let isVisible = ref(false);
-// document.addEventListener('scroll', (e) => {
-//   console.log(e);
-//   console.log(
-//     e.clientY,
-//     e.deltaY,
-//     e.layerY,
-//     e.offsetY,
-//     e.screenY,
-//     e.y,
-//     e.pageY,
-//     e.movementY,
-//     e.wheelDeltaY,
-//   );
-//   if (e.deltaY > 0) {
-//     isVisible.value = true;
-//     console.log('ㅇㅇ');
-//   } else {
-//     isVisible.value = false;
-//   }
-// });
 </script>
 
 <style>
@@ -178,6 +142,7 @@ userStore.headerSetDropdown = false;
 /* 간격 */
 .spacer {
   height: var(--size-h-spacer);
+  weight: var(--size-h-spacer);
 }
 
 * {
