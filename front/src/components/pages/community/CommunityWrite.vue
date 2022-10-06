@@ -24,7 +24,9 @@
           (firstCheck = false),
             (secondCheck = false),
             (userStore.selectedPhoto = []),
-            (userStore.urlList = [])
+            (userStore.urlList = []),
+            (communityStore.writeFirstModal = !communityStore.writeFirstModal);
+          (firstCheck = false), (secondCheck = false);
         "
       >
         <div class="image-content">이미지를 올려주세요</div>
@@ -41,7 +43,11 @@
           (firstCheck = false),
             (secondCheck = false),
             (userStore.selectedPhoto = []),
-            (userStore.urlList = [])
+            (userStore.urlList = []),
+            (communityStore.writeFirstModal = !communityStore.writeFirstModal)(
+              (firstCheck = false),
+            ),
+            (secondCheck = false)
         "
         style="padding: 0; text-decoration: none; color: var(--black)"
       >
@@ -64,15 +70,16 @@
     <div class="wrap" v-if="userStore.urlPhotoList.length === 2">
       <div class="wrap-title">이미지</div>
       <a
-        data-bs-toggle="modal"
-        href="#exampleModalToggle"
-        role="button"
         id="image-input"
         @click="
           (firstCheck = false),
             (secondCheck = false),
             (userStore.selectedPhoto = []),
-            (userStore.urlList = [])
+            (userStore.urlList = []),
+            (communityStore.writeFirstModal = !communityStore.writeFirstModal)(
+              (firstCheck = false),
+            ),
+            (secondCheck = false)
         "
         style="padding: 0; text-decoration: none; color: var(--black)"
       >
@@ -100,6 +107,11 @@
       </div>
     </div>
 
+    <!-- 대표 이미지 선택 -->
+    <div class="wrap">
+      <div class="wrap-title">대표이미지를 선택해주세요.</div>
+      <div>대표 이미지는 게시글의 표지에 사용됩니다.</div>
+    </div>
     <!-- 내용 -->
     <div class="wrap">
       <div class="wrap-title">내용</div>
@@ -113,177 +125,194 @@
 
     <button class="button" @click="createPost(data)">제출</button>
 
-    <div
-      class="modal fade"
-      id="exampleModalToggle"
-      aria-hidden="true"
-      aria-labelledby="exampleModalToggleLabel"
-      tabindex="-1"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <div v-for="(values, key) in userStore.myPhoto.item" :key="values">
-              <date-format
-                :updateInfo="key"
-                style="margin-top: 30px; margin-bottom: 10px"
-              />
-              <div class="image-wrap">
-                <label for="select-image">
-                  <div
-                    v-for="value in values"
-                    :key="value"
-                    :style="{
-                      backgroundImage:
-                        'url(' + value.beforeImage.imageUrl + ')',
-                    }"
-                    class="photo-image"
-                    @click="
-                      (userStore.photoSelect = [
-                        {
-                          id: value.beforeImage?.imageId,
-                          url: value.beforeImage?.imageUrl,
-                          tag: value.beforeImage?.imageTag,
-                        },
-                        {
-                          id: value.afterImage?.imageId,
-                          url: value.afterImage?.imageUrl,
-                          tag: value.afterImage?.imageTag,
-                        },
-                      ]),
-                        (userStore.daePyoImage = value.beforeImage.imageUrl);
-                      userStore.selectTag = value.beforeImage.imageTag;
-                    "
-                  >
-                    <!-- <img :src="value.beforeImage.imageUrl" alt="" class="photo-image" /> -->
-                  </div>
-                </label>
-              </div>
-            </div>
-          </div>
-          <button
-            class="btn"
-            data-bs-target="#exampleModalToggle2"
-            data-bs-toggle="modal"
-            data-bs-dismiss="modal"
-            id="select-image"
-            style="display: none"
-          ></button>
-        </div>
-      </div>
-    </div>
-    <!-- 두 번째 모달 -->
-    <div
-      class="modal fade"
-      id="exampleModalToggle2"
-      aria-hidden="true"
-      aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <!-- 메인 이미지 -->
-            <img :src="userStore.daePyoImage" alt="" class="main-image" />
-
-            <div style="display: flex; gap: 10px">
-              <div class="sub-wrap">
-                <div
-                  :style="{
-                    backgroundImage:
-                      'url(' + userStore.photoSelect[0]?.url + ')',
-                  }"
-                  class="sub-image"
-                  :class="{ firstCheck: firstCheck }"
-                  @click="userStore.daePyoImage = userStore.photoSelect[0]?.url"
-                ></div>
-                <span
-                  v-if="!firstCheck"
-                  class="material-icons-outlined check-icon"
-                  style="font-size: 20px; background-color: #ffffff"
-                  @click="
-                    pushSelectedNumber(
-                      userStore.photoSelect[0]?.id,
-                      userStore.photoSelect[0]?.url,
-                      userStore.photoSelect[0]?.tag,
-                    ),
-                      (firstCheck = !firstCheck)
-                  "
-                >
-                  check_circle
-                </span>
-              </div>
-
-              <!--  -->
-              <div class="sub-wrap" v-if="userStore.photoSelect[1]?.url">
-                <div
-                  :style="{
-                    backgroundImage:
-                      'url(' + userStore.photoSelect[1]?.url + ')',
-                  }"
-                  class="sub-image"
-                  :class="{ secondCheck: secondCheck }"
-                  @click="userStore.daePyoImage = userStore.photoSelect[1]?.url"
-                ></div>
-
-                <span
-                  class="material-icons-outlined check-icon"
-                  style="font-size: 20px; background-color: #ffffff"
-                  @click="
-                    pushSelectedNumber(
-                      userStore.photoSelect[1]?.id,
-                      userStore.photoSelect[1]?.url,
-                      userStore.photoSelect[1]?.tag,
-                    ),
-                      (secondCheck = !secondCheck)
-                  "
-                >
-                  check_circle
-                </span>
-              </div>
-            </div>
-
-            <!-- 버튼 -->
-            <div style="margin-top: var(--grid-vertical)">
-              <button
-                class="befor-btn"
-                data-bs-target="#exampleModalToggle"
-                data-bs-toggle="modal"
-                data-bs-dismiss="modal"
-              >
-                돌아가기
-              </button>
-              <button
-                class="select-btn"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                @click="
-                  (data.images = [
-                    userStore.photoSelect[0]?.id,
-                    userStore.photoSelect[1]?.id,
-                  ]),
-                    selectPhoto()
-                "
-              >
-                선택완료
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <!-- 첫 번째 모달 -->
     <template>
       <div>
         <v-dialog v-model="communityStore.writeFirstModal" class="dialog">
-          <div class="write-first-modal">
-            <div class="modal-title">제목, 이미지, 내용은 필수 값입니다.</div>
-            <div class="modal-close" @click="dialog = false">확인</div>
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div
+                  v-for="(values, key) in userStore.myPhoto.item"
+                  :key="values"
+                >
+                  <date-format
+                    :updateInfo="key"
+                    style="margin-top: 30px; margin-bottom: 10px"
+                  />
+                  <div class="image-wrap">
+                    <label for="select-image">
+                      <div
+                        v-for="value in values"
+                        :key="value"
+                        :style="{
+                          backgroundImage:
+                            'url(' + value.beforeImage.imageUrl + ')',
+                        }"
+                        class="photo-image"
+                        @click="
+                          (userStore.photoSelect = [
+                            {
+                              id: value.beforeImage?.imageId,
+                              url: value.beforeImage?.imageUrl,
+                              tag: value.beforeImage?.imageTag,
+                            },
+                            {
+                              id: value.afterImage?.imageId,
+                              url: value.afterImage?.imageUrl,
+                              tag: value.afterImage?.imageTag,
+                            },
+                          ]),
+                            (userStore.daePyoImage =
+                              value.beforeImage.imageUrl);
+                          userStore.selectTag = value.beforeImage.imageTag;
+                          communityStore.writeSecondModal = true;
+                          (firstCheck = false), (secondCheck = false);
+                        "
+                      >
+                        <!-- <img :src="value.beforeImage.imageUrl" alt="" class="photo-image" /> -->
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </v-dialog>
       </div></template
     >
+    <!-- 두 번째 모달 -->
+    <template>
+      <div>
+        <v-dialog v-model="communityStore.writeSecondModal" class="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body">
+                <!-- 메인 이미지 -->
+                <img :src="userStore.daePyoImage" alt="" class="main-image" />
 
+                <div style="display: flex; gap: 10px">
+                  <div class="sub-wrap">
+                    <div
+                      :style="{
+                        backgroundImage:
+                          'url(' + userStore.photoSelect[0]?.url + ')',
+                      }"
+                      class="sub-image"
+                      :class="{ firstCheck: firstCheck }"
+                      @click="
+                        userStore.daePyoImage = userStore.photoSelect[0]?.url
+                      "
+                    ></div>
+                    <span
+                      v-if="!firstCheck"
+                      class="material-icons-outlined check-icon"
+                      style="font-size: 20px; background-color: #ffffff"
+                      @click="
+                        pushSelectedNumber(
+                          userStore.photoSelect[0]?.id,
+                          userStore.photoSelect[0]?.url,
+                          userStore.photoSelect[0]?.tag,
+                        ),
+                          (firstCheck = !firstCheck)
+                      "
+                    >
+                      check_circle
+                    </span>
+
+                    <span
+                      v-else
+                      class="material-icons check-icon"
+                      style="font-size: 20px; background-color: #ffffff"
+                      @click="
+                        pushSelectedNumber(
+                          userStore.photoSelect[0]?.id,
+                          userStore.photoSelect[0]?.url,
+                          userStore.photoSelect[0]?.tag,
+                        ),
+                          (firstCheck = !firstCheck)
+                      "
+                    >
+                      check_circle
+                    </span>
+                  </div>
+                  <!--  -->
+                  <div class="sub-wrap" v-if="userStore.photoSelect[1]?.url">
+                    <div
+                      :style="{
+                        backgroundImage:
+                          'url(' + userStore.photoSelect[1]?.url + ')',
+                      }"
+                      class="sub-image"
+                      :class="{ secondCheck: secondCheck }"
+                      @click="
+                        userStore.daePyoImage = userStore.photoSelect[1]?.url
+                      "
+                    ></div>
+
+                    <span
+                      v-if="!secondCheck"
+                      class="material-icons-outlined check-icon"
+                      style="font-size: 20px; background-color: #ffffff"
+                      @click="
+                        pushSelectedNumber(
+                          userStore.photoSelect[1]?.id,
+                          userStore.photoSelect[1]?.url,
+                          userStore.photoSelect[1]?.tag,
+                        ),
+                          (secondCheck = !secondCheck)
+                      "
+                    >
+                      check_circle
+                    </span>
+
+                    <span
+                      v-else
+                      class="material-icons check-icon"
+                      style="font-size: 20px; background-color: #ffffff"
+                      @click="
+                        pushSelectedNumber(
+                          userStore.photoSelect[1]?.id,
+                          userStore.photoSelect[1]?.url,
+                          userStore.photoSelect[1]?.tag,
+                        ),
+                          (secondCheck = !secondCheck)
+                      "
+                    >
+                      check_circle
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 버튼 -->
+                <div style="margin-top: var(--grid-vertical)">
+                  <button
+                    class="befor-btn"
+                    @click="communityStore.writeSecondModal = false"
+                  >
+                    돌아가기
+                  </button>
+                  <button
+                    class="select-btn"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    @click="
+                      (data.images = [
+                        userStore.photoSelect[0]?.id,
+                        userStore.photoSelect[1]?.id,
+                      ]),
+                        selectPhoto()
+                    "
+                  >
+                    선택완료
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </v-dialog>
+      </div></template
+    >
     <!-- 제출 실패 모달 -->
     <template>
       <div>
@@ -349,6 +378,8 @@ const selectPhoto = () => {
   userStore.urlPhotoList = userStore.urlList;
   userStore.urlList = [];
   userStore.selectedPhotoList = userStore.selectedPhoto;
+  communityStore.writeFirstModal = false;
+  communityStore.writeSecondModal = false;
 };
 
 const pushSelectedNumber = (num, url, tag) => {
@@ -397,15 +428,16 @@ userStore.urlList = [];
 userStore.urlPhotoList = [];
 userStore.selectTag = [];
 communityStore.writeFirstModal = false;
+communityStore.writeSecondModal = false;
 </script>
 
 <style scoped>
 @keyframes openDialog {
   0% {
-    bottom: -600px;
+    bottom: -100vh;
   }
   100% {
-    bottom: -98px;
+    bottom: calc(-50vh);
   }
 }
 @media (min-width: 1024px) {
@@ -463,15 +495,20 @@ communityStore.writeFirstModal = false;
   background-color: var(--main-color);
 }
 .modal-dialog {
-  position: fixed;
+  position: absolute;
   width: 100%;
   min-width: 100%;
-  bottom: -98px;
+  bottom: calc(-50vh);
   animation-name: openDialog;
   animation-duration: 0.3s;
   margin: 0;
-  border-radius: 130px 130px 0 0;
-  height: 700px;
+  border-radius: 10px 10px 0 0;
+  height: 500px;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+.modal-content {
+  max-height: 500px;
 }
 .image-wrap > label {
   width: 100%;
@@ -488,7 +525,7 @@ communityStore.writeFirstModal = false;
 }
 .modal-body {
   width: 100%;
-  height: 600px;
+  height: 500px;
   overflow: scroll;
 }
 .main-image {
@@ -543,10 +580,13 @@ communityStore.writeFirstModal = false;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: var(--grid-vertical);
+  padding: 0 10px;
 }
 .tag {
-  padding: 3px 10px;
+  background-color: var(--theme-color);
+  padding: 5px 15px;
+  border-radius: 20px;
+  line-height: 20px;
 }
 .image-content {
   position: absolute;

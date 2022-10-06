@@ -41,7 +41,7 @@
       <div
         v-for="(tag, index) in communityStore.post.item?.images[0]?.imageTag"
         :key="index"
-        class="tag common-image"
+        class="tag"
       >
         {{ tag }}
       </div>
@@ -65,36 +65,11 @@
             alt=""
             class="profile-image"
           />
-          {{ communityStore.post.item?.writerNickname }}
+          <div>
+            {{ communityStore.post.item?.writerNickname }}
+          </div>
         </div>
-
-        <div
-          v-if="
-            userStore.currentUser.item?.user?.userId ==
-            communityStore.post.item?.userId
-          "
-          class="update-delete"
-        >
-          <span
-            class="material-icons-outlined"
-            style="margin-right: 10px; color: var(--instagram-dark-grey)"
-            @click="
-              router.push({
-                name: 'CommunityUpdateList',
-                params: { postId: route.params.postId },
-              })
-            "
-          >
-            edit
-          </span>
-          <span
-            class="material-icons-outlined"
-            @click="communityStore.deletePost(postId)"
-            style="color: var(--instagram-dark-grey)"
-          >
-            delete
-          </span>
-        </div>
+        <!-- 데이트 -->
       </div>
       <div class="date-wrap" v-if="communityStore.post.item?.registTime">
         <div
@@ -120,7 +95,33 @@
     <span class="card-content">
       {{ communityStore.post.item?.content }}
     </span>
-
+    <div
+      v-if="
+        userStore.currentUser.item?.user?.userId ==
+        communityStore.post.item?.userId
+      "
+      class="update-delete"
+    >
+      <span
+        class="material-icons-outlined"
+        @click="communityStore.deletePost(postId)"
+        style="color: var(--instagram-dark-grey)"
+      >
+        delete
+      </span>
+      <span
+        class="material-icons-outlined"
+        style="margin-right: 10px; color: var(--instagram-dark-grey)"
+        @click="
+          router.push({
+            name: 'CommunityUpdateList',
+            params: { postId: route.params.postId },
+          })
+        "
+      >
+        edit
+      </span>
+    </div>
     <!-- 채팅 좋아요 북마크 -->
     <div class="like-bookmark-chat">
       <div class="like-bookmark">
@@ -312,6 +313,8 @@ onMounted(() => {
   border-radius: 35px;
 }
 .update-delete {
+  display: flex;
+  flex-direction: row-reverse;
   margin-right: var(--grid-side);
 }
 
@@ -323,7 +326,10 @@ onMounted(() => {
   padding: 0 10px;
 }
 .tag {
-  padding: 3px 10px;
+  background-color: var(--theme-color);
+  padding: 5px 15px;
+  border-radius: 20px;
+  line-height: 20px;
 }
 
 /* 데이트 */

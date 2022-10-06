@@ -78,9 +78,13 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  padding: 0 10px;
 }
 .tag {
-  padding: 3px 10px;
+  background-color: var(--theme-color);
+  padding: 5px 15px;
+  border-radius: 20px;
+  line-height: 20px;
 }
 .button-wrap {
   width: 100%;
