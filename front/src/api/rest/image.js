@@ -113,7 +113,8 @@ export default {
   },
 
   getBuffer: function (payload) {
-    console.log(' * 이미지 데이터', payload.imageQuery);
+    console.log(' * 이미지 입력쿼리', payload.imageQuery);
+    console.log(' * 이미지명 입력쿼리', payload.fileName);
     return new Promise((resolve, reject) => {
       axiosApi
         .get(REST_PATH + '?' + payload.imageQuery, {
@@ -135,7 +136,8 @@ export default {
     });
   },
   get: function (payload) {
-    console.log(' * 이미지 데이터', payload.imageQuery);
+    console.log(' * 이미지 입력퀴리', payload.imageQuery);
+    console.log(' * 이미지명 입력쿼리', payload.fileName);
     return new Promise((resolve, reject) => {
       axiosApi
         .get(REST_PATH + '?imageId=' + payload.imageQuery, {

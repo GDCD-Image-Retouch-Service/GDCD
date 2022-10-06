@@ -127,7 +127,7 @@ const downloadTempImage = async () => {
 
   photoName.value = `${today.getFullYear()}-${
     today.getMonth() + 1
-  }-${today.getDate()}-${today.getDay()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}`;
+  }-${today.getDate()}-${today.getDay()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}.jpg`;
 
   document
     .getElementById('downloadPhoto')
@@ -142,11 +142,11 @@ const downloadImage = async () => {
 
   photoName.value = `${today.getFullYear()}-${
     today.getMonth() + 1
-  }-${today.getDate()}-${today.getDay()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}`;
+  }-${today.getDate()}-${today.getDay()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}.jpg`;
 
   const payload = {
     imageQuery: localStore.getUrl,
-    fileName: photoName,
+    fileName: photoName.value,
   };
 
   const data = await image.get(payload);

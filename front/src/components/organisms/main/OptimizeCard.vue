@@ -147,7 +147,7 @@
         type="button"
         data-bs-target="#carouselExampleCaptions"
         data-bs-slide="prev"
-        style="width: 30%"
+        style="width: 20%"
       >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -157,7 +157,7 @@
         type="button"
         data-bs-target="#carouselExampleCaptions"
         data-bs-slide="next"
-        style="width: 30%"
+        style="width: 20%"
       >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
