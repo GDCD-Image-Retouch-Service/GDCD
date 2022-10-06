@@ -187,7 +187,11 @@ const setPicBox = () => {
     success: function (result) {
       if (result.size > 1024 * 1024) {
         // 리사이징 했는데도 용량이 큰 경우
-        alert(' * 이미지 압축 실패 : 용량이 초과되었습니다.');
+        alert(' * 이미지 업로드 실패 : 용량이 초과되었습니다.');
+        return;
+      } else if (result.size < 50 * 50) {
+        // 이미지가 지나치게 작은 경우
+        alert(' * 이미지 업로드 실패 : 용량이 지나치게 작습니다.');
         return;
       }
       console.log(new File([result], result.name, { type: result.type }));

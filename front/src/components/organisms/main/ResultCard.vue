@@ -118,12 +118,22 @@ const downloadImage = async () => {
     today.getMonth() + 1
   }-${today.getDate()}-${today.getDay()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}.png`;
 
-  document
-    .getElementById('downloadPhoto')
-    .setAttribute(
-      'href',
-      mainStore.getTempImg.replace('image/png', 'image/octet-stream'),
-    );
+  if (localStore.getUrl == '-') {
+    document
+      .getElementById('downloadPhoto')
+      .setAttribute(
+        'href',
+        mainStore.getTempImg.replace('image/png', 'image/octet-stream'),
+      );
+  } else {
+    const payload = {
+      imageQuery: localStore.getUrl,
+      fileName: photoName,
+    };
+
+    const data = await image.get(payload);
+    console.log(' * 이미지 다운로드: ', data);
+  }
 };
 
 // Watch
