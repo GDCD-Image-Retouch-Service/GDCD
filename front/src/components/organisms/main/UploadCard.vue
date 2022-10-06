@@ -53,7 +53,7 @@
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
           id="downloadPhoto"
-          :download="`${photoName}.jpg`"
+          :download="`${photoName}`"
           role="button"
           @click="downloadImage"
         >
@@ -116,7 +116,7 @@
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
           id="downloadPhoto"
-          :download="`${photoName}.jpg`"
+          :download="`${photoName}`"
           role="button"
           @click="downloadImage"
         >
@@ -202,21 +202,6 @@ const setPicBox = () => {
   };
   console.log(' * 이미지 압축 시작');
   new Compressor(file, options);
-
-  // if (FileReader && file) {
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     const tempUrl = reader.result;
-  //     picBox.value.src = tempUrl;
-  //     mainStore.setTempImg(tempUrl);
-  //     isInput.value = true;
-  //   };
-  //   reader.readAsDataURL(file);
-  // } else {
-  //   mainStore.isCamModeOff();
-  //   isInput.value = false;
-  //   alert('이미지 업로드에 문제가 발생하였습니다.');
-  // }
 };
 
 // > watch
@@ -359,20 +344,12 @@ const scoring = async () => {
   if (score > 100) score = 100;
   else if (score < 0) score = 0;
 
-  // await mainStore.setScore(data.item);
-  // console.log('img', mainStore.getTempImg);
-  // console.log('id', mainStore.getTempId);
-  console.log('score', score);
-  console.log('e', eScore);
-  console.log('e', eRank);
-  console.log('q', qScore);
-  console.log('q', qRank);
-
   localStore.setPath(route.fullPath);
   localStore.setUrl('-');
   localStore.setScore(score);
   localStore.setERank(eRank);
   localStore.setQRank(qRank);
+  localStore.setRequestId('-');
   localStore.setPrev();
 
   router.push('/main/result');
