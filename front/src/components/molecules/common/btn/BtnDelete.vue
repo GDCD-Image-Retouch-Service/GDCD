@@ -1,6 +1,6 @@
 <template>
   <div v-if="isClick" class="following-button" @click="isClick = !isClick">
-    언팔로우
+    팔로잉
   </div>
   <div v-else class="follow-button" @click="isClick = !isClick">+팔로우</div>
 </template>
@@ -12,7 +12,7 @@ const isClick = ref(true);
 
 <style scoped>
 .following-button {
-  width: 100px;
+  width: 90px;
   padding: 4px 14px;
   height: 30px;
   line-height: 22px;
