@@ -26,6 +26,50 @@
       </div>
     </div>
 
+    <div
+      class="tag-wrap"
+      v-if="
+        !isClick & (communityStore.post.item?.images[0]?.imageTag?.length != 0)
+      "
+    >
+      <div
+        v-for="(tag, index) in communityStore.post.item?.images[0]?.imageTag"
+        :key="index"
+        class="tag"
+      >
+        {{ tag }}
+      </div>
+    </div>
+
+    <div
+      style="height: 50px"
+      v-if="
+        !isClick & (communityStore.post.item?.images[0]?.imageTag?.length == 0)
+      "
+    ></div>
+
+    <div
+      class="tag-wrap"
+      v-if="
+        isClick & (communityStore.post.item?.images[1]?.imageTag?.length != 0)
+      "
+    >
+      <div
+        v-for="(tag, index) in communityStore.post.item?.images[1]?.imageTag"
+        :key="index"
+        class="tag"
+      >
+        {{ tag }}
+      </div>
+    </div>
+
+    <div
+      style="height: 50px"
+      v-if="
+        isClick & (communityStore.post.item?.images[1]?.imageTag?.length == 0)
+      "
+    ></div>
+
     <!-- 버튼 -->
     <div
       class="button-wrap"
@@ -34,16 +78,6 @@
       <div class="image-toggle-button">
         <div class="button-left"></div>
         <div class="button-right"></div>
-      </div>
-    </div>
-
-    <div class="tag-wrap">
-      <div
-        v-for="(tag, index) in communityStore.post.item?.images[0]?.imageTag"
-        :key="index"
-        class="tag"
-      >
-        {{ tag }}
       </div>
     </div>
 
@@ -87,14 +121,15 @@
         </div>
       </div>
     </div>
+
     <!-- 제목 -->
     <div class="card-title">
       {{ communityStore.post.item?.title }}
     </div>
 
-    <span class="card-content">
+    <div class="card-content">
       {{ communityStore.post.item?.content }}
-    </span>
+    </div>
     <div
       v-if="
         userStore.currentUser.item?.user?.userId ==
@@ -104,7 +139,7 @@
     >
       <span
         class="material-icons-outlined"
-        @click="communityStore.deletePost(postId)"
+        @click="deleteAlert = true"
         style="color: var(--instagram-dark-grey)"
       >
         delete
@@ -122,6 +157,7 @@
         edit
       </span>
     </div>
+
     <!-- 채팅 좋아요 북마크 -->
     <div class="like-bookmark-chat">
       <div class="like-bookmark">
@@ -188,6 +224,23 @@
         }}</span>
       </div>
     </div>
+
+    <v-dialog v-model="deleteAlert">
+      <div class="error-alert">
+        <div class="create-post-modal">
+          <div class="modal-title">정말 삭제하시겠습니까?</div>
+          <div class="modal-close" @click="deletePost()">확인</div>
+        </div>
+      </div>
+    </v-dialog>
+
+    <v-dialog v-model="guideAlert">
+      <div class="error-alert">
+        <div class="create-post-modal">
+          <div class="modal-title">삭제되었습니다.</div>
+        </div>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
@@ -207,6 +260,8 @@ const userStore = useUserStore();
 const communityStore = useCommunityStore();
 
 const isClick = ref(false);
+const deleteAlert = ref(false);
+const guideAlert = ref(false);
 
 const clickLike = () => {
   if (!communityStore.post.item?.like) {
@@ -249,6 +304,15 @@ onMounted(() => {
       isClick.value = false;
     });
 });
+
+const deletePost = () => {
+  communityStore.deletePost(postId);
+  deleteAlert.value = true;
+  guideAlert.value = true;
+  setTimeout(function () {
+    router.push({ name: 'CommunityList' });
+  }, 1500);
+};
 </script>
 
 <style scoped>
@@ -256,13 +320,11 @@ onMounted(() => {
   display: none;
 }
 .community-detail-card {
-  display: flex;
-  gap: 20px;
   flex-direction: column;
   border: 1px solid var(--instagram-grey);
   border-radius: 10px;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   position: relative;
   margin-top: var(--grid-vertical);
   background-color: var(--color-main);
@@ -276,10 +338,21 @@ onMounted(() => {
   color: var(--black);
 }
 
+.error-alert {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  border: 1px solid var(--instagram-grey);
+  border-radius: 5px;
+  text-align: center;
+}
+
 /* 제목 */
 .card-title {
   width: 100%;
-  font-size: 24px;
+  font-size: 18px;
   word-break: break-all;
   white-space: normal;
   line-height: 25px;
@@ -287,7 +360,8 @@ onMounted(() => {
   font-weight: 600;
   height: fit-content;
   padding: 0 var(--grid-side);
-  color: var(--instagram-dark-grey);
+  color: var(--popper-theme-text-color);
+  margin-bottom: 10px;
 }
 /* 프로필 수정 삭제 */
 .profile-update-delete {
@@ -303,7 +377,9 @@ onMounted(() => {
   align-items: center;
   gap: 10px;
   margin-left: var(--grid-side);
-  color: var(--instagram-dark-grey);
+  color: var(--popper-theme-text-color);
+  margin-top: 20px;
+  margin-bottom: 20px;
   font-weight: 600;
 }
 .profile-image {
@@ -316,20 +392,26 @@ onMounted(() => {
   display: flex;
   flex-direction: row-reverse;
   margin-right: var(--grid-side);
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
+/* 태그 */
 .tag-wrap {
-  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  overflow: scroll;
   gap: 10px;
   padding: 0 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 .tag {
+  text-align: center;
   background-color: var(--theme-color);
-  padding: 5px 15px;
+  padding: 5px 5px;
   border-radius: 20px;
   line-height: 20px;
+  font-size: 13px;
 }
 
 /* 데이트 */
@@ -340,6 +422,7 @@ onMounted(() => {
   text-align: end;
   height: 35px;
   line-height: 35px;
+  margin-top: 20px;
 }
 .date {
   display: flex;
@@ -349,9 +432,7 @@ onMounted(() => {
   color: var(--instagram-dark-grey);
 }
 .update-info {
-  font-size: 10px;
-
-  color: var(--instagram-dark-grey);
+  color: var(--instagram-grey);
   margin-left: 5px;
 }
 .image-wrap {
@@ -359,7 +440,9 @@ onMounted(() => {
 }
 .profile-date-wrap {
   display: flex;
+  border-top: 1px solid var(--instagram-grey);
 }
+
 /*  */
 .card-image {
   width: 100%;
@@ -371,14 +454,18 @@ onMounted(() => {
   word-break: break-all;
   margin: 0 var(--grid-side);
   line-height: 28px;
+  font-size: 15px;
 }
 .like-bookmark-chat {
+  border-top: 1px solid var(--instagram-grey);
+  margin-top: 20px;
   display: flex;
   width: 100%;
   justify-content: space-between;
   padding: 0 var(--grid-side);
-  margin-bottom: var(--grid-vertical);
+  margin-bottom: 20px;
   color: var(--instagram-dark-grey);
+  padding-top: 20px;
 }
 .like-bookmark {
   display: flex;
@@ -402,6 +489,7 @@ onMounted(() => {
   width: 100%;
   display: flex;
   flex-direction: row-reverse;
+  margin-bottom: 20px;
 }
 .image-toggle-button {
   width: 40px;
@@ -429,5 +517,35 @@ onMounted(() => {
 .image-toggle-button:active .button-right {
   border: 1px solid var(--instagram-grey);
   background-color: var(--instagram-grey);
+}
+.create-post-modal {
+  width: 100%;
+  max-width: 400px;
+  height: 170px;
+  background-color: var(--color-main);
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+}
+.modal-title {
+  width: 100%;
+  position: absolute;
+  top: calc(40% - 12px);
+  color: var(--color-reverse);
+  font-family: 'Pretendard-Regular';
+}
+.modal-close {
+  background-color: var(--theme-color);
+  border-radius: 5px;
+  border: none;
+  color: var(--light-main-color);
+  font-weight: 500;
+  width: 259px;
+  height: 38px;
+  line-height: 38px;
+  position: absolute;
+  top: calc(75% - 12px);
+  left: calc(50% - 130px);
 }
 </style>

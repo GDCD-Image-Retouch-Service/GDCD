@@ -14,11 +14,17 @@
             v-if="comment.registTime == comment.updateTime"
             class="update-wrap"
           >
-            <date-format :updateInfo="comment.registTime" />
+            <date-format
+              :updateInfo="comment.registTime"
+              class="profile-date"
+            />
           </div>
           <div v-else class="update-wrap">
-            <date-format :updateInfo="comment.updateTime" />
-            <span class="update-info">수정</span>
+            <date-format
+              :updateInfo="comment.updateTime"
+              class="profile-date"
+            />
+            <span class="profile-date profile-date"> &nbsp;수정</span>
           </div>
         </div>
       </div>
@@ -39,6 +45,19 @@
         </div>
         <div
           v-else
+          @click="enterUpdateComment(comment.commentId, myUpdateComment)"
+        >
+          확인
+        </div>
+
+        <div
+          v-if="!isClickUpdate"
+          @click="clickDeleteComment(route.params.postId, comment.commentId)"
+        >
+          삭제
+        </div>
+        <div
+          v-else
           @click="
             (isClickUpdate = !isClickUpdate),
               (myUpdateComment = comment.content)
@@ -46,18 +65,25 @@
         >
           취소
         </div>
-        <div
-          @click="
-            communityStore.deleteComment(route.params.postId, comment.commentId)
-          "
-        >
-          삭제
-        </div>
       </div>
     </div>
 
+    <v-dialog v-model="deleteCommentDialog">
+      <div class="error-alert">
+        <div class="create-post-modal">
+          <div class="modal-title">정말 삭제하시겠습니까?</div>
+          <div
+            class="modal-close"
+            @click="postDeleteCommet(route.params.postId, comment.commentId)"
+          >
+            확인
+          </div>
+        </div>
+      </div>
+    </v-dialog>
+
     <!-- 메시지 -->
-    <div class="comment-message">
+    <div class="comment-message" :class="{ none: isClickUpdate }">
       {{ comment.content }}
     </div>
     <div class="update-input-wrap" v-if="isClickUpdate">
@@ -67,12 +93,6 @@
         v-model="myUpdateComment"
         @keyup.enter="enterUpdateComment(comment.commentId, myUpdateComment)"
       />
-      <span
-        class="material-icons-outlined update-button"
-        @click="enterUpdateComment(comment.commentId, myUpdateComment)"
-      >
-        north
-      </span>
     </div>
   </div>
 </template>
@@ -80,13 +100,11 @@
 <script setup>
 import { defineProps, ref, toRefs } from 'vue';
 import { useCommunityStore } from '@/stores/community.js';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores';
 import DateFormat from '../common/DateFormat.vue';
 
 const route = useRoute();
-const router = useRouter();
-console.log(router);
 const communityStore = useCommunityStore();
 const userStore = useUserStore();
 const props = defineProps({
@@ -96,6 +114,8 @@ const props = defineProps({
 const { comment } = toRefs(props);
 const isClickUpdate = ref(false);
 const myUpdateComment = ref('');
+const updateInfo = ref(false);
+const deleteCommentDialog = ref(false);
 
 const enterUpdateComment = (commentId, content) => {
   const data = {
@@ -104,12 +124,20 @@ const enterUpdateComment = (commentId, content) => {
     content: content,
   };
   if (content !== '') {
+    updateInfo.value = true;
     communityStore.updateComment(data);
   }
   isClickUpdate.value = false;
 };
 
 myUpdateComment.value = '';
+
+const clickDeleteComment = () => {
+  deleteCommentDialog.value = true;
+};
+const postDeleteCommet = (postId, commentId) => {
+  communityStore.deleteComment(postId, commentId);
+};
 </script>
 
 <style scoped>
@@ -122,15 +150,19 @@ myUpdateComment.value = '';
   position: relative;
 }
 .profile-nickname {
-  font-size: 14px;
-  height: 28px;
-  line-height: 28px;
+  font-size: 16px;
+  height: 16px;
+  line-height: 16px;
   font-weight: 700;
+  margin-bottom: 8px;
 }
 .profile-date {
   font-size: 12px;
-  height: 12px;
+  min-height: 14px;
   line-height: 12px;
+}
+.none {
+  display: none;
 }
 .comment-header {
   width: 100%;
@@ -150,30 +182,37 @@ myUpdateComment.value = '';
   font-weight: 700;
 }
 .profile-image {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   object-fit: cover;
-  border-radius: 50px;
+  border-radius: 30px;
 }
 .comment-message {
+  display: flex;
+  width: 100%;
   word-break: break-all;
-  text-align: start;
   padding: 0 0 0 5px;
   margin-top: 10px;
   line-height: 22px;
+  font-size: 16px;
+  height: 30px;
+  align-content: center;
 }
 
 .update-input {
-  width: calc(100% - 30px);
-  position: absolute;
-  left: 0;
-  top: 67px;
+  width: 100%;
+
   border-radius: 1px;
   border: none;
   border-bottom: 1px solid var(--instagram-dark-grey);
   height: 30px;
-  background-color: var(--color-main);
+  word-break: break-all;
   outline: none;
+  font-size: 16px;
+  line-height: 37px;
+  margin-top: 10px;
+  padding: 0 0 0 5px;
+  background-color: var(--color-main);
 }
 .update-button {
   position: absolute;
@@ -189,5 +228,46 @@ myUpdateComment.value = '';
 .update-info {
   color: var(--instagram-dark-grey);
   font-size: 10px;
+}
+.error-alert {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  border: 1px solid var(--instagram-grey);
+  border-radius: 5px;
+  text-align: center;
+}
+.create-post-modal {
+  width: 100%;
+  max-width: 400px;
+  height: 170px;
+  background-color: var(--color-main);
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+}
+.modal-title {
+  width: 100%;
+
+  position: absolute;
+  top: calc(40% - 12px);
+  color: var(--color-reverse);
+  font-family: 'Pretendard-Regular';
+}
+.modal-close {
+  background-color: var(--theme-color);
+  border-radius: 5px;
+  border: none;
+  color: var(--light-main-color);
+  font-weight: 500;
+  width: 259px;
+  height: 38px;
+  line-height: 38px;
+  position: absolute;
+  top: calc(75% - 12px);
+  left: calc(50% - 130px);
 }
 </style>

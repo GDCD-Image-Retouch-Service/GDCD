@@ -19,7 +19,7 @@
       {{ post.title }}
     </div>
 
-    <date-format :updateInfo="post.registTime" style="margin-left: 10px" />
+    <date-format :updateInfo="post.registTime" class="mypost-date" />
   </div>
 </template>
 
@@ -53,7 +53,6 @@ const { post } = toRefs(props);
   box-shadow: 0 4px 4px -4px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(0, 0, 0, 0.12);
   background-color: var(--light-main-color);
-  font-size: 14px;
   overflow: hidden;
   background-color: var(--color-main);
 }
@@ -64,17 +63,13 @@ const { post } = toRefs(props);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  height: 20px;
+  line-height: 20px;
+  font-size: 16px;
+  color: var(--popper-theme-text-color);
+  font-weight: 700;
+}
 
-  font-size: 14px;
-}
-.post-card-userinfo {
-  display: flex;
-  width: calc(100% - 10px);
-  margin-right: 10px;
-  justify-content: flex-end;
-  font-size: 14px;
-  margin-top: 35px;
-}
 .dot-icon {
   position: absolute;
   right: 0;
@@ -96,5 +91,9 @@ const { post } = toRefs(props);
   padding-bottom: 100%;
   background-position: center;
   background-size: cover;
+}
+.mypost-date {
+  margin-left: 10px;
+  font-size: var(--sub-font-size);
 }
 </style>
