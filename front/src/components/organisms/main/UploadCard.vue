@@ -7,7 +7,6 @@
     <div class="spacer" />
 
     <loading-dots v-if="isLoading" />
-
     <!-- Pic Mode -->
     <div class="pic-mode" v-if="!mainStore.isCamMode" v-show="!isLoading">
       <div
@@ -15,10 +14,10 @@
       >
         <div
           v-if="!isInput"
-          class="pic-comment sub inner d-flex align-items-center justify-content-center"
+          class="pic-comment sub inner-shadow d-flex align-items-center justify-content-center"
           style="font-size: 12pt; color: black"
         >
-          <div>사진을 업로드 해주세요</div>
+          <div class="pic-message">사진을 업로드 해주세요</div>
         </div>
         <img
           v-show="isInput"
@@ -53,7 +52,7 @@
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
           id="downloadPhoto"
-          :download="`${photoName}.jpg`"
+          :download="`${photoName}`"
           role="button"
           @click="downloadImage"
         >
@@ -110,23 +109,13 @@
           <i v-else class="bi bi-arrow-clockwise"></i>
         </div>
 
-        <!-- Btn Back Camera -->
-        <div
-          v-if="!isPhotoTaken"
-          class="btn-set-button inner d-flex align-items-center justify-content-center"
-          style="margin-left: 8px"
-          @click="isBacktoggle"
-        >
-          <i class="bi bi-arrow-left-right"></i>
-        </div>
-
         <!-- Btn Download -->
         <a
           v-if="isPhotoTaken"
           class="btn-set-button inner d-flex align-items-center justify-content-center"
           style="margin-left: 8px"
           id="downloadPhoto"
-          :download="`${photoName}.jpg`"
+          :download="`${photoName}`"
           role="button"
           @click="downloadImage"
         >
@@ -173,7 +162,6 @@ const canvas = ref(null);
 const isPhotoTaken = ref(false);
 const isShotPhoto = ref(false);
 const isLoading = ref(false);
-const isBack = ref(false);
 
 const photoName = ref('');
 
@@ -213,24 +201,6 @@ const setPicBox = () => {
   };
   console.log(' * 이미지 압축 시작');
   new Compressor(file, options);
-
-  // if (FileReader && file) {
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     const tempUrl = reader.result;
-  //     picBox.value.src = tempUrl;
-  //     mainStore.setTempImg(tempUrl);
-  //     isInput.value = true;
-  //   };
-  //   reader.readAsDataURL(file);
-  // } else {
-  //   mainStore.isCamModeOff();
-  //   isInput.value = false;
-  //   alert('이미지 업로드에 문제가 발생하였습니다.');
-  // }
-};
-const isBacktoggle = () => {
-  isBack.value = !isBack.value;
 };
 
 // > watch
@@ -243,19 +213,6 @@ watch(
       isPhotoTaken.value = false;
       isShotPhoto.value = false;
       stopCameraStreame();
-    } else {
-      createCameraElement();
-    }
-  },
-);
-
-// 후면카메라 기능
-watch(
-  () => isBack.value,
-  () => {
-    console.log(isBack.value ? '후면' : '전면');
-    if (isBack.value) {
-      createBackCameraElement();
     } else {
       createCameraElement();
     }
@@ -283,29 +240,6 @@ const createCameraElement = () => {
       console.log('카메라 장치에 문제가 있거나 호환되지 않습니다.');
       console.log(e);
       router.go();
-    });
-};
-
-const createBackCameraElement = () => {
-  isLoading.value = true;
-  const constraints = (window.constraints = {
-    audio: false,
-    video: {
-      width: { min: 240, ideal: 720, max: 1080 },
-      height: { min: 240, ideal: 720, max: 1080 },
-      facingMode: { exact: 'environment' },
-    },
-  });
-
-  navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then((stream) => {
-      isLoading.value = false;
-      camera.value.srcObject = stream;
-    })
-    .catch((e) => {
-      console.log(' * 카메라 전환 불가', e);
-      createCameraElement();
     });
 };
 
@@ -409,20 +343,12 @@ const scoring = async () => {
   if (score > 100) score = 100;
   else if (score < 0) score = 0;
 
-  // await mainStore.setScore(data.item);
-  // console.log('img', mainStore.getTempImg);
-  // console.log('id', mainStore.getTempId);
-  console.log('score', score);
-  console.log('e', eScore);
-  console.log('e', eRank);
-  console.log('q', qScore);
-  console.log('q', qRank);
-
   localStore.setPath(route.fullPath);
   localStore.setUrl('-');
   localStore.setScore(score);
   localStore.setERank(eRank);
   localStore.setQRank(qRank);
+  localStore.setRequestId('-');
   localStore.setPrev();
 
   router.push('/main/result');
@@ -436,9 +362,10 @@ const scoring = async () => {
 
 <style scoped>
 .upload-card {
+  margin-top: var(--grid-vertical);
   border-radius: 20px;
-  width: 90%;
-  max-width: 380px;
+  width: calc(100% - 2 * var(--grid-side));
+  max-width: 400px;
 }
 .pic-mode {
   width: 100%;
@@ -451,7 +378,12 @@ const scoring = async () => {
 }
 .pic-comment {
   width: 100%;
-  height: 380px;
+  padding-bottom: 100%;
+  position: relative;
+}
+.pic-message {
+  position: absolute;
+  top: 50%;
 }
 .cam-mode {
   width: 100%;

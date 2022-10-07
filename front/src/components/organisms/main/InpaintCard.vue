@@ -32,7 +32,6 @@
           background: lightgray;
           width: 380px;
           max-width: 380px;
-          overflow: hidden;
         "
       >
         <img
@@ -215,7 +214,8 @@ const objectDetection = async () => {
   const data = await image.objectDetection(url.value);
   console.log(data);
   objectList.value = data.item;
-  console.log(objectList.value);
+  console.log(' * 디텍션 리스트', objectList.value);
+
   isLoading.value = false;
 
   console.log(document.getElementsByClassName('btn-object-badge'));

@@ -259,11 +259,19 @@
         </div>
       </div>
     </div>
+
+    <v-dialog v-model="updateAlert">
+      <div class="error-alert">
+        <div class="create-post-modal">
+          <div class="modal-title">수정되었습니다.</div>
+        </div>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
 <script setup>
-import DateFormat from '@/components/molecules/common/DateFormat.vue';
+import DateFormat from '@/components/molecules/common/DateFormat2.vue';
 import { useCommunityStore } from '@/stores/community.js';
 import { useUserStore } from '@/stores/user.js';
 import { ref } from 'vue';
@@ -274,6 +282,7 @@ const myRouter = useRouter();
 const route = useRoute();
 const communityStore = useCommunityStore();
 const userStore = useUserStore();
+const updateAlert = ref(false);
 
 const data = ref({
   title: communityStore.post.item?.title,
@@ -286,7 +295,6 @@ const data = ref({
 const firstCheck = ref(false);
 const secondCheck = ref(false);
 const selectTags = ref([communityStore.post.item?.images[0]?.imageTag]);
-
 console.log(route.params.postId);
 
 async function updatePost(data) {
@@ -300,11 +308,13 @@ async function updatePost(data) {
   };
 
   await communityStore.updatePost(context);
-
-  myRouter.push({
-    name: 'CommunityDetail',
-    params: { postId: route.params.postId },
-  });
+  updateAlert.value = true;
+  setTimeout(function () {
+    myRouter.push({
+      name: 'CommunityDetail',
+      params: { postId: route.params.postId },
+    });
+  }, 1500);
 }
 
 const selectPhoto = () => {
@@ -420,6 +430,7 @@ userStore.selectedPhotoList = userStore.selectedPhoto;
   border-radius: 5px;
   margin: 0 auto;
   padding: 5px;
+  background-color: var(--color-main);
 }
 .content-area {
   padding: 5px;
@@ -428,6 +439,7 @@ userStore.selectedPhotoList = userStore.selectedPhoto;
   resize: none;
   line-height: 22px;
   border-radius: 5px;
+  background-color: var(--color-main);
   height: 150px;
 }
 .image-input {
@@ -518,9 +530,53 @@ userStore.selectedPhotoList = userStore.selectedPhoto;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: var(--grid-vertical);
+  margin-top: 20px;
 }
 .tag {
-  padding: 3px 10px;
+  background-color: var(--theme-color);
+  padding: 8px 20px;
+  border-radius: 20px;
+  line-height: 20px;
+  font-size: 16px;
+}
+.error-alert {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  border: 1px solid var(--instagram-grey);
+  border-radius: 5px;
+  text-align: center;
+}
+.create-post-modal {
+  width: 100%;
+  max-width: 400px;
+  height: 170px;
+  background-color: var(--color-main);
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+}
+.modal-title {
+  width: 100%;
+  position: absolute;
+  top: calc(40% - 12px);
+  color: var(--color-reverse);
+  font-family: 'Pretendard-Regular';
+}
+.modal-close {
+  background-color: var(--theme-color);
+  border-radius: 5px;
+  border: none;
+  color: var(--light-main-color);
+  font-weight: 500;
+  width: 259px;
+  height: 38px;
+  line-height: 38px;
+  position: absolute;
+  top: calc(75% - 12px);
+  left: calc(50% - 130px);
 }
 </style>

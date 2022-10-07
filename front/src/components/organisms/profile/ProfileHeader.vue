@@ -42,7 +42,7 @@ onMounted(() => {
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  padding-bottom: var(--grid-vertical);
+  padding-bottom: 20px;
   border-bottom: 1px solid var(--instagram-dark-grey);
   margin-top: var(--grid-vertical);
 }

@@ -6,7 +6,7 @@
     <div
       v-if="isLoading"
       class="d-flex align-items-center"
-      style="height: 48px; font-size: 12pt"
+      style="height: 48px; font-size: 14pt"
     >
       <div>사진을 최적화하는 중입니다 {{ progress }}/7</div>
     </div>
@@ -147,7 +147,7 @@
         type="button"
         data-bs-target="#carouselExampleCaptions"
         data-bs-slide="prev"
-        style="width: 30%"
+        style="width: 20%"
       >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -157,7 +157,7 @@
         type="button"
         data-bs-target="#carouselExampleCaptions"
         data-bs-slide="next"
-        style="width: 30%"
+        style="width: 20%"
       >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
@@ -166,12 +166,13 @@
 
     <div class="spacer" />
   </div>
+  <game-container v-if="isLoading" />
 </template>
 
 <script setup>
 import LoadingDots from '@/components/atoms/LoadingDots.vue';
 import IconRank from '@/components/atoms/IconRank.vue';
-// import swal from 'sweetalert2';
+import GameContainer from '@/components/atoms/game/GameContainer.vue';
 
 import { ref, onMounted } from 'vue';
 import { image } from '@/api/rest';

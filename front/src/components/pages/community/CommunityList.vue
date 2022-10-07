@@ -37,10 +37,10 @@ onBeforeMount(() => {
     margin: 0 auto;
   }
   .community-wrap {
-    gap: 28px !important;
+    gap: 10px !important;
   }
   .post-wrap {
-    max-width: calc(25% - 21px);
+    max-width: calc(25% - 7.5px);
   }
 }
 

@@ -6,6 +6,51 @@
       alt=""
       class="main-image common-image"
     />
+
+    <div
+      class="tag-wrap"
+      v-if="
+        !isClick &
+        (communityStore.selectImage.beforeImage?.imageTag.length != 0)
+      "
+    >
+      <div
+        v-for="(tag, index) in communityStore.selectImage.beforeImage?.imageTag"
+        :key="index"
+        class="tag"
+      >
+        {{ tag }}
+      </div>
+    </div>
+    <div
+      style="height: 50px"
+      v-if="
+        !isClick &
+        (communityStore.selectImage.beforeImage?.imageTag.length == 0)
+      "
+    ></div>
+
+    <div
+      class="tag-wrap"
+      v-if="
+        isClick & (communityStore.selectImage.afterImage?.imageTag.length != 0)
+      "
+    >
+      <div
+        v-for="(tag, index) in communityStore.selectImage.afterImage?.imageTag"
+        :key="index"
+        class="tag"
+      >
+        {{ tag }}
+      </div>
+    </div>
+    <div
+      style="height: 50px"
+      v-if="
+        isClick & (communityStore.selectImage.afterImage?.imageTag.length == 0)
+      "
+    ></div>
+
     <div
       class="button-wrap"
       v-show="communityStore.selectImage.afterImage != null"
@@ -13,16 +58,6 @@
       <div class="image-toggle-button">
         <div class="button-left"></div>
         <div class="button-right"></div>
-      </div>
-    </div>
-
-    <div class="tag-wrap">
-      <div
-        v-for="(tag, index) in communityStore.selectImage.beforeImage.imageTag"
-        :key="index"
-        class="tag common-image"
-      >
-        {{ tag }}
       </div>
     </div>
   </div>

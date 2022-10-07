@@ -59,7 +59,7 @@ const calcDate = () => {
     parseInt(dateString2.substr(5, 2)) * 60 * 60 * 24 * 365 +
     parseInt(dateString2.substr(2, 2)) * 60 * 60 * 24 * 365 * 12;
 
-  let ret = date1 - date2;
+  let ret = date1 - date2 + 1;
   if (ret < 60) {
     return `${ret}초 전`;
   }
