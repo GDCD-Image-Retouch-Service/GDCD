@@ -166,12 +166,13 @@
 
     <div class="spacer" />
   </div>
+  <game-container v-if="isLoading" />
 </template>
 
 <script setup>
 import LoadingDots from '@/components/atoms/LoadingDots.vue';
 import IconRank from '@/components/atoms/IconRank.vue';
-// import swal from 'sweetalert2';
+import GameContainer from '@/components/atoms/game/GameContainer.vue';
 
 import { ref, onMounted } from 'vue';
 import { image } from '@/api/rest';
