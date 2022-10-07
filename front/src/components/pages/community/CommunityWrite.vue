@@ -328,7 +328,7 @@
 </template>
 
 <script setup>
-import DateFormat from '@/components/molecules/common/DateFormat.vue';
+import DateFormat from '@/components/molecules/common/DateFormat2.vue';
 import { useCommunityStore } from '@/stores/community.js';
 import { useUserStore } from '@/stores/user.js';
 import { ref } from 'vue';

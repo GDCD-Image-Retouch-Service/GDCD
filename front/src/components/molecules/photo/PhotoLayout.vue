@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import DateFormat from '../common/DateFormat.vue';
+import DateFormat from '../common/DateFormat2.vue';
 import { useUserStore } from '@/stores/user.js';
 import { useCommunityStore } from '@/stores/community.js';
 import { useRouter } from 'vue-router';
