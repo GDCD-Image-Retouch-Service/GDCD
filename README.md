@@ -96,7 +96,7 @@
   - 학습한 NIMA 모델을 활용한 사진 평가 기능 제공
     ![KakaoTalk_20221007_111130696.gif](docs/scoring.gif)
   - Yolo v7 모델을 활용한 객체 탐지
-    ![객체 탐지.gif](docs/detecing.gif)
+    ![객체 탐지.gif](docs/detecting.gif)
 - 사진 보정
   - 탐지된 객체들의 좌표를 이용하여 LaMa 모델로 객체 지우기
     ![KakaoTalk_20221007_111130696_01.gif](docs/inpainting.gif)
