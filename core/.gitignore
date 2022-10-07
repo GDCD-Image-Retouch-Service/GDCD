@@ -1,8 +1,7 @@
 # trained files
-app/models/*.ckpt
-app/models/*.pt
-app/models/*.pth
-app/models/saved/*
+app/models/saved/*.ckpt
+app/models/saved/*.pt
+app/models/saved/*.pth
 
 # json files
 train/labels/*
