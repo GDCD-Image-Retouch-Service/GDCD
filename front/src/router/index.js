@@ -51,9 +51,6 @@ import CommunityUpdate from '@/components/pages/community/CommunityUpdate';
 // Profile
 import ProfileView from '@/views/ProfileView';
 import ProfilePost from '@/components/pages/profile/ProfilePost';
-import ProfileScrap from '@/components/pages/profile/ProfileScrap';
-import ProfileLike from '@/components/pages/profile/ProfileLike';
-import ProfileFriend from '@/components/pages/profile/ProfileFriend';
 
 // ProfileUpdate
 import ProfileUpdateView from '@/views/ProfileUpdateView';
@@ -153,22 +150,6 @@ const routes = [
         path: '', // default page
         name: 'ProfilePost',
         component: ProfilePost,
-        props: true,
-      },
-      {
-        path: 'scrap',
-        name: 'ProfileScrap',
-        component: ProfileScrap,
-      },
-      {
-        path: 'like',
-        name: 'ProfileLike',
-        component: ProfileLike,
-      },
-      {
-        path: 'friend',
-        name: 'ProfileFriend',
-        component: ProfileFriend,
       },
     ],
   },

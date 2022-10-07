@@ -44,6 +44,7 @@ communityStore.getComment(postId);
   );
   overflow: hidden;
   margin-bottom: var(--grid-vertical);
+  background-color: var(--color-main);
 }
 .review-wrap {
   width: calc(100% - 2 * var(--grid-side));

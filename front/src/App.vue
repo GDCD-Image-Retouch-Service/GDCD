@@ -10,16 +10,10 @@
 import HeaderNav from '@/components/organisms/common/HeaderNav.vue';
 import FooterNav from '@/components/organisms/common/FooterNav.vue';
 
-// import { computed, ref, onBeforeMount } from 'vue';
 import { computed } from 'vue';
-// import { useRoute } from 'vue-router';
-import { useUserStore } from '@/stores';
-
-import { useMainStore } from '@/stores';
+import { useUserStore, useMainStore } from '@/stores';
 
 const mainStore = useMainStore();
-// const route = useRoute();
-// 바꿀 예정
 const userStore = useUserStore();
 
 if (localStorage.getItem('token')) {
@@ -33,44 +27,23 @@ const theme = computed(() => (mainStore.getIsDark ? 'dark' : 'light'));
 userStore.loginModal = false;
 userStore.logoutModal = false;
 userStore.headerSetDropdown = false;
-
-// onBeforeMount(() => {
-//   window.addEventListener('scroll', handleScroll);
-// });
-
-// const handleScroll = (e) => {
-//   console.log(e);
-// };
-
-// let isVisible = ref(false);
-// document.addEventListener('scroll', (e) => {
-//   console.log(e);
-//   console.log(
-//     e.clientY,
-//     e.deltaY,
-//     e.layerY,
-//     e.offsetY,
-//     e.screenY,
-//     e.y,
-//     e.pageY,
-//     e.movementY,
-//     e.wheelDeltaY,
-//   );
-//   if (e.deltaY > 0) {
-//     isVisible.value = true;
-//     console.log('ㅇㅇ');
-//   } else {
-//     isVisible.value = false;
-//   }
-// });
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap');
 @font-face {
-  font-family: 'Nanum Gothic';
-  src: url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400')
-    format('truetype');
+  font-family: 'NanumSquareRound';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Jal_Haru';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/Jal_Haru.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 :root {
@@ -96,6 +69,13 @@ userStore.headerSetDropdown = false;
   --grid-header: 30px;
   --grid-vertical: 30px;
   --grid-side: 20px;
+
+  /* 폰트 */
+  --sub-font-size: 12px;
+}
+
+#app {
+  font-size: 16px;
 }
 
 /* 라이트 & 다크 모드 */
@@ -119,7 +99,7 @@ userStore.headerSetDropdown = false;
 .light {
   --color-main: #ffffff;
   --color-sub: #f4f4f4;
-  --color-reverse: #404040;
+  --color-reverse: #3c3c3a;
   --popper-theme-background-color: #ffffff;
   --popper-theme-background-color-hover: #ffffff;
   --popper-theme-text-color: #333333;
@@ -175,9 +155,14 @@ userStore.headerSetDropdown = false;
     inset -4px -4px 10px -1px rgba(255, 255, 255, 0.25);
 }
 
+.inner-shadow {
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 /* 간격 */
 .spacer {
   height: var(--size-h-spacer);
+  weight: var(--size-h-spacer);
 }
 
 * {
@@ -214,10 +199,9 @@ body::-webkit-scrollbar {
   /* 폰트 */
   color: var(--black);
   line-height: 16px;
-  font-size: 16px;
+  /* font-family: 'Jal_Haru'; */
+  font-family: 'NanumSquareRound';
 
-  /* font-family: 'Noto Sans KR', sans-serif; */
-  font-family: 'Nanum Gothic';
   scroll-behavior: smooth;
 }
 

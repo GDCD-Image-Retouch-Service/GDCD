@@ -16,6 +16,7 @@ function createLoadingGame(containerId) {
     },
     parent: containerId,
     scene: [scene0, scene1],
+    myCustomProperty: true,
     fps: 30,
     render: { transparent: true },
   });

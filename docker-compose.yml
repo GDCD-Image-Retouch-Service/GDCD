@@ -22,7 +22,6 @@ services:
     networks:
       - my_network
     mem_limit: "14G"
-    # entrypoint: "gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8082 --workers 1"
   nginx:
     build: front
     container_name: nginx

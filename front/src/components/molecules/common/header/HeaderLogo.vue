@@ -22,6 +22,7 @@ const logoSrc = require('@/assets/logo.png');
   height: 30px;
 }
 .nav-logo-title {
+  font-size: 20px;
   font-weight: 700;
 }
 .nav-logo-title-gd {

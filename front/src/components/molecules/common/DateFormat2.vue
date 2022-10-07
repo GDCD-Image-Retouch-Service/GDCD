@@ -61,15 +61,19 @@ const calcDate = () => {
 
   let ret = date1 - date2 + 1;
   if (ret < 60) {
-    return `${ret}초 전`;
+    return '오늘';
   }
   ret = Math.floor(ret / 60);
   if (ret < 60) {
-    return `${ret}분 전`;
+    return `오늘`;
   }
   ret = Math.floor(ret / 60);
   if (ret < 24) {
-    return `${ret}시간 전`;
+    if (ret + 9 < 24) {
+      return `오늘`;
+    } else {
+      return '1일 전';
+    }
   }
   ret = Math.floor(ret / 24);
   if (ret < 7) {
