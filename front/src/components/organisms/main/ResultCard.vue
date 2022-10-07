@@ -16,7 +16,7 @@
         class="pic-container d-flex flex-column align-items-center justify-content-center"
         style="background: lightgray; width: 380px; max-width: 380px"
       >
-        <img ref="picBox" src="" style="width: 380px" alt="your image" />
+        <img ref="picBox" src="" style="width: 100%" alt="your image" />
       </div>
     </div>
     <div class="spacer" />
@@ -198,9 +198,10 @@ onMounted(async () => {
 
 <style scoped>
 .score-card {
+  margin-top: var(--grid-vertical);
   border-radius: 20px;
-  width: 90%;
-  max-width: 380px;
+  width: calc(100% - 2 * var(--grid-side));
+  max-width: 400px;
   overflow: hidden;
 }
 
