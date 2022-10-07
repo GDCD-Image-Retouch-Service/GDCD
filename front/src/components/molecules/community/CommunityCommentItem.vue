@@ -25,7 +25,7 @@ const communityStore = useCommunityStore();
 
 <style scoped>
 .wrapper {
-  max-height: 600px;
+  max-height: 400px;
   overflow: scroll;
 }
 .comment-wrap {
@@ -33,19 +33,17 @@ const communityStore = useCommunityStore();
   display: flex;
   /* justify-content: space-between; */
   gap: 10px;
-  margin-bottom: var(--grid-vertical);
+  margin-bottom: 20ㅔㅌ;
   flex-direction: column;
   width: 100%;
   align-items: start;
   line-height: 30px;
 }
-.spacer {
-  width: 100%;
-  height: var(--grid-vertical);
-  background-color: pink;
-}
+
 .none-comment {
-  height: 50px;
-  line-height: 50px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 16px;
 }
 </style>

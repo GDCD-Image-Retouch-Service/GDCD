@@ -23,5 +23,6 @@ const userStore = useUserStore();
   background-color: var(--theme-color);
   color: var(--light-main-color);
   border-radius: 5px;
+  font-size: 16px;
 }
 </style>

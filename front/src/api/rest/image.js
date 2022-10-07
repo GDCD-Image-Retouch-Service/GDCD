@@ -113,12 +113,15 @@ export default {
   },
 
   getBuffer: function (payload) {
+    console.log(' * 이미지 입력쿼리', payload.imageQuery);
+    console.log(' * 이미지명 입력쿼리', payload.fileName);
     return new Promise((resolve, reject) => {
       axiosApi
         .get(REST_PATH + '?' + payload.imageQuery, {
           responseType: 'blob',
         })
         .then((response) => {
+          console.dir(' * 이미지 데이터', response);
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement('a');
           link.href = url;
@@ -133,12 +136,15 @@ export default {
     });
   },
   get: function (payload) {
+    console.log(' * 이미지 입력퀴리', payload.imageQuery);
+    console.log(' * 이미지명 입력쿼리', payload.fileName);
     return new Promise((resolve, reject) => {
       axiosApi
         .get(REST_PATH + '?imageId=' + payload.imageQuery, {
           responseType: 'blob',
         })
         .then((response) => {
+          console.dir(' * 이미지 데이터', response);
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement('a');
           link.href = url;

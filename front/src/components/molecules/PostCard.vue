@@ -61,7 +61,7 @@
           @click="(myScrap = !myScrap), communityStore.scrapPost(post.postId)"
         ></i>
       </div>
-      <date-format :updateInfo="post.registTime" />
+      <date-format :updateInfo="post.registTime" class="potocard-date" />
     </div>
   </div>
 </template>
@@ -110,7 +110,6 @@ const clickLike = () => {
   box-shadow: 0 4px 4px -4px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(0, 0, 0, 0.12);
   background-color: var(--light-main-color);
-  font-size: 14px;
   overflow: hidden;
 
   background: var(--color-main);
@@ -128,7 +127,10 @@ const clickLike = () => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
+  height: 16px;
+  line-height: 16px;
+  font-weight: 700;
+  color: var(--color-reverse);
   font-size: 16px;
 }
 .post-card-userinfo {
@@ -136,20 +138,21 @@ const clickLike = () => {
   width: calc(100% - 10px);
   margin-right: 10px;
   justify-content: flex-end;
-  font-size: 14px;
+  font-size: var(--sub-font-size);
   align-items: center;
-  margin-top: 35px;
+  margin-top: 20px;
 }
 .profile-image {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   object-fit: cover;
-  border-radius: 20px;
+  border-radius: 30px;
   border: 1px solid var(--instagram-grey);
 }
 .profile-nickname {
   margin-left: 5px;
   text-align: center;
+  font-size: 16px;
 }
 .dot-icon {
   position: absolute;
@@ -174,5 +177,8 @@ const clickLike = () => {
 .update-info {
   color: var(--instagram-dark-grey);
   font-size: 10px;
+}
+.potocard-date {
+  font-size: var(--sub-font-size);
 }
 </style>
